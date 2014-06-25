@@ -7,6 +7,9 @@
 
 namespace GameEngine
 {
+	ArrayList<StringTexture*> Graphics2D::stringCache = ArrayList<StringTexture*>();
+	ArrayList<StringTexture*> Graphics2D::nextStringCache = ArrayList<StringTexture*>();
+	
 	void Graphics2D::reset()
 	{
 		setRotation(0,0,0);
@@ -169,11 +172,39 @@ namespace GameEngine
 		rotY = 0;
 		tx = 0;
 		ty = 0;
+		created = false;
+	}
+	
+	Graphics2D::Graphics2D(const Graphics2D&g)
+	{
+		color = g.color;
+		imageColor = g.imageColor;
+		overlayColor = g.overlayColor;
+		defaultFont = g.defaultFont;
+		font = g.font;
+		alpha = g.alpha;
+		Rotation = g.Rotation;
+		ScaleX = g.ScaleX;
+		ScaleY = g.ScaleY;
+		rotX = g.rotX;
+		rotY = g.rotY;
+		tx = g.tx;
+		ty = g.ty;
+		renderer = g.renderer;
+		created = true;
 	}
 	
 	Graphics2D::~Graphics2D(void)
 	{
-		delete defaultFont;
+		if(!created)
+		{
+			delete defaultFont;
+		}
+	}
+	
+	Graphics2D Graphics2D::create()
+	{
+		return Graphics2D(*this);
 	}
 	
 	SDL_Renderer*Graphics2D::getRenderer()

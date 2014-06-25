@@ -30,6 +30,8 @@ namespace GameEngine
 		int charWidth;
 		int charHeight;
 		
+		unsigned int lineSpace;
+		
 		unsigned char alignment;
 		bool mouseover;
 		bool prevMouseover;
@@ -65,6 +67,8 @@ namespace GameEngine
 		static const unsigned char ALIGN_TOPLEFT = 3;
 		static const unsigned char ALIGN_TOPRIGHT = 4;
 		
+		float Scale;
+		
 		TextActor(String s, Font*f, const Color&c);
 		TextActor(float x1, float y1,String s, Font*f, const Color&c);
 		virtual ~TextActor();
@@ -97,12 +101,14 @@ namespace GameEngine
 
 		void setAlignment(unsigned char align);
 		unsigned char getAlignment();
-
+		
+		void setLineSpacing(unsigned int space);
+		
 		void relativeToView(bool toggle);
 		
 		virtual void onMouseEnter();
 		virtual void onMouseLeave();
-	    virtual void onClick();
+	    	virtual void onClick();
 		virtual void onRelease();
 
 		bool mouseOver();
@@ -116,8 +122,8 @@ namespace GameEngine
 		
 		void setRotation(double degrees);
 		double getRotation();
-	    
-	    void setAlpha(float alpha);
-	    float getAlpha();
+		
+		void setAlpha(float alpha);
+		float getAlpha();
 	};
 }

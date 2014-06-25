@@ -17,8 +17,8 @@ namespace GameEngine
 		friend int ApplicationEventHandler(void*,SDL_Event*);
 		
 	private:
-		ArrayList<StringTexture*> stringCache;
-		ArrayList<StringTexture*> nextStringCache;
+		static ArrayList<StringTexture*> stringCache;
+		static ArrayList<StringTexture*> nextStringCache;
 		
 		Color color;
 		Color imageColor;
@@ -36,6 +36,8 @@ namespace GameEngine
 		Color overlayColor;
 		unsigned char alpha;
 		
+		bool created;
+		
 		void reset();
 		void updateStringCache();
 		
@@ -46,9 +48,13 @@ namespace GameEngine
 		
 		SDL_Texture*getTextureFromString(const String&text);
 		
-	public:
 		Graphics2D(void);
+		
+	public:
 		virtual ~Graphics2D(void);
+		
+		Graphics2D(const Graphics2D&graphics);
+		Graphics2D create();
 		
 		SDL_Renderer*getRenderer();
 		

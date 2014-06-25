@@ -7,15 +7,19 @@
 
 namespace GameEngine
 {
-	void TextActor::drawString(Graphics2D& g, String text, float x1, float y1)
+	void TextActor::drawString(Graphics2D& graphics, String text, float x1, float y1)
 	{
+		Graphics2D g(graphics);
+		g.scale(Scale,Scale);
+		x1 = x1/Scale;
+		y1 = y1/Scale;
 		String currentLine = "";
 		ArrayList<String> lines = ArrayList<String>();
 			
 		for(int i=0; i<text.length(); i++)
 		{
 			char c = text.charAt(i);
-				
+			
 			if(c=='\n')
 			{
 				lines.add(currentLine);
@@ -60,7 +64,7 @@ namespace GameEngine
 				break;
 			}
 			g.drawString(line, x1 + offset, currentY);
-			currentY-=charHeight;
+			currentY-= (float)((unsigned int)charHeight+lineSpace);
 		}
 		
 		lines.clear();
@@ -82,14 +86,14 @@ namespace GameEngine
 			
 		charHeight = tempheight;
 			
-		height = tempheight*lines; //got the height!
+		height = (tempheight*lines) + (lineSpace*(lines-1)); //got the height!
 
 		ArrayList<int> length = ArrayList<int>();
 		ArrayList<String> line = ArrayList<String>();
 		line.add("");
 		length.add(0);
 		
-		for( int pos = 0; pos < text.length(); pos++)
+		for(int pos = 0; pos < text.length(); pos++)
 		{
 			char c = text.charAt(pos);
 			if( c == '\r' || c== '\n' )
@@ -245,8 +249,9 @@ namespace GameEngine
 		return Rectangle((int)(getCenterX() - width/2), (int)(getCenterY() - height/2), width, height);
 	}
 
-	void TextActor::drawActor(Graphics2D& g, long gameTime, bool relativeToScreen)
+	void TextActor::drawActor(Graphics2D& graphics, long gameTime, bool relativeToScreen)
 	{
+		Graphics2D g(graphics);
 		unsigned int originalSize = font->getSize();
 		int originalStyle = font->getStyle();
 		this->font->setSize(fontSize);
@@ -262,7 +267,7 @@ namespace GameEngine
 		updateSize();
 			
 		g.setColor(color);
-		g.setAlpha((unsigned char)(255 - (Alpha*255)));
+		g.setAlpha((unsigned char)(255 - (Alpha*g.getAlpha())));
 		g.setFont(this->font);
 			
 		float x1;
@@ -277,8 +282,11 @@ namespace GameEngine
 			x1 = x;
 			y1 = y;
 		}
-			
+		
 		bool onscreen = isOnScreen();
+		
+		float width = (this->width*Scale);
+		float height = (this->height*Scale);
 			
 		if((onscreen && relativeToScreen)||(!relativeToScreen))
 		{
@@ -291,12 +299,12 @@ namespace GameEngine
 				g.rotate((float)Rotation,x1,y1);
 				drawString(g, text, x1, y1);
 				break;
-					
+				
 				case ALIGN_BOTTOMRIGHT:
 				g.rotate((float)Rotation,x1-width,y1);
 				drawString(g, text, x1-width, y1);
 				break;
-					
+				
 				case ALIGN_CENTER:
 				g.rotate((float)Rotation,x1-(width/2),y1+(height/2));
 				drawString(g, text, x1-(width/2), y1+(height/2));
@@ -347,8 +355,8 @@ namespace GameEngine
 		font->setSize(originalSize);
 		font->setStyle(originalStyle);
 		
-		g.setRotation(0,0,0);
-		g.setAlpha(255);
+		this->width = (int)(width);
+		this->height = (int)(height);
 	}
 		
 	TextActor::TextActor(String s, Font*f, const Color&c)
@@ -359,6 +367,7 @@ namespace GameEngine
 		color = c;
 		x=0;
 		y=0;
+		Scale=1;
 		
 		fontSize = font->getSize();
 		fontStyle = font->getStyle();
@@ -374,6 +383,7 @@ namespace GameEngine
 		currentTouchId = 0;
 		charWidth = 0;
 		charHeight = 0;
+		lineSpace = 0;
 		mouseover = false;
 		prevMouseover = false;
 		showwire=false;
@@ -390,6 +400,7 @@ namespace GameEngine
 		color = c;
 		x=x1;
 		y=y1;
+		Scale=1;
 
 		fontSize = font->getSize();
 		fontStyle = font->getStyle();
@@ -403,6 +414,7 @@ namespace GameEngine
 		Alpha = 0;
 		charWidth = 0;
 		charHeight = 0;
+		lineSpace = 0;
 		touchId = 0;
 		currentTouchId = 0;
 		mouseover = false;
@@ -444,9 +456,9 @@ namespace GameEngine
 				int h = 0;
 				this->font->setSize(fontSize);
 				this->font->setStyle(fontStyle);
-				TTF_SizeText(this->font->getTTF(), newText, &w, &h);
+				TTF_SizeText(this->font->getTTF(), currentWord, &w, &h);
 				currentWidth = 0;
-				currentHeight += h;
+				currentHeight += (float)h + (float)lineSpace;
 				currentWord = "";
 				spaceInLine = false;
 				if(currentHeight>((float)height))
@@ -463,7 +475,7 @@ namespace GameEngine
 					currentWidth+=charWidth;
 					currentWord = "";
 					spaceInLine = true;
-						
+					
 					if(currentWidth>=width)
 					{
 						newText+='\n';
@@ -473,9 +485,9 @@ namespace GameEngine
 						this->font->setStyle(fontStyle);
 						TTF_SizeText(this->font->getTTF(), newText, &w, &h);
 						currentWidth = 0;
-						currentHeight += h;
+						currentHeight += (float)h + (float)lineSpace;
 						spaceInLine = false;
-						if(currentHeight>height)
+						if(currentHeight>((float)height))
 						{
 							i = originalText.length();
 						}
@@ -487,7 +499,7 @@ namespace GameEngine
 					currentWord+=c;
 					currentWidth+=charWidth;
 						
-					if(currentWidth>=width)
+					if(currentWidth>=((float)width))
 					{
 						if(spaceInLine)
 						{
@@ -496,10 +508,9 @@ namespace GameEngine
 							int h = 0;
 							this->font->setSize(fontSize);
 							this->font->setStyle(fontStyle);
-							TTF_SizeText(this->font->getTTF(), newText, &w, &h);
-							currentHeight += h;
 							TTF_SizeText(this->font->getTTF(), currentWord, &w, &h);
-							currentWidth = w;
+							currentHeight += (float)h + (float)lineSpace;
+							currentWidth = 0;//w;
 							spaceInLine = false;
 								
 							if(currentHeight>height)
@@ -516,6 +527,9 @@ namespace GameEngine
 		
 		text = newText;
 		updateSize();
+		
+		this->width = (int)(this->width*Scale);
+		this->height = (int)(this->height*Scale);
 	}
 		
 	void TextActor::Update(long gameTime)
@@ -698,6 +712,11 @@ namespace GameEngine
 	unsigned char TextActor::getAlignment()
 	{
 		return alignment;
+	}
+	
+	void TextActor::setLineSpacing(unsigned int space)
+	{
+		lineSpace = space;
 	}
 	
 	void TextActor::relativeToView(bool toggle)
