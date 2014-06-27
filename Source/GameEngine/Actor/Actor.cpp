@@ -212,11 +212,11 @@ namespace GameEngine
             }
             frameTime+=addTime; //frameTime = lastFrameTime + (addTime*2); //frameTime = gameTime+addTime;
 			lastFrameTime=gameTime;
-            anim->nextFrame(this,g,x1,y1,scale,relativeToScreen);
+            anim->nextFrame(this,g,gameTime, x1,y1,scale,relativeToScreen);
         }
         else
         {
-            anim->drawFrame(this,g,anim->getCurrentFrame(),x1,y1,scale,relativeToScreen);
+            anim->drawFrame(this,g, anim->getCurrentFrame(),x1,y1,scale,relativeToScreen);
         }
         if(showwire)
         {
@@ -411,7 +411,7 @@ namespace GameEngine
 	    	
 	    xSpeed = x - xprev;
 	    ySpeed = y - yprev;
-	    	
+		
 	    xprev = x;
 	    yprev = y;
 	    	

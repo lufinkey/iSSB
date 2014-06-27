@@ -71,12 +71,12 @@ namespace GameEngine
 		int getType();
 
 		
-		void drawFrame(Actor*a,Graphics2D& g, float x1, float y1, double scale);
+		void drawFrame(Actor*a, Graphics2D& g, float x1, float y1, double scale);
 		void drawFrame(Actor*a, Graphics2D& g, int fNum, float x1, float y1, double scale);
-		void drawFrame(Actor*a,Graphics2D& g,int fNum, float x1, float y1, double scale, bool relativeToScreen);
-		void drawFrame(Actor*a,Graphics2D& g,int fNum, float x1, float y1, float x2, float y2);
-		void nextFrame(Actor*a,Graphics2D& g, float x1, float y1, double scale, bool relativeToScreen=true);
-
+		void drawFrame(Actor*a, Graphics2D& g, int fNum, float x1, float y1, double scale, bool relativeToScreen);
+		void drawFrame(Actor*a, Graphics2D& g, int fNum, float x1, float y1, float x2, float y2);
+		void nextFrame(Actor*a, Graphics2D& g, long gameTime, float x1, float y1, double scale, bool relativeToScreen=true);
+		
 		void setCurrentFrame(int fNum);
 		int getLastFrame();
 		int getCurrentFrame();

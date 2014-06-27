@@ -326,14 +326,16 @@ namespace GameEngine
     	drawFrame(a,g, fNum, x1, y1, scale,true);
 	}
 
-	void Animation::drawFrame(Actor*a,Graphics2D& g,int fNum, float x1, float y1, double scale, bool relativeToScreen)
+	void Animation::drawFrame(Actor*a,Graphics2D& graphics,int fNum, float x1, float y1, double scale, bool relativeToScreen)
 	{
     	double rotation;
     	unsigned char alpha = 255;
     	Color color;
-
+		
 		bool isMirrored = this->isMirrored;
 		bool isMirroredVertical = this->isMirroredVertical;
+		
+		Graphics2D g(graphics);
     	
     	if(a!=NULL)
     	{
@@ -506,13 +508,9 @@ namespace GameEngine
 	    	}
     	}
     	recentFrame = currentFrame;
-
-		g.setRotation(0,0,0);
-		g.setAlpha(255);
-		g.setImageMask(Color::WHITE);
 	}
-
-	void Animation::drawFrame(Actor*a,Graphics2D& g,int fNum, float x1, float y1, float x2, float y2)
+	
+	void Animation::drawFrame(Actor*a,Graphics2D& graphics,int fNum, float x1, float y1, float x2, float y2)
 	{
     	double rotation;
     	unsigned char alpha = 255;
@@ -520,6 +518,8 @@ namespace GameEngine
 
 		bool isMirrored = this->isMirrored;
 		bool isMirroredVertical = this->isMirroredVertical;
+		
+		Graphics2D g(graphics);
     	
     	if(a!=NULL)
     	{
@@ -678,13 +678,9 @@ namespace GameEngine
 	    	}
     	}
     	recentFrame = currentFrame;
-
-		g.setRotation(0,0,0);
-		g.setAlpha(255);
-		g.setImageMask(Color::WHITE);
 	}
 	
-	void Animation::nextFrame(Actor*a,Graphics2D& g, float x1, float y1, double scale, bool relativeToScreen)
+	void Animation::nextFrame(Actor*a, Graphics2D& g, long gameTime, float x1, float y1, double scale, bool relativeToScreen)
 	{
 		if(direction == FORWARD)
 		{
@@ -698,7 +694,7 @@ namespace GameEngine
 	                	a->onAnimationFinish(name); //is called when Animation has finished the last frame. defined in Actor
 	                	if(!this->name.equals(a->anim->name))
 	                	{
-	                		a->Draw(g, Application::getGameTime());
+	                		a->drawActor(g, gameTime, x1, y1, scale, relativeToScreen);
 	                		return;
 	                	}
 	    			}
@@ -721,7 +717,7 @@ namespace GameEngine
 	                	a->onAnimationFinish(name); //is called when Animation has finished the last frame. defined in Actor
 	                	if(!this->name.equals(a->anim->name))
 	                	{
-	                		a->Draw(g, Application::getGameTime());
+	                		a->drawActor(g, gameTime, x1, y1, scale, relativeToScreen);
 	                		return;
 	                	}
 	    			}
