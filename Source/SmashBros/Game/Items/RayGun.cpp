@@ -1,6 +1,7 @@
 
 #include "RayGun.h"
 #include "../../Global.h"
+#include <cmath>
 
 namespace SmashBros
 {
@@ -199,7 +200,7 @@ namespace SmashBros
 	void RayGun::Ray::Update(long gameTime)
 	{
 		Projectile::Update(gameTime);
-		if(abs(startX - x)>240)
+		if(std::abs(startX - x)>240)
 		{
 			destroy();
 		}

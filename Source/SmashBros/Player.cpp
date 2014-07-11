@@ -9,6 +9,7 @@
 #include "AttackTemplates.h"
 #include "ItemManager.h"
 #include "P2PDataManager.h"
+#include <cmath>
 
 namespace SmashBros
 {
@@ -2346,7 +2347,7 @@ namespace SmashBros
 			}
 			
 			double targetDist = distanceUnSqr(x,y,target.x,target.y);
-			if((targetDist>100 || yvelocity<=10)&&(abs(x - target.x)<10))
+			if((targetDist>100 || yvelocity<=10)&&(std::abs(x - target.x)<10))
 			{
 				randomizer.doAttack(ATTACKTYPE_DOWNMOVE);
 			}
@@ -3027,7 +3028,7 @@ namespace SmashBros
 						else
 						{
 							separatingRect = platRect;
-							currentDist = abs(y - middlePlatY);
+							currentDist = std::abs(y - middlePlatY);
 						}
 					}
 					else if((target.y > platRect.y && target.y < (platRect.y + platRect.height))||(y > platRect.y && y < (platRect.y + platRect.height)))
@@ -3075,7 +3076,7 @@ namespace SmashBros
 						}
 						else
 						{
-							float newDist = abs(y - middlePlatY);
+							float newDist = std::abs(y - middlePlatY);
 							if(newDist < currentDist)
 							{
 								separatingRect = platRect;
@@ -3139,7 +3140,7 @@ namespace SmashBros
 						else
 						{
 							separatingRect = rect;
-							currentDist = abs(y - middlePlatY);
+							currentDist = std::abs(y - middlePlatY);
 						}
 					}
 					else if((target.y > rect.y && target.y < (rect.y + rect.height))||(y > rect.y && y < (rect.y + rect.height)))
@@ -3187,7 +3188,7 @@ namespace SmashBros
 						}
 						else
 						{
-							float newDist = abs(y - middlePlatY);
+							float newDist = std::abs(y - middlePlatY);
 							if(newDist < currentDist)
 							{
 								separatingRect = rect;
@@ -5275,14 +5276,14 @@ namespace SmashBros
 		{
 			default:
 			case Platform::TYPE_NORMAL:
-			if((hurt>0)&&(abs(yvelocity)>6))
+			if((hurt>0)&&(std::abs(yvelocity)>6))
 			{
 			    if(hurt==2)
 			    {
 			        hurt=1;
 			        canDo=true;
 			    }
-			    yvelocity=-(abs(yvelocity)/2);
+			    yvelocity=-(std::abs(yvelocity)/2);
 			    switch(playerdir)
 			    {
 			        case 1:
@@ -5301,7 +5302,7 @@ namespace SmashBros
 			    {
 			    	if(yvelocity<0)
 			    	{
-			    		y+=(ceil(abs(yvelocity)));
+			    		y+=(ceil(std::abs(yvelocity)));
 			    	}
 			    }
 			    else if(dir == DIR_UP)
@@ -5348,7 +5349,7 @@ namespace SmashBros
 				    {
 				        hurt=1;
 				    }
-				    yvelocity=-(abs(yvelocity)/2);
+				    yvelocity=-(std::abs(yvelocity)/2);
 				    switch(playerdir)
 				    {
 				        case 1:

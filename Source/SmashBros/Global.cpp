@@ -83,7 +83,7 @@ namespace SmashBros
 		{
 			players[i] = NULL;
 			characters[i] = NULL;
-			currentTeams[i] = NULL;
+			currentTeams[i] = 0;
 			scores[i] = NULL;
 			KOs[i] = NULL;
 			deaths[i] = NULL;

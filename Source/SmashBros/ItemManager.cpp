@@ -1,7 +1,7 @@
 
 #include "ItemManager.h"
 #include "Global.h"
-#include "SmashBall.h"
+#include "Game/Items/SmashBall.h"
 #include "Game/Items/RayGun.h"
 #include "Game/Items/HeartContainer.h"
 #include "Game/Items/BeamSword.h"

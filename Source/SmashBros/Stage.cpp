@@ -4,6 +4,7 @@
 #include "ProjectileManager.h"
 #include "ItemManager.h"
 #include "Camera.h"
+#include <cmath>
 
 namespace SmashBros
 {
@@ -819,21 +820,21 @@ namespace SmashBros
 						case PrimitiveActor::DIR_DOWN:
 						if(collide->getType()!=Platform::TYPE_GOTHROUGH)
 						{
-							item->yvelocity = abs(item->yvelocity);
+							item->yvelocity = std::abs(item->yvelocity);
 						}
 						break;
 						
 						case PrimitiveActor::DIR_LEFT:
 						if(collide->getType()!=Platform::TYPE_GOTHROUGH)
 						{
-							item->xvelocity = -abs(item->xvelocity);
+							item->xvelocity = -std::abs(item->xvelocity);
 						}
 						break;
 						
 						case PrimitiveActor::DIR_RIGHT:
 						if(collide->getType()!=Platform::TYPE_GOTHROUGH)
 						{
-							item->xvelocity = abs(item->xvelocity);
+							item->xvelocity = std::abs(item->xvelocity);
 						}
 						break;
 					}
@@ -853,15 +854,15 @@ namespace SmashBros
 				}
 				else if(dir==PrimitiveActor::DIR_LEFT)
 				{
-					item->xvelocity = -abs(item->xvelocity);
+					item->xvelocity = -std::abs(item->xvelocity);
 				}
 				else if(dir==PrimitiveActor::DIR_RIGHT)
 				{
-					item->xvelocity = abs(item->xvelocity);
+					item->xvelocity = std::abs(item->xvelocity);
 				}
 				else if(dir==PrimitiveActor::DIR_DOWN)
 				{
-					item->yvelocity = abs(item->yvelocity);
+					item->yvelocity = std::abs(item->yvelocity);
 				}
 				return dir;
 			}

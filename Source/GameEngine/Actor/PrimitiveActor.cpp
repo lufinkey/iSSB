@@ -2,6 +2,7 @@
 #include "PrimitiveActor.h"
 #include "TextActor.h"
 #include "../Output/Console.h"
+#include <cmath>
 
 namespace GameEngine
 {
@@ -377,8 +378,8 @@ namespace GameEngine
 	{
 		float x3=x2;
 		float y3=y1;
-		float L1=abs(x3-x1);
-		float L2=abs(y3-y2);
+		float L1=std::abs(x3-x1);
+		float L2=std::abs(y3-y2);
 		return (double)(sqrt((L1*L1)+(L2*L2)));
 	}
 		
@@ -386,8 +387,8 @@ namespace GameEngine
 	{                                                               //returns should be used relative to other returns of this method
 		float x3=x2;
 		float y3=y1;
-		float L1=abs(x3-x1);
-		float L2=abs(y3-y2);
+		float L1=std::abs(x3-x1);
+		float L2=std::abs(y3-y2);
 		return (double)((L1*L1)+(L2*L2));
 	}
 		
@@ -437,7 +438,7 @@ namespace GameEngine
     	{
     		do
     		{
-    			newDegrees = 360 - abs(newDegrees);
+    			newDegrees = 360 - std::abs(newDegrees);
     		}
     		while(newDegrees<0);
     	}

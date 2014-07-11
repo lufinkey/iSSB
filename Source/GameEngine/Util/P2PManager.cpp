@@ -1,7 +1,7 @@
 
 #include "P2PManager.h"
 #include "../Application.h"
-#include "CPPBridge.h"
+#include "../ObjCBridge/CPPBridge.h"
 #include "../Output/Console.h"
 
 namespace GameEngine

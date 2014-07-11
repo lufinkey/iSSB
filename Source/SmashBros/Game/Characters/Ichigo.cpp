@@ -3,6 +3,7 @@
 #include "../../AttackTemplates.h"
 #include "../../Global.h"
 #include "../../P2PDataManager.h"
+#include <cmath>
 
 namespace SmashBros
 {
@@ -429,11 +430,11 @@ namespace SmashBros
 			switch(playerdir)
 			{
 				case LEFT:
-				collide->x -= abs(xVel)+1;
+				collide->x -= std::abs(xVel)+1;
 				break;
 				
 				case RIGHT:
-				collide->x += abs(xVel)+1;
+				collide->x += std::abs(xVel)+1;
 				break;
 			}
 		}
@@ -475,7 +476,7 @@ namespace SmashBros
 			        //B Side
 			        if(playerdir==LEFT)
 			        {
-			        	collide->x-=abs(xVel)+1;
+			        	collide->x-=std::abs(xVel)+1;
 			        }
 			        break;
 			        
@@ -544,7 +545,7 @@ namespace SmashBros
 			        //B Side
 			        if(playerdir==RIGHT)
 			        {
-			        	collide->x+=abs(xVel)+1;
+			        	collide->x+=std::abs(xVel)+1;
 			        }
 			        break;
 			 
@@ -1013,7 +1014,7 @@ namespace SmashBros
 	void Ichigo::Blast::Update(long gameTime)
 	{
 		Projectile::Update(gameTime);
-		if(abs(startX - x)>240)
+		if(std::abs(startX - x)>240)
 		{
 			destroy();
 		}

@@ -1,7 +1,7 @@
 
 #include "GameElement.h"
 #include "CollisionManager.h"
-#include "Platform.h"
+#include "Game/Stages/StagePieces/Platform.h"
 #include "Projectile.h"
 #include "SmashForwards.h"
 

@@ -1,5 +1,6 @@
 
 #include "Camera.h"
+#include <cmath>
 
 namespace SmashBros
 {
@@ -435,8 +436,8 @@ namespace SmashBros
 				}
 				else
 				{
-					float w1 = abs(Global::characters[i]->x - Global::characters[j]->x) + (Global::characters[i]->width/2) + (Global::characters[j]->width/2) + 2*offset;
-					float h1 = abs(Global::characters[i]->y - Global::characters[j]->y) + (Global::characters[i]->height/2) + (Global::characters[j]->height/2) + 2*offset;
+					float w1 = std::abs(Global::characters[i]->x - Global::characters[j]->x) + (Global::characters[i]->width/2) + (Global::characters[j]->width/2) + 2*offset;
+					float h1 = std::abs(Global::characters[i]->y - Global::characters[j]->y) + (Global::characters[i]->height/2) + (Global::characters[j]->height/2) + 2*offset;
 					if(w1>w || w==0)
 					{
 						w = w1;

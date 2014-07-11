@@ -1,8 +1,9 @@
 
 #include "View.h"
 #include "Application.h"
-#include "Console.h"
+#include "Output/Console.h"
 #include <math.h>
+#include <cmath>
 
 namespace GameEngine
 {
@@ -70,15 +71,15 @@ namespace GameEngine
 		{
 			difX = (float)((windowWidth - (windowWidth*Zoom))+(windowWidth - (scaleWidth*multScale)))/(float)(2*Zoom*multScale);
 			difY = (float)((windowHeight - (windowHeight*Zoom))+(windowHeight - (scaleHeight*multScale)))/(float)(2*Zoom*multScale);
-			letterBoxW = (float)abs((windowWidth - (scaleWidth*multScale))/2);
-			letterBoxH = (float)abs((windowHeight - (scaleHeight*multScale))/2);
+			letterBoxW = (float)std::abs((windowWidth - (scaleWidth*multScale))/2);
+			letterBoxH = (float)std::abs((windowHeight - (scaleHeight*multScale))/2);
 		}
 		else
 		{
 			difX = (float)(windowWidth - (windowWidth*Zoom))/(float)(2*Zoom);
 			difY = (float)(windowHeight - (windowHeight*Zoom))/(float)(2*Zoom);
-			letterBoxW = (float)abs((windowWidth - (scaleWidth*multScale))/2);
-			letterBoxH = (float)abs((windowHeight - (scaleHeight*multScale))/2);
+			letterBoxW = (float)std::abs((windowWidth - (scaleWidth*multScale))/2);
+			letterBoxH = (float)std::abs((windowHeight - (scaleHeight*multScale))/2);
 		}
 		g.translate(difX,difY);
 	}

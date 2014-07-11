@@ -3,6 +3,7 @@
 #include "../../Global.h"
 #include "../../AttackTemplates.h"
 #include "../../P2PDataManager.h"
+#include <cmath>
 
 namespace SmashBros
 {
@@ -973,19 +974,19 @@ namespace SmashBros
 			        {
 			            multY=-1;
 			        }
-			        causeHurtLaunch(collide,multX,abs(distX),3.04f, multY,abs(distY),3.04f);
+			        causeHurtLaunch(collide,multX,std::abs(distX),3.04f, multY,std::abs(distY),3.04f);
 			        causeHurt(collide, RIGHT, 5);
-			        yvelocity/=abs(yvelocity);
+			        yvelocity/=std::abs(yvelocity);
 			        yvelocity*=-3;
-			        xvelocity/=abs(xvelocity);
+			        xvelocity/=std::abs(xvelocity);
 			        xvelocity*=-3;
-					if(abs(xvelocity)>4)
+					if(std::abs(xvelocity)>4)
 					{
-						xvelocity = (xvelocity/abs(xvelocity))*3;
+						xvelocity = (xvelocity/std::abs(xvelocity))*3;
 					}
-					if(abs(yvelocity)>4)
+					if(std::abs(yvelocity)>4)
 					{
-						yvelocity = (yvelocity/abs(yvelocity))*3;
+						yvelocity = (yvelocity/std::abs(yvelocity))*3;
 					}
 			        animFinish();
 			        changeAnimation("special_finish_left", FORWARD);
@@ -1019,17 +1020,17 @@ namespace SmashBros
 			        	switch(playerdir)
 			        	{
 			        		case LEFT:
-			            	causeHurtLaunch(collide,multX,abs(distX),3.89f, -1,2.82f,3.89f);
+			            	causeHurtLaunch(collide,multX,std::abs(distX),3.89f, -1,2.82f,3.89f);
 			            	break;
 			            	
 			        		case RIGHT:
-			        		causeHurtLaunch(collide,multX,abs(distX),3.89f, -1,1.12f,3.89f);
+			        		causeHurtLaunch(collide,multX,std::abs(distX),3.89f, -1,1.12f,3.89f);
 			        		break;
 			        	}
 			        }
 			        else
 			        {
-			            causeHurtLaunch(collide,multX,abs(distX),3.89f, multY,abs(distY),3.89f);
+			            causeHurtLaunch(collide,multX,std::abs(distX),3.89f, multY,std::abs(distY),3.89f);
 			        }
 			        causeHurt(collide, RIGHT, 5);
 		        }
@@ -1057,11 +1058,11 @@ namespace SmashBros
 			        }
 			        if(collide->isOnGround())
 			        {
-			            causeHurtLaunch(collide,multX,abs(distX),5.98f, -1,3.72f,5.78f);
+			            causeHurtLaunch(collide,multX,std::abs(distX),5.98f, -1,3.72f,5.78f);
 			        }
 			        else
 			        {
-			            causeHurtLaunch(collide,multX,abs(distX),5.98f, multY,abs(distY),5.98f);
+			            causeHurtLaunch(collide,multX,std::abs(distX),5.98f, multY,std::abs(distY),5.98f);
 			        }
 			        causeHurt(collide, RIGHT, 6);
 		        }
@@ -1081,7 +1082,7 @@ namespace SmashBros
 		            {
 		                multX=-1;
 		            }
-		            causeHurtLaunch(collide,multX,abs(distX),((float)smashPower/4), -1,3.4f,((float)smashPower/4));
+		            causeHurtLaunch(collide,multX,std::abs(distX),((float)smashPower/4), -1,3.4f,((float)smashPower/4));
 		            causeHurt(collide, RIGHT, 6);
 		        }
 		        break;
@@ -1124,7 +1125,7 @@ namespace SmashBros
 		            multY=-1;
 		        }
 		        collide->y-=5;
-		        causeHurtLaunch(collide,multX,abs(distX),6, multY,abs(distY),6);
+		        causeHurtLaunch(collide,multX,std::abs(distX),6, multY,std::abs(distY),6);
 		        causeHurt(collide, RIGHT, 4);
 		    }
 			break;
@@ -1217,19 +1218,19 @@ namespace SmashBros
 			        {
 			            multY=-1;
 			        }
-			        causeHurtLaunch(collide,multX,abs(distX),3.04f, multY,abs(distY),3.04f);
+			        causeHurtLaunch(collide,multX,std::abs(distX),3.04f, multY,std::abs(distY),3.04f);
 			        causeHurt(collide, LEFT, 5);
-			        yvelocity/=abs(yvelocity);
+			        yvelocity/=std::abs(yvelocity);
 			        yvelocity*=-3;
-			        xvelocity/=abs(xvelocity);
+			        xvelocity/=std::abs(xvelocity);
 			        xvelocity*=-3;
-					if(abs(xvelocity)>4)
+					if(std::abs(xvelocity)>4)
 					{
-						xvelocity = (xvelocity/abs(xvelocity))*3;
+						xvelocity = (xvelocity/std::abs(xvelocity))*3;
 					}
-					if(abs(yvelocity)>4)
+					if(std::abs(yvelocity)>4)
 					{
-						yvelocity = (yvelocity/abs(yvelocity))*3;
+						yvelocity = (yvelocity/std::abs(yvelocity))*3;
 					}
 			        animFinish();
 			        changeAnimation("special_finish_right", FORWARD);
@@ -1263,18 +1264,18 @@ namespace SmashBros
 			        	switch(playerdir)
 			        	{
 			        		case LEFT:
-			        		causeHurtLaunch(collide,multX,abs(distX),3.89f, -1,1.12f,3.89f);
+			        		causeHurtLaunch(collide,multX,std::abs(distX),3.89f, -1,1.12f,3.89f);
 			        		break;
 			        		
 			        		case RIGHT:
-			        		causeHurtLaunch(collide,multX,abs(distX),3.89f, -1,2.82f,3.89f);
+			        		causeHurtLaunch(collide,multX,std::abs(distX),3.89f, -1,2.82f,3.89f);
 			        		break;
 			        	}
 			            
 			        }
 			        else
 			        {
-			            causeHurtLaunch(collide,multX,abs(distX),3.89f, multY,abs(distY),3.89f);
+			            causeHurtLaunch(collide,multX,std::abs(distX),3.89f, multY,std::abs(distY),3.89f);
 			        }
 			        causeHurt(collide, LEFT, 5);
 	        	}
@@ -1302,11 +1303,11 @@ namespace SmashBros
 			        }
 			        if(collide->isOnGround())
 			        {
-			            causeHurtLaunch(collide,multX,abs(distX),5.98f, -1,3.72f,5.78f);
+			            causeHurtLaunch(collide,multX,std::abs(distX),5.98f, -1,3.72f,5.78f);
 			        }
 			        else
 			        {
-			            causeHurtLaunch(collide,multX,abs(distX),5.98f, multY,abs(distY),5.98f);
+			            causeHurtLaunch(collide,multX,std::abs(distX),5.98f, multY,std::abs(distY),5.98f);
 			        }
 			        causeHurt(collide, LEFT, 6);
 		        }
@@ -1326,7 +1327,7 @@ namespace SmashBros
 		            {
 		                multX=-1;
 		            }
-		            causeHurtLaunch(collide,multX,abs(distX),((float)smashPower/4), -1,3.4f,((float)smashPower/4));
+		            causeHurtLaunch(collide,multX,std::abs(distX),((float)smashPower/4), -1,3.4f,((float)smashPower/4));
 		            causeHurt(collide, LEFT, 6);
 		        }
 		        break;
@@ -1369,7 +1370,7 @@ namespace SmashBros
 		        {
 		            multY=-1;
 		        }
-		        causeHurtLaunch(collide,multX,abs(distX),6, multY,abs(distY),6);
+		        causeHurtLaunch(collide,multX,std::abs(distX),6, multY,std::abs(distY),6);
 		        causeHurt(collide, LEFT, 4);
 		    }
 			break;
@@ -1433,7 +1434,7 @@ namespace SmashBros
 			        {
 			            multY=-1;
 			        }
-			        causeHurtLaunch(collide,multX,abs(distX),3.04f, multY,abs(distY),3.04f);
+			        causeHurtLaunch(collide,multX,std::abs(distX),3.04f, multY,std::abs(distY),3.04f);
 			        if(collide->x<x)
 			        {
 			        	causeHurt(collide, RIGHT, 5);
@@ -1446,17 +1447,17 @@ namespace SmashBros
 			        {
 			        	causeHurt(collide, collide->getPlayerDir(), 5);
 			        }
-			        yvelocity/=abs(yvelocity);
+			        yvelocity/=std::abs(yvelocity);
 			        yvelocity*=-3;
-			        xvelocity/=abs(xvelocity);
+			        xvelocity/=std::abs(xvelocity);
 			        xvelocity*=-3;
-					if(abs(xvelocity)>4)
+					if(std::abs(xvelocity)>4)
 					{
-						xvelocity = (xvelocity/abs(xvelocity))*3;
+						xvelocity = (xvelocity/std::abs(xvelocity))*3;
 					}
-					if(abs(yvelocity)>4)
+					if(std::abs(yvelocity)>4)
 					{
-						yvelocity = (yvelocity/abs(yvelocity))*3;
+						yvelocity = (yvelocity/std::abs(yvelocity))*3;
 					}
 			        animFinish();
 			        switch(playerdir)
@@ -1501,29 +1502,29 @@ namespace SmashBros
 			        		case LEFT:
 			        		if(collide->x<x)
 			        		{
-			        			causeHurtLaunch(collide, multX,abs(distX),3.89f, -1,2.82f,3.89f);
+			        			causeHurtLaunch(collide, multX,std::abs(distX),3.89f, -1,2.82f,3.89f);
 			        		}
 			        		else
 			        		{
-			        			causeHurtLaunch(collide, multX,abs(distX),3.89f, -1,1.12f,3.89f);
+			        			causeHurtLaunch(collide, multX,std::abs(distX),3.89f, -1,1.12f,3.89f);
 			        		}
 			        		break;
 			        		
 			        		case RIGHT:
 		        			if(collide->x>x)
 			        		{
-			        			causeHurtLaunch(collide, multX,abs(distX),3.89f, -1,2.82f,3.89f);
+			        			causeHurtLaunch(collide, multX,std::abs(distX),3.89f, -1,2.82f,3.89f);
 			        		}
 			        		else
 			        		{
-			        			causeHurtLaunch(collide, multX,abs(distX),3.89f, -1,1.12f,3.89f);
+			        			causeHurtLaunch(collide, multX,std::abs(distX),3.89f, -1,1.12f,3.89f);
 			        		}
 			        		break;
 			        	}
 			        }
 			        else
 			        {
-			            causeHurtLaunch(collide,multX,abs(distX),3.89f, multY,abs(distY),3.89f);
+			            causeHurtLaunch(collide,multX,std::abs(distX),3.89f, multY,std::abs(distY),3.89f);
 			        }
 			        if(collide->x<x)
 			        {
@@ -1553,7 +1554,7 @@ namespace SmashBros
 			        {
 			            multX=-1;
 			        }
-			        causeHurtLaunch(collide,multX,abs(distX),((float)smashPower/4), -1,3.4f,((float)smashPower/4));
+			        causeHurtLaunch(collide,multX,std::abs(distX),((float)smashPower/4), -1,3.4f,((float)smashPower/4));
 			        if(collide->x<x)
 			        {
 			        	causeHurt(collide, RIGHT, 6);
@@ -1604,12 +1605,12 @@ namespace SmashBros
 		        switch(playerdir)
 		        {
 		        	case LEFT:
-		        	causeHurtLaunch(collide,-1,0,0, multY,abs(distY),6);
+		        	causeHurtLaunch(collide,-1,0,0, multY,std::abs(distY),6);
 		        	causeHurt(collide, RIGHT, 4);
 		        	break;
 		        	
 		        	case RIGHT:
-	        		causeHurtLaunch(collide,1,0,0, multY,abs(distY),6);
+	        		causeHurtLaunch(collide,1,0,0, multY,std::abs(distY),6);
 		        	causeHurt(collide, LEFT, 4);
 		        	break;
 		        }
@@ -1676,7 +1677,7 @@ namespace SmashBros
 			        {
 			            multY=-1;
 			        }
-			        causeHurtLaunch(collide, multX,abs(distX),3.04f, multY,abs(distY),3.04f);
+			        causeHurtLaunch(collide, multX,std::abs(distX),3.04f, multY,std::abs(distY),3.04f);
 			        if(collide->x<x)
 			        {
 			        	causeHurt(collide, RIGHT, 5);
@@ -1689,17 +1690,17 @@ namespace SmashBros
 			        {
 			        	causeHurt(collide, collide->getPlayerDir(), 5);
 			        }
-			        yvelocity/=abs(yvelocity);
+			        yvelocity/=std::abs(yvelocity);
 			        yvelocity*=-3;
-			        xvelocity/=abs(xvelocity);
+			        xvelocity/=std::abs(xvelocity);
 			        xvelocity*=-3;
-					if(abs(xvelocity)>4)
+					if(std::abs(xvelocity)>4)
 					{
-						xvelocity = (xvelocity/abs(xvelocity))*3;
+						xvelocity = (xvelocity/std::abs(xvelocity))*3;
 					}
-					if(abs(yvelocity)>4)
+					if(std::abs(yvelocity)>4)
 					{
-						yvelocity = (yvelocity/abs(yvelocity))*3;
+						yvelocity = (yvelocity/std::abs(yvelocity))*3;
 					}
 			        animFinish();
 			        switch(playerdir)
@@ -1744,22 +1745,22 @@ namespace SmashBros
 			        		case LEFT:
 			        		if(collide->x<x)
 			        		{
-			        			causeHurtLaunch(collide, multX,abs(distX),3.89f, 1,2.82f,3.89f);
+			        			causeHurtLaunch(collide, multX,std::abs(distX),3.89f, 1,2.82f,3.89f);
 			        		}
 			        		else
 			        		{
-			        			causeHurtLaunch(collide, multX,abs(distX),3.89f, 1,1.12f,3.89f);
+			        			causeHurtLaunch(collide, multX,std::abs(distX),3.89f, 1,1.12f,3.89f);
 			        		}
 			        		break;
 			        		
 			        		case RIGHT:
 		        			if(collide->x>x)
 			        		{
-			        			causeHurtLaunch(collide, multX,abs(distX),3.89f, 1,2.82f,3.89f);
+			        			causeHurtLaunch(collide, multX,std::abs(distX),3.89f, 1,2.82f,3.89f);
 			        		}
 			        		else
 			        		{
-			        			causeHurtLaunch(collide, multX,abs(distX),3.89f, 1,1.12f,3.89f);
+			        			causeHurtLaunch(collide, multX,std::abs(distX),3.89f, 1,1.12f,3.89f);
 			        		}
 			        		break;
 			        	}
@@ -1767,7 +1768,7 @@ namespace SmashBros
 			        }
 			        else
 			        {
-			            causeHurtLaunch(collide, multX,abs(distX),3.89f, multY,abs(distY),3.89f);
+			            causeHurtLaunch(collide, multX,std::abs(distX),3.89f, multY,std::abs(distY),3.89f);
 			        }
 			        if(collide->x<x)
 			        {
@@ -1806,11 +1807,11 @@ namespace SmashBros
 			        }
 			        if(collide->isOnGround())
 			        {
-			            causeHurtLaunch(collide, multX,abs(distX),5.98f, 1,3.72f,5.78f);
+			            causeHurtLaunch(collide, multX,std::abs(distX),5.98f, 1,3.72f,5.78f);
 			        }
 			        else
 			        {
-			            causeHurtLaunch(collide, multX,abs(distX),5.98f, multY,abs(distY),5.98f);
+			            causeHurtLaunch(collide, multX,std::abs(distX),5.98f, multY,std::abs(distY),5.98f);
 			        }
 			        if(collide->x<x)
 			        {
@@ -1862,12 +1863,12 @@ namespace SmashBros
 		        switch(playerdir)
 		        {
 		        	case LEFT:
-		        	causeHurtLaunch(collide, -1,0,0, multY,abs(distY),6);
+		        	causeHurtLaunch(collide, -1,0,0, multY,std::abs(distY),6);
 			        causeHurt(collide, RIGHT, 4);
 		        	break;
 		        	
 		        	case RIGHT:
-	        		causeHurtLaunch(collide, 1,0,0, multY,abs(distY),6);
+	        		causeHurtLaunch(collide, 1,0,0, multY,std::abs(distY),6);
 			        causeHurt(collide, LEFT, 4);
 		        	break;
 		        }
@@ -2426,7 +2427,7 @@ namespace SmashBros
 				}
 				else
 				{
-				    collide->yvelocity=-abs(collide->yvelocity);
+				    collide->yvelocity=-std::abs(collide->yvelocity);
 				}
 				changeAnimation("bounce", FORWARD);
 			}

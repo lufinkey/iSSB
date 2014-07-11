@@ -3,6 +3,7 @@
 #include "../../AttackTemplates.h"
 #include "../../Global.h"
 #include "../../P2PDataManager.h"
+#include <cmath>
 
 namespace SmashBros
 {
@@ -721,7 +722,7 @@ namespace SmashBros
 				multY = -1;
 			}
 			
-			causeHurtLaunch(collide, multX,(float)abs(xDif/dist)*3,2.6f, multY,(float)abs(yDif/dist)*3,2.6f);
+			causeHurtLaunch(collide, multX,(float)std::abs(xDif/dist)*3,2.6f, multY,(float)std::abs(yDif/dist)*3,2.6f);
 			
 			if(collide->x<x)
 			{

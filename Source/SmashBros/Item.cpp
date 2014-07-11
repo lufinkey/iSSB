@@ -5,6 +5,7 @@
 #include "ProjectileManager.h"
 #include "Global.h"
 #include "P2PDataManager.h"
+#include <cmath>
 
 namespace SmashBros
 {
@@ -776,9 +777,9 @@ namespace SmashBros
 	{
 		if(!collide->deflectState)
 		{
-		    if(abs(collide->xvelocity)<=3)
+		    if(std::abs(collide->xvelocity)<=3)
 		    {
-		        if(abs(collide->yvelocity)<=3)
+		        if(std::abs(collide->yvelocity)<=3)
 		        {
 		            switch(dir)
 		            {
@@ -791,7 +792,7 @@ namespace SmashBros
 		                break;
 		            }
 		        }
-		        else if((abs(collide->yvelocity)>3)&&(abs(collide->yvelocity)<7))
+		        else if((std::abs(collide->yvelocity)>3)&&(std::abs(collide->yvelocity)<7))
 		        {
 		            switch(dir)
 		            {
@@ -804,7 +805,7 @@ namespace SmashBros
 		                break;
 		            }
 		        }
-		        else if((abs(collide->yvelocity)>=7)&&(abs(collide->yvelocity)<12))
+		        else if((std::abs(collide->yvelocity)>=7)&&(std::abs(collide->yvelocity)<12))
 		        {
 		            switch(dir)
 		            {
@@ -817,15 +818,15 @@ namespace SmashBros
 		                break;
 		            }
 		        }
-		        else if(abs(collide->yvelocity)>=12)
+		        else if(std::abs(collide->yvelocity)>=12)
 		        {
 		            collide->changeAnimation("hurt_spin_up", FORWARD);
 		        }
 		    }
 		 
-		    else if((abs(collide->xvelocity)>3)&&(abs(collide->xvelocity)<7))
+		    else if((std::abs(collide->xvelocity)>3)&&(std::abs(collide->xvelocity)<7))
 		    {
-		        if(abs(collide->yvelocity)<=3)
+		        if(std::abs(collide->yvelocity)<=3)
 		        {
 		            switch(dir)
 		            {
@@ -838,7 +839,7 @@ namespace SmashBros
 		                break;
 		            }
 		        }
-		        else if((abs(collide->yvelocity)>3)&&(abs(collide->yvelocity)<7))
+		        else if((std::abs(collide->yvelocity)>3)&&(std::abs(collide->yvelocity)<7))
 		        {
 		            switch(dir)
 		            {
@@ -851,7 +852,7 @@ namespace SmashBros
 		                break;
 		            }
 		        }
-		        else if((abs(collide->yvelocity)>=7)&&(abs(collide->yvelocity)<12))
+		        else if((std::abs(collide->yvelocity)>=7)&&(std::abs(collide->yvelocity)<12))
 		        {
 		            switch(dir)
 		            {
@@ -864,7 +865,7 @@ namespace SmashBros
 		                break;
 		            }
 		        }
-		        else if(abs(collide->yvelocity)>=12)
+		        else if(std::abs(collide->yvelocity)>=12)
 		        {
 		            switch(dir)
 		            {
@@ -879,9 +880,9 @@ namespace SmashBros
 		        }
 		    }
 		 
-		    else if(abs(collide->xvelocity)>=7)
+		    else if(std::abs(collide->xvelocity)>=7)
 		    {
-		        if(abs(collide->yvelocity)<=3)
+		        if(std::abs(collide->yvelocity)<=3)
 		        {
 		            switch(dir)
 		            {
@@ -894,7 +895,7 @@ namespace SmashBros
 		                break;
 		            }
 		        }
-		        else if((abs(collide->yvelocity)>3)&&(abs(collide->yvelocity)<7))
+		        else if((std::abs(collide->yvelocity)>3)&&(std::abs(collide->yvelocity)<7))
 		        {
 		            switch(dir)
 		            {
@@ -907,7 +908,7 @@ namespace SmashBros
 		                break;
 		            }
 		        }
-		        else if((abs(collide->yvelocity)>=7)&&(abs(collide->yvelocity)<12))
+		        else if((std::abs(collide->yvelocity)>=7)&&(std::abs(collide->yvelocity)<12))
 		        {
 		            switch(dir)
 		            {
@@ -920,7 +921,7 @@ namespace SmashBros
 		                break;
 		            }
 		        }
-		        else if(abs(collide->yvelocity)>=12)
+		        else if(std::abs(collide->yvelocity)>=12)
 		        {
 		            switch(dir)
 		            {

@@ -9,17 +9,17 @@ namespace SmashBros
 		prevAnim = "";
 		prevFrame = 0;
 	}
-
+	
 	GameElement::~GameElement()
 	{
 		//
 	}
-
+	
 	void GameElement::Update(long gameTime)
 	{
 		Actor::Update(gameTime);
 	}
-
+	
 	void GameElement::Draw(Graphics2D&g, long gameTime)
 	{
 		drawActor(g, gameTime,(float)(x*Camera::Zoom), (float)(y*Camera::Zoom), Scale*Camera::Zoom);
