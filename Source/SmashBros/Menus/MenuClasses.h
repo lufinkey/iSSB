@@ -270,6 +270,15 @@ namespace SmashBros
 			virtual void onRelease();
 		};
 		
+		class TwitterButton : public MenuBarSmallButton
+		{
+		public:
+			TwitterButton(float x1, float y1, const String&label);
+			virtual ~TwitterButton();
+			
+			virtual void onRelease();
+		};
+		
 		class ContactDeveloperButton : public MenuBarSmallButton
 		{
 		public:
@@ -279,8 +288,29 @@ namespace SmashBros
 			virtual void onRelease();
 		};
 		
+		class DonateButton : public MenuBarSmallButton
+		{
+		public:
+			DonateButton(float x1, float y1, const String&label);
+			virtual ~DonateButton();
+			
+			virtual void onRelease();
+		};
+		
+		class DonateBitcoinButton : public MenuBarSmallButton
+		{
+		public:
+			DonateBitcoinButton(float x1, float y1, const String&label);
+			virtual ~DonateBitcoinButton();
+			
+			virtual void onRelease();
+		};
+		
 		FacebookButton*facebook;
+		TwitterButton*twitter;
 		ContactDeveloperButton*contactDev;
+		DonateButton*donate;
+		DonateBitcoinButton*donateBitcoin;
 	public:
 		OtherOptions(const String&name);
 		virtual ~OtherOptions();

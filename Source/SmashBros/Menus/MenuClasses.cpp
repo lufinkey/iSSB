@@ -1349,40 +1349,48 @@ namespace SmashBros
 		Menus::button_back->Draw(g, gameTime);
 	}
 	
-	OtherOptions::FacebookButton::FacebookButton(float x1, float y1, const String&label) : MenuBarSmallButton(x1,y1,label)
-	{
-		//
-	}
-	
-	OtherOptions::FacebookButton::~FacebookButton()
-	{
-		//
-	}
-	
+	OtherOptions::FacebookButton::FacebookButton(float x1, float y1, const String&label) : MenuBarSmallButton(x1,y1,label) {}
+	OtherOptions::FacebookButton::~FacebookButton() {}
 	void OtherOptions::FacebookButton::onRelease()
 	{
 		openURL("https://www.facebook.com/BrokenPhysicsStudios/");
 	}
 	
-	OtherOptions::ContactDeveloperButton::ContactDeveloperButton(float x1, float y1, const String&label) : MenuBarSmallButton(x1,y1,label)
+	OtherOptions::TwitterButton::TwitterButton(float x1, float y1, const String&label) : MenuBarSmallButton(x1,y1,label) {}
+	OtherOptions::TwitterButton::~TwitterButton() {}
+	void OtherOptions::TwitterButton::onRelease()
 	{
-		//
+		openURL("https://www.twitter.com/lufinkey/");
 	}
 	
-	OtherOptions::ContactDeveloperButton::~ContactDeveloperButton()
-	{
-		//
-	}
-	
+	OtherOptions::ContactDeveloperButton::ContactDeveloperButton(float x1, float y1, const String&label) : MenuBarSmallButton(x1,y1,label) {}
+	OtherOptions::ContactDeveloperButton::~ContactDeveloperButton() {}
 	void OtherOptions::ContactDeveloperButton::onRelease()
 	{
 		writeEmail(Game::getWindow(), "luisfinke@gmail.com", "iSSB", "");
 	}
 	
+	OtherOptions::DonateButton::DonateButton(float x1, float y1, const String&label) : MenuBarSmallButton(x1,y1,label) {}
+	OtherOptions::DonateButton::~DonateButton() {}
+	void OtherOptions::DonateButton::onRelease()
+	{
+		openURL("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=M43B9W76GWWBS&lc=US&item_name=Broken%20Physics&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted");
+	}
+	
+	OtherOptions::DonateBitcoinButton::DonateBitcoinButton(float x1, float y1, const String&label) : MenuBarSmallButton(x1,y1,label) {}
+	OtherOptions::DonateBitcoinButton::~DonateBitcoinButton() {}
+	void OtherOptions::DonateBitcoinButton::onRelease()
+	{
+		openURL("https://coinbase.com/checkouts/a1672e1864707bc7467e9a3572987ab9");
+	}
+	
 	OtherOptions::OtherOptions(const String&name) : Screen(name)
 	{
 		facebook = NULL;
+		twitter = NULL;
 		contactDev = NULL;
+		donate = NULL;
+		donateBitcoin = NULL;
 	}
 	
 	OtherOptions::~OtherOptions()
@@ -1391,9 +1399,21 @@ namespace SmashBros
 		{
 			delete facebook;
 		}
+		if(twitter!=NULL)
+		{
+			delete twitter;
+		}
 		if(contactDev!=NULL)
 		{
 			delete contactDev;
+		}
+		if(donate!=NULL)
+		{
+			delete donate;
+		}
+		if(donateBitcoin!=NULL)
+		{
+			delete donateBitcoin;
 		}
 	}
 	
@@ -1402,10 +1422,25 @@ namespace SmashBros
 		facebook = new FacebookButton(200,140, "Our Facebook");
 		facebook->Scale = 2.0f;
 		facebook->setLabelSize(14);
-		contactDev = new ContactDeveloperButton(200,200, "Email Developer");
+		
+		twitter = new TwitterButton(200,200, "Follow on Twitter");
+		twitter->Scale = 2.0f;
+		twitter->setLabelSize(14);
+		twitter->setTextOffsetX(10);
+		
+		contactDev = new ContactDeveloperButton(200,260, "Email Developer");
 		contactDev->Scale = 2.0f;
 		contactDev->setLabelSize(14);
 		contactDev->setTextOffsetX(8);
+		
+		donate = new DonateButton(200,320, "Donate");
+		donate->Scale = 2.0f;
+		donate->setLabelSize(14);
+		donate->setTextOffsetX(-26);
+		
+		donateBitcoin = new DonateBitcoinButton(200,380, "Donate Bitcoin");
+		donateBitcoin->Scale = 2.0f;
+		donateBitcoin->setLabelSize(14);
 	}
 	
 	void OtherOptions::LoadContent()
@@ -1417,14 +1452,20 @@ namespace SmashBros
 	{
 		Menus::button_back->Update(gameTime);
 		facebook->Update(gameTime);
+		twitter->Update(gameTime);
 		contactDev->Update(gameTime);
+		donate->Update(gameTime);
+		donateBitcoin->Update(gameTime);
 	}
 	
 	void OtherOptions::Draw(Graphics2D&g, long gameTime)
 	{
 		Menus::button_back->Draw(g, gameTime);
 		facebook->Draw(g, gameTime);
+		twitter->Draw(g, gameTime);
 		contactDev->Draw(g, gameTime);
+		donate->Draw(g, gameTime);
+		donateBitcoin->Draw(g, gameTime);
 	}
 	
 	TrainingCharSelect::ReadyToFightBar::ReadyToFightBar(float x1, float y1) : Actor(x1,y1)
