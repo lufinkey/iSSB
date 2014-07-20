@@ -84,7 +84,27 @@ namespace SmashBros
 			AssetManager::unloadImage(files.get(i));
 		}
 	}
-
+	
+	void Stage::handleAddP2PData(DataVoid&data)
+	{
+		addP2PData(data);
+	}
+	
+	void Stage::handleSetP2PData(byte*&data)
+	{
+		setP2PData(data);
+	}
+	
+	void Stage::addP2PData(DataVoid&data)
+	{
+		//Open for implementation
+	}
+	
+	void Stage::setP2PData(byte*&data)
+	{
+		//Open for implementation
+	}
+	
 	void Stage::loadFile(const String&fileName)
 	{
 		files.add(fileName);

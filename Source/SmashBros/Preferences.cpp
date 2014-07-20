@@ -11,15 +11,15 @@ namespace SmashBros
 	
 	bool Preferences::highfps = false;
 	
-	const String Preferences::version = "2.1";
+	const String Preferences::version = "2.2";
 	
 	bool Preferences::newVersion = false;
 	
 	bool Preferences::debuglog = false;
 	
-	String Preferences::versionMessage = (String)"Welcome to iSSB v2.1, also known as Super Smash Bros. Mobile! This is the first "
-										+ "update to include brand new Bluetooth support! This means that you can play wirelessly against "
-										+ "your friends. Look forward to more updates in the future!";
+	String Preferences::versionMessage = (String)"Welcome to iSSB v2.2, I apologize sincerely for the lack of updates. I have been incredibly "
+												+"busy over the past few months. To make up for it, I have added Pikachu as a new character! Please "
+												+"consider donating by going to \"Options\", selecting \"Other\", and then selecting \"Donate\". Thank you!";
 	
 	PrefManager Preferences::prefMgr = PrefManager();
 	

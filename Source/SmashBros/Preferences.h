@@ -8,8 +8,6 @@ namespace SmashBros
 	class Preferences
 	{
 	private:
-		static const String version;
-		
 		static bool menuMusic;
 		static bool menuSoundFx;
 		static bool ingameMusic;
@@ -19,6 +17,8 @@ namespace SmashBros
 		static PrefManager prefMgr;
 
 	public:
+		static const String version;
+		
 		static bool newVersion;
 		static String versionMessage;
 		

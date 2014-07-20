@@ -8,6 +8,7 @@
 #include "Controls.h"
 #include "Player.h"
 #include "Menus/Menus.h"
+#include "Preferences.h"
 
 namespace SmashBros
 {
@@ -218,9 +219,14 @@ namespace SmashBros
 		byte type = DATA_INITIAL;
 		data.add(&type, sizeof(type));
 		
+		String version = Preferences::version;
+		int length = version.length() + 1;
+		data.add(&length, sizeof(length));
+		data.add((char*)version, (unsigned int)length);
+		
 		char buffer[40];
 		getDeviceModel(buffer);
-		int length = strlen(buffer) + 1;
+		length = strlen(buffer) + 1;
 		data.add(&length, sizeof(length));
 		data.add(buffer, (unsigned int)length);
 		
@@ -251,6 +257,17 @@ namespace SmashBros
 						int length = DataVoid::toInt(dataBytes);
 						dataBytes += sizeof(int);
 						
+						String version = (char*)dataBytes;
+						dataBytes += ((unsigned int)length);
+						
+						if(!version.equals(Preferences::version))
+						{
+							Game::showMessage("Warning!", "These two devices do not have the same version of iSSB! This may cause some problems. Please update.");
+						}
+						
+						length = DataVoid::toInt(dataBytes);
+						dataBytes += sizeof(int);
+						
 						char*deviceName = (char*)dataBytes;
 						dataBytes += ((unsigned int)length);
 						
@@ -270,6 +287,7 @@ namespace SmashBros
 						dataBytes += sizeof(int);
 						
 						Global::timeLimit = DataVoid::toInt(dataBytes);
+						dataBytes += sizeof(int);
 					}
 					break;
 					
@@ -277,6 +295,8 @@ namespace SmashBros
 					{
 						dataBytes += sizeof(byte);
 						int character = DataVoid::toInt(dataBytes);
+						dataBytes += sizeof(int);
+						
 						Global::selectedChar[1] = character;
 					}
 					break;
@@ -290,6 +310,8 @@ namespace SmashBros
 							{
 								dataBytes += sizeof(byte);
 								int mode = DataVoid::toInt(dataBytes);
+								dataBytes += sizeof(int);
+								
 								Global::gameMode = mode;
 							}
 							break;
@@ -300,6 +322,8 @@ namespace SmashBros
 								int index = DataVoid::toInt(dataBytes);
 								dataBytes += sizeof(int);
 								bool toggle = (bool)dataBytes[0];
+								dataBytes += sizeof(bool);
+								
 								Global::itemsOn[index] = toggle;
 							}
 							break;
@@ -308,6 +332,8 @@ namespace SmashBros
 							{
 								dataBytes += sizeof(byte);
 								int timelimit = DataVoid::toInt(dataBytes);
+								dataBytes += sizeof(int);
+								
 								Global::timeLimit = timelimit;
 							}
 							break;
@@ -316,6 +342,8 @@ namespace SmashBros
 							{
 								dataBytes += sizeof(byte);
 								int stock = DataVoid::toInt(dataBytes);
+								dataBytes += sizeof(int);
+								
 								Global::stockAmount = stock;
 							}
 							break;
@@ -429,6 +457,9 @@ namespace SmashBros
 							//characters
 							Global::characters[2]->handleSetP2PData(dataBytes);
 							Global::characters[1]->handleSetP2PData(dataBytes);
+							
+							//stage
+							Global::currentStage->handleSetP2PData(dataBytes);
 							
 							//projectiles
 							ProjectileManager::handleSetP2PData(dataBytes);
@@ -618,6 +649,9 @@ namespace SmashBros
 		//characters
 		Global::characters[1]->handleAddP2PData(data);
 		Global::characters[2]->handleAddP2PData(data);
+		
+		//stage
+		Global::currentStage->handleAddP2PData(data);
 		
 		//projectiles
 		ProjectileManager::handleAddP2PData(data);

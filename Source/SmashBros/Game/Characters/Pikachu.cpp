@@ -23,7 +23,7 @@ namespace SmashBros
 		info.ownerID = ownerID;
 		createdProjectiles.add(info);
 	}
-
+	
 	Pikachu::Pikachu(float x1, float y1, byte playerNo, byte team) : Player(x1, y1, playerNo, team)
 	{
 		walkSpeed = 2.5f;

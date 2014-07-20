@@ -16,6 +16,7 @@ namespace SmashBros
 		friend class ItemManager;
 		friend class Player;
 		friend class ProjectileManager;
+		friend class P2PDataManager;
 	private:
 		Animation*background;
 		double bgScale;
@@ -63,6 +64,9 @@ namespace SmashBros
 		byte checkProjectileCollision(Projectile*p, Platform*collide);
 
 		byte borderColliding(Player*p);
+		
+		void handleAddP2PData(DataVoid&data);
+		void handleSetP2PData(byte*&data);
 
 	protected:
 		int topBorder;
@@ -93,6 +97,9 @@ namespace SmashBros
 
 		Stage(int x1, int y1);
 		virtual ~Stage();
+		
+		virtual void addP2PData(DataVoid&data);
+		virtual void setP2PData(byte*&data);
 
 		virtual void Update(long gameTime);
 		virtual void Draw(Graphics2D&g, long gameTime);
