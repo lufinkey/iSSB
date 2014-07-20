@@ -4,13 +4,15 @@
 #include "../../Game.h"
 #include "../../Global.h"
 #include "../../Controls.h"
+#include "../../P2PDataManager.h"
+#include "../../ProjectileManager.h"
 
 namespace SmashBros
 {
 	const float Pikachu::finalsmashSlow = 6;
 	const float Pikachu::finalsmashFast = 12;
 	
-	void Pikachu::addProjectileInfo(byte type, int projID, float x, float y, byte itemdir)
+	void Pikachu::addProjectileInfo(byte type, int projID, float x, float y, byte itemdir, int ownerID)
 	{
 		ProjectileInfo info;
 		info.type = type;
@@ -18,6 +20,7 @@ namespace SmashBros
 		info.x = x;
 		info.y = y;
 		info.itemdir = itemdir;
+		info.ownerID = ownerID;
 		createdProjectiles.add(info);
 	}
 
@@ -49,7 +52,7 @@ namespace SmashBros
 		
 		setHitbox(-10, -6, 20, 28);
 		setHitboxColor(Color::GREEN);
-		showHitboxWireframe(true);
+		//showHitboxWireframe(true);
 		//setWireframeColor(Color.red);
 		//showWireframe(true);
 		
@@ -262,6 +265,7 @@ namespace SmashBros
 				if(proj.type==2 || proj.type==3)
 				{
 					data.add(&proj.itemdir, sizeof(proj.itemdir));
+					data.add(&proj.ownerID, sizeof(proj.ownerID));
 				}
 			}
 			createdProjectiles.clear();
@@ -309,8 +313,12 @@ namespace SmashBros
 					{
 						byte itemdir = data[0];
 						data += sizeof(byte);
+						int ownerID = DataVoid::toInt(data);
+						data += sizeof(int);
+						Projectile* projOwner = ProjectileManager::GetProjectile(ownerID);
+						
 						Projectile::setNextID(projID);
-						createProjectile(new ThunderboltGhost(getPlayerNo(), itemdir, false, x1, y1));
+						createProjectile(new Thunderbolt::ThunderboltGhost((Thunderbolt*)projOwner, getPlayerNo(), itemdir, false, x1, y1));
 					}
 					break;
 					
@@ -318,8 +326,12 @@ namespace SmashBros
 					{
 						byte frameOn = data[0];
 						data += sizeof(byte);
+						int ownerID = DataVoid::toInt(data);
+						data += sizeof(int);
+						Projectile* projOwner = ProjectileManager::GetProjectile(ownerID);
+						
 						Projectile::setNextID(projID);
-						createProjectile(new LightningBody(getPlayerNo(), x1, y1, (boolean)frameOn));
+						createProjectile(new Lightning::LightningBody((Lightning*)projOwner, getPlayerNo(), x1, y1, (boolean)frameOn));
 					}
 					break;
 					
@@ -712,7 +724,7 @@ namespace SmashBros
 			}
 			Lightning* lightning = new Lightning(getPlayerNo(), x, y);
 			createProjectile(lightning);
-			addProjectileInfo(1, lightning->getID(), x, y, 0);
+			addProjectileInfo(1, lightning->getID(), x, y, 0, 0);
 		}
 		else if(name.equals("smash_prep_left") || name.equals("smash_prep_right"))
 		{
@@ -1400,7 +1412,7 @@ namespace SmashBros
 	        {
 				Thunderbolt* thunderbolt = new Thunderbolt(getPlayerNo(),x,y);
 	        	AttackTemplates::singleProjectile(this, 9,0, thunderbolt);
-				addProjectileInfo(4, thunderbolt->getID(), x, y, 0);
+				addProjectileInfo(4, thunderbolt->getID(), x, y, 0, 0);
 	            switch(playerdir)
 	            {
 	                case LEFT:
@@ -1742,10 +1754,11 @@ namespace SmashBros
 		waitFrames++;
 		if(waitFrames==2)
 		{
+			Pikachu*playr = (Pikachu*)Global::getPlayerActor(getPlayerNo());
 			ThunderboltGhost*ghost = new ThunderboltGhost(this, getPlayerNo(), itemdir, drift, x, y);
 			trail.add(ghost);
 			createProjectile(ghost);
-			addProjectileInfo(2, ghost->getID(), x, y, itemdir);
+			playr->addProjectileInfo(2, ghost->getID(), x, y, itemdir, this->getID());
 			waitFrames = 0;
 		}
 
@@ -2448,11 +2461,12 @@ namespace SmashBros
 			float h = (float)(AssetManager::getImage("Images/Game/Characters/Pikachu/lightning_1.png")->getHeight());
 			float cy = y - ((float)height/2) + (h/2);
 			y += h;
-
+			
+			Pikachu*playr = (Pikachu*)Global::getPlayerActor(getPlayerNo());
 			LightningBody*body = new LightningBody(this, getPlayerNo(), x, cy, createdFrame);
 			bodies.add(body);
 			createProjectile(body);
-			addProjectileInfo(3, body->getID(), x, cy, (byte)createdFrame);
+			playr->addProjectileInfo(3, body->getID(), x, cy, (byte)createdFrame, this->getID());
 		}
 		else if(name.equals("lightning_cloud"))
 		{

@@ -183,6 +183,19 @@ namespace SmashBros
 		return true;
 	}
 	
+	Projectile* ProjectileManager::GetProjectile(int projID)
+	{
+		for(int i=0; i<projectiles.size(); i++)
+		{
+			Projectile* projectile = projectiles.get(i);
+			if(projectile->getID()==projID)
+			{
+				return projectile;
+			}
+		}
+		return null;
+	}
+	
 	void ProjectileManager::AddProjectile(Projectile*p)
 	{
 		//Console::WriteLine((String)"Adding projectile with id " + p->getID() + " to ProjectileManager");
@@ -223,7 +236,7 @@ namespace SmashBros
 					{
 						if(stage->platforms.get(j)->getType()==Platform::TYPE_GOTHROUGH)
 						{
-							if(dir == PrimitiveActor::DIR_UP)
+							if(dir == PrimitiveActor::DIR_UP || projectile->allPlatsSolid)
 							{
 								projectile->whilePlatformColliding(stage->platforms.get(j), dir);
 								projectile->whileGroundColliding();
@@ -286,7 +299,7 @@ namespace SmashBros
 	void ProjectileManager::CheckProjectileCollision(Projectile*projectile, Player*playr)
 	{
 		byte dir = 0;
-		if(projectile->isSolid() && ((projectile->isOwnerSolid()) || (!projectile->isOwnerSolid() && playr->getPlayerNo()!=projectile->getPlayerNo())))
+		if(projectile->isSolid() && (projectile->isOwnerSolid() || (!projectile->isOwnerSolid() && playr->getPlayerNo()!=projectile->getPlayerNo())))
 		{
 			dir = projectile->solidPlayerCollision(playr);
 			switch(dir)

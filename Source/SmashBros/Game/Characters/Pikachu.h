@@ -19,6 +19,7 @@ namespace SmashBros
 
 		class Thunderbolt : public ThunderboltType
 		{
+			friend class Pikachu;
 		private:
 			class ThunderboltGhost : public ThunderboltType
 			{
@@ -70,6 +71,7 @@ namespace SmashBros
 
 		class Lightning : public LightningType
 		{
+			friend class Pikachu;
 		private:
 			class LightningBody : public LightningType
 			{
@@ -116,9 +118,10 @@ namespace SmashBros
 			float y;
 			
 			byte itemdir;
+			int ownerID;
 		} ProjectileInfo;
 		
-		void addProjectileInfo(byte type, int projID, float x, float y, byte itemdir);
+		void addProjectileInfo(byte type, int projID, float x, float y, byte itemdir, int ownerID);
 		
 		ArrayList<ProjectileInfo> createdProjectiles;
 
@@ -142,6 +145,9 @@ namespace SmashBros
 	public:
 		Pikachu(float x1, float y1, byte playerNo, byte team);
 		virtual ~Pikachu();
+		
+		void addP2PData(DataVoid&data);
+		void setP2PData(byte*&data);
 
 		virtual void Update(long gameTime);
 		virtual void Draw(Graphics2D&g, long gameTime);

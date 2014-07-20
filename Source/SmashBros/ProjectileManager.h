@@ -22,6 +22,8 @@ namespace SmashBros
 		
 		static bool checkIDAvailable(int projID);
 	public:
+		static Projectile* GetProjectile(int projID);
+		
 		static void AddProjectile(Projectile*p);
 		static void RemoveAll();
 		static void Update(long gameTime);
