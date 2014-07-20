@@ -164,11 +164,11 @@ namespace SmashBros
 		animations.add(win);
 		
 		Animation* winhold = new Animation("win_hold", winhold_fps, winhold_rows, winhold_cols);
-		win->addFrame(charFolder + "/win_hold.png");
+		winhold->addFrame(charFolder + "/win_hold.png");
 		animations.add(winhold);
 		
 		Animation* lose = new Animation("lose", lose_fps, lose_rows, lose_cols);
-		win->addFrame(charFolder + "/lose.png");
+		lose->addFrame(charFolder + "/lose.png");
 		animations.add(lose);
 		
 		return animations;

@@ -252,7 +252,7 @@ namespace SmashBros
 				break;
 				
 				case BG_FIXED:
-				background->drawFrame(null, g, 0, View::x, View::y, View::x + (float)View::ScaleWidth(), View::y + (float)View::ScaleHeight());
+				background->drawFrame(null, g, 0, View::x, View::y, View::x + (float)View::ScaleWidth() + 1, View::y + (float)View::ScaleHeight() + 1);
 				//background->drawFrame(null, g, 0, View::x, View::y, (float)View::ScaleWidth(), (float)View::ScaleHeight());
 				break;
 			}

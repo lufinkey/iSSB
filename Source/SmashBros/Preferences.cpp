@@ -17,7 +17,7 @@ namespace SmashBros
 	
 	bool Preferences::debuglog = false;
 	
-	String Preferences::versionMessage = (String)"Welcome to iSSB v2.2, I apologize sincerely for the lack of updates. I have been incredibly "
+	String Preferences::versionMessage = (String)"Welcome to iSSB v2.2! I apologize sincerely for the lack of updates. I have been incredibly "
 												+"busy over the past few months. To make up for it, I have added Pikachu as a new character! Please "
 												+"consider donating by going to \"Options\", selecting \"Other\", and then selecting \"Donate\". Thank you!";
 	
