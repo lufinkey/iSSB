@@ -9,12 +9,13 @@
 #include "AttackTemplates.h"
 #include "ItemManager.h"
 #include "P2PDataManager.h"
+#include "Loader.h"
 #include <cmath>
 
 namespace SmashBros
 {
 	const float Player::jumpXBoost = 0.8f;
-
+	
 	Player::Player(float x1, float y1, byte playerNo, byte team) : GameElement(x1,y1)
 	{
 		aiType = AI_NORMAL;
@@ -201,6 +202,8 @@ namespace SmashBros
 	void Player::whenCreated()
 	{
 		Console::WriteLine((String)"loading player " + playerNo + "'s animations");
+		
+		folderPath = CharacterLoader::getFolder(charNo) + '/';
 		
 		this->Load();
 		
@@ -3888,10 +3891,10 @@ namespace SmashBros
 	
 	void Player::updateGravity()
 	{
-		if(!grabbed && !hanging)
-	    {
-	        yvelocity+=(float)(Global::currentStage->getGravity()+weight);
-	    }
+		if(!grabbed && !hanging && yvelocity<Global::currentStage->getTerminalVelocity())
+		{
+			yvelocity+=(float)(Global::currentStage->getGravity()+weight);
+		}
 	}
 	
 	void Player::updateFrame()

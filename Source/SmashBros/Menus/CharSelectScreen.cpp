@@ -2,49 +2,28 @@
 #include "CharSelectScreen.h"
 #include "../Global.h"
 #include "Menus.h"
+#include "../Loader.h"
 
 namespace SmashBros
 {
-	void CharSelectScreen::createCharIcons()//TODO: add characters
+	void CharSelectScreen::createCharIcons()
 	{
-		newCharIcon(Global::CHAR_MARIO,"Images/Menus/CharacterSelect/icons/mario.png");
-		newCharIcon(Global::CHAR_ICHIGO,"Images/Menus/CharacterSelect/icons/ichigo.png");
-		newCharIcon(Global::CHAR_SONIC,"Images/Menus/CharacterSelect/icons/sonic.png");
-		newCharIcon(Global::CHAR_FOX,"Images/Menus/CharacterSelect/icons/fox.png");
-		//newCharIcon(Global.CHAR_PIKACHU,"Images/Menus/CharacterSelect/icons/pikachu.png");
+		for(int i=1; i<=Global::totalCharacters; i++)
+		{
+			newCharIcon(i, CharacterLoader::getIconPath(i));
+		}
 		charSelectArea->width = 472;
 		charSelectArea->height = 60;
 	}
 
-	void CharSelectScreen::loadCharPreviews(int num)//TODO: add characters
+	void CharSelectScreen::loadCharPreviews(int num)
 	{
 		Actor*a = charPreviews.get(num-1);
 		for(int i=1; i<=Global::totalCharacters; i++)
 		{
-			switch(i)
-			{
-				case Global::CHAR_MARIO:
-				a->addAnimation(new Animation("Mario",1,"Images/Menus/CharacterSelect/previews/mario.png"));
-				break;
-				
-				case Global::CHAR_ICHIGO:
-				a->addAnimation(new Animation("Ichigo",1,"Images/Menus/CharacterSelect/previews/ichigo.png"));
-				break;
-				
-				case Global::CHAR_SONIC:
-				a->addAnimation(new Animation("Sonic",1,"Images/Menus/CharacterSelect/previews/sonic.png"));
-				break;
-				
-				case Global::CHAR_FOX:
-				a->addAnimation(new Animation("Fox",1,"Images/Menus/CharacterSelect/previews/fox.png"));
-				break;
-				
-				case Global::CHAR_PIKACHU:
-				a->addAnimation(new Animation("Pikachu",1,"Images/Menus/CharacterSelect/previews/pikachu.png"));
-				break;
-			}
+			a->addAnimation(new Animation(CharacterLoader::getName(i),1, CharacterLoader::getPreviewPath(i)));
 		}
-		a->changeAnimation("Mario",FORWARD);
+		a->changeAnimation(CharacterLoader::getName(Global::CHAR_MARIO),FORWARD);
 		a->Scale = 2.0f;
 		a->setAlpha(1);
 	}
@@ -240,11 +219,11 @@ namespace SmashBros
 			else
 			{
 				charPreviews.get(i)->setAlpha(0);
-				charPreviews.get(i)->changeAnimation(Global::getCharName(cNum), NO_CHANGE);
+				charPreviews.get(i)->changeAnimation(CharacterLoader::getName(cNum), NO_CHANGE);
 			}
 			charPreviews.get(i)->Update(gameTime);
 			charNames.get(i)->Update(gameTime);
-			charNames.get(i)->setText(Global::getCharName(cNum));
+			charNames.get(i)->setText(CharacterLoader::getName(cNum));
 		}
 		Menus::button_back->Update(gameTime);
 	}

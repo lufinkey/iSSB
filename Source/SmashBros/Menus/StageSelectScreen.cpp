@@ -2,6 +2,7 @@
 #include "StageSelectScreen.h"
 #include "../Global.h"
 #include "Menus.h"
+#include "../Loader.h"
 
 namespace SmashBros
 {
@@ -43,30 +44,9 @@ namespace SmashBros
 		{
 			StageIcon*a = new StageIcon(this, 0,0, i);
 			String sPath = "";
-			//TODO: add stages
-			switch(i)
-			{
-				default:
-				case Global::STAGE_FRACTALSTAGE:
-				sPath = "Images/Menus/StageSelect/test.png";
-				break;
-				
-				case Global::STAGE_HILLSIDEBATTLEGROUND:
-				sPath = "Images/Menus/StageSelect/hillside_battleground.png";
-				break;
-				
-				case Global::STAGE_BATTLEFIELDBRAWL:
-				sPath = "Images/Menus/StageSelect/battlefield.png";
-				break;
-				
-				case Global::STAGE_FINALDESTINATION:
-				sPath = "Images/Menus/StageSelect/final_destination.png";
-				break;
-				
-				case Global::STAGE_HYRULETEMPLE:
-				sPath = "Images/Menus/StageSelect/hyruletemple.png";
-				break;
-			}
+			
+			sPath = StageLoader::getIconPath(i);
+			
 			a->addAnimation(new Animation("normal",1,sPath));
 			a->changeAnimation("normal", FORWARD);
 			stageGrid->add(a);

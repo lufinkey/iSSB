@@ -185,7 +185,7 @@ namespace SmashBros
 	
 	void ProjectileManager::AddProjectile(Projectile*p)
 	{
-		Console::WriteLine((String)"Adding projectile with id " + p->getID() + " to ProjectileManager");
+		//Console::WriteLine((String)"Adding projectile with id " + p->getID() + " to ProjectileManager");
 		projectiles.add(p);
 	}
 
@@ -335,24 +335,6 @@ namespace SmashBros
 		}
 		if(dir>0)
 		{
-			switch(dir)
-			{
-				case PrimitiveActor::DIR_DOWN:
-				dir = PrimitiveActor::DIR_UP;
-				break;
-				
-				case PrimitiveActor::DIR_UP:
-				dir = PrimitiveActor::DIR_DOWN;
-				break;
-				
-				case PrimitiveActor::DIR_LEFT:
-				dir = PrimitiveActor::DIR_RIGHT;
-				break;
-				
-				case PrimitiveActor::DIR_RIGHT:
-				dir = PrimitiveActor::DIR_LEFT;
-				break;
-			}
 			if(projectile->playersColliding.isColliding(playr->getPlayerNo()))
 			{
 				projectile->whilePlayerHitting(playr, dir);

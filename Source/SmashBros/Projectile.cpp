@@ -33,6 +33,7 @@ namespace SmashBros
 		team = 0;
 		solid = false;
 		solidOwner = true;
+		allPlatsSolid = false;
 		this->playerNo = playerNo;
 		playersColliding = CollisionManager();
 		Player*owner = Global::getPlayerActor(playerNo);
@@ -204,6 +205,11 @@ namespace SmashBros
 	boolean Projectile::isSolid()
 	{
 		return solid;
+	}
+	
+	void Projectile::detectAllPlatformsSolid(boolean toggle)
+	{
+		allPlatsSolid = toggle;
 	}
 	
 	void Projectile::setOwnerSolid(boolean toggle)
@@ -660,7 +666,7 @@ namespace SmashBros
 				byte dir = getDir2((float)width/2,(float)height/2,(float)overlapX, (float)overlapY);
 				
 				byte type = collide->getType();
-				if((type == Platform::TYPE_NORMAL)|| (type == Platform::TYPE_GOTHROUGH && dir == DIR_DOWN))
+				if((type == Platform::TYPE_NORMAL)|| (type == Platform::TYPE_GOTHROUGH && (dir == DIR_DOWN || allPlatsSolid)))
 				{
 					switch(dir)
 					{

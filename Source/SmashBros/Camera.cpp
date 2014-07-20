@@ -13,7 +13,7 @@ namespace SmashBros
 	
 	boolean Camera::firstUpdate = true;
 	boolean Camera::firstFocus = true;
-
+	
 	const double Camera::zoomOutSpeed = 0.08;
 	const double Camera::zoomInSpeed = 0.016;
 
@@ -243,7 +243,7 @@ namespace SmashBros
 				View::y = (float)((y*Zoom) + camY);
 			}
 			break;
-			
+				
 			case MODE_ZOOM:
 			{
 				float zoomW = (float)View::ScaleWidth()/(float)rect.width;
@@ -413,7 +413,7 @@ namespace SmashBros
 		mode = camera_mode;
 	}
 
-	RectangleF Camera::getFocusRect()
+	RectangleF Camera::getFocusRect(ArrayList<int> players)
 	{
 		RectangleF rect;
 		
@@ -434,7 +434,7 @@ namespace SmashBros
 				{
 					//
 				}
-				else
+				else if(players.size()==0 || (players.contains(Global::characters[i]->getPlayerNo()) && players.contains(Global::characters[i]->getPlayerNo())))
 				{
 					float w1 = std::abs(Global::characters[i]->x - Global::characters[j]->x) + (Global::characters[i]->width/2) + (Global::characters[j]->width/2) + 2*offset;
 					float h1 = std::abs(Global::characters[i]->y - Global::characters[j]->y) + (Global::characters[i]->height/2) + (Global::characters[j]->height/2) + 2*offset;
@@ -473,7 +473,7 @@ namespace SmashBros
 		rect.x = ws.x - ws.y/2 - offset;
 		rect.y = hs.x - hs.y/2 - offset;
 		rect.width = w;
-		rect.height = h + bottomOffset;
+		rect.height = h;
 		
 		if(rect.width <=1 || rect.height<=1)
 		{
@@ -485,7 +485,7 @@ namespace SmashBros
 		
 		return rect;
 	}
-
+	
 	int Camera::Width()
 	{
 		return (int)((double)View::ScaleWidth()/Zoom);

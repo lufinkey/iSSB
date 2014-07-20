@@ -25,6 +25,7 @@ namespace SmashBros
 		boolean solid;
 		boolean solidOwner;
 		byte layer;
+		boolean allPlatsSolid;
 
 		Platform*platform;
 
@@ -78,6 +79,7 @@ namespace SmashBros
 		boolean isSolid();
 		void setOwnerSolid(boolean toggle);
 		boolean isOwnerSolid();
+		void detectAllPlatformsSolid(boolean toggle);
 		void destroy();
 		void setLayer(byte layer);
 		byte isPlatformColliding(Platform*collide);

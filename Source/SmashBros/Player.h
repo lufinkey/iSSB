@@ -19,6 +19,7 @@ namespace SmashBros
 	{
 		friend class AttackRandomizer;
 		friend class AttackTemplates;
+		friend class CharacterLoader;
 		friend class Chargebar;
 		friend class Controls;
 		friend class Global;

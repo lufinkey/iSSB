@@ -132,4 +132,16 @@ public:
 		
 		return *this;
 	}
+	
+	bool contains(const T& obj)
+	{
+		for(int i=0; i<total; i++)
+		{
+			if(objects[i]==obj)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 };

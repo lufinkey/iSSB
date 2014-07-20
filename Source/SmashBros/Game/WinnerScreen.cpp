@@ -3,6 +3,7 @@
 #include "../Global.h"
 #include "../Preferences.h"
 #include "../Menus/Menus.h"
+#include "Loader.h"
 
 namespace SmashBros
 {
@@ -268,17 +269,16 @@ namespace SmashBros
 		this->death = death;
 		cNum = Global::selectedChar[pNum-1];
 		playr = new CharStatPlayer(x,y);
-
-		playr->Scale = 3.0f;
 		
-		String path = (String)"Images/Game/Characters/" + Global::getCharName(cNum) + "/";
-			
-		String lose = path + "lose.png";
-		String win = path + "win.png";
-		String win_hold = path + "win_hold.png";
+		playr->Scale = 3.0f;
 			
 		boolean success;
-			
+		
+		String charFolderPath = CharacterLoader::getFolder(cNum);
+		String win = charFolderPath + "/win.png";
+		String win_hold = charFolderPath + "/win_hold.png";
+		String lose = charFolderPath + "/lose.png";
+		
 		success = screen->addFile(lose);
 		if(!success)
 		{
@@ -298,58 +298,10 @@ namespace SmashBros
 			screen->addFile(win_hold);
 		}
 			
-		Animation*anim;
-		switch(cNum)
+		ArrayList<Animation*> animations = CharacterLoader::getWinnersScreenAnimations(cNum);
+		for(int i=0; i<animations.size(); i++)
 		{
-			default:
-			//TODO: add characters
-			case Global::CHAR_MARIO:
-			anim = new Animation("win",8,8,1);
-			anim->addFrame(win);
-			playr->addAnimation(anim);
-			anim = new Animation("win_hold",1,win_hold);
-			anim->addFrame(win_hold);
-			playr->addAnimation(anim);
-			anim = new Animation("lose",4,2,1);
-			anim->addFrame(lose);
-			playr->addAnimation(anim);
-			break;
-				
-			case Global::CHAR_SONIC:
-			anim = new Animation("win",5,6,1);
-			anim->addFrame(win);
-			playr->addAnimation(anim);
-			anim = new Animation("win_hold",1,win_hold);
-			anim->addFrame(win_hold);
-			playr->addAnimation(anim);
-			anim = new Animation("lose",4,2,1);
-			anim->addFrame(lose);
-			playr->addAnimation(anim);
-			break;
-				
-			case Global::CHAR_ICHIGO:
-			anim = new Animation("win",6,5,1);
-			anim->addFrame(win);
-			playr->addAnimation(anim);
-			anim = new Animation("win_hold",1,win_hold);
-			anim->addFrame(win_hold);
-			playr->addAnimation(anim);
-			anim = new Animation("lose",4,2,1);
-			anim->addFrame(lose);
-			playr->addAnimation(anim);
-			break;
-				
-			case Global::CHAR_FOX:
-			anim = new Animation("win",8,6,1);
-			anim->addFrame(win);
-			playr->addAnimation(anim);
-			anim = new Animation("win_hold",1,win_hold);
-			anim->addFrame(win_hold);
-			playr->addAnimation(anim);
-			anim = new Animation("lose",4,2,1);
-			anim->addFrame(lose);
-			playr->addAnimation(anim);
-			break;
+			playr->addAnimation(animations.get(i));
 		}
 			
 		if((Global::teamBattle && teamplace==1) || (!Global::teamBattle && place==1))

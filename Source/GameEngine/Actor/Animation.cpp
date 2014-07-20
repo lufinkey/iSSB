@@ -642,6 +642,8 @@ namespace GameEngine
     	{
     		x1 -= View::x;
     		y1 -= View::y;
+			x2 -= View::x;
+    		y2 -= View::y;
     	}
     	
     	if(a!=NULL)

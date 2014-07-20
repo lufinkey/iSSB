@@ -104,7 +104,7 @@ namespace SmashBros
 		static const int ITEM_SUPERMUSHROOM = 5;
 		static const int ITEM_POISONMUSHROOM = 6;
 		
-		static const int totalCharacters = 4;
+		static const int totalCharacters = 5;
 		static const int totalItems = 6;
 		static const int totalStages = 4;
 		
@@ -116,7 +116,6 @@ namespace SmashBros
 		
 		static void Update(long gameTime);
 		
-		static String getCharName(int num); //TODO: add characters
 		static String getPlayerName(int playerNo);
 		
 		static boolean isInSuddenDeath(byte playerNo);
@@ -143,8 +142,6 @@ namespace SmashBros
 		static void createHUD();
 		
 		static void createPlayers();
-		static Player*createPlayer(float x1, float y1, byte playerNo, byte team,int charNum);
-		static Stage*createStage(int x1, int y1, int stageNum);
 		
 		static boolean checkWinnersFreeForAll(byte pNum);
 		static boolean checkWinnersSuddenDeath(byte pNum);

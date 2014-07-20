@@ -5,17 +5,8 @@
 #include "Camera.h"
 #include "Controls.h"
 #include "P2PDataManager.h"
-
-#include "Game/Characters/Mario.h"
-#include "Game/Characters/Sonic.h"
-#include "Game/Characters/Ichigo.h"
-#include "Game/Characters/Fox.h"
-
-#include "Game/Stages/FractalStage.h"
-#include "Game/Stages/HillsideBattleground.h"
-#include "Game/Stages/BattlefieldBrawl.h"
-#include "Game/Stages/FinalDestinationBrawl.h"
-#include "Game/Stages/HyruleTemple.h"
+#include "Magnifier.h"
+#include "Loader.h"
 
 namespace SmashBros
 {
@@ -143,34 +134,10 @@ namespace SmashBros
 		MusicManager::loadSong("Menu Theme");
 		selectedStage = 0;
 	}
-	
-	String Global::getCharName(int num) //TODO: add characters
-	{
-		switch(num)
-		{
-			default:
-			return "";
-			
-			case CHAR_MARIO:
-			return "Mario";
-			
-			case CHAR_ICHIGO:
-			return "Ichigo";
-			
-			case CHAR_SONIC:
-			return "Sonic";
-			
-			case CHAR_FOX:
-			return "Fox";
-			
-			case CHAR_PIKACHU:
-			return "Pikachu";
-		}
-	}
 
 	String Global::getPlayerName(int playerNo)
 	{
-		return getCharName(getPlayerActor(playerNo)->charNo);
+		return CharacterLoader::getName(getPlayerActor(playerNo)->charNo);
 	}
 
 	boolean Global::isInSuddenDeath(byte playerNo)
@@ -367,8 +334,10 @@ namespace SmashBros
 		Console::WriteLine("");
 		
 	    Console::WriteLine((String)"total active items: " + itemsActive.size());
+		
+		Magnifier::load();
 	    
-	    currentStage = createStage(View::ScaleWidth()/2, View::ScaleHeight()/2, selectedStage);
+	    currentStage = StageLoader::createStage(View::ScaleWidth()/2, View::ScaleHeight()/2, selectedStage);
 	    
 	    createPlayers();
 	    
@@ -380,7 +349,7 @@ namespace SmashBros
 	    	}
 	    }
 	}
-
+	
 	void Global::createPlayers()
 	{
 		for(int i=0; i<charAmount; i++)
@@ -391,7 +360,7 @@ namespace SmashBros
 	    	{
 	    		teamNo = currentTeams[i+1];
 	    	}
-	    	characters[players[i+1]]=createPlayer((float)pnt.x,(float)pnt.y,(byte)players[i+1],teamNo,selectedChar[players[i+1]-1]);
+	    	characters[players[i+1]] = CharacterLoader::createPlayer((float)pnt.x,(float)pnt.y,(byte)players[i+1],teamNo,selectedChar[players[i+1]-1]);
 	    }
 
 		for(int i=0; i<=possPlayers; i++)
@@ -401,58 +370,6 @@ namespace SmashBros
 				characters[i]->whenCreated();
 			}
 		}
-	}
-
-	Player*Global::createPlayer(float x1, float y1, byte playerNo, byte team,int charNum)
-	{
-		Player*p = null;
-		Console::WriteLine((String)"creating character " + charNum);
-		switch(charNum)
-		{
-			case CHAR_MARIO:
-			p = new Mario(x1,y1,playerNo,team);
-			p->charNo = CHAR_MARIO;
-			break;
-			
-			case CHAR_ICHIGO:
-			p = new Ichigo(x1,y1,playerNo,team);
-			p->charNo = CHAR_ICHIGO;
-			break;
-			
-			case CHAR_SONIC:
-			p = new Sonic(x1,y1,playerNo,team);
-			p->charNo = CHAR_SONIC;
-			break;
-			
-			case CHAR_FOX:
-			p = new Fox(x1,y1,playerNo,team);
-			p->charNo = CHAR_FOX;
-			break;
-		}
-		return p;
-	}
-
-	Stage*Global::createStage(int x1, int y1, int stageNum)
-	{
-		switch(stageNum)
-		{
-			case STAGE_FRACTALSTAGE:
-			return new FractalStage(x1,y1);
-			
-			case STAGE_HILLSIDEBATTLEGROUND:
-			return new HillsideBattleground(x1,y1);
-			
-			case STAGE_HYRULETEMPLE:
-			return new HyruleTemple(x1,y1);
-			
-			case STAGE_BATTLEFIELDBRAWL:
-			return new BattlefieldBrawl(x1,y1);
-			
-			case STAGE_FINALDESTINATION:
-			return new FinalDestinationBrawl(x1,y1);
-			break;
-		}
-		return null;
 	}
 
 	Player*Global::getPlayerActor(int pNum)

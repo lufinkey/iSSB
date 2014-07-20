@@ -32,7 +32,7 @@ namespace SmashBros
 		static const int offset = 50;
 		static const int bottomOffset = 60;
 
-		static RectangleF getFocusRect();
+		static RectangleF getFocusRect(ArrayList<int> players = ArrayList<int>());
 		
 		//static void handleAddP2PData(DataVoid&data);
 		//static void handleSetP2PData(byte*&data);

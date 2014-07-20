@@ -4,6 +4,7 @@
 #include "ProjectileManager.h"
 #include "ItemManager.h"
 #include "Camera.h"
+#include "Magnifier.h"
 #include <cmath>
 
 namespace SmashBros
@@ -33,6 +34,7 @@ namespace SmashBros
 		bgType = 0;
 
 		gravity = 0.15;
+		terminalVelocity = 9;
 		
 		MusicManager::loadSong("Main Theme Remix");
 	}
@@ -230,7 +232,8 @@ namespace SmashBros
 				break;
 				
 				case BG_FIXED:
-				background->drawFrame(null, g, 0, View::x, View::y, (float)View::ScaleWidth(), (float)View::ScaleHeight());
+				background->drawFrame(null, g, 0, View::x, View::y, View::x + (float)View::ScaleWidth(), View::y + (float)View::ScaleHeight());
+				//background->drawFrame(null, g, 0, View::x, View::y, (float)View::ScaleWidth(), (float)View::ScaleHeight());
 				break;
 			}
 		}
@@ -300,6 +303,14 @@ namespace SmashBros
 			foregrounds.get(i)->Draw(g, gameTime);
 		}
 		ProjectileManager::DrawTopLayer(g, gameTime);
+		
+		for(int i=0; i<=Global::possPlayers; i++)
+		{
+			if(Global::characters[i]!=NULL && Global::characters[i]->isAlive())
+			{
+				Magnifier::Draw(g, gameTime, Global::characters[i]);
+			}
+		}
 	}
 	
 	void Stage::checkPlayerCollisions(Player*playr)
@@ -416,11 +427,6 @@ namespace SmashBros
 		}
 	}
 	
-	/**
-	 * Sets the gravity amount. The default is 0.15
-	 * <p>
-	 * @param grav decimal value that represents gravity
-	 */
 	void Stage::setGravity(double grav)
 	{
 		gravity = grav;
@@ -429,6 +435,16 @@ namespace SmashBros
 	double Stage::getGravity()
 	{
 		return gravity;
+	}
+	
+	void Stage::setTerminalVelocity(double vel)
+	{
+		terminalVelocity = vel;
+	}
+	
+	double Stage::getTerminalVelocity()
+	{
+		return terminalVelocity;
 	}
 	
 	void Stage::addElement(GameElement*a)

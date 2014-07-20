@@ -14,6 +14,7 @@ namespace SmashBros
 		friend class Camera;
 		friend class Item;
 		friend class ItemManager;
+		friend class Player;
 		friend class ProjectileManager;
 	private:
 		Animation*background;
@@ -45,7 +46,7 @@ namespace SmashBros
 		Vector2i spawns[7];
 
 		double gravity;
-		friend class Player;
+		double terminalVelocity;
 
 		void checkPlayerCollisions(Player*playr);
 		
@@ -107,6 +108,9 @@ namespace SmashBros
 
 		void setGravity(double grav);
 		double getGravity();
+		
+		void setTerminalVelocity(double terminalVelocity);
+		double getTerminalVelocity();
 
 		void addElement(GameElement*a);
 		void addPlatform(Platform*plat);

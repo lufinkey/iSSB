@@ -7,7 +7,7 @@ namespace SmashBros
 	{
 		//
 	}
-
+	
 	AttackManager::AttackInfo::AttackInfo(int attackNo, byte playerdir, int damage, int delayTime, int xDir,float xAmount,float xMult,int yDir,float yAmount,float yMult)
 	{
 		this->attackNo = attackNo;
