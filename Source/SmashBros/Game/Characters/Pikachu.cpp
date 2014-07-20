@@ -9,6 +9,17 @@ namespace SmashBros
 {
 	const float Pikachu::finalsmashSlow = 6;
 	const float Pikachu::finalsmashFast = 12;
+	
+	void Pikachu::addProjectileInfo(byte type, int projID, float x, float y, byte itemdir)
+	{
+		ProjectileInfo info;
+		info.type = type;
+		info.projID = projID;
+		info.x = x;
+		info.y = y;
+		info.itemdir = itemdir;
+		createdProjectiles.add(info);
+	}
 
 	Pikachu::Pikachu(float x1, float y1, byte playerNo, byte team) : Player(x1, y1, playerNo, team)
 	{
@@ -223,6 +234,104 @@ namespace SmashBros
 	void Pikachu::Unload()
 	{
 		Player::Unload();
+	}
+	
+	void Pikachu::addP2PData(DataVoid&data)
+	{
+		int total = createdProjectiles.size();
+		
+		if(total>0)
+		{
+			P2PDataManager::setReliable();
+			
+			bool avail = true;
+			data.add(&avail, sizeof(avail));
+			
+			int total = createdProjectiles.size();
+			data.add(&total, sizeof(total));
+			
+			for(int i=0; i<createdProjectiles.size(); i++)
+			{
+				ProjectileInfo proj = createdProjectiles.get(i);
+				
+				data.add(&proj.type, sizeof(proj.type));
+				data.add(&proj.projID, sizeof(proj.projID));
+				data.add(&proj.x, sizeof(proj.x));
+				data.add(&proj.y, sizeof(proj.y));
+				
+				if(proj.type==2 || proj.type==3)
+				{
+					data.add(&proj.itemdir, sizeof(proj.itemdir));
+				}
+			}
+			createdProjectiles.clear();
+		}
+		else
+		{
+			bool avail = false;
+			data.add(&avail, sizeof(avail));
+		}
+	}
+	
+	void Pikachu::setP2PData(byte*&data)
+	{
+		bool avail = data[0];
+		data += sizeof(bool);
+		
+		if(avail)
+		{
+			int total = DataVoid::toInt(data);
+			data += sizeof(int);
+			
+			for(int i=0; i<total; i++)
+			{
+				byte type = data[0];
+				data += sizeof(byte);
+				
+				int projID = DataVoid::toInt(data);
+				data += sizeof(int);
+				
+				float x1 = DataVoid::toFloat(data);
+				data += sizeof(float);
+				float y1 = DataVoid::toFloat(data);
+				data += sizeof(float);
+				
+				switch(type)
+				{
+					case 1:
+					{
+						Projectile::setNextID(projID);
+						createProjectile(new Lightning(getPlayerNo(), x1, y1));
+					}
+					break;
+					
+					case 2:
+					{
+						byte itemdir = data[0];
+						data += sizeof(byte);
+						Projectile::setNextID(projID);
+						createProjectile(new ThunderboltGhost(getPlayerNo(), itemdir, false, x1, y1));
+					}
+					break;
+					
+					case 3:
+					{
+						byte frameOn = data[0];
+						data += sizeof(byte);
+						Projectile::setNextID(projID);
+						createProjectile(new LightningBody(getPlayerNo(), x1, y1, (boolean)frameOn));
+					}
+					break;
+					
+					case 4:
+					{
+						Projectile::setNextID(projID);
+						createProjectile(new Thunderbolt(getPlayerNo(), x1, y1));
+					}
+					break;
+				}
+			}
+		}
 	}
 
 	void Pikachu::Update(long gameTime)
@@ -601,7 +710,9 @@ namespace SmashBros
 				changeAnimation("special_hold_down_right", FORWARD);
 				break;
 			}
-			createProjectile(new Lightning(getPlayerNo(), x, y));
+			Lightning* lightning = new Lightning(getPlayerNo(), x, y);
+			createProjectile(lightning);
+			addProjectileInfo(1, lightning->getID(), x, y, 0);
 		}
 		else if(name.equals("smash_prep_left") || name.equals("smash_prep_right"))
 		{
@@ -1276,7 +1387,7 @@ namespace SmashBros
 			}
 		}
 	}
-
+	
 	void Pikachu::attackB()
 	{
 		if(!bUp)
@@ -1287,7 +1398,9 @@ namespace SmashBros
 	        }
 	        else
 	        {
-	        	AttackTemplates::singleProjectile(this, 9,0, new Thunderbolt(getPlayerNo(),x,y));
+				Thunderbolt* thunderbolt = new Thunderbolt(getPlayerNo(),x,y);
+	        	AttackTemplates::singleProjectile(this, 9,0, thunderbolt);
+				addProjectileInfo(4, thunderbolt->getID(), x, y, 0);
 	            switch(playerdir)
 	            {
 	                case LEFT:
@@ -1632,6 +1745,7 @@ namespace SmashBros
 			ThunderboltGhost*ghost = new ThunderboltGhost(this, getPlayerNo(), itemdir, drift, x, y);
 			trail.add(ghost);
 			createProjectile(ghost);
+			addProjectileInfo(2, ghost->getID(), x, y, itemdir);
 			waitFrames = 0;
 		}
 
@@ -2117,9 +2231,9 @@ namespace SmashBros
 	{
 		this->frameOn = frameOn;
 		isEnd = false;
-
+		
 		Animation*anim;
-
+		
 		anim = new Animation("frame0", 1, "Images/Game/Characters/Pikachu/lightning_1.png");
 		addAnimation(anim);
 
@@ -2338,6 +2452,7 @@ namespace SmashBros
 			LightningBody*body = new LightningBody(this, getPlayerNo(), x, cy, createdFrame);
 			bodies.add(body);
 			createProjectile(body);
+			addProjectileInfo(3, body->getID(), x, cy, (byte)createdFrame);
 		}
 		else if(name.equals("lightning_cloud"))
 		{

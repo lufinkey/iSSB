@@ -93,7 +93,7 @@ namespace SmashBros
 			int waitFrames;
 			boolean hitGround;
 			boolean createdFrame;
-
+			
 		public:
 			Lightning(byte playerNo, float x1, float y1);
 			virtual ~Lightning();
@@ -107,6 +107,20 @@ namespace SmashBros
 
 		const static float finalsmashSlow;
 		const static float finalsmashFast;
+		
+		typedef struct
+		{
+			byte type;
+			int projID;
+			float x;
+			float y;
+			
+			byte itemdir;
+		} ProjectileInfo;
+		
+		void addProjectileInfo(byte type, int projID, float x, float y, byte itemdir);
+		
+		ArrayList<ProjectileInfo> createdProjectiles;
 
 		float xprevious;
 		float yprevious;
