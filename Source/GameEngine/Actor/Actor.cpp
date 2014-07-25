@@ -560,11 +560,12 @@ namespace GameEngine
 	        {
 	            this->anim=animation;
 	            //anim.drawFrame(graphics,0,x,y);
-				long newFrameTime = lastFrameTime + (1000/anim->fps);
+	            frameTime = 0;
+				/*long newFrameTime = lastFrameTime + (1000/anim->fps);
             	if(newFrameTime<frameTime)
             	{
             		frameTime = newFrameTime;
-            	}
+            	}*/
 	        }
 	    }
 	    else if(dir==STOPPED)
