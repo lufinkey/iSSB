@@ -142,8 +142,8 @@ namespace GameEngine
 			switch(lastAnim->getType())
 			{
 				default:
-				this->width = (int)((img->getWidth()*Scale)/lastAnim->getCols());
-				this->height = (int)((img->getHeight()*Scale)/lastAnim->getRows());
+				this->width = (int)((float)(img->getWidth()/lastAnim->getCols())*Scale);
+				this->height = (int)((float)(img->getHeight()/lastAnim->getRows())*Scale);
 				break;
 				
 				case 0:
@@ -184,14 +184,14 @@ namespace GameEngine
 
 	void Actor::drawActor(Graphics2D& g, long gameTime, float x1, float y1, double scale, bool relativeToScreen)
 	{
-	    if(frameTime==0)
-        {
-            int addTime;
-            if(anim->fps == 0)
-            {
-            	addTime = 0;
-            }
-            else
+		if(frameTime==0)
+		{
+			int addTime;
+        		if(anim->fps == 0)
+			{
+				addTime = 0;
+			}
+			else
             {
             	addTime=1000/anim->fps;
             }
@@ -227,6 +227,7 @@ namespace GameEngine
         	g.drawRect((x1-View::x-w/2), (y1-View::y-h/2), (float)w, (float)h);
 			g.setColor(color);
         }
+        updateSize();
 	}
 	
 	bool Actor::checkHover(float x1, float y1)
@@ -593,8 +594,8 @@ namespace GameEngine
 	    if(firstAnimChange)
 	    {
 	        Vector2i size = animation->getSize();
-	        width = size.x;
-	        height = size.y;
+	        width = (int)(size.x*Scale);
+	        height = (int)(size.y*Scale);
 	        lastAnim = anim;
 	    }
 	    firstAnimChange = false;
