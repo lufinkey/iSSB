@@ -12,8 +12,6 @@ namespace SmashBros
 		{
 			newCharIcon(i, CharacterLoader::getIconPath(i));
 		}
-		charSelectArea->width = 472;
-		charSelectArea->height = 60;
 	}
 
 	void CharSelectScreen::loadCharPreviews(int num)
@@ -446,15 +444,23 @@ namespace SmashBros
 	void CharSelectScreen::newCharIcon(int num, String anim)
 	{
 		CharIcon*a = new CharIcon(num, 0,0, new Animation("normal",1,anim));
-		a->Scale = 1.8f;
 		addToGrid(a,70,115,9,5,95,65,charIcons.size()+1);
 		if(charIcons.size()==0)
 		{
-			charSelectArea->x = a->x - 46;
-			charSelectArea->y = a->y - 30;
+			charSelectArea->x = a->x - (a->width/2);
+			charSelectArea->y = a->y - (a->height/2);
+		}
+		float csW = (a->x + (a->width/2)) - charSelectArea->x;
+		float csH = (a->y + (a->height/2)) - charSelectArea->y;
+		if(csW>charSelectArea->width)
+		{
+			charSelectArea->width = csW;
+		}
+		if(csH>charSelectArea->height)
+		{
+			charSelectArea->height = csH;
 		}
 		WireframeActor*a2 = new WireframeActor(a->x-20,a->y-20,40,40);
-		//a2->setVisible(true);
 		charIconPoints.add(a2);
 		charIcons.add(a);
 	}
@@ -775,6 +781,7 @@ namespace SmashBros
 
 	CharSelectScreen::CharIcon::CharIcon(int num, float x1, float y1, Animation*anim) : Actor(x1,y1)
 	{
+		Scale = 1.8f;
 		addAnimation(anim);
 		changeAnimation(anim->name, FORWARD);
 		this->num = num;
