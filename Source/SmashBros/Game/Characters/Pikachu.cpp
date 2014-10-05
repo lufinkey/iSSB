@@ -1,11 +1,11 @@
 
 #include "Pikachu.h"
 #include "../../AttackTemplates.h"
-#include "../../Game.h"
 #include "../../Global.h"
 #include "../../Controls.h"
 #include "../../P2PDataManager.h"
 #include "../../ProjectileManager.h"
+#include <cmath>
 
 namespace SmashBros
 {
@@ -45,7 +45,7 @@ namespace SmashBros
 		
 		name = "Pikachu";
 
-		Scale = 0.8f;
+		Scale = 1.0f;
 
 		xprevious = x;
 		yprevious = y;
@@ -218,20 +218,20 @@ namespace SmashBros
 
 	void Pikachu::LoadAttackTypes()
 	{
-		addAIAttackType(ATTACK_A,         ATTACKTYPE_MELEE, 10);
-		addAIAttackType(ATTACK_SIDEA,     ATTACKTYPE_MELEE, 8);
-		addAIAttackType(ATTACK_UPA,       ATTACKTYPE_UPMELEE, 4);
-		addAIAttackType(ATTACK_DOWNA,     ATTACKTYPE_DOWNMELEE, 1);
-		addAIAttackType(ATTACK_DOWNA,     ATTACKTYPE_MELEE, 3);
-		addAIAttackType(ATTACK_B,         ATTACKTYPE_PROJECTILE, 1);
-		addAIAttackType(ATTACK_SIDEB,     ATTACKTYPE_SIDEMOVE, 1);
-		addAIAttackType(ATTACK_UPB,       ATTACKTYPE_STRONGMELEE, 1);
-		addAIAttackType(ATTACK_UPB,       ATTACKTYPE_UPMOVE, 1);
-		addAIAttackType(ATTACK_DOWNB,     ATTACKTYPE_STRONGMELEE, 2);
-		addAIAttackType(ATTACK_SIDESMASH, ATTACKTYPE_STRONGMELEE, 2, true);
-		addAIAttackType(ATTACK_UPSMASH,   ATTACKTYPE_STRONGMELEE, 1, true);
-		addAIAttackType(ATTACK_DOWNSMASH, ATTACKTYPE_STRONGMELEE, 1, true);
-		addAIAttackType(ATTACK_FINALSMASH,ATTACKTYPE_PROJECTILE, 1);
+		addAIAttackType(ATTACK_A,		   ATTACKTYPE_MELEE, 5);
+		addAIAttackType(ATTACK_SIDEA,	   ATTACKTYPE_MELEE, 4);
+		addAIAttackType(ATTACK_UPA,	       ATTACKTYPE_UPMELEE, 3);
+		addAIAttackType(ATTACK_DOWNA,	   ATTACKTYPE_DOWNMELEE, 1);
+		addAIAttackType(ATTACK_DOWNA,	   ATTACKTYPE_MELEE, 2);
+		addAIAttackType(ATTACK_B,		   ATTACKTYPE_PROJECTILE, 1);
+		addAIAttackType(ATTACK_SIDEB,	   ATTACKTYPE_SIDEMOVE, 1);
+		addAIAttackType(ATTACK_UPB,	       ATTACKTYPE_STRONGMELEE, 1);
+		addAIAttackType(ATTACK_UPB,	       ATTACKTYPE_UPMOVE, 1);
+		addAIAttackType(ATTACK_DOWNB,	   ATTACKTYPE_STRONGMELEE, 2);
+		addAIAttackType(ATTACK_SIDESMASH,  ATTACKTYPE_STRONGMELEE, 2, true);
+		addAIAttackType(ATTACK_UPSMASH,    ATTACKTYPE_STRONGMELEE, 1, true);
+		addAIAttackType(ATTACK_DOWNSMASH,  ATTACKTYPE_STRONGMELEE, 1, true);
+		addAIAttackType(ATTACK_FINALSMASH, ATTACKTYPE_PROJECTILE, 1);
 	}
 
 	void Pikachu::Unload()
@@ -350,31 +350,19 @@ namespace SmashBros
 	{
 		if(attacksHolder==6)
 		{
-			switch(playerdir)
+			if((xvelocity * getPlayerDirMult()) > 0)
 			{
-				case LEFT:
-				if(xvelocity<0)
-				{
-					xvelocity+=0.02f;
-				}
-				break;
-
-				case RIGHT:
-				if(xvelocity>0)
-				{
-					xvelocity-=0.02f;
-				}
-				break;
+				xvelocity -= 0.02f * getPlayerDirMult();
 			}
-			if(gameTime>=nextHitTime)
+			if(Global::getWorldTime()>=nextHitTime)
 			{
-				nextHitTime = gameTime + 100;
+				nextHitTime = Global::getWorldTime() + 10;
 				resetAttackCollisions();
 			}
 		}
 		else if(attacksHolder==10)
 		{
-			if(finishSideB<=gameTime)
+			if(finishSideB<=Global::getWorldTime())
 			{
 				attacksHolder = -1;
 				attacksPriority = 0;
@@ -386,16 +374,7 @@ namespace SmashBros
 			{
 				attacksHolder = -1;
 				attacksPriority = 0;
-				switch(playerdir)
-				{
-					case LEFT:
-					changeAnimation("special_finish_down_left", FORWARD);
-					break;
-
-					case RIGHT:
-					changeAnimation("special_finish_down_right", FORWARD);
-					break;
-				}
+				changeTwoSidedAnimation("special_finish_down", FORWARD);
 			}
 		}
 		else if(attacksHolder==15)
@@ -536,30 +515,12 @@ namespace SmashBros
 				{
 					finishFinalsmash = 0;
 					finalsmashTransition = 2;
-					switch(playerdir)
-					{
-						case LEFT:
-						changeAnimation("finalsmash_end_left", FORWARD);
-						break;
-
-						case RIGHT:
-						changeAnimation("finalsmash_end_right", FORWARD);
-						break;
-					}
+					changeTwoSidedAnimation("finalsmash_end", FORWARD);
 				}
 			}
 			else if(finalsmashTransition == 1)
 			{
-				switch(playerdir)
-				{
-					case LEFT:
-					changeAnimation("finalsmash_begin_left", NO_CHANGE);
-					break;
-
-					case RIGHT:
-					changeAnimation("finalsmash_begin_right", NO_CHANGE);
-					break;
-				}
+				changeTwoSidedAnimation("finalsmash_begin", NO_CHANGE);
 			}
 			else if(finalsmashTransition == 2)
 			{
@@ -567,16 +528,7 @@ namespace SmashBros
 				yVel = 0;
 				xvelocity = 0;
 				yvelocity = 0;
-				switch(playerdir)
-				{
-					case LEFT:
-					changeAnimation("finalsmash_end_left", NO_CHANGE);
-					break;
-
-					case RIGHT:
-					changeAnimation("finalsmash_end_right", NO_CHANGE);
-					break;
-				}
+				changeTwoSidedAnimation("finalsmash_end", NO_CHANGE);
 			}
 
 			Player::Update(gameTime);
@@ -679,16 +631,7 @@ namespace SmashBros
 
 			transUpB = true;
 			
-			switch(playerdir)
-			{
-				case LEFT:
-				changeAnimation("special_transition_up_left", FORWARD);
-				break;
-
-				case RIGHT:
-				changeAnimation("special_transition_up_right", FORWARD);
-				break;
-			}
+			changeTwoSidedAnimation("special_transition_up", FORWARD);
 		}
 		else if(name.equals("special_transition_up_left") || name.equals("special_transition_up_right"))
 		{
@@ -712,16 +655,8 @@ namespace SmashBros
 			preppingDownB = false;
 			attacksHolder = 12;
 			attacksPriority = 0;
-			switch(playerdir)
-			{
-				case LEFT:
-				changeAnimation("special_hold_down_left", FORWARD);
-				break;
-
-				case RIGHT:
-				changeAnimation("special_hold_down_right", FORWARD);
-				break;
-			}
+			changeAnimation("special_hold_down", FORWARD);
+			
 			Lightning* lightning = new Lightning(getPlayerNo(), x, y);
 			createProjectile(lightning);
 			addProjectileInfo(1, lightning->getID(), x, y, 0, 0);
@@ -729,49 +664,31 @@ namespace SmashBros
 		else if(name.equals("smash_prep_left") || name.equals("smash_prep_right"))
 		{
 			winding = false;
-			AttackTemplates::normalSmash(this,13,3.05,STEP_GO,1,20,20,28);
+			AttackTemplates::normalSmash(this,13,3.05,STEP_GO,1,2000,20,28);
 		}
 		else if(name.equals("smash_prep_up_left") || name.equals("smash_prep_up_right"))
 		{
 			winding = false;
-			AttackTemplates::normalSmash(this,14,2.08,STEP_GO,2,18,14,20);
+			AttackTemplates::normalSmash(this,14,2.08,STEP_GO,2,1800,14,20);
 		}
 		else if(name.equals("smash_prep_down_left") || name.equals("smash_prep_down_right"))
 		{
 			winding = false;
-			AttackTemplates::normalSmash(this,15,2.48,STEP_GO,3,16,16,24);
+			AttackTemplates::normalSmash(this,15,2.48,STEP_GO,3,1600,16,24);
 		}
 		else if(name.equals("smash_attack_left") || name.equals("smash_attack_right"))
 		{
 			attacksHolder = -1;
 			attacksPriority = 0;
 			winding = true;
-			switch(playerdir)
-			{
-				case LEFT:
-				changeAnimation("smash_finish_left", FORWARD);
-				break;
-
-				case RIGHT:
-				changeAnimation("smash_finish_right", FORWARD);
-				break;
-			}
+			changeTwoSidedAnimation("smash_finish", FORWARD);
 		}
 		else if(name.equals("smash_attack_up_left") || name.equals("smash_attack_up_right"))
 		{
 			attacksHolder = -1;
 			attacksPriority = 0;
 			winding = true;
-			switch(playerdir)
-			{
-				case LEFT:
-				changeAnimation("smash_finish_up_left", FORWARD);
-				break;
-
-				case RIGHT:
-				changeAnimation("smash_finish_up_right", FORWARD);
-				break;
-			}
+			changeTwoSidedAnimation("smash_finish_up", FORWARD);
 		}
 		else if(name.equals("smash_attack_down_left"))
 		{
@@ -792,7 +709,7 @@ namespace SmashBros
 		else if(name.equals("finalsmash_begin_left") || name.equals("finalsmash_begin_right"))
 		{
 			finalsmashTransition = 0;
-			finishFinalsmash = Global::getWorldTime() + 100;
+			finishFinalsmash = Global::getWorldTime() + 10000;
 			changeAnimation("finalsmash", FORWARD);
 		}
 		else if(name.equals("finalsmash_end_left") || name.equals("finalsmash_end_right"))
@@ -811,12 +728,13 @@ namespace SmashBros
 
 	void Pikachu::jump()
 	{
-		Player::jump(5.0f, 4.6f);
+		Player::jump(5.1f, 4.7f);
 	}
-
+	
 	void Pikachu::onPlayerHit(Player*collide, byte dir)
 	{
-		if(playerdir==LEFT && collide->x <= x)
+		byte relDir = getRelPlayerDir(collide);
+		if(relDir==getPlayerDir() || relDir==0)
 		{
 			switch(attacksHolder)
 			{
@@ -825,50 +743,24 @@ namespace SmashBros
 				if(hitAmount==0)
 				{
 					causeDamage(collide,2);
-					collide->y-=4;
-					collide->x+=2;
-					x-=1;
-					causeHurt(collide, RIGHT, 1);
+					collide->y -= 4;
+					collide->x -= 2 * getPlayerDirMult();
+					x += 1 * getPlayerDirMult();
+					causeHurt(collide, getOppPlayerDir(), 100);
 					hitAmount++;
 				}
 				break;
-
+				
 				case 13:
 				//Smash left
-			    causeDamage(collide,smashPower);
-			    collide->x-=5;
-			    causeHurtLaunch(collide, -1,((float)smashPower/4),5, -1,((float)smashPower/6), 7);
-			    causeHurt(collide, RIGHT, smashPower/8);
+				causeDamage(collide,smashPower);
+				collide->x += 5 * getPlayerDirMult();
+				causeHurtLaunch(collide, (int)getPlayerDirMult(),((float)smashPower/5),4, -1,((float)smashPower/6), 4);
+				causeHurt(collide, getOppPlayerDir(), 400);
 				break;
 			}
 		}
-		else if(playerdir==RIGHT && collide->x >= x)
-		{
-			switch(attacksHolder)
-			{
-				case 0:
-				//A
-				if(hitAmount==0)
-				{
-					causeDamage(collide,2);
-					collide->y-=4;
-					collide->x-=2;
-					x+=1;
-					causeHurt(collide, LEFT, 1);
-					hitAmount++;
-				}
-				break;
-
-				case 13:
-				//Smash right
-			    causeDamage(collide,smashPower);
-			    collide->x+=5;
-			    causeHurtLaunch(collide, 1,((float)smashPower/5),3, -1,((float)smashPower/7), 4);
-			    causeHurt(collide, LEFT, smashPower/8);
-				break;
-			}
-		}
-
+		
 		if(attacksHolder==15)
 		{
 			String animName = getAnimName();
@@ -880,34 +772,14 @@ namespace SmashBros
 					causeDamage(collide,smashPower/4);
 					collide->yvelocity = -1;
 					collide->y -= (5*Scale*collide->Scale);
-					switch(playerdir)
-					{
-						case LEFT:
-						collide->x = x + (5*Scale);
-						causeHurt(collide, RIGHT, 2);
-						break;
-
-						case RIGHT:
-						collide->x = x - (5*Scale);
-						causeHurt(collide, LEFT, 2);
-						break;
-					}
+					collide->x = x - (5*Scale * getPlayerDirMult());
+					causeHurt(collide, getOppPlayerDir(), 200);
 				}
 				else if(frameNo == 7)
 				{
 					causeDamage(collide,smashPower/4);
-					switch(playerdir)
-					{
-						case LEFT:
-						causeHurtLaunch(collide, 1,2.65f,3.87f, -1, 1.95f,3.87f);
-						causeHurt(collide, LEFT, 3);//Nafe was here
-						break;
-
-						case RIGHT:
-						causeHurtLaunch(collide, -1,2.65f,3.87f, -1, 1.95f,3.87f);
-						causeHurt(collide, RIGHT, 3);
-						break;
-					}
+					causeHurtLaunch(collide, -(int)getPlayerDirMult(),2.65f,3.87f, -1, 1.95f,3.87f);
+					causeHurt(collide, getPlayerDir(), 300);//Nafe was here
 				}
 			}
 		}
@@ -916,15 +788,15 @@ namespace SmashBros
 			float dist = (float)distance(x,y,collide->x,collide->y);
 			float cosVal = (collide->x - x)/dist;
 			float sinVal = (collide->y - y)/dist;
-
+			
 			float velMag = sqrt((xvelocity*xvelocity) + (yvelocity*yvelocity));
 			float speedAmount = velMag/finalsmashFast;
-
+			
 			causeDamage(collide, 10 + (int)(10*speedAmount));
-
-			float hitXvel = abs(cosVal*8);
-			float hitYvel = abs(sinVal*8);
-
+			
+			float hitXvel = std::abs(cosVal*8);
+			float hitYvel = std::abs(sinVal*8);
+			
 			int xDir = 1;
 			if(cosVal<0)
 			{
@@ -935,96 +807,69 @@ namespace SmashBros
 			{
 				yDir = -1;
 			}
-
+			
 			causeHurtLaunch(collide, xDir,hitXvel,2.8f, yDir,hitYvel,2.8f);
-
+			
 			if(collide->x < x)
 			{
-				causeHurt(collide, RIGHT, 3);
+				causeHurt(collide, RIGHT, 300);
 			}
 			else
 			{
-				causeHurt(collide, LEFT, 3);
+				causeHurt(collide, LEFT, 300);
 			}
 		}
-
+		
 		switch(dir)
 		{
 			case DIR_LEFT:
-			{
-				switch(attacksHolder)
-				{
-					case 6:
-					//A Air Side
-					nextHitTime = Game::getGameTime() + 100;
-					break;
-
-					case 10:
-					//B Side
-					if(playerdir==LEFT && collide->x <= x)
-					{
-						float amount = (float)smashPower/100;
-						causeDamage(collide,(int)(38*amount) + 2);
-						causeHurtLaunch(collide, -1,10*amount+2,3, -1,5*amount+1,3);
-						causeHurt(collide, RIGHT, 2);
-					}
-					break;
-
-					case 14:
-					//Smash up
-					causeDamage(collide,smashPower);
-					collide->y-=3;
-					causeHurtLaunch(collide, -1,0,1, -1,((float)smashPower/5), 5);
-					causeHurt(collide, RIGHT, smashPower/6);
-					break;
-				}
-			}
-			break;
-
 			case DIR_RIGHT:
 			{
 				switch(attacksHolder)
 				{
 					case 6:
 					//A Air Side
-					nextHitTime = Game::getGameTime() + 100;
+					nextHitTime = Global::getWorldTime() + 100;
 					break;
-
+					
 					case 10:
 					//B Side
-					if(playerdir==RIGHT && collide->x >= x)
 					{
-						float amount = (float)smashPower/100;
-						causeDamage(collide,(int)(38*amount) + 2);
-						causeHurtLaunch(collide, 1,10*amount+2,3, -1,5*amount+1,3);
-						causeHurt(collide, LEFT, 2);
+						byte relDir = getRelPlayerDir(collide);
+						if(compareDirPlayerDir(dir, getPlayerDir())==CMPDIRPDIR_EQUAL && relDir==getPlayerDir() && relDir==0)
+						{
+							float amount = (float)smashPower/100;
+							causeDamage(collide,(int)(38*amount) + 2);
+							causeHurtLaunch(collide, (int)getPlayerDirMult(),10*amount+2,3, -1,5*amount+1,3);
+							causeHurt(collide, getOppPlayerDir(), 200);
+						}
 					}
 					break;
-
+					
 					case 14:
 					//Smash up
 					causeDamage(collide,smashPower);
-					collide->y-=3;
-					causeHurtLaunch(collide, 1,0,1, -1,((float)smashPower/5), 5);
-					causeHurt(collide, LEFT, smashPower/6);
+					collide->y -= 3;
+					causeHurtLaunch(collide, (int)getPlayerDirMult(),0,1, -1,((float)smashPower/5), 5);
+					causeHurt(collide, getOppPlayerDir(), 300);
 					break;
 				}
 			}
 			break;
-
+			
 			case DIR_UP:
 			switch(attacksHolder)
 			{
 				case 14:
 				//Smash up
 				causeDamage(collide,smashPower);
-				collide->y-=3;
-				causeHurtLaunch(collide, 1,0,1, -1,((float)smashPower/4), 5);
-				causeHurt(collide, LEFT, smashPower/6);
+				collide->y -= 3;
+				causeHurtLaunch(collide, (int)getPlayerDirMult(),0,1, -1,((float)smashPower/4), 5);
+				causeHurt(collide, getOppPlayerDir(), 300);
 				break;
 			}
 			break;
-
+			
 			case DIR_DOWN:
 			break;
 		}
@@ -1037,121 +882,70 @@ namespace SmashBros
 		{
 			attacksHolder = -1;
 			attacksPriority = 0;
-			switch(playerdir)
-			{
-				case LEFT:
-				{
-					changeAnimation("special_land_side_left", FORWARD);
-					landing = true;
-				}
-				break;
-
-				case RIGHT:
-				{
-					changeAnimation("special_land_side_right", FORWARD);
-					landing = true;
-				}
-				break;
-			}
+			changeTwoSidedAnimation("special_land_side", FORWARD);
+			landing = true;
 		}
 	}
-
+	
 	void Pikachu::doChargingAttack(byte button)
 	{
 		if(chargingSideB)
 		{
 			destroyCharge();
 			float amount = (float)smashPower/100;
-
+			
 			chargingSideB = false;
 			landing = false;
 			bUp = true;
 			setOnGround(false);
-
+			
 			attacksHolder = 10;
 			attacksPriority = 3.5f*amount + 0.5f;
-			switch(playerdir)
-			{
-				case LEFT:
-				{
-					xvelocity = -8*amount - 1;
-					changeAnimation("special_attack_side_left", FORWARD);
-				}
-				break;
-
-				case RIGHT:
-				{
-					xvelocity = 8*amount + 1;
-					changeAnimation("special_attack_side_right", FORWARD);
-				}
-				break;
-			}
+			xvelocity = (8*amount + 1) * getPlayerDirMult();
+			changeTwoSidedAnimation("special_attack_side", FORWARD);
 			
 			yvelocity = -2.5f*amount - 2;
 			y-=2;
-
-			finishSideB = Game::getGameTime() + 600;
+			
+			finishSideB = Global::getWorldTime() + 600;
 		}
 	}
-
+	
 	void Pikachu::onFinishCharge()
 	{
 		if(chargingSideB)
 		{
 			destroyCharge();
 			float amount = (float)smashPower/100;
-
+			
 			chargingSideB = false;
 			landing = false;
 			bUp = true;
 			setOnGround(false);
-
+			
 			attacksHolder = 10;
 			attacksPriority = 3.5f*amount + 0.5f;
-			switch(playerdir)
-			{
-				case LEFT:
-				{
-					xvelocity = -8*amount - 1;
-					changeAnimation("special_attack_side_left", FORWARD);
-				}
-				break;
-
-				case RIGHT:
-				{
-					xvelocity = 8*amount + 1;
-					changeAnimation("special_attack_side_right", FORWARD);
-				}
-				break;
-			}
-
+			xvelocity = (8*amount + 1) * getPlayerDirMult();
+			changeTwoSidedAnimation("special_attack_side", FORWARD);
+			
 			yvelocity = -2.5f*amount - 2;
 			y-=2;
-
-			finishSideB = Game::getGameTime() + 600;
+			
+			finishSideB = Global::getWorldTime() + 600;
 		}
 	}
-
+	
 	void Pikachu::upBIncrement(byte dir)
 	{
 		switch(dir)
 		{
 			default:
 			//
-
+			
 			case DIR_UP:
 			if(upBDir != DIR_UP)
 			{
-				switch(playerdir)
-				{
-					case LEFT:
-					changeAnimation("special_attack_up_up_left", FORWARD);
-					break;
-
-					case RIGHT:
-					changeAnimation("special_attack_up_up_right", FORWARD);
-					break;
-				}
+				changeTwoSidedAnimation("special_attack_up_up", FORWARD);
 				BufferedImage*image = AssetManager::getImage(getAnimation()->getAllFilenames().get(0));
 				xvelocity = 0;
 				yvelocity = 0;
@@ -1161,7 +955,7 @@ namespace SmashBros
 				attacksPriority = 4;
 			}
 			break;
-
+			
 			case DIR_UPLEFT:
 			if(upBDir != DIR_UPLEFT)
 			{
@@ -1177,7 +971,7 @@ namespace SmashBros
 				attacksPriority = 4;
 			}
 			break;
-
+			
 			case DIR_DOWNLEFT:
 			if(upBDir != DIR_DOWNLEFT)
 			{
@@ -1193,7 +987,7 @@ namespace SmashBros
 				attacksPriority = 4;
 			}
 			break;
-
+			
 			case DIR_LEFT:
 			if(upBDir != DIR_LEFT)
 			{
@@ -1208,7 +1002,7 @@ namespace SmashBros
 				attacksPriority = 4;
 			}
 			break;
-
+			
 			case DIR_UPRIGHT:
 			if(upBDir != DIR_UPRIGHT)
 			{
@@ -1224,7 +1018,7 @@ namespace SmashBros
 				attacksPriority = 4;
 			}
 			break;
-
+			
 			case DIR_DOWNRIGHT:
 			if(upBDir != DIR_UPLEFT)
 			{
@@ -1240,7 +1034,7 @@ namespace SmashBros
 				attacksPriority = 4;
 			}
 			break;
-
+			
 			case DIR_RIGHT:
 			if(upBDir != DIR_RIGHT)
 			{
@@ -1255,20 +1049,11 @@ namespace SmashBros
 				attacksPriority = 4;
 			}
 			break;
-
+			
 			case DIR_DOWN:
 			if(upBDir != DIR_DOWN)
 			{
-				switch(playerdir)
-				{
-					case LEFT:
-					changeAnimation("special_attack_up_down_left", FORWARD);
-					break;
-
-					case RIGHT:
-					changeAnimation("special_attack_up_down_right", FORWARD);
-					break;
-				}
+				changeTwoSidedAnimation("special_attack_up_down", FORWARD);
 				BufferedImage*image = AssetManager::getImage(getAnimation()->getAllFilenames().get(0));
 				xvelocity = 0;
 				yvelocity = 0;
@@ -1281,13 +1066,13 @@ namespace SmashBros
 		}
 		upBCount++;
 	}
-
+	
 	void Pikachu::attackA()
 	{
-		addAttackInfo(DIR_LEFT, 5, LEFT, 12, 3, -1,2.1f,3.3f, -1,2.1f,3.3f);
-		addAttackInfo(DIR_RIGHT,5, LEFT, 12, 3,  1,1.8f,2.9f, -1,1.8f,2.2f);
-		addAttackInfo(DIR_LEFT, 5, RIGHT,12, 3, -1,1.8f,2.9f, -1,1.8f,2.2f);
-		addAttackInfo(DIR_RIGHT,5, RIGHT,12, 3,  1,2.1f,3.3f, -1,2.1f,3.3f);
+		addAttackInfo(DIR_LEFT, 5, LEFT, 12, 300, -1,2.1f,3.3f, -1,2.1f,3.3f);
+		addAttackInfo(DIR_RIGHT,5, LEFT, 12, 300,  1,1.8f,2.9f, -1,1.8f,2.2f);
+		addAttackInfo(DIR_LEFT, 5, RIGHT,12, 300, -1,1.8f,2.9f, -1,1.8f,2.2f);
+		addAttackInfo(DIR_RIGHT,5, RIGHT,12, 300,  1,2.1f,3.3f, -1,2.1f,3.3f);
 		if(!checkItemUse())
 		{
 			if(isOnGround())
@@ -1303,29 +1088,20 @@ namespace SmashBros
 			}
 		}
 	}
-
+	
 	void Pikachu::attackSideA()
 	{
-		addAttackInfo(DIR_LEFT, 1, LEFT, 9, 2, -1,2.4f,2.8f, -1,1.6f,3.0f);
-		addAttackInfo(DIR_RIGHT,1,RIGHT, 9, 2,  1,2.4f,2.8f, -1,1.6f,3.0f);
-		addAttackInfo(DIR_LEFT, 4, LEFT, 9, 1, -1,2.6f,2.6f, -1,1.6f,2.6f);
-		addAttackInfo(DIR_RIGHT,4,RIGHT, 9, 1,  1,2.6f,2.6f, -1,1.6f,2.6f);
-		addAttackInfo(DIR_LEFT, 6, LEFT, 2, 1, -1,1.4f,3.4f, -1,1.2f,1.4f);
-		addAttackInfo(DIR_RIGHT,6,RIGHT, 2, 1,  1,1.4f,3.4f, -1,1.2f,1.4f);
+		addAttackInfo(DIR_LEFT, 1, LEFT, 9, 200, -1,2.4f,2.8f, -1,1.6f,3.0f);
+		addAttackInfo(DIR_RIGHT,1,RIGHT, 9, 200,  1,2.4f,2.8f, -1,1.6f,3.0f);
+		addAttackInfo(DIR_LEFT, 4, LEFT, 9, 100, -1,2.6f,2.6f, -1,1.6f,2.6f);
+		addAttackInfo(DIR_RIGHT,4,RIGHT, 9, 100,  1,2.6f,2.6f, -1,1.6f,2.6f);
+		addAttackInfo(DIR_LEFT, 6, LEFT, 2, 100, -1,1.4f,3.4f, -1,1.2f,1.4f);
+		addAttackInfo(DIR_RIGHT,6,RIGHT, 2, 100,  1,1.4f,3.4f, -1,1.2f,1.4f);
 		if(((moveLeft==2) || (moveRight==2)) && (isOnGround()))
 		{
 			y-=6;
 			AttackTemplates::normalDashA(this, 4,1.87, 0);
-			switch(playerdir)
-			{
-				case LEFT:
-				xvelocity = -5.0f;
-				break;
-
-				case RIGHT:
-				xvelocity = 5.0f;
-				break;
-			}
+			xvelocity = 5.0f * getPlayerDirMult();
 			yvelocity = -2;
 		}
 		else if(!checkItemUseSide())
@@ -1338,64 +1114,63 @@ namespace SmashBros
 			{
 				if(!bUp)
 				{
-					switch(playerdir)
-					{
-						case 1:
-						xvelocity=-4;
-						break;
- 
-						case 2:
-						xvelocity=4;
-						break;
-					}
+					xvelocity = 4 * getPlayerDirMult();
 					AttackTemplates::normalAirSideA(this, 6,2.476);
 				}
 			}
 		}
 	}
-
+	
 	void Pikachu::attackUpA()
 	{
-		addAttackInfo(DIR_LEFT, 2, LEFT, 7, 3, -1,0.8f,1.1f, -1,2.1f,2.8f);
-		addAttackInfo(DIR_LEFT, 2,RIGHT, 7, 3,  1,0.8f,1.1f, -1,2.1f,2.8f);
-		addAttackInfo(DIR_RIGHT,2, LEFT, 7, 3, -1,0.8f,1.1f, -1,2.1f,2.8f);
-		addAttackInfo(DIR_RIGHT,2,RIGHT, 7, 3,  1,0.8f,1.1f, -1,2.1f,2.8f);
-		addAttackInfo(DIR_UP, 2,RIGHT, 7, 3,  1,0,0, -1,2.2f,3.0f);
-		addAttackInfo(DIR_UP, 2, LEFT, 7, 3, -1,0,0, -1,2.2f,3.0f);
-		addAttackInfo(DIR_LEFT, 7, LEFT, 8, 2, -1,2.6f,3.1f, -1,1.4f,2.1f);
-		addAttackInfo(DIR_RIGHT,7,RIGHT, 8, 2,  1,2.6f,3.1f, -1,1.4f,2.1f);
-		addAttackInfo(DIR_UP, 7, LEFT, 8, 2, -1,0.4f,1.1f, -1,2.6f,3.1f);
-		addAttackInfo(DIR_UP, 7,RIGHT, 8, 2,  1,0.4f,1.1f, -1,2.6f,3.1f);
-		if(isOnGround())
+		addAttackInfo(DIR_LEFT, 2, LEFT, 7, 300, -1,0.8f,1.1f, -1,2.1f,2.8f);
+		addAttackInfo(DIR_LEFT, 2,RIGHT, 7, 300,  1,0.8f,1.1f, -1,2.1f,2.8f);
+		addAttackInfo(DIR_RIGHT,2, LEFT, 7, 300, -1,0.8f,1.1f, -1,2.1f,2.8f);
+		addAttackInfo(DIR_RIGHT,2,RIGHT, 7, 300,  1,0.8f,1.1f, -1,2.1f,2.8f);
+		addAttackInfo(DIR_UP, 2,RIGHT, 7, 300,  1,0,0, -1,2.2f,3.0f);
+		addAttackInfo(DIR_UP, 2, LEFT, 7, 300, -1,0,0, -1,2.2f,3.0f);
+		addAttackInfo(DIR_LEFT, 7, LEFT, 8, 200, -1,2.6f,3.1f, -1,1.4f,2.1f);
+		addAttackInfo(DIR_RIGHT,7,RIGHT, 8, 200,  1,2.6f,3.1f, -1,1.4f,2.1f);
+		addAttackInfo(DIR_UP, 7, LEFT, 8, 200, -1,0.4f,1.1f, -1,2.6f,3.1f);
+		addAttackInfo(DIR_UP, 7,RIGHT, 8, 200,  1,0.4f,1.1f, -1,2.6f,3.1f);
+		
+		if(!checkItemUseUp())
 		{
-			AttackTemplates::normalUpA(this, 2,2.67);
-		}
-		else
-		{
-			if(!bUp)
+			if(isOnGround())
 			{
-				AttackTemplates::normalAirUpA(this, 7,1.2);
+				AttackTemplates::normalUpA(this, 2,2.67);
+			}
+			else
+			{
+				if(!bUp)
+				{
+					AttackTemplates::normalAirUpA(this, 7,1.2);
+				}
 			}
 		}
 	}
 
 	void Pikachu::attackDownA()
 	{
-		addAttackInfo(DIR_LEFT, 3, LEFT, 7, 4, -1,2.1f,1.1f, -1,2.0f,3.0f);
-		addAttackInfo(DIR_RIGHT,3,RIGHT, 7, 4,  1,2.1f,1.1f, -1,2.0f,3.0f);
-		addAttackInfo(DIR_LEFT, 8, LEFT, 9, 3, -1,1.7f,2.7f, 1,3.0f,3.3f);
-		addAttackInfo(DIR_RIGHT,8,RIGHT, 9, 3,  1,1.7f,2.7f, 1,3.0f,3.3f);
-		addAttackInfo(DIR_DOWN, 8, LEFT, 12,3, -1,1.1f,1.7f, 1,3.8f,3.5f);
-		addAttackInfo(DIR_DOWN, 8,RIGHT, 12,3,  1,1.1f,1.7f, 1,3.8f,3.5f);
-		if(isOnGround())
+		addAttackInfo(DIR_LEFT, 3, LEFT, 7, 400, -1,2.1f,1.1f, -1,2.0f,3.0f);
+		addAttackInfo(DIR_RIGHT,3,RIGHT, 7, 400,  1,2.1f,1.1f, -1,2.0f,3.0f);
+		addAttackInfo(DIR_LEFT, 8, LEFT, 9, 300, -1,1.7f,2.7f, 1,3.0f,3.3f);
+		addAttackInfo(DIR_RIGHT,8,RIGHT, 9, 300,  1,1.7f,2.7f, 1,3.0f,3.3f);
+		addAttackInfo(DIR_DOWN, 8, LEFT, 12,300, -1,1.1f,1.7f, 1,3.8f,3.5f);
+		addAttackInfo(DIR_DOWN, 8,RIGHT, 12,300,  1,1.1f,1.7f, 1,3.8f,3.5f);
+		
+		if(!checkItemUseDown())
 		{
-			AttackTemplates::normalDownA(this, 3,2.92);
-		}
-		else
-		{
-			if(bUp==0)
+			if(isOnGround())
 			{
-				AttackTemplates::normalAirDownA(this, 8,1.2);
+				AttackTemplates::normalDownA(this, 3,2.92);
+			}
+			else
+			{
+				if(bUp==0)
+				{
+					AttackTemplates::normalAirDownA(this, 8,1.2);
+				}
 			}
 		}
 	}
@@ -1413,54 +1188,33 @@ namespace SmashBros
 				Thunderbolt* thunderbolt = new Thunderbolt(getPlayerNo(),x,y);
 	        	AttackTemplates::singleProjectile(this, 9,0, thunderbolt);
 				addProjectileInfo(4, thunderbolt->getID(), x, y, 0, 0);
-	            switch(playerdir)
-	            {
-	                case LEFT:
-	                changeAnimation("special_attack_left",FORWARD);
-	                break;
-					
-	                case RIGHT:
-	                changeAnimation("special_attack_right",FORWARD);
-	                break;
-	            }
+	            changeTwoSidedAnimation("special_attack",FORWARD);
 	        }
 	    }
 	}
-
+	
 	void Pikachu::attackSideB()
 	{
 		if(!bUp)
 	    {
 	        chargingSideB = true;
 			landing = true;
-			AttackTemplates::chargeB(this, 0, 100, 38);
-			switch(playerdir)
-			{
-				case LEFT:
-				{
-					changeAnimation("special_charge_side_left", FORWARD);
-				}
-				break;
-
-				case RIGHT:
-				{
-					changeAnimation("special_charge_side_right", FORWARD);
-				}
-				break;
-			}
+			AttackTemplates::chargeB(this, 0, 100, 3800);
+			changeTwoSidedAnimation("special_charge_side", FORWARD);
 	    }
 	}
-
+	
 	void Pikachu::attackUpB()
 	{
-		addAttackInfo(DIR_LEFT, 11, LEFT, 2, 3, -1,0.4f,1.6f, -1,2.0f,2.1f);
-		addAttackInfo(DIR_LEFT, 11, RIGHT,2, 3,  1,0.4f,1.6f, -1,2.0f,2.1f);
-		addAttackInfo(DIR_RIGHT,11, LEFT, 2, 3, -1,0.4f,1.6f, -1,2.0f,2.1f);
-		addAttackInfo(DIR_RIGHT,11, RIGHT,2, 3,  1,0.4f,1.6f, -1,2.0f,2.1f);
-		addAttackInfo(DIR_DOWN, 11, LEFT, 2, 3, -1,0.4f,1.6f, -1,2.0f,2.1f);
-		addAttackInfo(DIR_DOWN, 11, RIGHT,2, 3,  1,0.4f,1.6f, -1,2.0f,2.1f);
-		addAttackInfo(DIR_UP,   11, LEFT, 2, 3, -1,0.4f,1.6f, -1,2.0f,2.1f);
-		addAttackInfo(DIR_UP,   11, RIGHT,2, 3,  1,0.4f,1.6f, -1,2.0f,2.1f);
+		addAttackInfo(DIR_LEFT, 11, LEFT, 2, 300, -1,0.4f,1.6f, -1,2.0f,2.1f);
+		addAttackInfo(DIR_LEFT, 11, RIGHT,2, 300,  1,0.4f,1.6f, -1,2.0f,2.1f);
+		addAttackInfo(DIR_RIGHT,11, LEFT, 2, 300, -1,0.4f,1.6f, -1,2.0f,2.1f);
+		addAttackInfo(DIR_RIGHT,11, RIGHT,2, 300,  1,0.4f,1.6f, -1,2.0f,2.1f);
+		addAttackInfo(DIR_DOWN, 11, LEFT, 2, 300, -1,0.4f,1.6f, -1,2.0f,2.1f);
+		addAttackInfo(DIR_DOWN, 11, RIGHT,2, 300,  1,0.4f,1.6f, -1,2.0f,2.1f);
+		addAttackInfo(DIR_UP,   11, LEFT, 2, 300, -1,0.4f,1.6f, -1,2.0f,2.1f);
+		addAttackInfo(DIR_UP,   11, RIGHT,2, 300,  1,0.4f,1.6f, -1,2.0f,2.1f);
+		
 		if(!bUp)
 		{
 			upBDir = 0;
@@ -1470,69 +1224,34 @@ namespace SmashBros
 			{
 				yvelocity = 0;
 			}
-			switch(playerdir)
-			{
-				case LEFT:
-				{
-					changeAnimation("special_prep_up_left", FORWARD);
-				}
-				break;
-
-				case RIGHT:
-				{
-					changeAnimation("special_prep_up_right", FORWARD);
-				}
-				break;
-			}
+			changeTwoSidedAnimation("special_prep_up", FORWARD);
 		}
 	}
-
+	
 	void Pikachu::attackDownB()
 	{
 		if(!bUp)
 		{
 			awaitingStrike = false;
 			preppingDownB = true;
-			switch(playerdir)
-			{
-				case LEFT:
-				{
-					changeAnimation("special_attack_down_left", FORWARD);
-				}
-				break;
-
-				case RIGHT:
-				{
-					changeAnimation("special_attack_down_right", FORWARD);
-				}
-				break;
-			}
+			changeTwoSidedAnimation("special_attack_down", FORWARD);
 		}
 	}
-
+	
 	void Pikachu::attackSideSmash(byte type) //13
 	{
-		if(!checkItemUseSmash(type) && !bUp)
+		if(!bUp && !checkItemUseSideSmash(type))
 	    {
 	        if(isOnGround())
 	        {
 	        	if(type == STEP_CHARGE)
 	        	{
-	        		AttackTemplates::normalSmash(this,13,3.05,type,1,20,16,24);
+	        		AttackTemplates::normalSmash(this,13,3.05,type,1,2000,16,24);
 	        	}
 	        	else
 	        	{
 		        	winding = true;
-		        	switch(playerdir)
-		        	{
-		        		case LEFT:
-		        		changeAnimation("smash_prep_left",FORWARD);
-		        		break;
-		        		
-		        		case RIGHT:
-		        		changeAnimation("smash_prep_right",FORWARD);
-		        		break;
-		        	}
+					changeTwoSidedAnimation("smash_prep",FORWARD);
 	        	}
 	        }
 	        else
@@ -1541,30 +1260,21 @@ namespace SmashBros
 	        }
 	    }
 	}
-
+	
 	void Pikachu::attackUpSmash(byte type) //14
 	{
-		if(!bUp)
+		if(!bUp && !checkItemUseUpSmash(type))
 	    {
 	        if(isOnGround())
 	        {
 	        	if(type == STEP_CHARGE)
 	        	{
-	        		AttackTemplates::normalSmash(this,14,2.08,type,2,18,14,20);
+	        		AttackTemplates::normalSmash(this,14,2.08,type,2,1800,14,20);
 	        	}
 	        	else
 	        	{
 		        	winding = true;
-		        	switch(playerdir)
-		        	{
-		        		case LEFT:
-		        		changeAnimation("smash_prep_up_left",FORWARD);
-		        		break;
-		        		
-		        		case RIGHT:
-		        		changeAnimation("smash_prep_up_right",FORWARD);
-		        		break;
-		        	}
+		        	changeTwoSidedAnimation("smash_prep_up",FORWARD);
 	        	}
 	        }
 	        else
@@ -1573,30 +1283,21 @@ namespace SmashBros
 	        }
 	    }
 	}
-
+	
 	void Pikachu::attackDownSmash(byte type) //15
 	{
-		if(!bUp)
+		if(!bUp && !checkItemUseDownSmash(type))
 	    {
 	        if(isOnGround())
 	        {
 	        	if(type == STEP_CHARGE)
 	        	{
-	        		AttackTemplates::normalSmash(this,15,2.48,type,3,16,16,24);
+	        		AttackTemplates::normalSmash(this,15,2.48,type,3,1600,16,24);
 	        	}
 	        	else
 	        	{
 		        	winding = true;
-		        	switch(playerdir)
-		        	{
-		        		case LEFT:
-		        		changeAnimation("smash_prep_down_left",FORWARD);
-		        		break;
-		        		
-		        		case RIGHT:
-		        		changeAnimation("smash_prep_down_right",FORWARD);
-		        		break;
-		        	}
+		        	changeTwoSidedAnimation("smash_prep_down",FORWARD);
 	        	}
 	        }
 	        else
@@ -1605,37 +1306,28 @@ namespace SmashBros
 	        }
 	    }
 	}
-
+	
 	void Pikachu::attackFinalSmash()
 	{
 		AttackTemplates::finalSmash(this, 16);
 		finalsmash = true;
 		finalsmashTransition = 1;
-		switch(playerdir)
-		{
-			case LEFT:
-			changeAnimation("finalsmash_begin_left", FORWARD);
-			break;
-
-			case RIGHT:
-			changeAnimation("finalsmash_begin_right", FORWARD);
-			break;
-		}
-		finishFinalsmash = Global::getWorldTime() + 100;
+		changeTwoSidedAnimation("finalsmash_begin", FORWARD);
+		finishFinalsmash = Global::getWorldTime() + 10000;
 	}
-
+	
 	//Projectiles -----------------------------------------------------------------------------------------------
-
+	
 	Pikachu::ThunderboltType::ThunderboltType(byte playerNo, float x1, float y1) : Projectile(playerNo, x1, y1)
 	{
 		//
 	}
-
+	
 	Pikachu::ThunderboltType::~ThunderboltType()
 	{
 		//
 	}
-
+	
 	void Pikachu::ThunderboltType::onPlayerHit(Player*collide, byte dir)
 	{
 		switch(dir)
@@ -1650,7 +1342,7 @@ namespace SmashBros
 			{
 				causeHurtLaunch(collide, -1,1.1f,1.4f, -1,1.1f,1.3f);
 			}
-			causeHurt(collide, RIGHT, 1);
+			causeHurt(collide, RIGHT, 100);
 			break;
 
 			case DIR_RIGHT:
@@ -1663,7 +1355,7 @@ namespace SmashBros
 			{
 				causeHurtLaunch(collide, 1,1.1f,1.4f, -1,1.1f,1.3f);
 			}
-			causeHurt(collide, LEFT, 1);
+			causeHurt(collide, LEFT, 100);
 			break;
 
 			case DIR_UP:
@@ -1671,12 +1363,12 @@ namespace SmashBros
 			if(itemdir==LEFT)
 			{
 				causeHurtLaunch(collide, -1,1.2f,1.9f, -1,2.8f,2.0f);
-				causeHurt(collide, RIGHT, 1);
+				causeHurt(collide, RIGHT, 100);
 			}
 			else if(itemdir==RIGHT)
 			{
 				causeHurtLaunch(collide, 1,1.2f,1.9f, -1,2.8f,2.0f);
-				causeHurt(collide, LEFT, 1);
+				causeHurt(collide, LEFT, 100);
 			}
 			break;
 
@@ -1685,21 +1377,21 @@ namespace SmashBros
 			if(itemdir==LEFT)
 			{
 				causeHurtLaunch(collide, -1,1.2f,1.9f, 1,2.8f,2.0f);
-				causeHurt(collide, RIGHT, 1);
+				causeHurt(collide, RIGHT, 100);
 			}
 			else if(itemdir==RIGHT)
 			{
 				causeHurtLaunch(collide, 1,1.2f,1.9f, 1,2.8f,2.0f);
-				causeHurt(collide, LEFT, 1);
+				causeHurt(collide, LEFT, 100);
 			}
 			break;
 		}
 		destroy();
 	}
-
+	
 	const float Pikachu::Thunderbolt::vel = 3;
 	const float Pikachu::Thunderbolt::incr = 0.6f;
-
+	
 	Pikachu::Thunderbolt::Thunderbolt(byte playerNo, float x1, float y1) : ThunderboltType(playerNo, x1, y1)
 	{
 		projdir = DIR_UP;
@@ -1707,10 +1399,11 @@ namespace SmashBros
 		drift = true;
 		willDie = false;
 		waitFrames = 0;
-		destroyTime = Game::getGameTime() + 1000;
+		destroyTime = Global::getWorldTime() + 1000;
 		
 		Scale = 0.6f;
 		
+		setDeflectable(true);
 		detectAllPlatformsSolid(true);
 		
 		Player*playr = Global::getPlayerActor(playerNo);
@@ -1738,7 +1431,7 @@ namespace SmashBros
 		}
 		yvelocity = vel;
 	}
-
+	
 	Pikachu::Thunderbolt::~Thunderbolt()
 	{
 		for(int i=0; i<trail.size(); i++)
@@ -1746,11 +1439,133 @@ namespace SmashBros
 			trail.get(i)->leader = NULL;
 		}
 	}
-
+	
+	void Pikachu::Thunderbolt::deflect(byte dir)
+	{
+		switch(projdir)
+		{
+			case DIR_UP:
+			switch(dir)
+			{
+				case DIR_LEFT:
+				case DIR_UPLEFT:
+				case DIR_DOWNLEFT:
+				itemdir = LEFT;
+				xvelocity = -std::abs(xvelocity);
+				changeAnimation("left", NO_CHANGE);
+				break;
+				
+				case DIR_RIGHT:
+				case DIR_UPRIGHT:
+				case DIR_DOWNRIGHT:
+				itemdir = RIGHT;
+				xvelocity = std::abs(xvelocity);
+				changeAnimation("right", NO_CHANGE);
+				break;
+				
+				case DIR_UP:
+				yvelocity = -std::abs(yvelocity);
+				break;
+				
+				case DIR_DOWN:
+				yvelocity = std::abs(yvelocity);
+				break;
+			}
+			break;
+			
+			case DIR_DOWN:
+			switch(dir)
+			{
+				case DIR_RIGHT:
+				case DIR_UPRIGHT:
+				case DIR_DOWNRIGHT:
+				itemdir = LEFT;
+				xvelocity = std::abs(xvelocity);
+				changeAnimation("left", NO_CHANGE);
+				break;
+				
+				case DIR_LEFT:
+				case DIR_UPLEFT:
+				case DIR_DOWNLEFT:
+				itemdir = RIGHT;
+				xvelocity = -std::abs(xvelocity);
+				changeAnimation("right", NO_CHANGE);
+				break;
+				
+				case DIR_UP:
+				yvelocity = -std::abs(yvelocity);
+				break;
+				
+				case DIR_DOWN:
+				yvelocity = std::abs(yvelocity);
+				break;
+			}
+			break;
+			
+			case DIR_LEFT:
+			switch(dir)
+			{
+				case DIR_DOWN:
+				case DIR_DOWNLEFT:
+				case DIR_DOWNRIGHT:
+				itemdir = LEFT;
+				yvelocity = -std::abs(yvelocity);
+				changeAnimation("left", NO_CHANGE);
+				break;
+				
+				case DIR_UP:
+				case DIR_UPLEFT:
+				case DIR_UPRIGHT:
+				itemdir = RIGHT;
+				yvelocity = std::abs(yvelocity);
+				changeAnimation("right", NO_CHANGE);
+				break;
+				
+				case DIR_LEFT:
+				xvelocity = -std::abs(xvelocity);
+				break;
+				
+				case DIR_RIGHT:
+				xvelocity = std::abs(xvelocity);
+				break;
+			}
+			break;
+			
+			case DIR_RIGHT:
+			switch(dir)
+			{
+				case DIR_UP:
+				case DIR_UPLEFT:
+				case DIR_UPRIGHT:
+				itemdir = LEFT;
+				yvelocity = -std::abs(yvelocity);
+				changeAnimation("left", NO_CHANGE);
+				break;
+				
+				case DIR_DOWN:
+				case DIR_DOWNLEFT:
+				case DIR_DOWNRIGHT:
+				itemdir = RIGHT;
+				yvelocity = std::abs(yvelocity);
+				changeAnimation("right", NO_CHANGE);
+				break;
+				
+				case DIR_LEFT:
+				xvelocity = std::abs(xvelocity);
+				break;
+				
+				case DIR_RIGHT:
+				xvelocity = -std::abs(xvelocity);
+				break;
+			}
+			break;
+		}
+	}
+	
 	void Pikachu::Thunderbolt::Update(long gameTime)
 	{
 		Projectile::Update(gameTime);
-
+		
 		waitFrames++;
 		if(waitFrames==2)
 		{
@@ -1761,8 +1576,8 @@ namespace SmashBros
 			playr->addProjectileInfo(2, ghost->getID(), x, y, itemdir, this->getID());
 			waitFrames = 0;
 		}
-
-		if(gameTime>=destroyTime)
+		
+		if(Global::getWorldTime()>=destroyTime)
 		{
 			willDie = true;
 			if(drift)
@@ -1770,7 +1585,7 @@ namespace SmashBros
 				destroy();
 			}
 		}
-
+		
 		if(drift)
 		{
 			if(itemdir==LEFT)
@@ -1835,19 +1650,19 @@ namespace SmashBros
 					}
 				}
 				break;
-
+				
 				case DIR_UPLEFT:
 				{
 					//
 				}
 				break;
-
+				
 				case DIR_UPRIGHT:
 				{
 					//
 				}
 				break;
-
+				
 				case DIR_LEFT:
 				{
 					if(stage==0)
@@ -1896,7 +1711,7 @@ namespace SmashBros
 					}
 				}
 				break;
-
+				
 				case DIR_RIGHT:
 				{
 					if(stage==0)
@@ -1945,19 +1760,19 @@ namespace SmashBros
 					}
 				}
 				break;
-
+				
 				case DIR_DOWNLEFT:
 				{
 					//
 				}
 				break;
-
+				
 				case DIR_DOWNRIGHT:
 				{
 					//
 				}
 				break;
-
+				
 				case DIR_DOWN:
 				{
 					if(stage==0)
@@ -2009,7 +1824,16 @@ namespace SmashBros
 			}
 		}
 	}
-
+	
+	void Pikachu::Thunderbolt::setOwner(Player*owner)
+	{
+		Projectile::setOwner(owner);
+		for(int i=0; i<trail.size(); i++)
+		{
+			trail.get(i)->setOwner(owner);
+		}
+	}
+	
 	void Pikachu::Thunderbolt::whilePlatformColliding(Platform*platform, byte dir)
 	{
 		if(willDie)
@@ -2021,7 +1845,7 @@ namespace SmashBros
 			setBoltDir(dir);
 		}
 	}
-
+	
 	void Pikachu::Thunderbolt::setBoltDir(byte dir)
 	{
 		projdir = dir;
@@ -2111,7 +1935,7 @@ namespace SmashBros
 			break;
 		}
 	}
-
+	
 	void Pikachu::Thunderbolt::onPlayerHit(Player*collide, byte dir)
 	{
 		if(isHittable(collide, dir))
@@ -2123,7 +1947,7 @@ namespace SmashBros
 			}
 		}
 	}
-
+	
 	Pikachu::Thunderbolt::ThunderboltGhost::ThunderboltGhost(Thunderbolt*bolt, byte playerNo, byte dir, bool drift, float x1, float y1) : ThunderboltType(playerNo, x1, y1)
 	{
 		Scale = 0.6f;
@@ -2131,7 +1955,7 @@ namespace SmashBros
 		this->drift = drift;
 		leader = bolt;
 		lethal = true;
-
+		
 		Animation*anim;
 		anim = new Animation("left", 12, 2, 1);
 		anim->addFrame("Images/Game/Characters/Pikachu/thunderbolt.png");
@@ -2141,7 +1965,7 @@ namespace SmashBros
 		anim->addFrame("Images/Game/Characters/Pikachu/thunderbolt.png");
 		anim->mirror(true);
 		addAnimation(anim);
-
+		
 		if(dir==LEFT)
 		{
 			changeAnimation("left", FORWARD);
@@ -2150,10 +1974,10 @@ namespace SmashBros
 		{
 			changeAnimation("right", FORWARD);
 		}
-
+		
 		itemdir = dir;
 	}
-
+	
 	Pikachu::Thunderbolt::ThunderboltGhost::~ThunderboltGhost()
 	{
 		if(leader!=NULL)
@@ -2169,7 +1993,15 @@ namespace SmashBros
 			}
 		}
 	}
-
+	
+	void Pikachu::Thunderbolt::ThunderboltGhost::deflect(byte dir)
+	{
+		if(leader!=NULL)
+		{
+			leader->deflect(dir);
+		}
+	}
+	
 	void Pikachu::Thunderbolt::ThunderboltGhost::Update(long gameTime)
 	{
 		Projectile::Update(gameTime);
@@ -2178,7 +2010,7 @@ namespace SmashBros
 			float alpha = getAlpha();
 			alpha += 0.2f;
 			setAlpha(alpha);
-
+			
 			if(alpha>=1)
 			{
 				destroy();
@@ -2187,14 +2019,14 @@ namespace SmashBros
 		else
 		{
 			waitFrames--;
-
+			
 			if(waitFrames<=0)
 			{
 				destroy();
 			}
 		}
 	}
-
+	
 	void Pikachu::Thunderbolt::ThunderboltGhost::onPlayerHit(Player*collide, byte dir)
 	{
 		if(isHittable(collide, dir) && lethal)
@@ -2229,17 +2061,17 @@ namespace SmashBros
 			{
 				causeDamage(collide,17);
 				causeHurtLaunch(collide, -1,2,3.7f, -1,4.1f,2.7f);
-				causeHurt(collide, RIGHT, 4);
+				causeHurt(collide, RIGHT, 400);
 			}
 			else if(collide->x > x)
 			{
 				causeDamage(collide,17);
 				causeHurtLaunch(collide, 1,2,3.7f, -1,4.1f,2.7f);
-				causeHurt(collide, RIGHT, 4);
+				causeHurt(collide, LEFT, 400);
 			}
 		}
 	}
-
+	
 	Pikachu::Lightning::LightningBody::LightningBody(Lightning*leader, byte playerNo, float x1, float y1, boolean frameOn) : LightningType(playerNo, x1, y1)
 	{
 		this->frameOn = frameOn;
@@ -2360,7 +2192,7 @@ namespace SmashBros
 			}
 		}
 	}
-
+	
 	Pikachu::Lightning::Lightning(byte playerNo, float x1, float y1) : LightningType(playerNo, x1, y1)
 	{
 		addAnimation(new Animation("lightning_head", 30, "Images/Game/Characters/Pikachu/lightning_head.png"));
@@ -2368,19 +2200,19 @@ namespace SmashBros
 		anim->addFrame("Images/Game/Characters/Pikachu/lightning_cloud.png");
 		addAnimation(anim);
 		changeAnimation("lightning_head", FORWARD);
-
+		
 		detectAllPlatformsSolid(true);
-
+		
 		Rect borders = Global::currentStage->getBorders();
 		float top = (float)Global::currentStage->y + (float)borders.top;
-
+		
 		y = top + (height/2);
-
+		
 		createdFrame = false;
 		hitGround = false;
 		waitFrames = 0;
 	}
-
+	
 	Pikachu::Lightning::~Lightning()
 	{
 		for(int i=0; i<bodies.size(); i++)
@@ -2389,11 +2221,11 @@ namespace SmashBros
 			body->leader = NULL;
 		}
 	}
-
+	
 	void Pikachu::Lightning::Update(long gameTime)
 	{
 		LightningType::Update(gameTime);
-
+		
 		if(!hitGround)
 		{
 			Player*playr = Global::getPlayerActor(getPlayerNo());
@@ -2410,7 +2242,7 @@ namespace SmashBros
 					changeAnimation("lightning_cloud", FORWARD);
 				}
 			}
-
+			
 			Rect borders = Global::currentStage->getBorders();
 			float bottom = (float)Global::currentStage->y + (float)borders.bottom;
 			if(y>=bottom)
@@ -2424,11 +2256,11 @@ namespace SmashBros
 				changeAnimation("lightning_cloud", FORWARD);
 			}
 		}
-
+		
 		if(waitFrames>=3)
 		{
 			waitFrames = 0;
-
+			
 			for(int i=0; i<bodies.size(); i++)
 			{
 				bodies.get(i)->toggleFrame();
@@ -2448,12 +2280,12 @@ namespace SmashBros
 			waitFrames++;
 		}
 	}
-
+	
 	void Pikachu::Lightning::Draw(Graphics2D&g, long gameTime)
 	{
 		LightningType::Draw(g, gameTime);
 	}
-
+	
 	void Pikachu::Lightning::onAnimationFinish(const String&name)
 	{
 		if(name.equals("lightning_head"))
@@ -2478,7 +2310,7 @@ namespace SmashBros
 			destroy();
 		}
 	}
-
+	
 	void Pikachu::Lightning::whilePlatformColliding(Platform*platform, byte dir)
 	{
 		if(!hitGround)

@@ -1044,16 +1044,7 @@ namespace SmashBros
 		}
 		else if((playr->isOnGround())&&(playr->canDo)&&(!playr->isGrabbing())&&(!playr->hasGrabbed())&&(!playr->isGrabbed()))
 		{
-			switch(playr->playerdir)
-			{
-				case 1:
-				playr->changeAnimation("stand_left", NO_CHANGE);
-				break;
-					
-				case 2:
-				playr->changeAnimation("stand_right", NO_CHANGE);
-				break;
-			}
+			playr->changeTwoSidedAnimation("stand", NO_CHANGE);
 		}
 		if(playr->chargingAttack)
 		{
@@ -1106,16 +1097,7 @@ namespace SmashBros
 			{
 				if((playr->isOnGround())&&(!playr->isGrabbing())&&(!playr->hasGrabbed())&&(!playr->isGrabbed()))
 				{
-					switch(playr->playerdir)
-					{
-						case 1:
-						playr->changeAnimation("stand_left", NO_CHANGE);
-						break;
-							
-						case 2:
-						playr->changeAnimation("stand_right", NO_CHANGE);
-						break;
-					}
+					playr->changeTwoSidedAnimation("stand", NO_CHANGE);
 				}
 			}
 		}
@@ -1232,7 +1214,7 @@ namespace SmashBros
 			playr->down=false;
 			if(playr->hanging && !((joystickDir[pNum]==PrimitiveActor::DIR_UPLEFT || joystickDir[pNum]==PrimitiveActor::DIR_LEFT) && joystickFar[pNum]))
 			{
-				if(playr->playerdir == 1)
+				if(playr->playerdir == Player::LEFT)
 				{
 					playr->hanging=false;
 					playr->climbUp();
@@ -1330,7 +1312,7 @@ namespace SmashBros
 			playr->down=false;
 			if(playr->hanging && !((joystickDir[pNum]==PrimitiveActor::DIR_UPRIGHT || joystickDir[pNum]==PrimitiveActor::DIR_RIGHT) && joystickFar[pNum]))
 			{
-				if(playr->playerdir == 2)
+				if(playr->playerdir == Player::RIGHT)
 				{
 					playr->hanging=false;
 					playr->climbUp();
@@ -1423,12 +1405,12 @@ namespace SmashBros
 				playr->hanging=false;
 				switch(playr->playerdir)
 				{
-					case 1:
+					case Player::LEFT:
 					playr->climbUp();
 					playr->x-=4;
 					break;
 						
-					case 2:
+					case Player::RIGHT:
 					playr->changeAnimation("fall_right", NO_CHANGE);
 					playr->y+=6;
 					break;
@@ -1468,12 +1450,12 @@ namespace SmashBros
 				playr->hanging=false;
 				switch(playr->playerdir)
 				{
-					case 1:
+					case Player::LEFT:
 					playr->climbUp();
 					playr->x-=4;
 					break;
 						
-					case 2:
+					case Player::RIGHT:
 					playr->changeAnimation("fall_right", NO_CHANGE);
 					playr->y+=6;
 					break;
@@ -1506,12 +1488,12 @@ namespace SmashBros
 				playr->hanging=false;
 				switch(playr->playerdir)
 				{
-					case 1:
+					case Player::LEFT:
 					playr->changeAnimation("fall_left", NO_CHANGE);
 					playr->y+=6;
 					break;
 						
-					case 2:
+					case Player::RIGHT:
 					playr->climbUp();
 					playr->x+=4;
 					break;
@@ -1543,7 +1525,7 @@ namespace SmashBros
 			}
 			else
 			{
-				playr->moveRight = 1;
+				playr->moveRight=1;
 			}
 
 			if(playr->hanging && !(joystickDir[pNum]==PrimitiveActor::DIR_DOWNRIGHT && joystickFar[pNum])
@@ -1552,12 +1534,12 @@ namespace SmashBros
 				playr->hanging=false;
 				switch(playr->playerdir)
 				{
-					case 1:
+					case Player::LEFT:
 					playr->changeAnimation("fall_left", NO_CHANGE);
 					playr->y+=6;
 					break;
 						
-					case 2:
+					case Player::RIGHT:
 					playr->climbUp();
 					playr->x+=4;
 					break;
@@ -1585,16 +1567,7 @@ namespace SmashBros
 			playr->checkAttacks();
 			if((playr->isOnGround())&&(playr->canDo)&&(!playr->isGrabbing())&&(!playr->hasGrabbed())&&(!playr->isGrabbed()))
 			{
-				switch(playr->playerdir)
-				{
-					case 1:
-					playr->changeAnimation("crouch_left", NO_CHANGE);
-					break;
-						
-					case 2:
-					playr->changeAnimation("crouch_right", NO_CHANGE);
-					break;
-				}
+				playr->changeTwoSidedAnimation("crouch", NO_CHANGE);
 			}
 		}
 		joystickDir[pNum] = PrimitiveActor::DIR_DOWN;
@@ -1638,7 +1611,7 @@ namespace SmashBros
 			playr->down=false;
 			if(playr->hanging && !(joystickDir[pNum]==PrimitiveActor::DIR_DOWNLEFT && joystickFar[pNum]))
 			{
-				if(playr->playerdir==2)
+				if(playr->playerdir==Player::RIGHT)
 				{
 					playr->hanging=false;
 					playr->changeAnimation("fall_right", NO_CHANGE);
@@ -1717,7 +1690,7 @@ namespace SmashBros
 			playr->down=false;
 			if(playr->hanging && !(joystickDir[pNum]==PrimitiveActor::DIR_DOWNRIGHT && joystickFar[pNum]))
 			{
-				if(playr->playerdir==1)
+				if(playr->playerdir==Player::LEFT)
 				{
 					playr->hanging=false;
 					playr->changeAnimation("fall_left", NO_CHANGE);
@@ -1757,11 +1730,11 @@ namespace SmashBros
 					playr->hanging=false;
 					switch(playr->playerdir)
 					{
-						case 1:
+						case Player::LEFT:
 						playr->x+=4;
 						break;
 						
-						case 2:
+						case Player::RIGHT:
 						playr->changeAnimation("fall_left", NO_CHANGE);
 						playr->y+=6;
 						break;
@@ -1841,12 +1814,12 @@ namespace SmashBros
 	{
 		return joystickEnabled;
 	}
-
+	
 	void Controls::loadControls()
 	{
 		touchControls = new ControlHUD();
 		controls = new int*[Global::possPlayers+1];
-
+		
 		for(int i=0; i<=Global::possPlayers; i++)
 		{
 			controls[i] = new int[10];
@@ -1858,11 +1831,11 @@ namespace SmashBros
 
 		setDefaultControls();
 	}
-
+	
 	void Controls::setDefaultControls()
 	{
 		controls[0][BUTTON_PAUSE]=Keys::ENTER;
-		 
+		
 	    controls[1][BUTTON_UP]=Keys::UPARROW;
 	    controls[1][BUTTON_DOWN]=Keys::DOWNARROW;
 	    controls[1][BUTTON_LEFT]=Keys::LEFTARROW;
@@ -1871,7 +1844,7 @@ namespace SmashBros
 	    controls[1][BUTTON_STANDARD]=Keys::I;
 	    controls[1][BUTTON_SPECIAL]=Keys::O;
 	    controls[1][BUTTON_GRAB]=Keys::U;
-	 
+		
 	    controls[2][BUTTON_UP]=Keys::W;
 	    controls[2][BUTTON_DOWN]=Keys::S;
 	    controls[2][BUTTON_LEFT]=Keys::A;
@@ -1880,7 +1853,7 @@ namespace SmashBros
 	    controls[2][BUTTON_STANDARD]=Keys::X;
 	    controls[2][BUTTON_SPECIAL]=Keys::C;
 	    controls[2][BUTTON_GRAB]=Keys::Z;
-	 
+		
 	    controls[3][BUTTON_UP]=Keys::NUMPAD_8;
 	    controls[3][BUTTON_DOWN]=Keys::NUMPAD_5;
 	    controls[3][BUTTON_LEFT]=Keys::NUMPAD_4;
@@ -1889,7 +1862,7 @@ namespace SmashBros
 	    controls[3][BUTTON_STANDARD]=Keys::NUMPAD_2;
 	    controls[3][BUTTON_SPECIAL]=Keys::NUMPAD_3;
 	    controls[3][BUTTON_GRAB]=Keys::NUMPAD_1;
-	 
+		
 	    controls[4][BUTTON_UP]=Keys::T;
 	    controls[4][BUTTON_DOWN]=Keys::G;
 	    controls[4][BUTTON_LEFT]=Keys::F;
@@ -2108,7 +2081,7 @@ namespace SmashBros
 	    switch(type)
 	    {
 	        case DOWN:
-	        playr->smashTime=Global::worldTime;
+	        playr->smashTime=Global::worldTime+100;
 	        playr->buttondir=1;
 	        playr->checkAttacks();
 	        playr->upKey=true;
@@ -2141,11 +2114,11 @@ namespace SmashBros
 	                case 1:
 	                playr->attackSideSmash(Player::STEP_GO);
 	                break;
-	 
+					
 	                case 2:
 	                playr->attackUpSmash(Player::STEP_GO);
 	                break;
-	 
+					
 	                case 3:
 	                playr->attackDownSmash(Player::STEP_GO);
 	                break;
@@ -2167,7 +2140,7 @@ namespace SmashBros
 	        case DOWN:
 	        playr->buttondir=3;
 	        playr->checkAttacks();
-	        playr->smashTime=Global::worldTime;
+	        playr->smashTime=Global::worldTime+100;
 	        playr->moveDown();
 	        break;
 	 
@@ -2200,16 +2173,7 @@ namespace SmashBros
 	        }
 	        else if((playr->isOnGround())&&(playr->canDo)&&(!playr->chargingAttack)&&(!playr->isGrabbing())&&(!playr->hasGrabbed())&&(!playr->isGrabbed()))
 	        {
-	            switch(playr->playerdir)
-	            {
-	                case 1:
-	                playr->changeAnimation("stand_left", NO_CHANGE);
-	                break;
-	 
-	                case 2:
-	                playr->changeAnimation("stand_right", NO_CHANGE);
-	                break;
-	            }
+	            playr->changeTwoSidedAnimation("stand", NO_CHANGE);
 	        }
 	        if(playr->chargingAttack)
 	        {
@@ -2226,7 +2190,7 @@ namespace SmashBros
 	    {
 	        case DOWN:
 	        playr->buttondir=4;
-	        playr->smashTime=Global::worldTime;
+	        playr->smashTime=Global::worldTime+100;
 	        if((Global::worldTime<=playr->runTime && playr->isOnGround())||(playr->moveRight==2))
 	        {
 	            playr->moveLeft=2;
@@ -2236,7 +2200,7 @@ namespace SmashBros
 	            playr->moveLeft=1;
 	            if(playr->isOnGround())
 	            {
-	                playr->runTime=Global::worldTime+1;
+	                playr->runTime=Global::worldTime+100;
 	            }
 	        }
 	        if(playr->hanging)
@@ -2244,12 +2208,12 @@ namespace SmashBros
 	            playr->hanging=false;
 	            switch(playr->playerdir)
 	            {
-	                case 1:
+	                case Player::LEFT:
 	                playr->climbUp();
 	                playr->x-=4;
 	                break;
-	 
-	                case 2:
+					
+	                case Player::RIGHT:
 	                playr->changeAnimation("fall_right", NO_CHANGE);
 	                playr->y+=6;
 	                break;
@@ -2266,7 +2230,7 @@ namespace SmashBros
 	        }
 	        if(playr->moveLeft==2 && playr->isOnGround())
 	        {
-	            playr->runTime=Global::worldTime;
+	            playr->runTime=Global::worldTime+100;
 	        }
 	        playr->moveLeft=0;
 	        if(playr->chargeSmash>0)
@@ -2290,16 +2254,7 @@ namespace SmashBros
 	        }
 	        else if((playr->isOnGround())&&(playr->canDo)&&(!playr->chargingAttack)&&(!playr->isGrabbing())&&(!playr->hasGrabbed())&&(!playr->isGrabbed()))
 	        {
-	            switch(playr->playerdir)
-	            {
-	                case 1:
-	                playr->changeAnimation("stand_left", NO_CHANGE);
-	                break;
-	 
-	                case 2:
-	                playr->changeAnimation("stand_right", NO_CHANGE);
-	                break;
-	            }
+	            playr->changeTwoSidedAnimation("stand", NO_CHANGE);
 	        }
 	        if(playr->chargingAttack)
 	        {
@@ -2316,7 +2271,7 @@ namespace SmashBros
 	    {
 	        case DOWN:
 	        playr->buttondir=2;
-	        playr->smashTime=Global::worldTime;
+	        playr->smashTime=Global::worldTime+100;
 	        if((Global::worldTime<=playr->runTime && playr->isOnGround())||(playr->moveLeft==2))
 	        {
 	            playr->moveRight=2;
@@ -2326,7 +2281,7 @@ namespace SmashBros
 	            playr->moveRight=1;
 	            if(playr->isOnGround())
 	            {
-	                playr->runTime=Global::worldTime+1;
+	                playr->runTime=Global::worldTime+100;
 	            }
 	        }
 	        if(playr->hanging)
@@ -2334,12 +2289,12 @@ namespace SmashBros
 	            playr->hanging=false;
 	            switch(playr->playerdir)
 	            {
-	            	case 1:
+	            	case Player::LEFT:
 	                playr->changeAnimation("fall_left", NO_CHANGE);
 	                playr->y+=6;
 	                break;
 	                
-	                case 2:
+	                case Player::RIGHT:
 	                playr->climbUp();
 	                playr->x+=4;
 	                break;
@@ -2356,7 +2311,7 @@ namespace SmashBros
 	        }
 	        if(playr->moveRight==2 && playr->isOnGround())
 	        {
-	            playr->runTime=Global::worldTime;
+	            playr->runTime=Global::worldTime+100;
 	        }
 	        playr->moveRight=0;
 	        if(playr->chargeSmash>0)
@@ -2380,16 +2335,7 @@ namespace SmashBros
 	        }
 	        else if((playr->isOnGround())&&(playr->canDo)&&(!playr->chargingAttack)&&(!playr->isGrabbing())&&(!playr->hasGrabbed())&&(!playr->isGrabbed()))
 	        {
-	            switch(playr->playerdir)
-	            {
-	                case 1:
-	                playr->changeAnimation("stand_left", NO_CHANGE);
-	                break;
-	 
-	                case 2:
-	                playr->changeAnimation("stand_right", NO_CHANGE);
-	                break;
-	            }
+	            playr->changeTwoSidedAnimation("stand", NO_CHANGE);
 	        }
 	        if(playr->chargingAttack)
 	        {
@@ -2436,7 +2382,7 @@ namespace SmashBros
 	                case 0:
 	                playr->attackA();
 	                break;
-	 
+					
 	                case 1:
 	                if(Global::worldTime<=playr->smashTime+1)
 	                {

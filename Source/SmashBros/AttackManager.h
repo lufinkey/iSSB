@@ -15,12 +15,13 @@ namespace SmashBros
 			int attackNo;
 			byte playerdir;
 			int damage;
-			int delayTime;
+			long delayTime;
 			int xDir,yDir;
 			float xAmount,xMult,yAmount,yMult;
+			boolean dirIsPixelBased;
 
 			AttackInfo();
-			AttackInfo(int attackNo, byte playerdir, int damage, int delayTime, int xDir,float xAmount,float xMult,int yDir,float yAmount,float yMult);
+			AttackInfo(int attackNo, byte playerdir, int damage, long delayTime, int xDir,float xAmount,float xMult,int yDir,float yAmount,float yMult, boolean dirIsPixelBased = true);
 			virtual ~AttackInfo();
 
 			operator String();
@@ -35,10 +36,10 @@ namespace SmashBros
 		AttackManager();
 		virtual ~AttackManager();
 
-		void addUpAttackInfo(int attackNo, byte playerdir, int damage, int delayTime, int xDir,float xAmount,float xMult,int yDir,float yAmount,float yMult);
-		void addDownAttackInfo(int attackNo, byte playerdir, int damage, int delayTime, int xDir,float xAmount,float xMult,int yDir,float yAmount,float yMult);
-		void addLeftAttackInfo(int attackNo, byte playerdir, int damage, int delayTime, int xDir,float xAmount,float xMult,int yDir,float yAmount,float yMult);
-		void addRightAttackInfo(int attackNo, byte playerdir, int damage, int delayTime, int xDir,float xAmount,float xMult,int yDir,float yAmount,float yMult);
+		void addUpAttackInfo(int attackNo, byte playerdir, int damage, long delayTime, int xDir,float xAmount,float xMult,int yDir,float yAmount,float yMult, boolean dirIsPixelBased = true);
+		void addDownAttackInfo(int attackNo, byte playerdir, int damage, long delayTime, int xDir,float xAmount,float xMult,int yDir,float yAmount,float yMult, boolean dirIsPixelBased = true);
+		void addLeftAttackInfo(int attackNo, byte playerdir, int damage, long delayTime, int xDir,float xAmount,float xMult,int yDir,float yAmount,float yMult, boolean dirIsPixelBased = true);
+		void addRightAttackInfo(int attackNo, byte playerdir, int damage, long delayTime, int xDir,float xAmount,float xMult,int yDir,float yAmount,float yMult, boolean dirIsPixelBased = true);
 
 		AttackInfo*getAttackInfo(byte hitDir, int attackNo, byte playerdir);
 		

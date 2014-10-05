@@ -170,12 +170,19 @@ namespace GameEngine
 	    		currentImageY = 0;
 	    		break;
 	    		
-	    		default:
+	    		case 1:
 	    		currentImageW = imgW/anim->getCols();
 	        	currentImageH = imgH/anim->getRows();
 	    		currentImageX = (anim->getCurrentFrame()%anim->getCols())*currentImageW;
 	            currentImageY = (anim->getCurrentFrame()/anim->getCols())*currentImageH;
 	    		break;
+				
+				case 2:
+				currentImageW = imgW/anim->getCols();
+				currentImageH = imgH/anim->getRows();
+				currentImageX = (anim->getSequenceFrame(anim->getCurrentFrame())%anim->getCols())*currentImageW;
+				currentImageY = (anim->getSequenceFrame(anim->getCurrentFrame())/anim->getCols())*currentImageH;
+				break;
 	    	}
 	    	lastAnim = anim;
 	    	updateSize();
@@ -602,7 +609,7 @@ namespace GameEngine
 	    firstAnimChange = false;
 	}
 
-	void Actor::changeAnimation(String animName, unsigned char dir)
+	void Actor::changeAnimation(const String&animName, unsigned char dir)
 	{
 		Animation*animation = animMgr->get(animName);
 		changeAnimation(animation, dir);
@@ -626,22 +633,27 @@ namespace GameEngine
 	{
 	    //Open for implementation
 	}
-
+	
 	void Actor::addAnimation(Animation*a) //add an animation to Actor's AnimationManager
 	{
 	    animMgr->add(a);
 	}
 	
-	void Actor::removeAnimation(String aName) //removes an animation from Actor's AnimationManager
+	void Actor::removeAnimation(const String&animName) //removes an animation from Actor's AnimationManager
 	{
-	    animMgr->remove(aName);
+	    animMgr->remove(animName);
 	}
-
+	
+	bool Actor::hasAnimation(const String&animName) //checks if Actor has an Animation with the specified name
+	{
+		return animMgr->contains(animName);
+	}
+	
 	Animation*Actor::getAnimation()
 	{
 		return anim;
 	}
-
+	
 	Animation*Actor::getLastAnimation()
 	{
 		return lastAnim;
@@ -779,6 +791,10 @@ namespace GameEngine
 
 	bool Actor::isColliding(Actor*collide)
 	{
+		if(Scale==0 || collide->Scale==0)
+		{
+			return false;
+		}
 		RectF overlap = getOverlapArea(collide);
 		if(overlap.left != -1)
 		{
@@ -1266,6 +1282,16 @@ namespace GameEngine
 	float Actor::getYSpeed()
 	{
 		return ySpeed;
+	}
+	
+	float Actor::getXPrev()
+	{
+		return xprev;
+	}
+	
+	float Actor::getYPrev()
+	{
+		return yprev;
 	}
 		
 	void Actor::setColor(const Color&c) //sets the actor's color tint

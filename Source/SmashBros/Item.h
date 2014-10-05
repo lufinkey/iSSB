@@ -15,18 +15,23 @@ namespace SmashBros
 		friend class Player;
 		friend class Stage;
 	private:
+		typedef struct
+		{
+			byte playerNo;
+			byte dir;
+		} PlayerCollisionArgs;
 		
 		static int nextID;
 		int id;
 		
 		byte type;
 		byte collideType;
-
+		
 		boolean accelGrav;
 		boolean ignoreGoThrough;
-
+		
 		long finishTime;
-
+		
 		boolean dead;
 		boolean isSolid;
 		boolean bound;
@@ -34,28 +39,32 @@ namespace SmashBros
 		boolean held;
 		byte ownerNo;
 		byte holderNo;
-		boolean checkHits;
 		boolean hitState;
+		boolean deflectable;
+		boolean tossOnDiscard;
+		boolean tossing;
 		float offsetX;
 		float offsetY;
-
+		
 		int index;
 		friend class ItemManager;
-
+		
 		CollisionManager playerCollisions;
 		CollisionManager playerHits;
-
+		
 		boolean platformColliding[8];
 		boolean prevPlatformColliding[8];
-
+		
 		boolean groundColliding;
 		boolean prevGroundColliding;
-
+		
 		Platform*currentCollidePlatform[8];
-
-		void pickUp(Player*collide);
-		void discard();
-
+		
+		ArrayList<PlayerCollisionArgs> playerCollideDelays;
+		
+		void whenPickedUp(Player*collide);
+		void whenDiscarded();
+		
 		void platformCollision(Platform*collide, byte dir);
 		void checkPlayerCollision(Player*playr);
 		boolean isHittable(Player*collide);
@@ -65,40 +74,47 @@ namespace SmashBros
 		
 		void handleAddP2PData(DataVoid&data);
 		void handleSetP2PData(byte*&data);
-
+		
 	protected:
 		int itemNo;
 		float weight;
-
+		
 		void setItemOwner(byte owner);
 		void setSolid(boolean toggle);
 		void ignoreGoThroughPlatforms(boolean toggle);
 		void createProjectile(Projectile*p);
 		void setHitState(boolean toggle);
-		void updateHitState(boolean toggle);
+		void setDeflectable(boolean toggle);
 		void setCollideType(byte type);
 		void accelerateGravity(boolean toggle);
+		void enableTossOnDiscard(boolean toggle);
+		void holderItemAnimation();
+		void holderItemAnimation(Player*holder);
 		void causeDamage(Player*collide, int amount);
 		void causeHurtLaunch(Player*collide, int xDir, float xAmount, float xMult, int yDir, float yAmount, float yMult);
 		void causeHurt(Player*collide, byte dir, int time);
-
+		
 	public:
 		static const byte ATTACK_NORMAL = 0;
 		static const byte ATTACK_SIDE = 1;
-		static const byte ATTACK_SMASH = 2;
-
+		static const byte ATTACK_UP = 2;
+		static const byte ATTACK_DOWN = 3;
+		static const byte ATTACK_SIDESMASH = 4;
+		static const byte ATTACK_UPSMASH = 5;
+		static const byte ATTACK_DOWNSMASH = 6;
+		
 		static const byte TYPE_HOLD = 0;
 		static const byte TYPE_WEAR = 1;
 		static const byte TYPE_HAT = 2;
 		static const byte TYPE_WIELD = 3;
 		static const byte TYPE_FOOD = 4;
-
+		
 		static const byte POWERUP_FINALSMASH = 0;
 		static const byte POWERUP_HEAL = 1;
-
+		
 		static const byte COLLIDE_BOX = 1;
 		static const byte COLLIDE_SOLID = 2;
-
+		
 		Item(float x1, float y1, long liveTime, byte type);
 		virtual ~Item();
 		
@@ -107,7 +123,7 @@ namespace SmashBros
 		
 		virtual void addP2PData(DataVoid&data);
 		virtual void setP2PData(byte*&data);
-
+		
 		virtual void Update(long gameTime);
 		virtual void Draw(Graphics2D&g, long gameTime);
 		virtual void onPickUp(Player*collide);
@@ -128,9 +144,12 @@ namespace SmashBros
 		virtual boolean holderCanDo();
 		virtual void onCreate();
 		virtual void onDestroy();
+		virtual void deflect(byte dir);
 		
 		virtual boolean canPickUp();
+		virtual boolean allowsGrabDelay();
 		virtual boolean use(byte attackDir);
+		virtual void toss(byte tossDir);
 		
 		void addAnimation(Animation*a);
 		
@@ -143,7 +162,8 @@ namespace SmashBros
 		void setHoldOffset(float x1, float y1);
 		Player*getPlayer();
 		boolean isHeld();
-		boolean chargeSmash();
+		boolean chargeSmash(byte attackDir);
+		void discard();
 		void destroy();
 		
 		void doPowerUp(Player*collide, byte type, float value);

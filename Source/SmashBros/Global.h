@@ -97,6 +97,7 @@ namespace SmashBros
 		static const int STAGE_HYRULETEMPLE = 4;
 
 		//ITEM CONSTANTS
+		static const int ITEM_CUSTOM = 0;
 		static const int ITEM_SMASHBALL = 1;
 		static const int ITEM_RAYGUN = 2;
 		static const int ITEM_HEARTCONTAINER = 3;

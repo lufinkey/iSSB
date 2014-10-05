@@ -30,9 +30,9 @@ namespace SmashBros
 		public:
 			Blast(byte playerNo, float x1, float y1);
 			virtual ~Blast();
-
-			virtual void Update(long gameTime);
 			
+			virtual void deflect(byte dir);
+			virtual void Update(long gameTime);
 			virtual void onPlayerHit(Player*collide, byte dir);
 		};
 

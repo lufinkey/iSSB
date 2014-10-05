@@ -69,6 +69,10 @@ namespace SmashBros
 
 	byte GameElement::isColliding2(GameElement*collide)
 	{
+		if(Scale==0 || collide->Scale==0)
+		{
+			return 0;
+		}
 		RectF overlap = getOverlapArea(collide);
 		if(overlap.left != -1)
 		{
@@ -430,6 +434,11 @@ namespace SmashBros
 
 	byte GameElement::solidElementCollision(GameElement*collide)
 	{
+		if(Scale==0 || collide->Scale==0)
+		{
+			return 0;
+		}
+		
 		GameEngine::Rectangle r1 = GameEngine::Rectangle((int)x - width/2, (int)y - height/2, width, height);
 		GameEngine::Rectangle r2 = GameEngine::Rectangle((int)(collide->x - collide->width/2),(int)(collide->y - collide->height/2),collide->width,collide->height);
 		GameEngine::Rectangle collideOverlap = getOverlapRect(r2,r1);

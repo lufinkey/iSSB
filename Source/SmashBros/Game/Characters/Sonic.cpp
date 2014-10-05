@@ -35,6 +35,8 @@ namespace SmashBros
 		runSpeed = 10;
 		fallWalk = 2.2f;
 		fallRun = 2.3f;
+		walkAmount = 1;
+		runAmount = 1;
 		
 		weight = 0.1;
 		
@@ -146,6 +148,7 @@ namespace SmashBros
 		addTwoSidedAnimation("jump", "jump.png", 8, 7, 1);
 		addTwoSidedAnimation("jump2", "jump2.png", 8, 7, 1);
 		addTwoSidedAnimation("land", "land.png", 12, 4, 1);
+		addTwoSidedAnimation("skid", "skid.png", 12, 2, 1);
 		addTwoSidedAnimation("fall", "fall.png", 30, 1, 1);
 		addTwoSidedAnimation("hang", "hang.png", 1, 1, 1);
 		addTwoSidedAnimation("crouch", "crouch.png", 1, 1, 1);
@@ -247,8 +250,11 @@ namespace SmashBros
 		Player::Update(gameTime);
 		
 		checkAttacks();
-		updateGravity();
-		updateFrame();
+		if(!finalSmashing)
+		{
+			updateGravity();
+			updateFrame();
+		}
 		
 		setHitbox(-10, -12, 22, 31);
 		
@@ -258,16 +264,7 @@ namespace SmashBros
 		    {
 		        float oldxVel=(float)xVel;
 		        animFinish();
-		        switch(playerdir)
-		        {
-		            case 1:
-		            changeAnimation("special_finish_left", FORWARD);
-		            break;
-		 
-		            case 2:
-		            changeAnimation("special_finish_right", FORWARD);
-		            break;
-		        }
+		        changeTwoSidedAnimation("special_finish", FORWARD);
 		        if(isOnGround())
 		        {
 		            landing=true;
@@ -293,60 +290,31 @@ namespace SmashBros
 		        }
 		        if(moveLeft>0)
 		        {
-		            playerdir=1;
+		            playerdir=LEFT;
 		        }
 		        if(moveRight>0)
 		        {
-		            playerdir=2;
+		            playerdir=RIGHT;
 		        }
-		        switch(playerdir)
-		        {
-		            case 1:
-		            if(xVel>-rollSpeed)
-		            {
-		                turning=true;
-		                playerdir=1;
-		                xVel-=0.5;
-		                attacksHolder=12;
-		                moveLeft=0;
-		                moveRight=0;
-		                changeAnimation("roll_left", NO_CHANGE);
-		            }
-		            else
-		            {
-		                turning=false;
-		                xVel=-rollSpeed;
-		                attacksHolder=12;
-		                playerdir=1;
-		                moveLeft=0;
-		                moveRight=0;
-		                changeAnimation("roll_left", NO_CHANGE);
-		            }
-		            break;
-		 
-		            case 2:
-		            if(xVel<rollSpeed)
-		            {
-		                turning=true;
-		                playerdir=2;
-		                xVel+=0.5;
-		                attacksHolder=12;
-		                moveLeft=0;
-		                moveRight=0;
-		                changeAnimation("roll_right", NO_CHANGE);
-		            }
-		            else
-		            {
-		                turning=false;
-		                xVel=rollSpeed;
-		                attacksHolder=12;
-		                playerdir=2;
-		                moveLeft=0;
-		                moveRight=0;
-		                changeAnimation("roll_right", NO_CHANGE);
-		            }
-		            break;
-		        }
+				
+				if(xVel>(rollSpeed*getPlayerDirMult()))
+				{
+					turning=true;
+					xVel += 0.5f * getPlayerDirMult();
+					attacksHolder=12;
+					moveLeft=0;
+					moveRight=0;
+					changeTwoSidedAnimation("roll", NO_CHANGE);
+				}
+				else
+				{
+					turning=false;
+					xVel = rollSpeed * getPlayerDirMult();
+					attacksHolder=12;
+					moveLeft=0;
+					moveRight=0;
+					changeTwoSidedAnimation("roll", NO_CHANGE);
+				}
 		    }
 		}
 		
@@ -356,16 +324,7 @@ namespace SmashBros
 		    {
 		        animFinish();
 		        yvelocity=-3;
-		        switch(playerdir)
-		        {
-		            case 1:
-		            changeAnimation("special_finish_left", FORWARD);
-		            break;
-		 
-		            case 2:
-		            changeAnimation("special_finish_right", FORWARD);
-		            break;
-		        }
+		        changeTwoSidedAnimation("special_finish", FORWARD);
 		        chargeAttack=0;
 		    }
 		    else
@@ -379,83 +338,41 @@ namespace SmashBros
 		        }
 		        if(moveLeft>0)
 		        {
-		            playerdir=1;
+		            playerdir=LEFT;
 		        }
 		        if(moveRight>0)
 		        {
-		            playerdir=2;
+		            playerdir=RIGHT;
 		        }
-		        switch(playerdir)
-		        {
-		            case 1:
-		            if(xVel>-rocketSpeed)
-		            {
-		                turning=true;
-		                playerdir=1;
-		                xVel-=1;
-		                attacksHolder=14;
-		                moveLeft=0;
-		                moveRight=0;
-		                changeAnimation("roll_left", NO_CHANGE);
-		            }
-		            else
-		            {
-		                turning=false;
-		                xVel=-rocketSpeed;
-		                attacksHolder=14;
-		                playerdir=1;
-		                moveLeft=0;
-		                moveRight=0;
-		                changeAnimation("roll_left", NO_CHANGE);
-		            }
-		            break;
-		 
-		            case 2:
-		            if(xVel<rocketSpeed)
-		            {
-		                turning=true;
-		                playerdir=2;
-		                xVel+=1;
-		                attacksHolder=14;
-		                moveLeft=0;
-		                moveRight=0;
-		                changeAnimation("roll_right", NO_CHANGE);
-		            }
-		            else
-		            {
-		                turning=false;
-		                xVel=rocketSpeed;
-		                attacksHolder=14;
-		                playerdir=2;
-		                moveLeft=0;
-		                moveRight=0;
-		                changeAnimation("roll_right", NO_CHANGE);
-		            }
-		            break;
-		        }
+				
+				if(xVel > (rocketSpeed*getPlayerDirMult()))
+				{
+					turning=true;
+					xVel += 1 * getPlayerDirMult();
+					attacksHolder=14;
+					moveLeft=0;
+					moveRight=0;
+					changeTwoSidedAnimation("roll", NO_CHANGE);
+				}
+				else
+				{
+					turning=false;
+					xVel = rocketSpeed * getPlayerDirMult();
+					attacksHolder=14;
+					moveLeft=0;
+					moveRight=0;
+					changeTwoSidedAnimation("roll", NO_CHANGE);
+				}
 		    }
 		}
 		
 		if(landing && turning && attacksPriority!=7)
 		{
-		    switch(playerdir)
-		    {
-		        case 1:
-		        xVel+=0.2f;
-		        if(xVel>=0)
-		        {
-		            animFinish();
-		        }
-		        break;
-		 
-		        case 2:
-		        xVel-=0.2f;
-		        if(xVel<=0)
-		        {
-		            animFinish();
-		        }
-		        break;
-		    }
+			xVel -= 0.2f * getPlayerDirMult();
+			if((xVel*getPlayerDirMult()) <= 0)
+			{
+				animFinish();
+			}
 		}
 		
 		updateMovement();
@@ -475,22 +392,14 @@ namespace SmashBros
 		    {
 		        if(turning)
 		        {
-		            switch(playerdir)
-		            {
-		                case 1:
-		                changeAnimation("finalsmash_finish_left", NO_CHANGE);
-		                break;
-		 
-		                case 2:
-		                changeAnimation("finalsmash_finish_right", NO_CHANGE);
-		                break;
-		            }
+		            changeTwoSidedAnimation("finalsmash_finish", NO_CHANGE);
 		            x=xprevious;
 		            y=yprevious;
 		            xvelocity=0;
+					yvelocity=0;
+					setHanging(false);
 		            landing=true;
 		            turning=true;
-		            yvelocity=0;
 		            setCantDo();
 		            attacksHolder=-1;
 		            chargeSmash=0;
@@ -498,16 +407,7 @@ namespace SmashBros
 		        }
 		        else
 		        {
-		            switch(playerdir)
-		            {
-		                case 1:
-		                changeAnimation("finalsmash_finish_left", FORWARD);
-		                break;
-		 
-		                case 2:
-		                changeAnimation("finalsmash_finish_right", FORWARD);
-		                break;
-		            }
+					changeTwoSidedAnimation("finalsmash_finish", FORWARD);
 		            Emeralds*emeralds = new Emeralds(getPlayerNo(), x, y);
 		            emeralds->changeAnimation("disappear", FORWARD);
 		            createProjectile(emeralds);
@@ -524,163 +424,101 @@ namespace SmashBros
 		    }
 		    else
 		    {
+				setHanging(false);
+				setJumping(false);
 		        x=xprevious;
 		        y=yprevious;
-		        setHanging(false);
+				xvelocity = 0;
+				yvelocity = 0;
 		        landing=false;
-		        setJumping(false);
 		        attacksHolder=-1;
 		        chargeSmash=0;
 		        chargeAttack=0;
 		        if(turning)
 		        {
-		            switch(playerdir)
-		            {
-		                case 1:
-		                changeAnimation("finalsmash_transform_left", NO_CHANGE);
-		                break;
-		 
-		                case 2:
-		                changeAnimation("finalsmash_transform_right", NO_CHANGE);
-		                break;
-		            }
+		            changeTwoSidedAnimation("finalsmash_transform", NO_CHANGE);
 		        }
 		        else
 		        {
-		            if(moveLeft>0)
-		            {
-		            	String animName = getAnimName();
-		                if(animName.equals("finalsmash_stand_left") || animName.equals("finalsmash_stand_right"))
-		                {
-		                    playerdir=1;
-		                    changeAnimation("finalsmash_turn_left", FORWARD);
-		                }
-		                else if(animName.equals("finalsmash_turn_left"))
-		                {
-		                    playerdir=1;
-		                    int animpos = this->getCurrentFrame();
-		                    if(animpos<=0)
-		                    {
-		                        x-=sonicSpeedRun*(float).25;
-		                    }
-		                    else if(animpos<=1)
-		                    {
-		                        x-=sonicSpeedRun*(float).5;
-		                    }
-		                    else
-		                    {
-		                        x-=sonicSpeedRun*(float).75;
-		                    }
-		                }
-		                else
-		                {
-		                    x-=sonicSpeedRun;
-		                    playerdir=1;
-		                    changeAnimation("finalsmash_run_left", NO_CHANGE);
-		                }
-		            }
-		            else if(moveRight>0)
-		            {
-		            	String animName = getAnimName();
-		                if(animName.equals("finalsmash_stand_right") || animName.equals("finalsmash_stand_left"))
-		                {
-		                    playerdir=2;
-		                    changeAnimation("finalsmash_turn_right", FORWARD);
-		                }
-		                else if(animName.equals("finalsmash_turn_right"))
-		                {
-		                    playerdir=1;
-		                    int animpos = getCurrentFrame();
-		                    if(animpos<=0)
-		                    {
-		                        x+=sonicSpeedRun*(float).25;
-		                    }
-		                    else if(animpos<=1)
-		                    {
-		                        x+=sonicSpeedRun*(float).5;
-		                    }
-		                    else
-		                    {
-		                        x+=sonicSpeedRun*(float).75;
-		                    }
-		                }
-		                else
-		                {
-		                    x+=sonicSpeedRun;
-		                    playerdir=2;
-		                    changeAnimation("finalsmash_run_right", NO_CHANGE);
-		                }
-		            }
-		            else
-		            {
-		            	String animName = getAnimName();
-		                switch(playerdir)
-		                {
-		                    case 1:
-		                    if(animName.equals("finalsmash_run_left"))
-		                    {
-		                        changeAnimation("finalsmash_stop_left", FORWARD);
-		                    }
-		                    else if(animName.equals("finalsmash_stop_left"))
-		                    {
-		                        playerdir=1;
-		                        int animpos = getCurrentFrame();
-		                        if(animpos<=0)
-		                        {
-		                            x-=sonicSpeedRun*(float).75;
-		                        }
-		                        else if(animpos<=1)
-		                        {
-		                            x-=sonicSpeedRun*(float).5;
-		                        }
-		                        else
-		                        {
-		                            x-=sonicSpeedRun*(float).25;
-		                        }
-		                    }
-		                    else
-		                    {
-		                        changeAnimation("finalsmash_stand_left", NO_CHANGE);
-		                    }
-		                    break;
-		 
-		                    case 2:
-		                    if(animName.equals("finalsmash_run_right"))
-		                    {
-		                        changeAnimation("finalsmash_stop_right", FORWARD);
-		                    }
-		                    else if(animName.equals("finalsmash_stop_right"))
-		                    {
-		                        playerdir=2;
-		                        int animpos = getCurrentFrame();
-		                        if(animpos<=0)
-		                        {
-		                            x+=sonicSpeedRun*(float).75;
-		                        }
-		                        else if(animpos<=1)
-		                        {
-		                            x+=sonicSpeedRun*(float).5;
-		                        }
-		                        else
-		                        {
-		                            x+=sonicSpeedRun*(float).25;
-		                        }
-		                    }
-		                    else
-		                    {
-		                        changeAnimation("finalsmash_stand_right", NO_CHANGE);
-		                    }
-		                    break;
-		                }
-		            }
-		            if(upKey)
-		            {
-		                y-=sonicSpeedRun;
-		            }
-		            else if(down)
-		            {
-		                y+=sonicSpeedRun;
-		            }
+					bool moving = false;
+					if(moveLeft>0)
+					{
+						moving = true;
+						setPlayerDir(LEFT);
+					}
+					else if(moveRight>0)
+					{
+						moving = true;
+						setPlayerDir(RIGHT);
+					}
+					if(moving)
+					{
+						String animName = getAnimName();
+						String suffix = getPlayerDirSuffix();
+						if(animName.equals("finalsmash_stand_left") || animName.equals("finalsmash_stand_right"))
+						{
+							changeTwoSidedAnimation("finalsmash_turn", FORWARD);
+						}
+						else if(animName.equals((String)"finalsmash_turn" + suffix))
+						{
+							int animpos = this->getCurrentFrame();
+							if(animpos<=0)
+							{
+								x += sonicSpeedRun*0.25f * getPlayerDirMult();
+							}
+							else if(animpos<=1)
+							{
+								x += sonicSpeedRun*0.5f * getPlayerDirMult();
+							}
+							else
+							{
+								x += sonicSpeedRun*0.75f * getPlayerDirMult();
+							}
+						}
+						else
+						{
+							x += sonicSpeedRun * getPlayerDirMult();
+							changeTwoSidedAnimation("finalsmash_run", NO_CHANGE);
+						}
+					}
+					else
+					{
+						String animName = getAnimName();
+						String suffix = getPlayerDirSuffix();
+						
+						if(animName.equals((String)"finalsmash_run"+suffix))
+						{
+							changeTwoSidedAnimation("finalsmash_stop", FORWARD);
+						}
+						else if(animName.equals((String)"finalsmash_stop"+suffix))
+						{
+							int animpos = getCurrentFrame();
+							if(animpos<=0)
+							{
+								x += sonicSpeedRun*0.75f * getPlayerDirMult();
+							}
+							else if(animpos<=1)
+							{
+								x += sonicSpeedRun*0.5f * getPlayerDirMult();
+							}
+							else
+							{
+								x += sonicSpeedRun*0.25f * getPlayerDirMult();
+							}
+						}
+						else
+						{
+							changeTwoSidedAnimation("finalsmash_stand", NO_CHANGE);
+						}
+					}
+					if(upKey)
+					{
+						y-=sonicSpeedRun;
+					}
+					else if(down)
+					{
+						y+=sonicSpeedRun;
+					}
 		        }
 		    }
 		    
@@ -730,42 +568,15 @@ namespace SmashBros
 			turning=false;
 			landing=false;
 			attacksPriority=7;
-			switch(playerdir)
-			{
-			    case 1:
-			    changeAnimation("finalsmash_stand_left", FORWARD);
-			    break;
-			 
-			    case 2:
-			    changeAnimation("finalsmash_stand_right", FORWARD);
-			    break;
-			}
+			changeTwoSidedAnimation("finalsmash_stand", FORWARD);
 		}
 		else if(n.equals("finalsmash_stop_left") || n.equals("finalsmash_stop_right"))
 		{
-			switch(playerdir)
-			{
-				case LEFT:
-				changeAnimation("finalsmash_stand_left",FORWARD);
-				break;
-				
-				case RIGHT:
-				changeAnimation("finalsmash_stand_right",FORWARD);
-				break;
-			}
+			changeTwoSidedAnimation("finalsmash_stand",FORWARD);
 		}
 		else if(n.equals("finalsmash_turn_left") || n.equals("finalsmash_turn_right"))
 		{
-			switch(playerdir)
-			{
-				case LEFT:
-				changeAnimation("finalsmash_run_left",FORWARD);
-				break;
-				
-				case RIGHT:
-				changeAnimation("finalsmash_run_right",FORWARD);
-				break;
-			}
+			changeTwoSidedAnimation("finalsmash_run",FORWARD);
 		}
 		else if(n.equals("finalsmash_finish_left") || n.equals("finalsmash_finish_right"))
 		{
@@ -784,16 +595,16 @@ namespace SmashBros
 		{
 			if(isOnGround())
 			{
-				AttackTemplates::dropAirDownA(this, STEP_FINISH, 10, 3.545, 7, 2);
+				AttackTemplates::dropAirDownA(this, STEP_FINISH, 10, 3.545, 7, 3);
 			}
 			else
 			{
-				AttackTemplates::dropAirDownA(this, STEP_GO, 10, 3.545, 7, 2);
+				AttackTemplates::dropAirDownA(this, STEP_GO, 10, 3.545, 7, 3);
 			}
 		}
 		else if(n.equals("air_attack_down_left")|| n.equals("air_attack_down_right"))
 		{
-			AttackTemplates::dropAirDownA(this, STEP_FINISH, 10, 3.545, 7, 2);
+			AttackTemplates::dropAirDownA(this, STEP_FINISH, 10, 3.545, 7, 3);
 		}
 		else if(n.equals("air_land_down_left")|| n.equals("air_land_down_right"))
 		{
@@ -810,18 +621,8 @@ namespace SmashBros
 		else if(n.equals("special_attack_left") || n.equals("special_attack_right"))
 		{
 			animFinish();
-			switch(playerdir)
-			{
-				case LEFT:
-				changeAnimation("special_finish_left", FORWARD);
-				xvelocity=1;
-				break;
-				
-				case RIGHT:
-				changeAnimation("special_finish_right", FORWARD);
-				xvelocity=-1;
-				break;
-			}
+			changeTwoSidedAnimation("special_finish", FORWARD);
+			xvelocity = -1 * getPlayerDirMult();
 			yvelocity=-1;
 		}
 		else if(n.equals("special_prep_side_left") || n.equals("special_prep_side_right"))
@@ -847,33 +648,14 @@ namespace SmashBros
 		}
 		else if(attacksHolder==11)
 		{
-		    switch(playerdir)
-		    {
-		        case 1:
-		        animFinish();
-		        changeAnimation("special_finish_left", FORWARD);
-		        break;
-		 
-		        case 2:
-		        animFinish();
-		        changeAnimation("special_finish_right", FORWARD);
-		        break;
-		    }
+		    animFinish();
+			changeTwoSidedAnimation("special_finish", FORWARD);
 		    landing = true;
 		}
 		else if((attacksHolder==13)&&(yvelocity>=0))
 		{
 		    yvelocity=-6;
-		    switch(playerdir)
-		    {
-		        case 1:
-		        changeAnimation("special_land_down_left", FORWARD);
-		        break;
-		 
-		        case 2:
-		        changeAnimation("special_land_down_right", FORWARD);
-		        break;
-		    }
+		    changeTwoSidedAnimation("special_land_down", FORWARD);
 		}
 	}
 	
@@ -887,992 +669,605 @@ namespace SmashBros
 		switch(dir)
 		{
 			case DIR_LEFT:
-		    switch(attacksHolder)
-		    {
-		        case 0:
-		        //A
-		        if(hitAmount==0 && playerdir==LEFT)
-		        {
-			        causeDamage(collide,2);
-			        collide->y-=3;
-			        collide->x+=1;
-			        causeHurt(collide, RIGHT, 1);
-			        hitAmount++;
-		        }
-		        break;
-		 
-		        case 1:
-		        //A
-		        if(hitAmount==0 && playerdir==LEFT)
-		        {
-			        causeDamage(collide,2);
-			        collide->y-=3;
-			        collide->x+=1;
-			        causeHurt(collide, RIGHT, 1);
-			        hitAmount++;
-		        }
-		        break;
-		 
-		        case 2:
-		        //A 3
-		        if(hitAmount==0 && playerdir==LEFT)
-		        {
-			        causeDamage(collide,3);
-			        causeHurtLaunch(collide,-1,2.2f,2.9f, -1,2,1.9f);
-			        causeHurt(collide, RIGHT, 4);
-			        hitAmount++;
-		        }
-		        break;
-		 
-		        case 8:
-		        //A Air Side
-		        if(playerdir==LEFT)
-		        {
-			        switch(hitAmount)
-			        {
-			            case 0:
-			            case 1:
-			            causeDamage(collide,4);
-			            collide->x-=3;
-			            collide->y-=4;
-			            x-=15;
-			            if(yvelocity>-2)
-			            {
-			                yvelocity=-2;
-			            }
-			            hitAmount+=1;
-			            causeHurt(collide, RIGHT, 3);
-			            break;
-			 
-			            case 2:
-			            causeDamage(collide,5);
-			            causeHurtLaunch(collide,-1,3.2f,5.34f, -1,2.1f,2.9f);
-			            causeHurt(collide, RIGHT, 6);
-			            hitAmount+=1;
-			            break;
-			        }
-		        }
-		        break;
-		 
-		        case 11:
-		        //B
-		        {
-		        	double dist;
-				    int multX=1;
-				    int multY=1;
-				    float distX;
-				    float distY;
-			        causeDamage(collide,8);
-			        dist=distance(x,y,collide->x,collide->y);
-			        distX=(float)(((collide->x - x)/dist)*4);
-			        distY=(float)(((collide->y - y)/dist)*4);
-			        if(distX<0)
-			        {
-			            multX=-1;
-			        }
-			        if(distY<0)
-			        {
-			            multY=-1;
-			        }
-			        causeHurtLaunch(collide,multX,std::abs(distX),3.04f, multY,std::abs(distY),3.04f);
-			        causeHurt(collide, RIGHT, 5);
-			        yvelocity/=std::abs(yvelocity);
-			        yvelocity*=-3;
-			        xvelocity/=std::abs(xvelocity);
-			        xvelocity*=-3;
-					if(std::abs(xvelocity)>4)
-					{
-						xvelocity = (xvelocity/std::abs(xvelocity))*3;
-					}
-					if(std::abs(yvelocity)>4)
-					{
-						yvelocity = (yvelocity/std::abs(yvelocity))*3;
-					}
-			        animFinish();
-			        changeAnimation("special_finish_left", FORWARD);
-			        bUp=false;
-			        landing = true;
-		        }
-		        break;
-		        
-		        case 12:
-		        //B side
-		        {
-		        	double dist;
-				    int multX=1;
-				    int multY=1;
-				    float distX;
-				    float distY;
-			        causeDamage(collide,15);
-			        dist=distance(x,y,collide->x,collide->y);
-			        distX=(float)(((collide->x - x)/dist)*1.2);
-					distY=(float)(((collide->y - y)/dist)*1.2);   
-			        if(distX<0)
-			        {
-			            multX=-1;
-			        }
-			        if(distY<0)
-			        {
-			            multY=-1;
-			        }
-			        if(collide->isOnGround())
-			        {
-			        	switch(playerdir)
-			        	{
-			        		case LEFT:
-			            	causeHurtLaunch(collide,multX,std::abs(distX),3.89f, -1,2.82f,3.89f);
-			            	break;
-			            	
-			        		case RIGHT:
-			        		causeHurtLaunch(collide,multX,std::abs(distX),3.89f, -1,1.12f,3.89f);
-			        		break;
-			        	}
-			        }
-			        else
-			        {
-			            causeHurtLaunch(collide,multX,std::abs(distX),3.89f, multY,std::abs(distY),3.89f);
-			        }
-			        causeHurt(collide, RIGHT, 5);
-		        }
-		        break;
-		 
-		        case 13:
-		        //B Air Down
-		        {
-		        	double dist;
-				    int multX=1;
-				    int multY=1;
-				    float distX;
-				    float distY;
-			        causeDamage(collide,13);
-			        dist=distance(x,y,collide->x,collide->y);
-			        distX=(float)(((collide->x - x)/dist)*3.72);
-			        distY=(float)(((collide->y - y)/dist)*3.72);
-			        if(distX<0)
-			        {
-			            multX=-1;
-			        }
-			        if(distY<0)
-			        {
-			            multY=-1;
-			        }
-			        if(collide->isOnGround())
-			        {
-			            causeHurtLaunch(collide,multX,std::abs(distX),5.98f, -1,3.72f,5.78f);
-			        }
-			        else
-			        {
-			            causeHurtLaunch(collide,multX,std::abs(distX),5.98f, multY,std::abs(distY),5.98f);
-			        }
-			        causeHurt(collide, RIGHT, 6);
-		        }
-		        break;
-		        
-		        case 14:
-		        //B Down
-			    if(!turning)
-		        {
-		        	double dist;
-				    int multX=1;
-				    float distX;
-		            causeDamage(collide,smashPower);
-		            dist=distance(x,y,collide->x,collide->y);
-		            distX=(float)(((collide->x - x)/dist)*1.72);
-		            if(distX<0)
-		            {
-		                multX=-1;
-		            }
-		            causeHurtLaunch(collide,multX,std::abs(distX),((float)smashPower/4), -1,3.4f,((float)smashPower/4));
-		            causeHurt(collide, RIGHT, 6);
-		        }
-		        break;
-		 
-		        case 15:
-		        //Smash Side
-		        if(playerdir==LEFT)
-		        {
-			        causeDamage(collide,smashPower);
-			        causeHurtLaunch(collide,-1,3.23f,((float)smashPower/4), -1,1.4f,((float)smashPower/4));
-			        causeHurt(collide, RIGHT, smashPower/3);
-		        }
-		        break;
-		 
-		        case 17:
-		        //Smash Down
-	        	causeDamage(collide,smashPower);
-	        	causeHurtLaunch(collide,-1,2.43f,((float)smashPower/4), -1,5.64f,((float)smashPower/4));
-	        	causeHurt(collide, RIGHT, smashPower/3);
-		        break;
-		    }
-		    if(attacksPriority==7)
-		    {
-		        //final smash
-		    	double dist;
-			    int multX=1;
-			    int multY=1;
-			    float distX;
-			    float distY;
-		        causeDamage(collide,20);
-		        dist=distance(x,y,collide->x,collide->y);
-		        distX=(float)(((collide->x - x)/dist)*6);
-		        distY=(float)(((collide->y - y)/dist)*6);
-		        if(distX<0)
-		        {
-		            multX=-1;
-		        }
-		        if(distY<0)
-		        {
-		            multY=-1;
-		        }
-		        collide->y-=5;
-		        causeHurtLaunch(collide,multX,std::abs(distX),6, multY,std::abs(distY),6);
-		        causeHurt(collide, RIGHT, 4);
-		    }
-			break;
-			
 			case DIR_RIGHT:
-		    switch(attacksHolder)
-		    {
-		        case 0:
-		        //A
-		        if(hitAmount==0 && playerdir==RIGHT)
-		        {
-			        causeDamage(collide,2);
-			        collide->y-=3;
-			        collide->x-=1;
-			        causeHurt(collide, LEFT, 1);
-			        hitAmount++;
-		        }
-		        break;
-		 
-		        case 1:
-		        //A
-		        if(hitAmount==0 && playerdir==RIGHT)
-		        {
-			        causeDamage(collide,2);
-			        collide->y-=3;
-			        collide->x-=1;
-			        causeHurt(collide, LEFT, 1);
-			        hitAmount++;
-		        }
-		        break;
-		 
-		        case 2:
-		        //A 3
-		        if(hitAmount==0 && playerdir==RIGHT)
-		        {
-			        causeDamage(collide,3);
-			        causeHurtLaunch(collide,1,2.2f,2.9f, -1,2,1.9f);
-			        causeHurt(collide, LEFT, 4);
-			        hitAmount++;
-		        }
-		        break;
-		 
-		        case 8:
-		        //A Air Side
-		        if(playerdir==RIGHT)
-		        {
-			        switch(hitAmount)
-			        {
-			            case 0:
-			            case 1:
-			            causeDamage(collide,4);
-			            collide->x+=3;
-			            collide->y-=4;
-			            x+=15;
-			            if(yvelocity>-2)
-			            {
-			                yvelocity=-2;
-			            }
-			            hitAmount+=1;
-			            causeHurt(collide, LEFT, 3);
-			            break;
-			 
-			            case 2:
-			            causeDamage(collide,5);
-			            causeHurtLaunch(collide,1,3.2f,5.34f, -1,2.1f,2.9f);
-			            causeHurt(collide, LEFT, 6);
-			            hitAmount+=1;
-			            break;
-			        }
-		        }
-		        break;
-		        
-		        case 11:
-		        //B
-	        	{
-		        	double dist;
-				    int multX=1;
-				    int multY=1;
-				    float distX;
-				    float distY;
-			        causeDamage(collide,8);
-			        dist=distance(x,y,collide->x,collide->y);
-			        distX=(float)(((collide->x - x)/dist)*4);
-			        distY=(float)(((collide->y - y)/dist)*4);
-			        if(distX<0)
-			        {
-			            multX=-1;
-			        }
-			        if(distY<0)
-			        {
-			            multY=-1;
-			        }
-			        causeHurtLaunch(collide,multX,std::abs(distX),3.04f, multY,std::abs(distY),3.04f);
-			        causeHurt(collide, LEFT, 5);
-			        yvelocity/=std::abs(yvelocity);
-			        yvelocity*=-3;
-			        xvelocity/=std::abs(xvelocity);
-			        xvelocity*=-3;
-					if(std::abs(xvelocity)>4)
+			if(compareDirPlayerDir(dir, getPlayerDir())==CMPDIRPDIR_EQUAL)
+			{
+				switch(attacksHolder)
+				{
+					case 0:
+					//A
+					if(hitAmount==0)
 					{
-						xvelocity = (xvelocity/std::abs(xvelocity))*3;
+						causeDamage(collide,2);
+						collide->y -= 3;
+						collide->x -= 1 * getPlayerDirMult();
+						causeHurt(collide, getOppPlayerDir(), 100);
+						hitAmount++;
 					}
-					if(std::abs(yvelocity)>4)
+					break;
+					
+					case 1:
+					//A
+					if(hitAmount==0)
 					{
-						yvelocity = (yvelocity/std::abs(yvelocity))*3;
+						causeDamage(collide,2);
+						collide->y -= 3;
+						collide->x -= 1 * getPlayerDirMult();
+						causeHurt(collide, getOppPlayerDir(), 100);
+						hitAmount++;
 					}
-			        animFinish();
-			        changeAnimation("special_finish_right", FORWARD);
-			        bUp=false;
-			        landing = true;
-	        	}
-		        break;
-		        
-		        case 12:
-		        //B Side
-	        	{
-		        	double dist;
-				    int multX=1;
-				    int multY=1;
-				    float distX;
-				    float distY;
-			        causeDamage(collide,15);
-			        dist=distance(x,y,collide->x,collide->y);
-			        distX=(float)(((collide->x - x)/dist)*1.2);
-			        distY=(float)(((collide->y - y)/dist)*1.2);
-			        if(distX<0)
-			        {
-			            multX=-1;
-			        }
-			        if(distY<0)
-			        {
-			            multY=-1;
-			        }
-			        if(collide->isOnGround())
-			        {
-			        	switch(playerdir)
-			        	{
-			        		case LEFT:
-			        		causeHurtLaunch(collide,multX,std::abs(distX),3.89f, -1,1.12f,3.89f);
-			        		break;
-			        		
-			        		case RIGHT:
-			        		causeHurtLaunch(collide,multX,std::abs(distX),3.89f, -1,2.82f,3.89f);
-			        		break;
-			        	}
-			            
-			        }
-			        else
-			        {
-			            causeHurtLaunch(collide,multX,std::abs(distX),3.89f, multY,std::abs(distY),3.89f);
-			        }
-			        causeHurt(collide, LEFT, 5);
-	        	}
-		        break;
-		        
-		        case 13:
-		        //B Air Down
-		        {
-		        	double dist;
-				    int multX=1;
-				    int multY=1;
-				    float distX;
-				    float distY;
-			        causeDamage(collide,13);
-			        dist=distance(x,y,collide->x,collide->y);
-			        distX=(float)(((collide->x - x)/dist)*3.72);
-			        distY=(float)(((collide->y - y)/dist)*3.72);
-			        if(distX<0)
-			        {
-			            multX=-1;
-			        }
-			        if(distY<0)
-			        {
-			            multY=-1;
-			        }
-			        if(collide->isOnGround())
-			        {
-			            causeHurtLaunch(collide,multX,std::abs(distX),5.98f, -1,3.72f,5.78f);
-			        }
-			        else
-			        {
-			            causeHurtLaunch(collide,multX,std::abs(distX),5.98f, multY,std::abs(distY),5.98f);
-			        }
-			        causeHurt(collide, LEFT, 6);
-		        }
-		        break;
-		        
-		        case 14:
-		        //B Down
-		        if(!turning)
-		        {
-		        	double dist;
-				    int multX=1;
-				    float distX;
-		            causeDamage(collide,smashPower);
-		            dist=distance(x,y,collide->x,collide->y);
-			        distX=(float)(((collide->x - x)/dist)*1.72);
-		            if(distX<0)
-		            {
-		                multX=-1;
-		            }
-		            causeHurtLaunch(collide,multX,std::abs(distX),((float)smashPower/4), -1,3.4f,((float)smashPower/4));
-		            causeHurt(collide, LEFT, 6);
-		        }
-		        break;
-		 
-		        case 15:
-		        //Smash Side
-		        if(playerdir==RIGHT)
-		        {
-			        causeDamage(collide,smashPower);
-			        causeHurtLaunch(collide,1,3.23f,((float)smashPower/4), -1,1.4f,((float)smashPower/4));
-			        causeHurt(collide, LEFT, smashPower/3);
-		        }
-		        break;
-		 
-		        case 17:
-		        //Smash Down
-	        	causeDamage(collide,smashPower);
-		        causeHurtLaunch(collide,1,2.43f,((float)smashPower/4), -1,5.64f,((float)smashPower/4));
-		        causeHurt(collide, LEFT, smashPower/3);
-		        break;
-		    }
-		    if(attacksPriority==7)
-		    {
-		        //final smash
-		    	double dist;
-			    int multX=1;
-			    int multY=1;
-			    float distX;
-			    float distY;
-		        causeDamage(collide,20);
-		        collide->y-=5;
-		        dist=distance(x,y,collide->x,collide->y);
-		        distX=(float)(((collide->x - x)/dist)*6);
-		        distY=(float)(((collide->y - y)/dist)*6);
-		        if(distX<0)
-		        {
-		            multX=-1;
-		        }
-		        if(distY<0)
-		        {
-		            multY=-1;
-		        }
-		        causeHurtLaunch(collide,multX,std::abs(distX),6, multY,std::abs(distY),6);
-		        causeHurt(collide, LEFT, 4);
-		    }
+					break;
+					
+					case 2:
+					//A 3
+					if(hitAmount==0)
+					{
+						causeDamage(collide,3);
+						causeHurtLaunch(collide, (int)getPlayerDirMult(),2.2f,2.9f, -1,2,1.9f);
+						causeHurt(collide, getOppPlayerDir(), 400);
+						hitAmount++;
+					}
+					break;
+					
+					case 8:
+					//A Air Side
+					switch(hitAmount)
+					{
+						case 0:
+						case 1:
+						causeDamage(collide,4);
+						collide->x += 3 * getPlayerDirMult();
+						collide->y -= 4;
+						x += 15 * getPlayerDirMult();
+						if(yvelocity>-2)
+						{
+							yvelocity=-2;
+						}
+						hitAmount+=1;
+						causeHurt(collide, getOppPlayerDir(), 300);
+						break;
+						
+						case 2:
+						causeDamage(collide,5);
+						causeHurtLaunch(collide, (int)getPlayerDirMult(),3.2f,5.34f, -1,2.1f,2.9f);
+						causeHurt(collide, getOppPlayerDir(), 600);
+						hitAmount+=1;
+						break;
+					}
+					break;
+					
+					case 15:
+					//Smash Side
+					causeDamage(collide,smashPower);
+					causeHurtLaunch(collide, (int)getPlayerDirMult(),3.23f,((float)smashPower/4), -1,1.4f,((float)smashPower/4));
+					causeHurt(collide, getOppPlayerDir(), 300);
+					break;
+				}
+			}
+			switch(attacksHolder)
+			{
+				case 11:
+				//B
+				{
+					double dist;
+					int multX=1;
+					int multY=1;
+					float distX;
+					float distY;
+					causeDamage(collide,8);
+					dist=distance(x,y,collide->x,collide->y);
+					distX=(float)(((collide->x - x)/dist)*4);
+					distY=(float)(((collide->y - y)/dist)*4);
+					if(distX<0)
+					{
+						multX=-1;
+					}
+					if(distY<0)
+					{
+						multY=-1;
+					}
+					causeHurtLaunch(collide, multX,std::abs(distX),3.04f, multY,std::abs(distY),3.04f);
+					causeHurt(collide, RIGHT, 500);
+					yvelocity /= std::abs(yvelocity);
+					yvelocity *= -3;
+					xvelocity /= std::abs(xvelocity);
+					xvelocity *= -3;
+					animFinish();
+					changeTwoSidedAnimation("special_finish", FORWARD);
+					bUp=false;
+					landing = true;
+				}
+				break;
+				
+				case 12:
+				//B side
+				{
+					double dist;
+					int multX=1;
+					int multY=1;
+					float distX;
+					float distY;
+					causeDamage(collide,15);
+					dist=distance(x,y,collide->x,collide->y);
+					distX=(float)(((collide->x - x)/dist)*1.2);
+					distY=(float)(((collide->y - y)/dist)*1.2);   
+					if(distX<0)
+					{
+						multX=-1;
+					}
+					if(distY<0)
+					{
+						multY=-1;
+					}
+					if(collide->isOnGround())
+					{
+						if(compareDirPlayerDir(dir, getPlayerDir())==CMPDIRPDIR_EQUAL)
+						{
+							causeHurtLaunch(collide,multX,std::abs(distX),3.89f, -1,2.82f,3.89f);
+						}
+						else
+						{
+							causeHurtLaunch(collide,multX,std::abs(distX),3.89f, -1,1.12f,3.89f);
+						}
+					}
+					else
+					{
+						causeHurtLaunch(collide,multX,std::abs(distX),3.89f, multY,std::abs(distY),3.89f);
+					}
+					causeHurt(collide, getOppPlayerDir(), 500);
+				}
+				break;
+				
+				case 13:
+				//B Air Down
+				{
+					double dist;
+					int multX=1;
+					int multY=1;
+					float distX;
+					float distY;
+					causeDamage(collide,13);
+					dist=distance(x,y,collide->x,collide->y);
+					distX=(float)(((collide->x - x)/dist)*3.72);
+					distY=(float)(((collide->y - y)/dist)*3.72);
+					if(distX<0)
+					{
+						multX=-1;
+					}
+					if(distY<0)
+					{
+						multY=-1;
+					}
+					if(collide->isOnGround())
+					{
+						causeHurtLaunch(collide,multX,std::abs(distX),5.98f, -1,3.72f,5.78f);
+					}
+					else
+					{
+						causeHurtLaunch(collide,multX,std::abs(distX),5.98f, multY,std::abs(distY),5.98f);
+					}
+					causeHurt(collide, getOppPlayerDir(), 600);
+				}
+				break;
+				
+				case 14:
+				//B Down
+				if(!turning)
+				{
+					double dist;
+					int multX=1;
+					float distX;
+					causeDamage(collide,smashPower);
+					dist=distance(x,y,collide->x,collide->y);
+					distX=(float)(((collide->x - x)/dist)*1.72);
+					if(distX<0)
+					{
+						multX=-1;
+					}
+					causeHurtLaunch(collide, multX,std::abs(distX),((float)smashPower/4), -1,3.4f,((float)smashPower/4));
+					causeHurt(collide, getOppPlayerDir(), 600);
+				}
+				break;
+				
+				case 17:
+				//Smash Down
+				causeDamage(collide,smashPower);
+				causeHurtLaunch(collide, (int)getPlayerDirMult(),2.43f,((float)smashPower/4), -1,5.64f,((float)smashPower/4));
+				causeHurt(collide, getOppPlayerDir(), 300);
+				break;
+			}
+			if(attacksPriority==7)
+			{
+				//final smash
+				double dist;
+				int multX=1;
+				int multY=1;
+				float distX;
+				float distY;
+				causeDamage(collide,20);
+				dist=distance(x,y,collide->x,collide->y);
+				distX=(float)(((collide->x - x)/dist)*6);
+				distY=(float)(((collide->y - y)/dist)*6);
+				if(distX<0)
+				{
+					multX=-1;
+				}
+				if(distY<0)
+				{
+					multY=-1;
+				}
+				collide->y-=5;
+				causeHurtLaunch(collide, multX,std::abs(distX),6, multY,std::abs(distY),6);
+				causeHurt(collide, getOppPlayerDir(), 400);
+			}
 			break;
 			
 			case DIR_UP:
-		    switch(attacksHolder)
-		    {
-		        case 8:
-		        //A Air Side
-		        switch(hitAmount)
-		        {
-		            case 0:
-		            case 1:
-		            causeDamage(collide,4);
-		            collide->y-=4;
-		            if(yvelocity>-2)
-		            {
-		                yvelocity=-2;
-		            }
-		            hitAmount+=1;
-		            causeHurt(collide, collide->getPlayerDir(), 3);
-		            break;
-		 
-		            case 2:
-		            causeDamage(collide,5);
-		            switch(playerdir)
-		            {
-		            	case LEFT:
-		            	causeHurtLaunch(collide,-1,1.2f,5.34f, -1,3.1f,2.9f);
-		            	causeHurt(collide, RIGHT, 6);
-		            	break;
-		            	
-		            	case RIGHT:
-		            	causeHurtLaunch(collide,1,1.2f,5.34f, -1,3.1f,2.9f);
-		            	causeHurt(collide, LEFT, 6);
-		            	break;
-		            }
-		            
-		            hitAmount+=1;
-		            break;
-			    }
-	        	break;
-	        	
-		        case 11:
-		        //B
-	        	{
-		        	double dist;
-				    int multX=1;
-				    int multY=1;
-				    float distX;
-				    float distY;
-			        causeDamage(collide,8);
-			        dist=distance(x,y,collide->x,collide->y);
-			        distX=(float)(((collide->x - x)/dist)*4);
-			        distY=(float)(((collide->y - y)/dist)*4);
-			        if(distX<0)
-			        {
-			            multX=-1;
-			        }
-			        if(distY<0)
-			        {
-			            multY=-1;
-			        }
-			        causeHurtLaunch(collide,multX,std::abs(distX),3.04f, multY,std::abs(distY),3.04f);
-			        if(collide->x<x)
-			        {
-			        	causeHurt(collide, RIGHT, 5);
-			        }
-			        else if(collide->x>x)
-			        {
-			        	causeHurt(collide, LEFT, 5);
-			        }
-			        else
-			        {
-			        	causeHurt(collide, collide->getPlayerDir(), 5);
-			        }
-			        yvelocity/=std::abs(yvelocity);
-			        yvelocity*=-3;
-			        xvelocity/=std::abs(xvelocity);
-			        xvelocity*=-3;
-					if(std::abs(xvelocity)>4)
+			switch(attacksHolder)
+			{
+				case 8:
+				//A Air Side
+				switch(hitAmount)
+				{
+					case 0:
+					case 1:
+					causeDamage(collide,4);
+					collide->y-=4;
+					if(yvelocity>-2)
 					{
-						xvelocity = (xvelocity/std::abs(xvelocity))*3;
+						yvelocity=-2;
 					}
-					if(std::abs(yvelocity)>4)
+					hitAmount+=1;
+					causeHurt(collide, collide->getPlayerDir(), 300);
+					break;
+					
+					case 2:
+					causeDamage(collide,5);
+					causeHurtLaunch(collide, (int)getPlayerDirMult(),1.2f,5.34f, -1,3.1f,2.9f);
+					causeHurt(collide, getOppPlayerDir(), 600);
+					hitAmount+=1;
+					break;
+				}
+				break;
+				
+				case 11:
+				//B
+				{
+					double dist;
+					int multX=1;
+					int multY=1;
+					float distX;
+					float distY;
+					causeDamage(collide,8);
+					dist=distance(x,y,collide->x,collide->y);
+					distX=(float)(((collide->x - x)/dist)*4);
+					distY=(float)(((collide->y - y)/dist)*4);
+					if(distX<0)
 					{
-						yvelocity = (yvelocity/std::abs(yvelocity))*3;
+						multX=-1;
 					}
-			        animFinish();
-			        switch(playerdir)
-			        {
-			            case 1:
-			            changeAnimation("special_finish_left", FORWARD);
-			            break;
-			 
-			            case 2:
-			            changeAnimation("special_finish_right", FORWARD);
-			            break;
-			        }
-			        bUp=false;
-			        landing = true;
-	        	}
-		        break;
-		 
-		        case 12:
-		        //B Side
-		        {
-		        	double dist;
-				    int multX=1;
-				    int multY=1;
-				    float distX;
-				    float distY;
-			        causeDamage(collide,15);
-			        dist=distance(x,y,collide->x,collide->y);
-			        distX=(float)(((collide->x - x)/dist)*1.2);
-			        distY=(float)(((collide->y - y)/dist)*1.2);
-			        if(distX<0)
-			        {
-			            multX=-1;
-			        }
-			        if(distY<0)
-			        {
-			            multY=-1;
-			        }
-			        if(collide->isOnGround())
-			        {
-			        	switch(playerdir)
-			        	{
-			        		case LEFT:
-			        		if(collide->x<x)
-			        		{
-			        			causeHurtLaunch(collide, multX,std::abs(distX),3.89f, -1,2.82f,3.89f);
-			        		}
-			        		else
-			        		{
-			        			causeHurtLaunch(collide, multX,std::abs(distX),3.89f, -1,1.12f,3.89f);
-			        		}
-			        		break;
-			        		
-			        		case RIGHT:
-		        			if(collide->x>x)
-			        		{
-			        			causeHurtLaunch(collide, multX,std::abs(distX),3.89f, -1,2.82f,3.89f);
-			        		}
-			        		else
-			        		{
-			        			causeHurtLaunch(collide, multX,std::abs(distX),3.89f, -1,1.12f,3.89f);
-			        		}
-			        		break;
-			        	}
-			        }
-			        else
-			        {
-			            causeHurtLaunch(collide,multX,std::abs(distX),3.89f, multY,std::abs(distY),3.89f);
-			        }
-			        if(collide->x<x)
-			        {
-			        	causeHurt(collide, RIGHT, 5);
-			        }
-			        else if(collide->x>x)
-			        {
-			        	causeHurt(collide, LEFT, 5);
-			        }
-			        else
-			        {
-			        	causeHurt(collide, collide->getPlayerDir(), 5);
-			        }
-		        }
-		        break;
-		        
-		        case 14:
-		        //B Down
-		        {
-		        	double dist;
-				    int multX=1;
-				    float distX;
-			        causeDamage(collide,smashPower);
-			        dist=distance(x,y,collide->x,collide->y);
-			        distX=(float)(((collide->x - x)/dist)*1.72);
-			        if(distX<0)
-			        {
-			            multX=-1;
-			        }
-			        causeHurtLaunch(collide,multX,std::abs(distX),((float)smashPower/4), -1,3.4f,((float)smashPower/4));
-			        if(collide->x<x)
-			        {
-			        	causeHurt(collide, RIGHT, 6);
-			        }
-			        else if(collide->x>x)
-			        {
-			        	causeHurt(collide, LEFT, 6);
-			        }
-			        else
-			        {
-			        	causeHurt(collide, collide->getPlayerDir(), 6);
-			        }
-		        }
-		        break;
-		 
-		        case 17:
-		        //Smash Down
-		        switch(playerdir)
-		        {
-		        	case LEFT:
-			        causeDamage(collide,smashPower);
-			        causeHurtLaunch(collide,-1,0,0, -1,5.36f,((float)smashPower/4));
-			        causeHurt(collide, RIGHT, 7);
-			        break;
-			        
-		        	case RIGHT:
-			        causeDamage(collide,smashPower);
-			        causeHurtLaunch(collide,1,0,0, -1,5.36f,((float)smashPower/4));
-			        causeHurt(collide, LEFT, 7);
-			        break;
-		        }
-		        break;
-		    }
-		    if(attacksPriority==7)
-		    {
-		        //final smash
-		    	double dist;
-			    int multY=1;
-			    float distY;
-		        causeDamage(collide,20);
-		        dist=distance(x,y,collide->x,collide->y);
-		        distY=(float)(((collide->y - y)/dist)*6);
-		        if(distY<0)
-		        {
-		            multY=-1;
-		        }
-		        collide->y-=5;
-		        switch(playerdir)
-		        {
-		        	case LEFT:
-		        	causeHurtLaunch(collide,-1,0,0, multY,std::abs(distY),6);
-		        	causeHurt(collide, RIGHT, 4);
-		        	break;
-		        	
-		        	case RIGHT:
-	        		causeHurtLaunch(collide,1,0,0, multY,std::abs(distY),6);
-		        	causeHurt(collide, LEFT, 4);
-		        	break;
-		        }
-		        
-		    }
+					if(distY<0)
+					{
+						multY=-1;
+					}
+					causeHurtLaunch(collide, multX,std::abs(distX),3.04f, multY,std::abs(distY),3.04f);
+					if(collide->x<x)
+					{
+						causeHurt(collide, RIGHT, 500);
+					}
+					else if(collide->x>x)
+					{
+						causeHurt(collide, LEFT, 500);
+					}
+					else
+					{
+						causeHurt(collide, collide->getPlayerDir(), 500);
+					}
+					yvelocity/=std::abs(yvelocity);
+					yvelocity*=-3;
+					xvelocity/=std::abs(xvelocity);
+					xvelocity*=-3;
+					animFinish();
+					changeTwoSidedAnimation("special_finish", FORWARD);
+					bUp=false;
+					landing = true;
+				}
+				break;
+				
+				case 12:
+				//B Side
+				{
+					double dist;
+					int multX=1;
+					int multY=1;
+					float distX;
+					float distY;
+					causeDamage(collide,15);
+					dist=distance(x,y,collide->x,collide->y);
+					distX=(float)(((collide->x - x)/dist)*1.2);
+					distY=(float)(((collide->y - y)/dist)*1.2);
+					if(distX<0)
+					{
+						multX=-1;
+					}
+					if(distY<0)
+					{
+						multY=-1;
+					}
+					if(collide->isOnGround())
+					{
+						if(getRelPlayerDir(collide)==getPlayerDir())
+						{
+							causeHurtLaunch(collide, multX,std::abs(distX),3.89f, -1,2.82f,3.89f);
+						}
+						else
+						{
+							causeHurtLaunch(collide, multX,std::abs(distX),3.89f, -1,1.12f,3.89f);
+						}
+					}
+					else
+					{
+						causeHurtLaunch(collide,multX,std::abs(distX),3.89f, multY,std::abs(distY),3.89f);
+					}
+					if(collide->x<x)
+					{
+						causeHurt(collide, RIGHT, 500);
+					}
+					else if(collide->x>x)
+					{
+						causeHurt(collide, LEFT, 500);
+					}
+					else
+					{
+						causeHurt(collide, collide->getPlayerDir(), 500);
+					}
+				}
+				break;
+				
+				case 14:
+				//B Down
+				{
+					double dist;
+					int multX=1;
+					float distX;
+					causeDamage(collide,smashPower);
+					dist=distance(x,y,collide->x,collide->y);
+					distX=(float)(((collide->x - x)/dist)*1.72);
+					if(distX<0)
+					{
+						multX=-1;
+					}
+					causeHurtLaunch(collide, multX,std::abs(distX),((float)smashPower/4), -1,3.4f,((float)smashPower/4));
+					if(collide->x<x)
+					{
+						causeHurt(collide, RIGHT, 600);
+					}
+					else if(collide->x>x)
+					{
+						causeHurt(collide, LEFT, 600);
+					}
+					else
+					{
+						causeHurt(collide, collide->getPlayerDir(), 600);
+					}
+				}
+				break;
+				
+				case 17:
+				//Smash Down
+				causeDamage(collide,smashPower);
+				causeHurtLaunch(collide, (int)getPlayerDirMult(),0,0, -1,5.36f,((float)smashPower/4));
+				causeHurt(collide, getOppPlayerDir(), 700);
+				break;
+			}
+			if(attacksPriority==7)
+			{
+				//final smash
+				double dist;
+				int multY=1;
+				float distY;
+				causeDamage(collide,20);
+				dist=distance(x,y,collide->x,collide->y);
+				distY=(float)(((collide->y - y)/dist)*6);
+				if(distY<0)
+				{
+					multY=-1;
+				}
+				collide->y-=5;
+				causeHurtLaunch(collide, (int)getPlayerDirMult(),0,0, multY,std::abs(distY),6);
+				causeHurt(collide, getOppPlayerDir(), 400);
+			}
 			break;
 			
 			case DIR_DOWN:
-		    switch(attacksHolder)
-		    {
-		        case 8:
-		        //A Air Side
-		        switch(hitAmount)
-		        {
-		            case 0:
-		            case 1:
-		            causeDamage(collide,4);
-		            collide->y-=4;
-		            if(yvelocity>-2)
-		            {
-		                yvelocity=-2;
-		            }
-		            hitAmount+=1;
-		            causeHurt(collide, collide->getPlayerDir(), 3);
-		            break;
-		 
-		            case 2:
-		            causeDamage(collide,5);
-		            switch(playerdir)
-		            {
-		            	case LEFT:
-		            	causeHurtLaunch(collide, -1,1.2f,5.34f, 1,3.1f,2.9f);
-			            causeHurt(collide, RIGHT, 6);
-		            	break;
-		            	
-		            	case RIGHT:
-		            	causeHurtLaunch(collide, 1,1.2f,5.34f, 1,3.1f,2.9f);
-		            	causeHurt(collide, LEFT, 6);
-		            	break;
-		            }
-			            
-		            hitAmount+=1;
-		            break;
-		        }
-		        break;
-		        
-		        case 11:
-		        //B
-		        {
-		        	double dist;
-				    int multX=1;
-				    int multY=1;
-				    float distX;
-				    float distY;
-			        causeDamage(collide,8);
-			        dist=distance(x,y,collide->x,collide->y);
-			        distX=(float)(((collide->x - x)/dist)*4);
-			        distY=(float)(((collide->y - y)/dist)*4);
-			        if(distX<0)
-			        {
-			            multX=-1;
-			        }
-			        if(distY<0)
-			        {
-			            multY=-1;
-			        }
-			        causeHurtLaunch(collide, multX,std::abs(distX),3.04f, multY,std::abs(distY),3.04f);
-			        if(collide->x<x)
-			        {
-			        	causeHurt(collide, RIGHT, 5);
-			        }
-			        else if(collide->x>x)
-			        {
-			        	causeHurt(collide, LEFT, 5);
-			        }
-			        else
-			        {
-			        	causeHurt(collide, collide->getPlayerDir(), 5);
-			        }
-			        yvelocity/=std::abs(yvelocity);
-			        yvelocity*=-3;
-			        xvelocity/=std::abs(xvelocity);
-			        xvelocity*=-3;
-					if(std::abs(xvelocity)>4)
+			switch(attacksHolder)
+			{
+				case 8:
+				//A Air Side
+				switch(hitAmount)
+				{
+					case 0:
+					case 1:
+					causeDamage(collide,4);
+					collide->y-=4;
+					if(yvelocity>-2)
 					{
-						xvelocity = (xvelocity/std::abs(xvelocity))*3;
+						yvelocity=-2;
 					}
-					if(std::abs(yvelocity)>4)
+					hitAmount+=1;
+					causeHurt(collide, collide->getPlayerDir(), 300);
+					break;
+					
+					case 2:
+					causeDamage(collide,5);
+					causeHurtLaunch(collide, (int)getPlayerDirMult(),1.2f,5.34f, 1,3.1f,2.9f);
+					causeHurt(collide, getOppPlayerDir(), 600);
+					hitAmount+=1;
+					break;
+				}
+				break;
+				
+				case 11:
+				//B
+				{
+					double dist;
+					int multX=1;
+					int multY=1;
+					float distX;
+					float distY;
+					causeDamage(collide,8);
+					dist=distance(x,y,collide->x,collide->y);
+					distX=(float)(((collide->x - x)/dist)*4);
+					distY=(float)(((collide->y - y)/dist)*4);
+					if(distX<0)
 					{
-						yvelocity = (yvelocity/std::abs(yvelocity))*3;
+						multX=-1;
 					}
-			        animFinish();
-			        switch(playerdir)
-			        {
-			            case 1:
-			            changeAnimation("special_finish_left", FORWARD);
-			            break;
-			 
-			            case 2:
-			            changeAnimation("special_finish_right", FORWARD);
-			            break;
-			        }
-			        bUp=false;
-			        landing = true;
-		        }
-		        break;
-		        
-		        case 12:
-		        //B Side
-		        {
-		        	double dist;
-				    int multX=1;
-				    int multY=1;
-				    float distX;
-				    float distY;
-			        causeDamage(collide,15);
-			        dist=distance(x,y,collide->x,collide->y);
-			        distX=(float)(((collide->x - x)/dist)*1.2);
-			        distY=(float)(((collide->y - y)/dist)*1.2);
-			        if(distX<0)
-			        {
-			            multX=-1;
-			        }
-			        if(distY<0)
-			        {
-			            multY=-1;
-			        }
-			        if(collide->isOnGround())
-			        {
-			        	switch(playerdir)
-			        	{
-			        		case LEFT:
-			        		if(collide->x<x)
-			        		{
-			        			causeHurtLaunch(collide, multX,std::abs(distX),3.89f, 1,2.82f,3.89f);
-			        		}
-			        		else
-			        		{
-			        			causeHurtLaunch(collide, multX,std::abs(distX),3.89f, 1,1.12f,3.89f);
-			        		}
-			        		break;
-			        		
-			        		case RIGHT:
-		        			if(collide->x>x)
-			        		{
-			        			causeHurtLaunch(collide, multX,std::abs(distX),3.89f, 1,2.82f,3.89f);
-			        		}
-			        		else
-			        		{
-			        			causeHurtLaunch(collide, multX,std::abs(distX),3.89f, 1,1.12f,3.89f);
-			        		}
-			        		break;
-			        	}
-			            	
-			        }
-			        else
-			        {
-			            causeHurtLaunch(collide, multX,std::abs(distX),3.89f, multY,std::abs(distY),3.89f);
-			        }
-			        if(collide->x<x)
-			        {
-			        	causeHurt(collide, RIGHT, 5);
-			        }
-			        else if(collide->x>x)
-			        {
-			        	causeHurt(collide, LEFT, 5);
-			        }
-			        else
-			        {
-			        	causeHurt(collide, collide->getPlayerDir(), 5);
-			        }
-		        }
-		        break;
-		        
-		        case 13:
-		        //B Air Down
-		        {
-		        	double dist;
-				    int multX=1;
-				    int multY=1;
-				    float distX;
-				    float distY;
-			        causeDamage(collide,13);
-			        dist=distance(x,y,collide->x,collide->y);
-			        distX=(float)(((collide->x - x)/dist)*3.72);
-			        distY=(float)(((collide->y - y)/dist)*3.72);
-			        if(distX<0)
-			        {
-			            multX=-1;
-			        }
-			        if(distY<0)
-			        {
-			            multY=-1;
-			        }
-			        if(collide->isOnGround())
-			        {
-			            causeHurtLaunch(collide, multX,std::abs(distX),5.98f, 1,3.72f,5.78f);
-			        }
-			        else
-			        {
-			            causeHurtLaunch(collide, multX,std::abs(distX),5.98f, multY,std::abs(distY),5.98f);
-			        }
-			        if(collide->x<x)
-			        {
-			        	causeHurt(collide, RIGHT, 6);
-			        }
-			        else if(collide->x>x)
-			        {
-			        	causeHurt(collide, LEFT, 6);
-			        }
-			        else
-			        {
-			        	causeHurt(collide, collide->getPlayerDir(), 6);
-			        }
-		        }
-		        break;
-		        
-		        case 17:
-		        //Smash Down
-		        switch(playerdir)
-		        {
-		        	case LEFT:
-			        causeDamage(collide,smashPower);
-			        causeHurtLaunch(collide, -1,0,0, 1,5.36f,((float)smashPower/4));
-			        causeHurt(collide, RIGHT, 7);
-			        break;
-			        
-		        	case RIGHT:
-		        	causeDamage(collide,smashPower);
-		        	causeHurtLaunch(collide, 1,0,0, 1,5.36f,((float)smashPower/4));
-		        	causeHurt(collide, LEFT, 7);
-		        	break;
-		        }
-		        break;
-		    }
-		    if(attacksPriority==7)
-		    {
-		        //final smash
-		    	double dist;
-			    int multY=1;
-			    float distY;
-		        causeDamage(collide,20);
-		        dist=distance(x,y,collide->x,collide->y);
-		        distY=(float)(((collide->y - y)/dist)*6);
-		        if(distY<0)
-		        {
-		            multY=-1;
-		        }
-		        collide->y-=5;
-		        switch(playerdir)
-		        {
-		        	case LEFT:
-		        	causeHurtLaunch(collide, -1,0,0, multY,std::abs(distY),6);
-			        causeHurt(collide, RIGHT, 4);
-		        	break;
-		        	
-		        	case RIGHT:
-	        		causeHurtLaunch(collide, 1,0,0, multY,std::abs(distY),6);
-			        causeHurt(collide, LEFT, 4);
-		        	break;
-		        }
-		    }
+					if(distY<0)
+					{
+						multY=-1;
+					}
+					causeHurtLaunch(collide, multX,std::abs(distX),3.04f, multY,std::abs(distY),3.04f);
+					if(collide->x<x)
+					{
+						causeHurt(collide, RIGHT, 500);
+					}
+					else if(collide->x>x)
+					{
+						causeHurt(collide, LEFT, 500);
+					}
+					else
+					{
+						causeHurt(collide, collide->getPlayerDir(), 500);
+					}
+					yvelocity/=std::abs(yvelocity);
+					yvelocity*=-3;
+					xvelocity/=std::abs(xvelocity);
+					xvelocity*=-3;
+					animFinish();
+					changeTwoSidedAnimation("special_finish", FORWARD);
+					bUp=false;
+					landing = true;
+				}
+				break;
+				
+				case 12:
+				//B Side
+				{
+					double dist;
+					int multX=1;
+					int multY=1;
+					float distX;
+					float distY;
+					causeDamage(collide,15);
+					dist=distance(x,y,collide->x,collide->y);
+					distX=(float)(((collide->x - x)/dist)*1.2);
+					distY=(float)(((collide->y - y)/dist)*1.2);
+					if(distX<0)
+					{
+						multX=-1;
+					}
+					if(distY<0)
+					{
+						multY=-1;
+					}
+					if(collide->isOnGround())
+					{
+						if(compareDirPlayerDir(dir, getPlayerDir())==CMPDIRPDIR_EQUAL)
+						{
+							causeHurtLaunch(collide, multX,std::abs(distX),3.89f, 1,2.82f,3.89f);
+						}
+						else
+						{
+							causeHurtLaunch(collide, multX,std::abs(distX),3.89f, 1,1.12f,3.89f);
+						}
+					}
+					else
+					{
+						causeHurtLaunch(collide, multX,std::abs(distX),3.89f, multY,std::abs(distY),3.89f);
+					}
+					if(collide->x<x)
+					{
+						causeHurt(collide, RIGHT, 500);
+					}
+					else if(collide->x>x)
+					{
+						causeHurt(collide, LEFT, 500);
+					}
+					else
+					{
+						causeHurt(collide, collide->getPlayerDir(), 500);
+					}
+				}
+				break;
+				
+				case 13:
+				//B Air Down
+				{
+					double dist;
+					int multX=1;
+					int multY=1;
+					float distX;
+					float distY;
+					causeDamage(collide,13);
+					dist=distance(x,y,collide->x,collide->y);
+					distX=(float)(((collide->x - x)/dist)*3.72);
+					distY=(float)(((collide->y - y)/dist)*3.72);
+					if(distX<0)
+					{
+						multX=-1;
+					}
+					if(distY<0)
+					{
+						multY=-1;
+					}
+					if(collide->isOnGround())
+					{
+						causeHurtLaunch(collide, multX,std::abs(distX),5.98f, 1,3.72f,5.78f);
+					}
+					else
+					{
+						causeHurtLaunch(collide, multX,std::abs(distX),5.98f, multY,std::abs(distY),5.98f);
+					}
+					if(collide->x<x)
+					{
+						causeHurt(collide, RIGHT, 600);
+					}
+					else if(collide->x>x)
+					{
+						causeHurt(collide, LEFT, 600);
+					}
+					else
+					{
+						causeHurt(collide, collide->getPlayerDir(), 600);
+					}
+				}
+				break;
+				
+				case 17:
+				//Smash Down
+				causeDamage(collide,smashPower);
+				causeHurtLaunch(collide, (int)getPlayerDirMult(),0,0, 1,5.36f,((float)smashPower/4));
+				causeHurt(collide, getOppPlayerDir(), 700);
+				break;
+			}
+			if(attacksPriority==7)
+			{
+				//final smash
+				double dist;
+				int multY=1;
+				float distY;
+				causeDamage(collide,20);
+				dist=distance(x,y,collide->x,collide->y);
+				distY=(float)(((collide->y - y)/dist)*6);
+				if(distY<0)
+				{
+					multY=-1;
+				}
+				collide->y-=5;
+				causeHurtLaunch(collide, (int)getPlayerDirMult(),0,0, multY,std::abs(distY),6);
+				causeHurt(collide, getOppPlayerDir(), 400);
+			}
 			break;
 		}
 	}
@@ -1882,110 +1277,28 @@ namespace SmashBros
 		switch(dir)
 		{
 			case DIR_LEFT:
-			if(attacksHolder==16)
-			{
-		        //Smash Up
-				switch(playerdir)
-				{
-					case LEFT:
-					switch(hitAmount)
-			        {
-			            case 0:
-			            case 1:
-			            case 2:
-			            causeDamage(collide,(int)(smashPower/3.5));
-			            collide->y-=collide->height;
-			            collide->yvelocity=1;
-			            collide->x=x-10;
-			            causeHurt(collide, RIGHT, 3);
-			            hitAmount+=1;
-			            break;
-			 
-			            case 3:
-			            causeDamage(collide,(int)(smashPower/3.5));
-			            causeHurtLaunch(collide,-1,3.43f,((float)smashPower/4), -1,2.64f,((float)smashPower/4));
-			            causeHurt(collide, RIGHT, 7);
-			            hitAmount+=1;
-			            break;
-			        }
-					break;
-					
-					case RIGHT:
-					switch(hitAmount)
-			        {
-			            case 0:
-			            case 1:
-			            case 2:
-			            causeDamage(collide,(int)(smashPower/3.5));
-			            collide->y-=collide->height;
-			            collide->yvelocity=1;
-			            collide->x=x-10;
-			            causeHurt(collide, RIGHT, 3);
-			            hitAmount+=1;
-			            break;
-			 
-			            case 3:
-			            causeDamage(collide,(int)(smashPower/3.5));
-			            causeHurtLaunch(collide,-1,3.43f,((float)smashPower/4), -1,2.64f,((float)smashPower/4));
-			            causeHurt(collide, RIGHT, 7);
-			            hitAmount+=1;
-			            break;
-			        }
-					break;
-				}
-			}
-			break;
-			
 			case DIR_RIGHT:
 			if(attacksHolder==16)
 			{
-		        //Smash Up
-				switch(playerdir)
+				//Smash Up
+				switch(hitAmount)
 				{
-					case LEFT:
-					switch(hitAmount)
-			        {
-			            case 0:
-			            case 1:
-			            case 2:
-			            causeDamage(collide,(int)(smashPower/3.5));
-			            collide->y-=collide->height;
-			            collide->yvelocity=1;
-			            collide->x=x+10;
-			            causeHurt(collide, LEFT, 3);
-			            hitAmount+=1;
-			            break;
-			 
-			            case 3:
-			            causeDamage(collide,(int)(smashPower/3.5));
-			            causeHurtLaunch(collide,1,3.43f,((float)smashPower/4), -1,2.64f,((float)smashPower/4));
-			            causeHurt(collide, LEFT, 7);
-			            hitAmount+=1;
-			            break;
-			        }
+					case 0:
+					case 1:
+					case 2:
+					causeDamage(collide,(int)(smashPower/3.5));
+					collide->y -= collide->height;
+					collide->yvelocity = 1;
+					collide->x = x + (10*getPlayerDirMult());
+					causeHurt(collide, getOppPlayerDir(), 300);
+					hitAmount+=1;
 					break;
 					
-					case RIGHT:
-					switch(hitAmount)
-			        {
-			            case 0:
-			            case 1:
-			            case 2:
-			            causeDamage(collide,(int)(smashPower/3.5));
-			            collide->y-=collide->height;
-			            collide->yvelocity=1;
-			            collide->x=x+10;
-			            causeHurt(collide, LEFT, 3);
-			            hitAmount+=1;
-			            break;
-			 
-			            case 3:
-			            causeDamage(collide,(int)(smashPower/3.5));
-			            causeHurtLaunch(collide,1,3.43f,((float)smashPower/4), -1,2.64f,((float)smashPower/4));
-			            causeHurt(collide, LEFT, 7);
-			            hitAmount+=1;
-			            break;
-			        }
+					case 3:
+					causeDamage(collide,(int)(smashPower/3.5));
+					causeHurtLaunch(collide, (int)getPlayerDirMult(),3.43f,((float)smashPower/4), -1,2.64f,((float)smashPower/4));
+					causeHurt(collide, getOppPlayerDir(), 700);
+					hitAmount+=1;
 					break;
 				}
 			}
@@ -1994,25 +1307,25 @@ namespace SmashBros
 			case DIR_UP:
 			if(attacksHolder==16)
 			{
-		        //Smash Up
-		        switch(hitAmount)
-		        {
-		            case 0:
-		            case 1:
-		            case 2:
-		            causeDamage(collide,(int)(smashPower/3.5));
-		            collide->y-=15;
-		            causeHurt(collide, collide->getPlayerDir(), 3);
-		            hitAmount+=1;
-		            break;
-		 
-		            case 3:
-		            causeDamage(collide,(int)(smashPower/3.5));
-		            causeHurtLaunch(collide,1,0,0, -1,5.26f,((float)smashPower/4));
-		            causeHurt(collide, collide->getPlayerDir(), 7);
-		            hitAmount+=1;
-		            break;
-		        }
+				//Smash Up
+				switch(hitAmount)
+				{
+					case 0:
+					case 1:
+					case 2:
+					causeDamage(collide,(int)(smashPower/3.5));
+					collide->y-=15;
+					causeHurt(collide, collide->getPlayerDir(), 300);
+					hitAmount+=1;
+					break;
+					
+					case 3:
+					causeDamage(collide,(int)(smashPower/3.5));
+					causeHurtLaunch(collide, (int)getPlayerDirMult(),0,0, -1,5.26f,((float)smashPower/4));
+					causeHurt(collide, collide->getPlayerDir(), 700);
+					hitAmount+=1;
+					break;
+				}
 			}
 			break;
 		}
@@ -2029,39 +1342,30 @@ namespace SmashBros
         {
             destroyCharge();
             rocketSpeed = (float)smashPower;
-            AttackTemplates::rollAttack(this, 14, 2.895, rocketSpeed, 50);
+            AttackTemplates::rollAttack(this, 14, 2.895, rocketSpeed, 5000);
             chargeAttack = 0;
         }
 	}
 	
 	void Sonic::attackA()
 	{
-		addAttackInfo(DIR_UP, 3, LEFT, 3, 4, -1,1.2f,2.9f, -1,3,1.9f);
-		addAttackInfo(DIR_UP, 3,RIGHT, 3, 4,  1,1.2f,2.9f, -1,3,1.9f);
-		addAttackInfo(DIR_LEFT, 7, LEFT, 11, 5, -1,2.64f,5.7f, -1,1.4f,3);
-		addAttackInfo(DIR_LEFT, 7,RIGHT, 11, 5, -1,2.3f,5.3f, -1,1.05f,2.9f);
-		addAttackInfo(DIR_RIGHT,7, LEFT, 11, 5,  1,2.3f,5.3f, -1,1.05f,2.9f);
-		addAttackInfo(DIR_RIGHT,7,RIGHT, 11, 5,  1,2.64f,5.7f, -1,1.4f,3);
-		addAttackInfo(DIR_UP, 7, LEFT, 11, 6, -1,0.4f,2.2f, -1,3.21f,5.77f);
-		addAttackInfo(DIR_UP, 7,RIGHT, 11, 6,  1,0.4f,2.2f, -1,3.21f,5.77f);
-		addAttackInfo(DIR_DOWN, 7, LEFT, 11, 5, -1,2.3f,5.3f, 1,2.05f,2.6f);
-		addAttackInfo(DIR_DOWN, 7,RIGHT, 11, 5,  1,2.3f,5.3f, 1,2.05f,2.6f);
+		addAttackInfo(DIR_UP, 3, LEFT, 3, 400, -1,1.2f,2.9f, -1,3,1.9f);
+		addAttackInfo(DIR_UP, 3,RIGHT, 3, 400,  1,1.2f,2.9f, -1,3,1.9f);
+		addAttackInfo(DIR_LEFT, 7, LEFT, 11, 500, -1,2.64f,5.7f, -1,1.4f,3);
+		addAttackInfo(DIR_LEFT, 7,RIGHT, 11, 500, -1,2.3f,5.3f, -1,1.05f,2.9f);
+		addAttackInfo(DIR_RIGHT,7, LEFT, 11, 500,  1,2.3f,5.3f, -1,1.05f,2.9f);
+		addAttackInfo(DIR_RIGHT,7,RIGHT, 11, 500,  1,2.64f,5.7f, -1,1.4f,3);
+		addAttackInfo(DIR_UP, 7, LEFT, 11, 600, -1,0.4f,2.2f, -1,3.21f,5.77f);
+		addAttackInfo(DIR_UP, 7,RIGHT, 11, 600,  1,0.4f,2.2f, -1,3.21f,5.77f);
+		addAttackInfo(DIR_DOWN, 7, LEFT, 11, 500, -1,2.3f,5.3f, 1,2.05f,2.6f);
+		addAttackInfo(DIR_DOWN, 7,RIGHT, 11, 500,  1,2.3f,5.3f, 1,2.05f,2.6f);
 		
 	    if(attacksPriority!=7 && !checkItemUse())
 	    {
 	        if(isOnGround())
 	        {
-	        	AttackTemplates::combo3A(this, 5, 0,1.3, 1,1.45, 2,2.19);
-	            switch(playerdir)
-	            {
-	                case 1:
-	                x-=5;
-	                break;
-	 
-	                case 2:
-	                x+=5;
-	                break;
-	            }
+	        	AttackTemplates::combo3A(this, 500, 0,1.3, 1,1.45, 2,2.19);
+	            x += 5 * getPlayerDirMult();
 	        }
 	        else
 	        {
@@ -2072,16 +1376,16 @@ namespace SmashBros
 	
 	void Sonic::attackSideA()
 	{
-		addAttackInfo(DIR_LEFT, 3, LEFT, 11, 5, -1,2.1f,3.4f, -1,2.1f,3.4f);
-		addAttackInfo(DIR_RIGHT,3,RIGHT, 11, 5,  1,2.1f,3.4f, -1,2.1f,3.4f);
-		addAttackInfo(DIR_LEFT, 4, LEFT, 6, 6, -1,1.1f,2.8f, -1,3,5.8f);
-		addAttackInfo(DIR_RIGHT,4,RIGHT, 6, 6,  1,1.1f,2.8f, -1,3,5.8f);
-		addAttackInfo(DIR_UP, 3, LEFT, 11, 5, -1,1.6f,3.4f, -1,3.34f,3.4f);
-		addAttackInfo(DIR_UP, 3,RIGHT, 11, 5,  1,1.6f,3.4f, -1,3.34f,3.4f);
-		addAttackInfo(DIR_UP, 4, LEFT, 6, 6, -1,1.1f,1.8f, -1,3.5f,5.8f);
-		addAttackInfo(DIR_UP, 4,RIGHT, 6, 6,  1,1.1f,1.8f, -1,3.5f,5.8f);
-		addAttackInfo(DIR_DOWN, 4, LEFT, 6, 6, -1,1.56f,4, 1,2.2f,3.8f);
-		addAttackInfo(DIR_DOWN, 4,RIGHT, 6, 6,  1,1.56f,4, 1,2.2f,3.8f);
+		addAttackInfo(DIR_LEFT, 3, LEFT, 11, 500, -1,2.1f,3.4f, -1,2.1f,3.4f);
+		addAttackInfo(DIR_RIGHT,3,RIGHT, 11, 500,  1,2.1f,3.4f, -1,2.1f,3.4f);
+		addAttackInfo(DIR_LEFT, 4, LEFT, 6, 600, -1,1.1f,2.8f, -1,3,5.8f);
+		addAttackInfo(DIR_RIGHT,4,RIGHT, 6, 600,  1,1.1f,2.8f, -1,3,5.8f);
+		addAttackInfo(DIR_UP, 3, LEFT, 11, 500, -1,1.6f,3.4f, -1,3.34f,3.4f);
+		addAttackInfo(DIR_UP, 3,RIGHT, 11, 500,  1,1.6f,3.4f, -1,3.34f,3.4f);
+		addAttackInfo(DIR_UP, 4, LEFT, 6, 600, -1,1.1f,1.8f, -1,3.5f,5.8f);
+		addAttackInfo(DIR_UP, 4,RIGHT, 6, 600,  1,1.1f,1.8f, -1,3.5f,5.8f);
+		addAttackInfo(DIR_DOWN, 4, LEFT, 6, 600, -1,1.56f,4, 1,2.2f,3.8f);
+		addAttackInfo(DIR_DOWN, 4,RIGHT, 6, 600,  1,1.56f,4, 1,2.2f,3.8f);
 		
 		if(attacksPriority!=7)
 		{
@@ -2108,18 +1412,18 @@ namespace SmashBros
 	
 	void Sonic::attackUpA()
 	{
-		addAttackInfo(DIR_LEFT, 5, LEFT, 10, 6, -1,2,4.1f, -1,3,4.9f);
-		addAttackInfo(DIR_LEFT, 5,RIGHT, 10, 6, -1,3.1f,4.3f, -1,2.2f,3.8f);
-		addAttackInfo(DIR_RIGHT,5, LEFT, 10, 6,  1,3.1f,4.3f, -1,2.2f,3.8f);
-		addAttackInfo(DIR_RIGHT,5,RIGHT, 10, 6,  1,2,4.1f, -1,3,4.9f);
-		addAttackInfo(DIR_LEFT, 9, LEFT, 9, 4, -1,1,1.2f, -1,3,3.3f);
-		addAttackInfo(DIR_RIGHT,9,RIGHT, 9, 4,  1,1,1.2f, -1,3,3.3f);
-		addAttackInfo(DIR_UP, 5, LEFT, 10, 6, -1,0.4f,1.1f, -1,4.87f,6.03f);
-		addAttackInfo(DIR_UP, 5,RIGHT, 10, 6,  1,0.4f,1.1f, -1,4.87f,6.03f);
-		addAttackInfo(DIR_UP, 9, LEFT, 9, 4, -1,0.2f,1.2f, -1,4.23f,5.3f);
-		addAttackInfo(DIR_UP, 9,RIGHT, 9, 4,  1,0.2f,1.2f, -1,4.23f,5.3f);
+		addAttackInfo(DIR_LEFT, 5, LEFT, 10, 600, -1,2,4.1f, -1,3,4.9f);
+		addAttackInfo(DIR_LEFT, 5,RIGHT, 10, 600, -1,3.1f,4.3f, -1,2.2f,3.8f);
+		addAttackInfo(DIR_RIGHT,5, LEFT, 10, 600,  1,3.1f,4.3f, -1,2.2f,3.8f);
+		addAttackInfo(DIR_RIGHT,5,RIGHT, 10, 600,  1,2,4.1f, -1,3,4.9f);
+		addAttackInfo(DIR_LEFT, 9, LEFT, 9, 400, -1,1,1.2f, -1,3,3.3f);
+		addAttackInfo(DIR_RIGHT,9,RIGHT, 9, 400,  1,1,1.2f, -1,3,3.3f);
+		addAttackInfo(DIR_UP, 5, LEFT, 10, 600, -1,0.4f,1.1f, -1,4.87f,6.03f);
+		addAttackInfo(DIR_UP, 5,RIGHT, 10, 600,  1,0.4f,1.1f, -1,4.87f,6.03f);
+		addAttackInfo(DIR_UP, 9, LEFT, 9, 400, -1,0.2f,1.2f, -1,4.23f,5.3f);
+		addAttackInfo(DIR_UP, 9,RIGHT, 9, 400,  1,0.2f,1.2f, -1,4.23f,5.3f);
 		
-		if(attacksPriority!=7)
+		if(attacksPriority!=7 && !checkItemUseUp())
 		{
 		    if(isOnGround())
 		    {
@@ -2134,42 +1438,33 @@ namespace SmashBros
 	
 	void Sonic::attackDownA()
 	{
-		addAttackInfo(DIR_LEFT, 6, LEFT, 6, 6, -1,2.1f,5.4f, -1,3.12f,6);
-		addAttackInfo(DIR_LEFT, 6,RIGHT, 6, 6, -1,1.95f,5.4f, -1,3.03f,6);
-		addAttackInfo(DIR_RIGHT,6, LEFT, 6, 6,  1,1.95f,5.4f, -1,3.03f,6);
-		addAttackInfo(DIR_RIGHT,6,RIGHT, 6, 6,  1,2.1f,5.4f, -1,3.12f,6);
-		addAttackInfo(DIR_LEFT, 10, LEFT, 8, 6, -1,1,1.3f, -1,4.2f,5.3f);
-		addAttackInfo(DIR_LEFT, 10,RIGHT, 8, 6, -1,1,1.3f, -1,4.2f,5.3f);
-		addAttackInfo(DIR_RIGHT,10, LEFT, 8, 6,  1,1,1.3f, -1,4.2f,5.3f);
-		addAttackInfo(DIR_RIGHT,10,RIGHT, 8, 6,  1,1,1.3f, -1,4.2f,5.3f);
-		addAttackInfo(DIR_UP, 6, LEFT, 6, 6, -1,2.4f,5.1f, -1,4.92f,6.13f);
-		addAttackInfo(DIR_UP, 6,RIGHT, 6, 6,  1,2.4f,5.1f, -1,4.92f,6.13f);
-		addAttackInfo(DIR_UP, 10, LEFT, 8, 6, -1,0.3f,1.3f, -1,4.6f,5.3f);
-		addAttackInfo(DIR_UP, 10,RIGHT, 8, 6,  1,0.3f,1.3f, -1,4.6f,5.3f);
-		addAttackInfo(DIR_DOWN, 6, LEFT, 6, 6, -1,1.25f,5.4f, 1,3.2f,3);
-		addAttackInfo(DIR_DOWN, 6,RIGHT, 6, 6,  1,1.25f,5.4f, 1,3.2f,3);
-		addAttackInfo(DIR_DOWN, 10, LEFT, 8, 6, -1,0.3f,1.3f, -1,4.6f,5.3f);
-		addAttackInfo(DIR_DOWN, 10,RIGHT, 8, 6,  1,0.3f,1.3f, -1,4.6f,5.3f);
+		addAttackInfo(DIR_LEFT, 6, LEFT, 6, 600, -1,2.1f,5.4f, -1,3.12f,6);
+		addAttackInfo(DIR_LEFT, 6,RIGHT, 6, 600, -1,1.95f,5.4f, -1,3.03f,6);
+		addAttackInfo(DIR_RIGHT,6, LEFT, 6, 600,  1,1.95f,5.4f, -1,3.03f,6);
+		addAttackInfo(DIR_RIGHT,6,RIGHT, 6, 600,  1,2.1f,5.4f, -1,3.12f,6);
+		addAttackInfo(DIR_LEFT, 10, LEFT, 8, 600, -1,1,1.3f, -1,4.2f,5.3f);
+		addAttackInfo(DIR_LEFT, 10,RIGHT, 8, 600, -1,1,1.3f, -1,4.2f,5.3f);
+		addAttackInfo(DIR_RIGHT,10, LEFT, 8, 600,  1,1,1.3f, -1,4.2f,5.3f);
+		addAttackInfo(DIR_RIGHT,10,RIGHT, 8, 600,  1,1,1.3f, -1,4.2f,5.3f);
+		addAttackInfo(DIR_UP, 6, LEFT, 6, 600, -1,2.4f,5.1f, -1,4.92f,6.13f);
+		addAttackInfo(DIR_UP, 6,RIGHT, 6, 600,  1,2.4f,5.1f, -1,4.92f,6.13f);
+		addAttackInfo(DIR_UP, 10, LEFT, 8, 600, -1,0.3f,1.3f, -1,4.6f,5.3f);
+		addAttackInfo(DIR_UP, 10,RIGHT, 8, 600,  1,0.3f,1.3f, -1,4.6f,5.3f);
+		addAttackInfo(DIR_DOWN, 6, LEFT, 6, 600, -1,1.25f,5.4f, 1,3.2f,3);
+		addAttackInfo(DIR_DOWN, 6,RIGHT, 6, 600,  1,1.25f,5.4f, 1,3.2f,3);
+		addAttackInfo(DIR_DOWN, 10, LEFT, 8, 600, -1,0.3f,1.3f, -1,4.6f,5.3f);
+		addAttackInfo(DIR_DOWN, 10,RIGHT, 8, 600,  1,0.3f,1.3f, -1,4.6f,5.3f);
 		
-		if(attacksPriority!=7)
+		if(attacksPriority!=7 && !checkItemUseDown())
 		{
 			if(isOnGround())
 		    {
 		        AttackTemplates::normalDownA(this, 6,2.96);
-		        switch(playerdir)
-		        {
-		            case 1:
-		            x-=4;
-		            break;
-		 
-		            case 2:
-		            x+=4;
-		            break;
-		        }
+		        x += 4 * getPlayerDirMult();
 		    }
 		    else
 		    {
-		        AttackTemplates::dropAirDownA(this, STEP_CHARGE, 10, 3.445, 7, 1.2f);
+		        AttackTemplates::dropAirDownA(this, STEP_CHARGE, 10, 3.445, 7, 3);
 		    }
 		}
 	}
@@ -2189,16 +1484,7 @@ namespace SmashBros
 	                bUp=true;
 	                yVel=-2;
 	                landing=true;
-	                switch(playerdir)
-	                {
-	                    case 1:
-	                    changeAnimation("special_prep_left", FORWARD);
-	                    break;
-	 
-	                    case 2:
-	                    changeAnimation("special_prep_right", FORWARD);
-	                    break;
-	                }
+					changeTwoSidedAnimation("special_prep", FORWARD);
 	            }
 		    }
 		}
@@ -2211,16 +1497,7 @@ namespace SmashBros
         {
             bUp=true;
             landing=true;
-            switch(playerdir)
-            {
-                case 1:
-                changeAnimation("special_prep_side_left", FORWARD);
-                break;
- 
-                case 2:
-                changeAnimation("special_prep_side_right", FORWARD);
-                break;
-            }
+            changeTwoSidedAnimation("special_prep_side", FORWARD);
         }
 	}
 	
@@ -2228,13 +1505,13 @@ namespace SmashBros
 	{
 	    if(attacksPriority!=7 && !bUp)
 	    {
-	        AttackTemplates::launchUpB(this, -1,8, 7.5f,7.5f);
+	        AttackTemplates::launchUpB(this, -1,0, 7.5f,7.5f);
 	        y-=34;
 			
-			Spring*spring = new Spring(getPlayerNo(), x, y + ((float)height/2)+23);
+			Spring*spring = new Spring(getPlayerNo(), x, y + ((float)height/2)+26);
 	        createProjectile(spring);
 			
-			addProjectileInfo(1, spring->getID(), x, y + ((float)height/2)+23);
+			addProjectileInfo(1, spring->getID(), x, y + ((float)height/2)+26);
 	    }
 	}
 	
@@ -2245,17 +1522,8 @@ namespace SmashBros
 			smashPower=0;
 	        if(isOnGround())
 	        {
-	            AttackTemplates::chargeB(this, 4, 10, 14);
-	            switch(playerdir)
-	            {
-	            	case LEFT:
-	            	changeAnimation("special_charge_down_left",FORWARD);
-	            	break;
-	            	
-	            	case RIGHT:
-	            	changeAnimation("special_charge_down_right",FORWARD);
-	            	break;
-	            }
+	            AttackTemplates::chargeB(this, 4, 10, 1400);
+	            changeTwoSidedAnimation("special_charge_down",FORWARD);
 	            chargeAttack = 1;
 	        }
 	        else
@@ -2267,27 +1535,18 @@ namespace SmashBros
 	
 	void Sonic::attackSideSmash(byte type)
 	{
-		if(attacksPriority!=7 && !(checkItemUseSmash(type))&&(!bUp))
+		if(attacksPriority!=7 && !bUp && !checkItemUseSideSmash(type))
 	    {
 	        if(isOnGround())
 	        {
 	        	if(type == STEP_CHARGE)
 	        	{
-	        		AttackTemplates::normalSmash(this,15,2.91,type,1,15,14,20);
+	        		AttackTemplates::normalSmash(this,15,2.91,type,1,1500,14,20);
 	        	}
 	        	else
 	        	{
 		        	winding = true;
-		        	switch(playerdir)
-		        	{
-		        		case LEFT:
-		        		changeAnimation("smash_wind_left",FORWARD);
-		        		break;
-		        		
-		        		case RIGHT:
-		        		changeAnimation("smash_wind_right",FORWARD);
-		        		break;
-		        	}
+		        	changeTwoSidedAnimation("smash_wind",FORWARD);
 	        	}
 	        }
 	        else
@@ -2299,12 +1558,12 @@ namespace SmashBros
 	
 	void Sonic::attackUpSmash(byte type)
 	{
-		if(attacksPriority!=7 && !bUp)
+		if(attacksPriority!=7 && !bUp && !checkItemUseUpSmash(type))
 	    {
 	        hitAmount=0;
 	        if(isOnGround())
 	        {
-	            AttackTemplates::normalSmash(this,16,3.26,type,2,18,14,20);
+	            AttackTemplates::normalSmash(this,16,3.26,type,2,1800,14,20);
 	            if(type==STEP_GO)
 	            {
 	                y-=15;
@@ -2320,11 +1579,11 @@ namespace SmashBros
 	
 	void Sonic::attackDownSmash(byte type)
 	{
-		if(attacksPriority!=7 && !bUp)
+		if(attacksPriority!=7 && !bUp && !checkItemUseDownSmash(type))
 	    {
 	        if(isOnGround())
 	        {
-	            AttackTemplates::normalSmash(this,17,3.5,type,3,18,12,20);
+	            AttackTemplates::normalSmash(this,17,3.5,type,3,1800,12,20);
 	        }
 	        else
 	        {
@@ -2343,40 +1602,22 @@ namespace SmashBros
 	        turning=true;
 	        xvelocity=0;
 	        yvelocity=0;
-	        attackTime=Global::getWorldTime()+150;
+	        attackTime=Global::getWorldTime()+15000;
 	        chargeSmash=0;
 	        smashPower=0;
 	        finalSmashing = true;
-	        switch(playerdir)
-	        {
-	            case 1:
-	            {
-		            changeAnimation("finalsmash_transform_left", FORWARD);
-		            Emeralds*emeralds = new Emeralds(getPlayerNo(), x, y);
-		            emeralds->changeAnimation("appear", FORWARD);
-		            createProjectile(emeralds);
-					
-					addProjectileInfo(2, emeralds->getID(), x, y);
-	            }
-	            break;
-	 
-	            case 2:
-	            {
-		            changeAnimation("finalsmash_transform_right", FORWARD);
-		            Emeralds*emeralds = new Emeralds(getPlayerNo(), x, y);
-		            emeralds->changeAnimation("appear", FORWARD);
-		            createProjectile(emeralds);
-					
-					addProjectileInfo(2, emeralds->getID(), x, y);
-	            }
-	            break;
-	        }
+			changeTwoSidedAnimation("finalsmash_transform", FORWARD);
+			Emeralds*emeralds = new Emeralds(getPlayerNo(), x, y);
+			emeralds->changeAnimation("appear", FORWARD);
+			createProjectile(emeralds);
+			
+			addProjectileInfo(2, emeralds->getID(), x, y);
 	    }
 	}
 	
 	Sonic::Spring::Spring(byte playerNo, float x1, float y1) : Projectile(playerNo,x1,y1)
 	{
-		deadTime=Global::getWorldTime()+50;
+		deadTime=Global::getWorldTime()+5000;
 			
 		addAnimation(new Animation("normal", 1, "Images/Game/Characters/Sonic/spring_normal.png"));
 		Animation*anim = new Animation("bounce", 20, 5, 1);

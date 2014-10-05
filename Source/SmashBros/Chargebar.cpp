@@ -59,7 +59,10 @@ namespace SmashBros
 				playr->chargingAttack = false;
 				break;
 			}
-			inactive = true;
+			if(playr->chargebar!=null)
+			{
+				inactive = true;
+			}
 		}
 		else if(lastTime < Global::getWorldTime())
 		{

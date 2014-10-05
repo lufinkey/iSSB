@@ -13,7 +13,6 @@
 		28FD15080DC6FC5B0079059D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FD15070DC6FC5B0079059D /* QuartzCore.framework */; };
 		A00132FC17DF8FB1005B6829 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A00132FB17DF8FB1005B6829 /* Icon.png */; };
 		A006580317F8C09D00B54DF7 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A006580217F8C09C00B54DF7 /* MessageUI.framework */; };
-		A05A0DAA197B83B300ED19A6 /* Images in Resources */ = {isa = PBXBuildFile; fileRef = A05A0B56197B83B300ED19A6 /* Images */; };
 		A05C8D72180780B600A30C28 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A05C8D71180780B600A30C28 /* GameKit.framework */; };
 		A071A7CE197B11C0003DB16F /* Pikachu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A071A7CC197B11C0003DB16F /* Pikachu.cpp */; };
 		A071A7D3197B136F003DB16F /* Loader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A071A7D2197B136F003DB16F /* Loader.cpp */; };
@@ -124,6 +123,8 @@
 		A0BF9D4617D7A60000ECBEF4 /* libSDL_ttf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A0BF9D4217D7A60000ECBEF4 /* libSDL_ttf.a */; };
 		A0BF9D4717D7A60000ECBEF4 /* libSDL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A0BF9D4317D7A60000ECBEF4 /* libSDL.a */; };
 		A0BF9FEE17DA4C2900ECBEF4 /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = A0BF9FEA17DA4C2900ECBEF4 /* Fonts */; };
+		A0EAD66719DDA0D100706B70 /* Images in Resources */ = {isa = PBXBuildFile; fileRef = A0EAD41219DDA0D100706B70 /* Images */; };
+		A0EAD69C19DDA26100706B70 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A0EAD69B19DDA26100706B70 /* Icon@2x.png */; };
 		A0FB9C9B17EE153200A2EBBE /* Music in Resources */ = {isa = PBXBuildFile; fileRef = A0FB9C8E17EE153200A2EBBE /* Music */; };
 		FD779EDE0E26BA1200F39101 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD779EDD0E26BA1200F39101 /* CoreAudio.framework */; };
 		FD77A0850E26BDB800F39101 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD77A0840E26BDB800F39101 /* AudioToolbox.framework */; };
@@ -132,14 +133,13 @@
 
 /* Begin PBXFileReference section */
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		1D6058910D05DD3D006BFB54 /* GameEngine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GameEngine.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1D6058910D05DD3D006BFB54 /* SmashBros.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmashBros.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		28FD14FF0DC6FC520079059D /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		28FD15070DC6FC5B0079059D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A00132FB17DF8FB1005B6829 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		A006580217F8C09C00B54DF7 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
-		A05A0B56197B83B300ED19A6 /* Images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Images; sourceTree = "<group>"; };
 		A05C8D71180780B600A30C28 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		A071A7CC197B11C0003DB16F /* Pikachu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Pikachu.cpp; sourceTree = "<group>"; };
 		A071A7CD197B11C0003DB16F /* Pikachu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pikachu.h; sourceTree = "<group>"; };
@@ -445,6 +445,8 @@
 		A0BF9D4317D7A60000ECBEF4 /* libSDL.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libSDL.a; sourceTree = "<group>"; };
 		A0BF9FEA17DA4C2900ECBEF4 /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Fonts; sourceTree = "<group>"; };
 		A0C779D8180E1C9100001642 /* SDL_p2p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDL_p2p.h; sourceTree = "<group>"; };
+		A0EAD41219DDA0D100706B70 /* Images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Images; sourceTree = "<group>"; };
+		A0EAD69B19DDA26100706B70 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		A0FB9C8E17EE153200A2EBBE /* Music */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Music; sourceTree = "<group>"; };
 		FD779EDD0E26BA1200F39101 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		FD77A0840E26BDB800F39101 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -480,7 +482,7 @@
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1D6058910D05DD3D006BFB54 /* GameEngine.app */,
+				1D6058910D05DD3D006BFB54 /* SmashBros.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -501,7 +503,7 @@
 			isa = PBXGroup;
 			children = (
 				A0BF9FEA17DA4C2900ECBEF4 /* Fonts */,
-				A05A0B56197B83B300ED19A6 /* Images */,
+				A0EAD41219DDA0D100706B70 /* Images */,
 				A0FB9C8E17EE153200A2EBBE /* Music */,
 				A088D51D17F48E9D001E85E5 /* Sounds */,
 				A0A7F8C0195A2A4D003924CD /* Default-568h@2x.png */,
@@ -510,6 +512,7 @@
 				A0A7F8C3195A2A4D003924CD /* Default@2x~iphone.png */,
 				A0A7F8C4195A2A4D003924CD /* Default~iphone.png */,
 				A00132FB17DF8FB1005B6829 /* Icon.png */,
+				A0EAD69B19DDA26100706B70 /* Icon@2x.png */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 			);
 			name = Resources;
@@ -999,9 +1002,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		1D6058900D05DD3D006BFB54 /* GameEngine */ = {
+		1D6058900D05DD3D006BFB54 /* iSSB */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "GameEngine" */;
+			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "iSSB" */;
 			buildPhases = (
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
@@ -1011,9 +1014,9 @@
 			);
 			dependencies = (
 			);
-			name = GameEngine;
-			productName = GameEngine;
-			productReference = 1D6058910D05DD3D006BFB54 /* GameEngine.app */;
+			name = iSSB;
+			productName = SmashBros;
+			productReference = 1D6058910D05DD3D006BFB54 /* SmashBros.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1038,7 +1041,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				1D6058900D05DD3D006BFB54 /* GameEngine */,
+				1D6058900D05DD3D006BFB54 /* iSSB */,
 			);
 		};
 /* End PBXProject section */
@@ -1060,7 +1063,8 @@
 				A0A7F8C7195A2A4D003924CD /* Default-LandscapeRight.png in Resources */,
 				A0A7F8C8195A2A4D003924CD /* Default@2x~iphone.png in Resources */,
 				A0A7F8C9195A2A4D003924CD /* Default~iphone.png in Resources */,
-				A05A0DAA197B83B300ED19A6 /* Images in Resources */,
+				A0EAD66719DDA0D100706B70 /* Images in Resources */,
+				A0EAD69C19DDA26100706B70 /* Icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1185,7 +1189,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/SDL/lib\"",
 				);
-				PRODUCT_NAME = GameEngine;
+				PRODUCT_NAME = SmashBros;
 			};
 			name = Debug;
 		};
@@ -1202,7 +1206,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/SDL/lib\"",
 				);
-				PRODUCT_NAME = GameEngine;
+				PRODUCT_NAME = SmashBros;
 			};
 			name = Release;
 		};
@@ -1242,7 +1246,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "GameEngine" */ = {
+		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "iSSB" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug */,

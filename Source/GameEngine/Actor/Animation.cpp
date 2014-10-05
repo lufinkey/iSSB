@@ -18,7 +18,7 @@ namespace GameEngine
 		isMirroredVertical = anim.isMirroredVertical;
 		rows = anim.rows;
 		cols = anim.cols;
-
+		
 		if(anim.sequence!=null)
 		{
 			sequence = new int[anim.frames];
@@ -27,21 +27,21 @@ namespace GameEngine
 				sequence[i] = anim.sequence[i];
 			}
 		}
-
+		
 		imageSize.x = anim.imageSize.x;
 		imageSize.y = anim.imageSize.y;
-
+		
 		animType = anim.animType;
-
+		
 		width = anim.width;
 		height = anim.height;
 		
 		direction = anim.direction;
-
+		
 		fps = anim.fps;
 		name = anim.name;
 	}
-
+	
 	Animation::Animation(String n,int speed)
 	{
 		rows = 0;
@@ -60,7 +60,7 @@ namespace GameEngine
 		isMirrored = false;
 		isMirroredVertical = false;
 	}
-    
+	
 	Animation::Animation(String n,int speed,String frame) //(animType 0)
 	{
 		rows = 0;
@@ -78,7 +78,7 @@ namespace GameEngine
 		height = 1;
 		isMirrored = false;
 		isMirroredVertical = false;
-
+		
 		addFrame(frame);
 	}
     
@@ -107,7 +107,7 @@ namespace GameEngine
 		names = ArrayList<String>();
 		recentFrame = 0;
     	animType=2;
-
+		
     	for(int i=0; i<seq.size(); i++)
     	{
     		sequence[i] = seq[i];
@@ -128,13 +128,13 @@ namespace GameEngine
 	Animation::~Animation()
 	{
 		names.clear();
-
+		
 		if(sequence!=NULL)
 		{
 			delete[] sequence;
 		}
 	}
-
+	
 	Animation& Animation::operator=(const Animation& anim)
 	{
 		if(sequence!=null)
@@ -143,17 +143,17 @@ namespace GameEngine
 			sequence = null;
 		}
 		names.clear();
-
+		
 		frames = anim.frames;
 		names = anim.names;
-
+		
 		currentFrame = anim.currentFrame;
 		recentFrame = anim.recentFrame;
 		isMirrored = anim.isMirrored;
 		isMirroredVertical = anim.isMirroredVertical;
 		rows = anim.rows;
 		cols = anim.cols;
-
+		
 		if(anim.sequence!=null)
 		{
 			sequence = new int[anim.frames];
@@ -162,53 +162,53 @@ namespace GameEngine
 				sequence[i] = anim.sequence[i];
 			}
 		}
-
+		
 		imageSize.x = anim.imageSize.x;
 		imageSize.y = anim.imageSize.y;
-
+		
 		animType = anim.animType;
-
+		
 		width = anim.width;
 		height = anim.height;
 		
 		direction = anim.direction;
-
+		
 		fps = anim.fps;
 		name = anim.name;
-
+		
 		return *this;
 	}
-
+	
 	void Animation::mirror(bool toggle)
 	{
 		isMirrored=toggle;
 	}
-
+	
 	void Animation::mirrorVertical(bool toggle)
 	{
 		isMirroredVertical=toggle;
 	}
-
+	
 	bool Animation::mirrored()
 	{
     	return isMirrored;
 	}
-
+	
 	bool Animation::mirroredVertical()
 	{
     	return isMirroredVertical;
 	}
-
+	
 	int Animation::getWidth()
 	{
     	return width;
 	}
-
+	
 	int Animation::getHeight()
 	{
     	return height;
 	}
-
+	
 	Vector2i Animation::getSize()
 	{
 		Vector2i size = Vector2i();
@@ -287,7 +287,24 @@ namespace GameEngine
     		break;
     	}
 	}
-		
+	
+	void Animation::setFrame(int frameNo, const String&fImage)
+	{
+		if(frameNo < names.size())
+		{
+			bool success=AssetManager::loadImage(fImage);
+			if(success)
+			{
+				names.set(frameNo,fImage);
+			}
+		}
+	}
+	
+	int Animation::getTotalFrames()
+	{
+		return frames;
+	}
+	
 	BufferedImage*Animation::getCurrentImage()
 	{
     	switch(animType)
@@ -736,7 +753,7 @@ namespace GameEngine
 		}
 		drawFrame(a,g,currentFrame,x1,y1,scale,relativeToScreen);
 	}
-
+	
 	void Animation::setCurrentFrame(int fNum) //sets the current frame of the Animation
 	{
 		if((fNum<frames)&&(fNum>=0))
@@ -748,7 +765,7 @@ namespace GameEngine
 			currentFrame=0;
 		}
 	}
-
+	
 	int Animation::getLastFrame()
 	{
     	return recentFrame;
@@ -757,6 +774,11 @@ namespace GameEngine
 	int Animation::getCurrentFrame() //returns the current frame of the Animation
 	{
     	return currentFrame;
+	}
+	
+	int Animation::getSequenceFrame(int seqNum)
+	{
+		return sequence[seqNum];
 	}
 	
 	unsigned char Animation::getDirection()

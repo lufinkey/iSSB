@@ -473,7 +473,7 @@ namespace SmashBros
 		rect.x = ws.x - ws.y/2 - offset;
 		rect.y = hs.x - hs.y/2 - offset;
 		rect.width = w;
-		rect.height = h;
+		rect.height = h + bottomOffset;
 		
 		if(rect.width <=1 || rect.height<=1)
 		{

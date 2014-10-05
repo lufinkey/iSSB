@@ -20,7 +20,7 @@ namespace SmashBros
 
 		virtual boolean holderCanDo();
 		virtual void onDiscard(Player*discarder);
-		virtual boolean chargeSmash();
+		virtual boolean chargeSmash(byte attackDir);
 		virtual boolean use(byte attackDir);
 		virtual void onPlayerHit(Player*collide, byte dir);
 		virtual void onAnimationFinish(const String&name);

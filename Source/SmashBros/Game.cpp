@@ -13,12 +13,12 @@ namespace SmashBros
 		firstUpdate = true;
 		drawnOnce = false;
 	}
-
+	
 	Game::~Game()
 	{
 		//
 	}
-
+	
 	void Game::Initialize()
 	{
 		//Initialize things
@@ -45,7 +45,7 @@ namespace SmashBros
 		}
 		//setWindowTitle("Super Smash Bros.");
 	}
-
+	
 	void Game::LoadContent()
 	{
 		bool thingy = true;
@@ -60,7 +60,7 @@ namespace SmashBros
 			Console::OutputToFile(true, "iSSB.log");
 		}
 	}
-
+	
 	void Game::UnloadContent()
 	{
 		//
@@ -83,7 +83,7 @@ namespace SmashBros
 		}
 		ScreenManager::Update(gameTime);
 	}
-
+	
 	void Game::Draw(Graphics2D& g, long gameTime)
 	{
 		ScreenManager::Draw(g, gameTime);

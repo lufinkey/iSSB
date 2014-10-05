@@ -5,7 +5,7 @@
 
 namespace SmashBros
 {
-	RayGun::RayGun(float x1, float y1) : Item(x1, y1, 200, TYPE_HOLD)
+	RayGun::RayGun(float x1, float y1) : Item(x1, y1, 20000, TYPE_HOLD)
 	{
 		itemNo = Global::ITEM_RAYGUN;
 		
@@ -36,11 +36,11 @@ namespace SmashBros
 		
 		switch(dir)
 		{
-			case 1:
+			case Player::LEFT:
 			changeAnimation("left",FORWARD);
 			break;
 			
-			case 2:
+			case Player::RIGHT:
 			changeAnimation("right",FORWARD);
 			break;
 		}
@@ -55,18 +55,7 @@ namespace SmashBros
 	
 	void RayGun::onDiscard(Player*discarder)
 	{
-		switch(discarder->getPlayerDir())
-		{
-			case Player::LEFT:
-			xvelocity = 2;
-			break;
-			
-			case Player::RIGHT:
-			xvelocity = -2;
-			break;
-		}
 		dir = discarder->getPlayerDir();
-		yvelocity = -3;
 	}
 	
 	boolean RayGun::use(byte attackDir)
@@ -82,7 +71,7 @@ namespace SmashBros
 					createProjectile(new Ray(getItemHolder(),x,y));
 					ammo--;
 				}
-				activeTime = Global::getWorldTime() + 5;
+				activeTime = Global::getWorldTime() + 500;
 			}
 			return true;
 		}
@@ -96,7 +85,7 @@ namespace SmashBros
 					createProjectile(new Ray(getItemHolder(),x,y));
 					ammo--;
 				}
-				activeTime = Global::getWorldTime() + 4;
+				activeTime = Global::getWorldTime() + 400;
 			}
 			return true;
 		}
@@ -175,7 +164,7 @@ namespace SmashBros
 		anim = new Animation("right",1,"Images/Game/Items/RayGun/ray.png");
 		anim->mirror(true);
 		addAnimation(anim);
-			
+		
 		switch(itemdir)
 		{
 			case Player::LEFT:
@@ -191,10 +180,32 @@ namespace SmashBros
 			
 		startX = x;
 	}
-
+	
 	RayGun::Ray::~Ray()
 	{
 		//
+	}
+	
+	void RayGun::Ray::deflect(byte dir)
+	{
+		switch(dir)
+		{
+			case DIR_LEFT:
+			case DIR_UPLEFT:
+			case DIR_DOWNLEFT:
+			itemdir = LEFT;
+			xvelocity = -6;
+			changeAnimation("left", FORWARD);
+			break;
+			
+			case DIR_RIGHT:
+			case DIR_UPRIGHT:
+			case DIR_DOWNRIGHT:
+			itemdir = RIGHT;
+			xvelocity = 6;
+			changeAnimation("right", FORWARD);
+			break;
+		}
 	}
 	
 	void RayGun::Ray::Update(long gameTime)
@@ -219,14 +230,14 @@ namespace SmashBros
 			        causeHurtLaunch(collide,0,0,0, -1,1,1);
 			        switch(itemdir)
 			        {
-			            case 1:
+			            case Player::LEFT:
 			            causeHurtLaunch(collide,-1,3,1, 0,0,0);
-			            causeHurt(collide, Player::RIGHT, 3);
+			            causeHurt(collide, Player::RIGHT, 300);
 			            break;
 						
-			            case 2:
+			            case Player::RIGHT:
 			            causeHurtLaunch(collide,1,3,1, 0,0,0);
-			            causeHurt(collide, Player::LEFT, 3);
+			            causeHurt(collide, Player::LEFT, 300);
 			            break;
 			        }
 			        destroy();
@@ -236,13 +247,13 @@ namespace SmashBros
 			        xvelocity=-xvelocity;
 			        switch(itemdir)
 			        {
-			            case 1:
-			            itemdir=2;
+			            case Player::LEFT:
+						itemdir=Player::RIGHT;
 			            changeAnimation("right", NO_CHANGE);
 			            break;
 			 
-			            case 2:
-			            itemdir=1;
+			            case Player::RIGHT:
+						itemdir=Player::LEFT;
 			            changeAnimation("left", NO_CHANGE);
 			            break;
 			        }
@@ -254,13 +265,13 @@ namespace SmashBros
 			    xvelocity=-xvelocity;
 			    switch(itemdir)
 			    {
-			        case 1:
-			        itemdir=2;
+			        case Player::LEFT:
+					itemdir=Player::RIGHT;
 			        changeAnimation("right", NO_CHANGE);
 			        break;
-			 
-			        case 2:
-			        itemdir=1;
+						
+			        case Player::RIGHT:
+					itemdir=Player::LEFT;
 			        changeAnimation("left", NO_CHANGE);
 			        break;
 			    }
@@ -278,14 +289,14 @@ namespace SmashBros
 			    causeHurtLaunch(collide,0,0,0, -1,1,1);
 			    switch(itemdir)
 			    {
-			        case 1:
+			        case Player::LEFT:
 			        causeHurtLaunch(collide, -1,3,1, 0,0,0);
-			        causeHurt(collide, Player::RIGHT, 3);
+			        causeHurt(collide, Player::RIGHT, 300);
 			        break;
-
-			        case 2:
+					
+			        case Player::RIGHT:
 			        causeHurtLaunch(collide,1,3,1, 0,0,0);
-			        causeHurt(collide, Player::LEFT, 3);
+			        causeHurt(collide, Player::LEFT, 300);
 			        break;
 			    }
 			    destroy();

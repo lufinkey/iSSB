@@ -4,7 +4,7 @@
 
 namespace SmashBros
 {
-	SuperMushroom::SuperMushroom(float x1, float y1) : Item(x1, y1, 160, TYPE_WIELD)
+	SuperMushroom::SuperMushroom(float x1, float y1) : Item(x1, y1, 16000, TYPE_WIELD)
 	{
 		itemNo = Global::ITEM_SUPERMUSHROOM;
 		
@@ -49,7 +49,7 @@ namespace SmashBros
 				int dif = newHeight - oldHeight;
 				collide->y-=dif/2;
 				
-				finishTime = Global::getWorldTime() + 100;
+				finishTime = Global::getWorldTime() + 10000;
 				
 				moving = false;
 				active = true;
@@ -64,11 +64,11 @@ namespace SmashBros
 		switch(dir)
 		{
 			case DIR_LEFT:
-			this->dir = 1;
+			this->dir = Player::LEFT;
 			break;
 			
 			case DIR_RIGHT:
-			this->dir = 2;
+			this->dir = Player::RIGHT;
 			break;
 		}
 	}
@@ -109,11 +109,11 @@ namespace SmashBros
 			{
 				switch(dir)
 				{
-					case 1:
+					case Player::LEFT:
 					x-=2;
 					break;
 					
-					case 2:
+					case Player::RIGHT:
 					x+=2;
 					break;
 				}

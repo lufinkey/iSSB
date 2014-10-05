@@ -20,56 +20,57 @@ namespace GameEngine
 	private:
 		int frames;
 		ArrayList<String> names;
-
+		
 		int currentFrame;
 		int recentFrame;
-
+		
 		bool isMirrored;
 		bool isMirroredVertical;
 		int rows;
 		int cols;
-
+		
 		int*sequence;
-
+		
 		Vector2i imageSize;
-
+		
 		int animType;
-
+		
 		int width;
 		int height;
-
+		
 		unsigned char direction;
 	public:
 		static const int TYPE_MULTIFILE = 0;
 		static const int TYPE_SINGLEFILE = 1;
 		static const int TYPE_SPECFRAME_SINGLEFILE = 2;
-
+		
 		int fps;
 		String name;
-
+		
 		Animation(const Animation& anim);
 		Animation(String n,int speed);
 		Animation(String n,int speed,String frame);
 		Animation(String n,int speed,int xFrames,int yFrames);
 		Animation(String n,int speed,int xFrames,int yFrames,ArrayList<int> seq);
 		virtual ~Animation();
-
+		
 		void mirror(bool toggle);
 		void mirrorVertical(bool toggle);
 		bool mirrored();
 		bool mirroredVertical();
-
+		
 		int getWidth();
 		int getHeight();
 		Vector2i getSize();
-    
+		
 		void addFrame(String fName);
+		void setFrame(int frameNo, const String&fImage);
+		int getTotalFrames();
 		
 		BufferedImage*getCurrentImage();
 		int getCols();
 		int getRows();
 		int getType();
-
 		
 		void drawFrame(Actor*a, Graphics2D& g, float x1, float y1, double scale);
 		void drawFrame(Actor*a, Graphics2D& g, int fNum, float x1, float y1, double scale);
@@ -80,10 +81,11 @@ namespace GameEngine
 		void setCurrentFrame(int fNum);
 		int getLastFrame();
 		int getCurrentFrame();
+		int getSequenceFrame(int seqNum);
 		unsigned char getDirection();
-    
+		
 		ArrayList<String> getAllFilenames();
-
+		
 		Animation& operator=(const Animation& anim);
 	};
 }

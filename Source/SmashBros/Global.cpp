@@ -126,7 +126,7 @@ namespace SmashBros
 
 	void Global::Update(long gameTime)
 	{
-		worldTime = gameTime/100;
+		worldTime = gameTime;
 	}
 	
 	void Global::onReturnToMenu()
@@ -949,7 +949,7 @@ namespace SmashBros
 		
 		gamePlaying = false;
 		hud->showFinishGame = true;
-		hud->finishGameTime = getWorldTime() + 30;
+		hud->finishGameTime = getWorldTime() + 3000;
 	}
 
 	void Global::finishGameTeam()
@@ -1137,7 +1137,7 @@ namespace SmashBros
 		
 		gamePlaying = false;
 		hud->showFinishGame = true;
-		hud->finishGameTime = getWorldTime() + 30;
+		hud->finishGameTime = getWorldTime() + 3000;
 	}
 
 	void Global::finishGameSoloTraining()
@@ -1189,6 +1189,6 @@ namespace SmashBros
 		suddenDeath = false;
 		gamePlaying = false;
 		hud->showFinishGame = true;
-		hud->finishGameTime = getWorldTime() + 30;
+		hud->finishGameTime = getWorldTime() + 3000;
 	}
 }

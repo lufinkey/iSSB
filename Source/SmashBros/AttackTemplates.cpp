@@ -16,9 +16,13 @@ namespace SmashBros
 			switch(collide->playerdir)
 			{
 				case Player::LEFT:
-				if(playr->x<collide->x && PrimitiveActor::getDir(collide->getHitbox(),playr->getHitbox())!=PrimitiveActor::DIR_LEFT)
+				if(playr->x<collide->x && PrimitiveActor::getDir(collide,playr)==PrimitiveActor::DIR_LEFT)
 				{
-					boolean inflicted = collide->onPlayerDeflectDamage(playr, amount);
+					boolean inflicted = false;
+					if(playr->attacksPriority!=7)
+					{
+						inflicted = collide->onDeflectPlayerDamage(playr, amount);
+					}
 					if(inflicted)
 					{
 						canInflict = false;
@@ -28,9 +32,13 @@ namespace SmashBros
 				break;
 				
 				case Player::RIGHT:
-				if(playr->x>collide->x && PrimitiveActor::getDir(collide,playr)!=PrimitiveActor::DIR_RIGHT)
+				if(playr->x>collide->x && PrimitiveActor::getDir(collide,playr)==PrimitiveActor::DIR_RIGHT)
 				{
-					boolean inflicted = collide->onPlayerDeflectDamage(playr, amount);
+					boolean inflicted = false;
+					if(playr->attacksPriority!=7)
+					{
+						inflicted = collide->onDeflectPlayerDamage(playr, amount);
+					}
 					if(inflicted)
 					{
 						canInflict = false;
@@ -42,7 +50,11 @@ namespace SmashBros
 		}
 		else if(collide->attacksPriority==6)
 		{
-			boolean inflicted = collide->onPlayerDeflectDamage(playr, amount);
+			boolean inflicted = false;
+			if(playr->attacksPriority!=7)
+			{
+				inflicted = collide->onDeflectPlayerDamage(playr, amount);
+			}
 			if(inflicted)
 			{
 				canInflict = false;
@@ -51,26 +63,26 @@ namespace SmashBros
 		}
 		if(canInflict)
 		{
-		    collide->percent+=amount;
-		    if(collide->percent>999)
-		    {
-		        collide->percent=999;
-		    }
+			collide->percent+=amount;
+			if(collide->percent>999)
+			{
+				collide->percent=999;
+			}
 		}
 	}
-
+	
 	void AttackTemplates::causeHurtLaunch(Player*playr, Player*collide, int xDir, float xAmount, float xMult, int yDir, float yAmount, float yMult)
 	{
 		if(collide->deflectState)
 		{
-			collide->onPlayerDeflectLaunch(playr, xDir, xAmount, xMult, yDir, yAmount, yMult);
+			collide->onDeflectPlayerLaunch(playr, xDir, xAmount, xMult, yDir, yAmount, yMult);
 		}
 		else
 		{
 		    //float oldXvel;
 		    //float oldYvel;
-		    float newyVel=(float)(yDir*(yAmount+(yMult*(collide->percent))/100));
-		    float newxVel=(float)(xDir*(xAmount+(xMult*(collide->percent))/100));
+		    float newyVel=(float)(yDir*(yAmount+(yMult*(collide->percent))/75));
+		    float newxVel=(float)(xDir*(xAmount+(xMult*(collide->percent))/75));
 		    //Console::WriteLine(this.attacksHolder + ": " + newyVel + "");
 		    if(newyVel>0)
 		    {
@@ -110,166 +122,76 @@ namespace SmashBros
 
 	void AttackTemplates::causeHurt(Player*playr, Player*collide, byte dir, int time)
 	{
-		if(!collide->deflectState)
+		if(collide->deflectState)
 		{
-		    if(std::abs(collide->xvelocity)<=3)
-		    {
-		        if(std::abs(collide->yvelocity)<=3)
-		        {
-		            switch(dir)
-		            {
-		                case Player::LEFT:
-		                collide->changeAnimation("hurt_minor_left", NO_CHANGE);
-		                break;
-		 
-		                case Player::RIGHT:
-		                collide->changeAnimation("hurt_minor_right", NO_CHANGE);
-		                break;
-		            }
-		        }
-		        else if((std::abs(collide->yvelocity)>3)&&(std::abs(collide->yvelocity)<7))
-		        {
-		            switch(dir)
-		            {
-		                case Player::LEFT:
-		                collide->changeAnimation("hurt_minor_left", NO_CHANGE);
-		                break;
-		 
-		                case Player::RIGHT:
-		                collide->changeAnimation("hurt_minor_right", NO_CHANGE);
-		                break;
-		            }
-		        }
-		        else if((std::abs(collide->yvelocity)>=7)&&(std::abs(collide->yvelocity)<12))
-		        {
-		            switch(dir)
-		            {
-		                case Player::LEFT:
-		                collide->changeAnimation("hurt_flip_left", NO_CHANGE);
-		                break;
-		 
-		                case Player::RIGHT:
-		                collide->changeAnimation("hurt_flip_left", NO_CHANGE);
-		                break;
-		            }
-		        }
-		        else if(std::abs(collide->yvelocity)>=12)
-		        {
-		            collide->changeAnimation("hurt_spin_up", NO_CHANGE);
-		        }
-		    }
-		 
-		    else if((std::abs(collide->xvelocity)>3)&&(std::abs(collide->xvelocity)<7))
-		    {
-		        if(std::abs(collide->yvelocity)<=3)
-		        {
-		            switch(dir)
-		            {
-		                case Player::LEFT:
-		                collide->changeAnimation("hurt_fly_left", NO_CHANGE);
-		                break;
-		 
-		                case Player::RIGHT:
-		                collide->changeAnimation("hurt_fly_right", NO_CHANGE);
-		                break;
-		            }
-		        }
-		        else if((std::abs(collide->yvelocity)>3)&&(std::abs(collide->yvelocity)<7))
-		        {
-		            switch(dir)
-		            {
-		                case Player::LEFT:
-		                collide->changeAnimation("hurt_minor_left", NO_CHANGE);
-		                break;
-		 
-		                case Player::RIGHT:
-		                collide->changeAnimation("hurt_minor_right", NO_CHANGE);
-		                break;
-		            }
-		        }
-		        else if((std::abs(collide->yvelocity)>=7)&&(std::abs(collide->yvelocity)<12))
-		        {
-		            switch(dir)
-		            {
-		                case Player::LEFT:
-		                collide->changeAnimation("hurt_fly_left", NO_CHANGE);
-		                break;
-		 
-		                case Player::RIGHT:
-		                collide->changeAnimation("hurt_fly_right", NO_CHANGE);
-		                break;
-		            }
-		        }
-		        else if(std::abs(collide->yvelocity)>=12)
-		        {
-		            switch(dir)
-		            {
-		                case Player::LEFT:
-		                collide->changeAnimation("hurt_flip_left", NO_CHANGE);
-		                break;
-		 
-		                case Player::RIGHT:
-		                collide->changeAnimation("hurt_flip_right", NO_CHANGE);
-		                break;
-		            }
-		        }
-		    }
-		 
-		    else if(std::abs(collide->xvelocity)>=7)
-		    {
-		        if(std::abs(collide->yvelocity)<=3)
-		        {
-		            switch(dir)
-		            {
-		                case Player::LEFT:
-		                collide->changeAnimation("hurt_spin_left", NO_CHANGE);
-		                break;
-		 
-		                case Player::RIGHT:
-		                collide->changeAnimation("hurt_spin_right", NO_CHANGE);
-		                break;
-		            }
-		        }
-		        else if((std::abs(collide->yvelocity)>3)&&(std::abs(collide->yvelocity)<7))
-		        {
-		            switch(dir)
-		            {
-		                case Player::LEFT:
-		                collide->changeAnimation("hurt_spin_left", NO_CHANGE);
-		                break;
-		 
-		                case Player::RIGHT:
-		                collide->changeAnimation("hurt_spin_right", NO_CHANGE);
-		                break;
-		            }
-		        }
-		        else if((std::abs(collide->yvelocity)>=7)&&(std::abs(collide->yvelocity)<12))
-		        {
-		            switch(dir)
-		            {
-		                case Player::LEFT:
-		                collide->changeAnimation("hurt_spin_left", NO_CHANGE);
-		                break;
-		 
-		                case Player::RIGHT:
-		                collide->changeAnimation("hurt_spin_right", NO_CHANGE);
-		                break;
-		            }
-		        }
-		        else if(std::abs(collide->yvelocity)>=12)
-		        {
-		            switch(dir)
-		            {
-		                case Player::LEFT:
-		                collide->changeAnimation("hurt_flip_left", NO_CHANGE);
-		                break;
-		 
-		                case Player::RIGHT:
-		                collide->changeAnimation("hurt_flip_right", NO_CHANGE);
-		                break;
-		            }
-		        }
-		    }
+			byte d = Player::LEFT;
+			if(playr->xvelocity < 0)
+			{
+				d = Player::RIGHT;
+			}
+			collide->causeHurt(playr, d, time);
+		}
+		else
+		{
+			if(std::abs(collide->xvelocity)<=3)
+			{
+				if(std::abs(collide->yvelocity)<=3)
+				{
+					collide->changeTwoSidedAnimation("hurt_minor", NO_CHANGE, dir);
+				}
+				else if((std::abs(collide->yvelocity)>3)&&(std::abs(collide->yvelocity)<7))
+				{
+					collide->changeTwoSidedAnimation("hurt_minor", NO_CHANGE, dir);
+				}
+				else if((std::abs(collide->yvelocity)>=7)&&(std::abs(collide->yvelocity)<12))
+				{
+					collide->changeTwoSidedAnimation("hurt_flip", NO_CHANGE, dir);
+				}
+				else if(std::abs(collide->yvelocity)>=12)
+				{
+					collide->changeAnimation("hurt_spin_up", NO_CHANGE);
+				}
+			}
+
+			else if((std::abs(collide->xvelocity)>3)&&(std::abs(collide->xvelocity)<7))
+			{
+				if(std::abs(collide->yvelocity)<=3)
+				{
+					collide->changeTwoSidedAnimation("hurt_fly", NO_CHANGE, dir);
+				}
+				else if((std::abs(collide->yvelocity)>3)&&(std::abs(collide->yvelocity)<7))
+				{
+					collide->changeTwoSidedAnimation("hurt_minor", NO_CHANGE, dir);
+				}
+				else if((std::abs(collide->yvelocity)>=7)&&(std::abs(collide->yvelocity)<12))
+				{
+					collide->changeTwoSidedAnimation("hurt_fly", NO_CHANGE, dir);
+				}
+				else if(std::abs(collide->yvelocity)>=12)
+				{
+					collide->changeTwoSidedAnimation("hurt_flip", NO_CHANGE, dir);
+				}
+			}
+
+			else if(std::abs(collide->xvelocity)>=7)
+			{
+				if(std::abs(collide->yvelocity)<=3)
+				{
+					collide->changeTwoSidedAnimation("hurt_spin", NO_CHANGE, dir);
+				}
+				else if((std::abs(collide->yvelocity)>3)&&(std::abs(collide->yvelocity)<7))
+				{
+					collide->changeTwoSidedAnimation("hurt_spin", NO_CHANGE, dir);
+				}
+				else if((std::abs(collide->yvelocity)>=7)&&(std::abs(collide->yvelocity)<12))
+				{
+					collide->changeTwoSidedAnimation("hurt_spin", NO_CHANGE, dir);
+				}
+				else if(std::abs(collide->yvelocity)>=12)
+				{
+					collide->changeTwoSidedAnimation("hurt_flip", NO_CHANGE, dir);
+				}
+			}
 		    collide->xVel=0;
 		    collide->yVel=0;
 		    collide->attackTime=0;
@@ -309,21 +231,12 @@ namespace SmashBros
 	{
 		playr->jumping = false;
 		playr->hurt = 0;
-	    switch(playr->playerdir)
-	    {
-	        case 1:
-	        playr->changeAnimation("standard_attack_left", FORWARD);
-	        break;
-	 
-	        case 2:
-	        playr->changeAnimation("standard_attack_right", FORWARD);
-	        break;
-	    }
+	    playr->changeTwoSidedAnimation("standard_attack", FORWARD);
 	    playr->attacksHolder=aNo;
         playr->attacksPriority=aP;
 	}
 
-	void AttackTemplates::combo2A(Player*playr, int comTime, int aNo,double aP,int aNo2,double aP2)
+	void AttackTemplates::combo2A(Player*playr, long comTime, int aNo,double aP,int aNo2,double aP2)
 	{
 		playr->jumping = false;
 		playr->hurt = 0;
@@ -332,53 +245,27 @@ namespace SmashBros
 	        playr->standardCombo=0;
 	        playr->comboTime=0;
 	    }
-	    switch(playr->playerdir)
-	    {
-	        case 1:
-	        switch(playr->standardCombo)
-	        {
-	            case 0:
-	            playr->standardCombo=1;
-	            playr->attacksHolder=aNo;
-	            playr->attacksPriority=aP;
-	            playr->changeAnimation("standard_attack_left", FORWARD);
-	            playr->comboTime=Global::worldTime;
-	            break;
-	 
-	            case 1:
-	            playr->standardCombo=0;
-	            playr->attacksHolder=aNo2;
-	            playr->attacksPriority=aP2;
-	            playr->changeAnimation("standard_attack2_left", FORWARD);
-	            playr->comboTime=0;
-	            break;
-	        }
-	        break;
-	 
-	        case 2:
-	        switch(playr->standardCombo)
-	        {
-	            case 0:
-	            playr->standardCombo=1;
-	            playr->attacksHolder=aNo;
-	            playr->attacksPriority=aP;
-	            playr->changeAnimation("standard_attack_right", FORWARD);
-	            playr->comboTime=Global::worldTime;
-	            break;
-	 
-	            case 1:
-	            playr->standardCombo=0;
-	            playr->attacksHolder=aNo2;
-	            playr->attacksPriority=aP2;
-	            playr->changeAnimation("standard_attack2_right", FORWARD);
-	            playr->comboTime=0;
-	            break;
-	        }
-	        break;
-	    }
+		switch(playr->standardCombo)
+		{
+			case 0:
+			playr->standardCombo=1;
+			playr->attacksHolder=aNo;
+			playr->attacksPriority=aP;
+			playr->changeTwoSidedAnimation("standard_attack", FORWARD);
+			playr->comboTime=Global::worldTime;
+			break;
+ 
+			case 1:
+			playr->standardCombo=0;
+			playr->attacksHolder=aNo2;
+			playr->attacksPriority=aP2;
+			playr->changeTwoSidedAnimation("standard_attack2", FORWARD);
+			playr->comboTime=0;
+			break;
+		}
 	}
 
-	void AttackTemplates::combo3A(Player*playr, int comTime, int aNo,double aP,int aNo2,double aP2,int aNo3, double aP3)
+	void AttackTemplates::combo3A(Player*playr, long comTime, int aNo,double aP,int aNo2,double aP2,int aNo3, double aP3)
 	{
 		playr->jumping = false;
 		playr->hurt = 0;
@@ -387,65 +274,31 @@ namespace SmashBros
 	        playr->standardCombo=0;
 	        playr->comboTime=0;
 	    }
-	    switch(playr->playerdir)
-	    {
-	        case 1:
-	        switch(playr->standardCombo)
-	        {
-	            case 0:
-	            playr->standardCombo=1;
-	            playr->attacksHolder=aNo;
-	            playr->attacksPriority=aP;
-	            playr->changeAnimation("standard_attack_left", FORWARD);
-	            playr->comboTime=Global::worldTime;
-	            break;
-	 
-	            case 1:
-	            playr->standardCombo=2;
-	            playr->attacksHolder=aNo2;
-	            playr->attacksPriority=aP2;
-	            playr->changeAnimation("standard_attack2_left", FORWARD);
-	            playr->comboTime=Global::worldTime;
-	            break;
-	 
-	            case 2:
-	            playr->standardCombo=0;
-	            playr->attacksHolder=aNo3;
-	            playr->attacksPriority=aP3;
-	            playr->changeAnimation("standard_attack3_left", FORWARD);
-	            playr->comboTime=0;
-	            break;
-	        }
-	        break;
-	 
-	        case 2:
-	        switch(playr->standardCombo)
-	        {
-	            case 0:
-	            playr->standardCombo=1;
-	            playr->attacksHolder=aNo;
-	            playr->attacksPriority=aP;
-	            playr->changeAnimation("standard_attack_right", FORWARD);
-	            playr->comboTime=Global::worldTime;
-	            break;
-	 
-	            case 1:
-	            playr->standardCombo=2;
-	            playr->attacksHolder=aNo2;
-	            playr->attacksPriority=aP2;
-	            playr->changeAnimation("standard_attack2_right", FORWARD);
-	            playr->comboTime=Global::worldTime;
-	            break;
-	 
-	            case 2:
-	            playr->standardCombo=0;
-	            playr->attacksHolder=aNo3;
-	            playr->attacksPriority=aP3;
-	            playr->changeAnimation("standard_attack3_right", FORWARD);
-	            playr->comboTime=0;
-	            break;
-	        }
-	        break;
+		switch(playr->standardCombo)
+		{
+			case 0:
+			playr->standardCombo=1;
+			playr->attacksHolder=aNo;
+			playr->attacksPriority=aP;
+			playr->changeTwoSidedAnimation("standard_attack", FORWARD);
+			playr->comboTime=Global::worldTime;
+			break;
+ 
+			case 1:
+			playr->standardCombo=2;
+			playr->attacksHolder=aNo2;
+			playr->attacksPriority=aP2;
+			playr->changeTwoSidedAnimation("standard_attack2", FORWARD);
+			playr->comboTime=Global::worldTime;
+			break;
+ 
+			case 2:
+			playr->standardCombo=0;
+			playr->attacksHolder=aNo3;
+			playr->attacksPriority=aP3;
+			playr->changeTwoSidedAnimation("standard_attack3", FORWARD);
+			playr->comboTime=0;
+			break;
 	    }
 	}
 
@@ -454,16 +307,7 @@ namespace SmashBros
 		playr->hurt = 0;
 	    playr->up=false;
 	    playr->jumping=false;
-	    switch(playr->playerdir)
-	    {
-	        case 1:
-	        playr->changeAnimation("air_attack_left", FORWARD);
-	        break;
-	 
-	        case 2:
-	        playr->changeAnimation("air_attack_right", FORWARD);
-	        break;
-	    }
+		playr->changeTwoSidedAnimation("air_attack", FORWARD);
 	    playr->attacksHolder=aNo;
         playr->attacksPriority=aP;
 	}
@@ -472,16 +316,7 @@ namespace SmashBros
 	{
 		playr->jumping = false;
 		playr->hurt = 0;
-	    switch(playr->playerdir)
-	    {
-	        case 1:
-	        playr->changeAnimation("standard_attack_side_left", FORWARD);
-	        break;
-	 
-	        case 2:
-	        playr->changeAnimation("standard_attack_side_right", FORWARD);
-	        break;
-	    }
+		playr->changeTwoSidedAnimation("standard_attack_side", FORWARD);
 	    playr->attacksHolder=aNo;
         playr->attacksPriority=aP;
 	}
@@ -490,18 +325,8 @@ namespace SmashBros
 	{
 		playr->jumping = false;
 		playr->hurt = 0;
-	    switch(playr->playerdir)
-	    {
-	        case 1:
-	        playr->changeAnimation("dash_attack_left", FORWARD);
-	        playr->xVel=-speed;
-	        break;
-	 
-	        case 2:
-	        playr->changeAnimation("dash_attack_right", FORWARD);
-	        playr->xVel=speed;
-	        break;
-	    }
+	    playr->changeTwoSidedAnimation("dash_attack", FORWARD);
+		playr->xVel = playr->getPlayerDirMult()*speed;
 	    playr->attacksHolder=aNo;
         playr->attacksPriority=aP;
 	}
@@ -511,16 +336,7 @@ namespace SmashBros
 		playr->hurt = 0;
 	    playr->up=false;
 	    playr->jumping=false;
-	    switch(playr->playerdir)
-	    {
-	        case 1:
-	        playr->changeAnimation("air_attack_side_left", FORWARD);
-	        break;
-	 
-	        case 2:
-	        playr->changeAnimation("air_attack_side_right", FORWARD);
-	        break;
-	    }
+		playr->changeTwoSidedAnimation("air_attack_side", FORWARD);
 	    playr->attacksHolder=aNo;
         playr->attacksPriority=aP;
 	}
@@ -531,16 +347,7 @@ namespace SmashBros
 	    playr->up=false;
 	    playr->jumping=false;
 	    playr->hitAmount=0;
-	    switch(playr->playerdir)
-	    {
-	        case 1:
-	        playr->changeAnimation("air_attack_side_left", FORWARD);
-	        break;
-	 
-	        case 2:
-	        playr->changeAnimation("air_attack_side_right", FORWARD);
-	        break;
-	    }
+		playr->changeTwoSidedAnimation("air_attack_side", FORWARD);
 	    playr->attacksHolder=aNo;
         playr->attacksPriority=aP;
 	}
@@ -549,16 +356,7 @@ namespace SmashBros
 	{
 		playr->jumping = false;
 		playr->hurt = 0;
-	    switch(playr->playerdir)
-	    {
-	        case 1:
-	        playr->changeAnimation("standard_attack_up_left", FORWARD);
-	        break;
-	 
-	        case 2:
-	        playr->changeAnimation("standard_attack_up_right", FORWARD);
-	        break;
-	    }
+		playr->changeTwoSidedAnimation("standard_attack_up", FORWARD);
 	    playr->attacksHolder=aNo;
         playr->attacksPriority=aP;
 	}
@@ -568,16 +366,7 @@ namespace SmashBros
 		playr->hurt = 0;
 	    playr->up=false;
 	    playr->jumping=false;
-	    switch(playr->playerdir)
-	    {
-	        case 1:
-	        playr->changeAnimation("air_attack_up_left", FORWARD);
-	        break;
-	 
-	        case 2:
-	        playr->changeAnimation("air_attack_up_right", FORWARD);
-	        break;
-	    }
+		playr->changeTwoSidedAnimation("air_attack_up", FORWARD);
 	    playr->attacksHolder=aNo;
         playr->attacksPriority=aP;
 	}
@@ -586,16 +375,7 @@ namespace SmashBros
 	{
 		playr->jumping = false;
 		playr->hurt = 0;
-	    switch(playr->playerdir)
-	    {
-	        case 1:
-	        playr->changeAnimation("standard_attack_down_left", FORWARD);
-	        break;
-	 
-	        case 2:
-	        playr->changeAnimation("standard_attack_down_right", FORWARD);
-	        break;
-	    }
+		playr->changeTwoSidedAnimation("standard_attack_down", FORWARD);
 	    playr->attacksHolder=aNo;
         playr->attacksPriority=aP;
 	}
@@ -605,16 +385,7 @@ namespace SmashBros
 		playr->hurt = 0;
 	    playr->up=false;
 	    playr->jumping=false;
-	    switch(playr->playerdir)
-	    {
-	        case 1:
-	        playr->changeAnimation("air_attack_down_left", FORWARD);
-	        break;
-	 
-	        case 2:
-	        playr->changeAnimation("air_attack_down_right", FORWARD);
-	        break;
-	    }
+		playr->changeTwoSidedAnimation("air_attack_down", FORWARD);
 	    playr->attacksHolder=aNo;
         playr->attacksPriority=aP;
 	}
@@ -629,7 +400,7 @@ namespace SmashBros
 	    playr->changeAnimation("air_attack_down", FORWARD);
 	}
 
-	void AttackTemplates::dropAirDownA(Player*playr, int type, int aNo, double aP, float speed, float speed2)
+	void AttackTemplates::dropAirDownA(Player*playr, int type, int aNo, double aP, float speedY, float speedX)
 	{
 		playr->hurt = 0;
 	    playr->up=false;
@@ -646,40 +417,21 @@ namespace SmashBros
 	            playr->yvelocity+=6;
 	        }
 	        playr->landing=true;
-	        switch(playr->playerdir)
-	        {
-	            case 1:
-	            playr->changeAnimation("air_prep_down_left", FORWARD);
-	            break;
-	 
-	            case 2:
-	            playr->changeAnimation("air_prep_down_right", FORWARD);
-	            break;
-	        }
+			playr->changeTwoSidedAnimation("air_prep_down", FORWARD);
 	        break;
 	 
 	        case Player::STEP_GO:
 	        playr->landing=false;
-	        if((playr->yvelocity)<=(-speed))
+	        if((playr->yvelocity)<=(-speedY))
 	        {
-	            playr->yvelocity+=speed;
+	            playr->yvelocity+=speedY;
 	        }
-	        else if(((playr->yvelocity)>0) && ((playr->yvelocity)<speed))
+	        else if(playr->yvelocity > 0 && playr->yvelocity < speedY)
 	        {
-	            playr->yvelocity=speed;
+	            playr->yvelocity=speedY;
 	        }
-	        switch(playr->playerdir)
-	        {
-	            case 1:
-	            playr->xvelocity=-speed2;
-	            playr->changeAnimation("air_attack_down_left", FORWARD);
-	            break;
-	 
-	            case 2:
-	            playr->xvelocity=speed;
-	            playr->changeAnimation("air_attack_down_right", FORWARD);
-	            break;
-	        }
+	        playr->xvelocity = playr->getPlayerDirMult()*speedX;
+			playr->changeTwoSidedAnimation("air_attack_down", FORWARD);
 	        playr->attacksHolder=aNo;
 	        playr->attacksPriority=aP;
 	        break;
@@ -691,16 +443,7 @@ namespace SmashBros
 	            playr->attacksHolder=-1;
 	            playr->attacksPriority=0;
 	            playr->xvelocity=0;
-	            switch(playr->playerdir)
-	            {
-	                case 1:
-	                playr->changeAnimation("air_land_down_left", FORWARD);
-	                break;
-	 
-	                case 2:
-	                playr->changeAnimation("air_land_down_right", FORWARD);
-	                break;
-	            }
+				playr->changeTwoSidedAnimation("air_land_down", FORWARD);
 	        }
 	        else
 	        {
@@ -710,7 +453,7 @@ namespace SmashBros
 	        break;
 	    }
 	}
-
+	
 	void AttackTemplates::chargeB(Player*playr, float spMin, float spMax, long totalTime)
 	{
 		playr->jumping = false;
@@ -793,11 +536,11 @@ namespace SmashBros
 	        closePlayer=targets.get(closest);
 	        if((playr->x)<(closePlayer->x))
 	        {
-	            playr->playerdir=2;
+	            playr->playerdir=Player::RIGHT;
 	        }
 	        else if((playr->x)>(closePlayer->x))
 	        {
-	            playr->playerdir=1;
+	            playr->playerdir=Player::LEFT;
 	        }
 	        double dist = PrimitiveActor::distance(playr->x, playr->y, closePlayer->x, closePlayer->y);
 	        speedX=(float)(((closePlayer->x-playr->x)/dist)*speed);
@@ -808,11 +551,11 @@ namespace SmashBros
 	        Player*closePlayer = targets.get(0);
 	        if((playr->x)<(closePlayer->x))
 	        {
-	            playr->playerdir=2;
+	            playr->playerdir=Player::RIGHT;
 	        }
 	        else if((playr->x)>(closePlayer->x))
 	        {
-	            playr->playerdir=1;
+	            playr->playerdir=Player::LEFT;
 	        }
 	        double dist = PrimitiveActor::distance(playr->x, playr->y, closePlayer->x, closePlayer->y);
 	        speedX=(float)(((closePlayer->x-playr->x)/dist)*speed);
@@ -820,33 +563,14 @@ namespace SmashBros
 	    }
 	    else
 	    {
-	        switch(playr->playerdir)
-	        {
-	            case 1:
-	            speedX=-0.7f*speed;
-	            speedY=0.7f*speed;
-	            break;
-	 
-	            case 2:
-	            speedX=0.7f*speed;
-	            speedY=0.7f*speed;
-	            break;
-	        }
+			speedX = 0.7f*speed * playr->getPlayerDirMult();
+	        speedY=0.7f*speed;
 	    }
 	    playr->xvelocity=speedX;
 	    playr->yvelocity=speedY;
 	    //playr->recoverTime=Global::worldTime+wait;
-	 
-	    switch(playr->playerdir)
-	    {
-	        case 1:
-	        playr->changeAnimation("special_attack_left", FORWARD);
-	        break;
-	 
-	        case 2:
-	        playr->changeAnimation("special_attack_right", FORWARD);
-	        break;
-	    }
+		
+	    playr->changeTwoSidedAnimation("special_attack", FORWARD);
 	    playr->attacksHolder=aNo;
         playr->attacksPriority=aP;
 	}
@@ -859,23 +583,13 @@ namespace SmashBros
 	    playr->createProjectile(projectile);
 	    playr->attacksPriority=aP;
 	}
-
+	
 	void AttackTemplates::normalSideB(Player*playr, int aNo, double aP, float xDist)
 	{
 		playr->jumping = false;
 		playr->hurt = 0;
-	    switch(playr->playerdir)
-	    {
-	        case 1:
-	        playr->changeAnimation("special_attack_side_left", FORWARD);
-	        playr->x-=xDist;
-	        break;
-	 
-	        case 2:
-	        playr->changeAnimation("special_attack_side_right", FORWARD);
-	        playr->x+=xDist;
-	        break;
-	    }
+	    playr->changeTwoSidedAnimation("special_attack_side", FORWARD);
+		playr->x += xDist * playr->getPlayerDirMult();
 	    playr->attacksHolder=aNo;
         playr->attacksPriority=aP;
 	}
@@ -884,38 +598,18 @@ namespace SmashBros
 	{
 		playr->jumping = false;
 		playr->hurt = 0;
-	    switch(playr->playerdir)
-	    {
-	        case 1:
-	        playr->changeAnimation("special_attack_side_left", FORWARD);
-	        playr->xVel=-speed;
-	        break;
-	 
-	        case 2:
-	        playr->changeAnimation("special_attack_side_right", FORWARD);
-	        playr->xVel=speed;
-	        break;
-	    }
+	    playr->changeTwoSidedAnimation("special_attack_side", FORWARD);
+		playr->xVel = speed * playr->getPlayerDirMult();
 	    playr->attacksHolder=aNo;
         playr->attacksPriority=aP;
 	}
 
-	void AttackTemplates::rollAttack(Player*playr, int aNo, double aP, float speed, int time)
+	void AttackTemplates::rollAttack(Player*playr, int aNo, double aP, float speed, long time)
 	{
 		playr->jumping = false;
 		playr->hurt = 0;
-	    switch(playr->playerdir)
-	    {
-	        case 1:
-	        playr->changeAnimation("roll_left", FORWARD);
-	        playr->xVel=-speed;
-	        break;
-	 
-	        case 2:
-	        playr->changeAnimation("roll_right", FORWARD);
-	        playr->xVel=speed;
-	        break;
-	    }
+	    playr->changeTwoSidedAnimation("roll", FORWARD);
+		playr->xVel = speed * playr->getPlayerDirMult();
 	    playr->attacksHolder=aNo;
         playr->attacksPriority=aP;
 	    playr->attackTime=(Global::worldTime+time);
@@ -925,18 +619,8 @@ namespace SmashBros
 	{
 		playr->jumping = false;
 		playr->hurt = 0;
-	    switch(playr->playerdir)
-	    {
-	        case 1:
-	        playr->changeAnimation("special_attack_up_left", FORWARD);
-	        //playr->bUpWaitTime=Global::worldTime+wTime;
-	        break;
-	 
-	        case 2:
-	        playr->changeAnimation("special_attack_up_right", FORWARD);
-	        //playr->bUpWaitTime=Global::worldTime+wTime;
-	        break;
-	    }
+	    playr->changeTwoSidedAnimation("special_attack_up", FORWARD);
+		//playr->bUpWaitTime=Global::worldTime+wTime;
 	    playr->attacksHolder=aNo;
         playr->attacksPriority=aP;
 	    if(playr->isOnGround())
@@ -955,18 +639,8 @@ namespace SmashBros
 		playr->jumping = false;
 		playr->hurt = 0;
 	    playr->hitAmount=0;
-	    switch(playr->playerdir)
-	    {
-	        case 1:
-	        playr->changeAnimation("special_attack_up_left", FORWARD);
-	        //playr->bUpWaitTime=Global::worldTime+wTime;
-	        break;
-	 
-	        case 2:
-	        playr->changeAnimation("special_attack_up_right", FORWARD);
-	        //playr->bUpWaitTime=Global::worldTime+wTime;
-	        break;
-	    }
+		playr->changeTwoSidedAnimation("special_attack_up", FORWARD);
+		//playr->bUpWaitTime=Global::worldTime+wTime;
 	    playr->attacksHolder=aNo;
         playr->attacksPriority=aP;
         
@@ -986,18 +660,8 @@ namespace SmashBros
 		playr->jumping = false;
 		playr->hurt = 0;
 	    playr->hitAmount=0;
-	    switch(playr->playerdir)
-	    {
-	        case 1:
-	        playr->changeAnimation("special_attack_up_left", FORWARD);
-	        //playr->bUpWaitTime=Global::worldTime+wTime;
-	        break;
-	 
-	        case 2:
-	        playr->changeAnimation("special_attack_up_right", FORWARD);
-	        //playr->bUpWaitTime=Global::worldTime+wTime;
-	        break;
-	    }
+		playr->changeTwoSidedAnimation("special_attack_up", FORWARD);
+		//playr->bUpWaitTime=Global::worldTime+wTime;
 	    playr->attacksHolder=aNo;
         playr->attacksPriority=aP;
         
@@ -1017,16 +681,7 @@ namespace SmashBros
 		playr->hurt = 0;
 	    playr->up=false;
 	    playr->jumping=false;
-	    switch(playr->playerdir)
-	    {
-	        case 1:
-	        playr->changeAnimation("special_attack_down_left", FORWARD);
-	        break;
-	 
-	        case 2:
-	        playr->changeAnimation("special_attack_down_right", FORWARD);
-	        break;
-	    }
+	    playr->changeTwoSidedAnimation("special_attack_down", FORWARD);
 	    playr->attacksHolder=aNo;
         playr->attacksPriority=aP;
 	}
@@ -1036,16 +691,7 @@ namespace SmashBros
 		playr->hurt = 0;
 	    playr->up=false;
 	    playr->jumping=false;
-	    switch(playr->playerdir)
-	    {
-	        case 1:
-	        playr->changeAnimation("special_prep_down_left", FORWARD);
-	        break;
-	 
-	        case 2:
-	        playr->changeAnimation("special_prep_down_right", FORWARD);
-	        break;
-	    }
+		playr->changeTwoSidedAnimation("special_prep_down", FORWARD);
 	    playr->attacksHolder=aNo;
         playr->attacksPriority=aP;
 	}
@@ -1055,16 +701,7 @@ namespace SmashBros
 		playr->hurt = 0;
 	    playr->up=false;
 	    playr->jumping=false;
-	    switch(playr->playerdir)
-	    {
-	        case 1:
-	        playr->changeAnimation("special_attack_down_left", FORWARD);
-	        break;
-	 
-	        case 2:
-	        playr->changeAnimation("special_attack_down_right", FORWARD);
-	        break;
-	    }
+	    playr->changeTwoSidedAnimation("special_attack_down", FORWARD);
 	    playr->attacksHolder=aNo;
         playr->attacksPriority=aP;
         
@@ -1088,16 +725,7 @@ namespace SmashBros
 			playr->chargebar = new Chargebar(playr->getPlayerNo(),(float)cMin, (float)cMax, totalTime, Chargebar::TYPE_SMASHATTACK);
 			playr->chargeSmash = smashType;
 			playr->yvelocity = 0;
-			switch(playr->getPlayerDir())
-			{
-				case 1:
-				playr->changeAnimation("smash_charge_left", FORWARD);
-				break;
-				
-				case 2:
-				playr->changeAnimation("smash_charge_right", FORWARD);
-				break;
-			}
+			playr->changeTwoSidedAnimation("smash_charge", FORWARD);
 			break;
 			
 			case Player::STEP_GO:
@@ -1107,42 +735,15 @@ namespace SmashBros
 			switch(smashType)
 			{
 				case 1:
-				switch(playr->getPlayerDir())
-				{
-					case 1:
-					playr->changeAnimation("smash_attack_left",FORWARD);
-					break;
-					
-					case 2:
-					playr->changeAnimation("smash_attack_right", FORWARD);
-					break;
-				}
+				playr->changeTwoSidedAnimation("smash_attack",FORWARD);
 				break;
 				
 				case 2:
-				switch(playr->getPlayerDir())
-				{
-					case 1:
-					playr->changeAnimation("smash_attack_up_left",FORWARD);
-					break;
-					
-					case 2:
-					playr->changeAnimation("smash_attack_up_right", FORWARD);
-					break;
-				}
+				playr->changeTwoSidedAnimation("smash_attack_up",FORWARD);
 				break;
 				
 				case 3:
-				switch(playr->getPlayerDir())
-				{
-					case 1:
-					playr->changeAnimation("smash_attack_down_left",FORWARD);
-					break;
-					
-					case 2:
-					playr->changeAnimation("smash_attack_down_right", FORWARD);
-					break;
-				}
+				playr->changeTwoSidedAnimation("smash_attack_down",FORWARD);
 				break;
 			}
 			break;

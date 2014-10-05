@@ -119,7 +119,7 @@ namespace SmashBros
 	
 	FractalStage::RandomStuff::RandomStuff()
 	{
-		nextSpawnTime = (long)(GameEngine::random()*140);
+		nextSpawnTime = (long)(GameEngine::random()*14000);
 	}
 
 	FractalStage::RandomStuff::~RandomStuff()
@@ -149,7 +149,7 @@ namespace SmashBros
 			else
 			{
 				creepy.add(new RandomThing());
-				nextSpawnTime = Global::getWorldTime() + (long)(GameEngine::random()*50);
+				nextSpawnTime = Global::getWorldTime() + (long)(GameEngine::random()*5000);
 			}
 		}
 			

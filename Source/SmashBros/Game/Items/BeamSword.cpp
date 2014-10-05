@@ -5,7 +5,7 @@
 
 namespace SmashBros
 {
-	BeamSword::BeamSword(float x1, float y1) : Item(x1, y1, 300, TYPE_HOLD)
+	BeamSword::BeamSword(float x1, float y1) : Item(x1, y1, 30000, TYPE_HOLD)
 	{
 		itemNo = Global::ITEM_BEAMSWORD;
 		
@@ -15,8 +15,9 @@ namespace SmashBros
 		attackDir = 0;
 		smashPower = 0;
 		
+		setHoldOffset(0,-5);
+		
 		setCollideType(COLLIDE_SOLID);
-		updateHitState(true);
 		
 		Animation*anim;
 		anim = new Animation("normal",1,"Images/Game/Items/BeamSword/beamsword.png");
@@ -57,7 +58,7 @@ namespace SmashBros
 	
 	boolean BeamSword::holderCanDo()
 	{
-		if(active && (attackDir==ATTACK_NORMAL || attackDir==ATTACK_SMASH))
+		if(active && (attackDir==ATTACK_NORMAL || attackDir==ATTACK_SIDESMASH))
 		{
 			return false;
 		}
@@ -70,25 +71,18 @@ namespace SmashBros
 		attackDir = 0;
 		smashPower = 0;
 		y-=height/2;
-		switch(discarder->getPlayerDir())
-		{
-			case Player::LEFT:
-			xvelocity = 1.5f;
-			break;
-			
-			case Player::RIGHT:
-			xvelocity = -1.5f;
-			break;
-		}
-		yvelocity = -1.5f;
 		changeAnimation("normal",FORWARD);
 	}
 	
-	boolean BeamSword::chargeSmash()
+	boolean BeamSword::chargeSmash(byte attackDir)
 	{
-		Player*playr = getPlayer();
-		AttackTemplates::normalSmash(playr, 0, 0, Player::STEP_CHARGE, 1, 16, 4, 11);
-		return true;
+		if(attackDir==ATTACK_SIDESMASH)
+		{
+			Player*playr = getPlayer();
+			AttackTemplates::normalSmash(playr, 0, 0, Player::STEP_CHARGE, 1, 1600, 4, 11);
+			return true;
+		}
+		return false;
 	}
 	
 	boolean BeamSword::use(byte attackDir)
@@ -99,6 +93,7 @@ namespace SmashBros
 			if(!active)
 			{
 				active = true;
+				holderItemAnimation();
 				switch(getPlayer()->getPlayerDir())
 				{
 					case Player::LEFT:
@@ -117,48 +112,46 @@ namespace SmashBros
 			if(!active)
 			{
 				Player*playr = getPlayer();
-				if(attackDir==ATTACK_SMASH)
+				if(attackDir==ATTACK_SIDESMASH)
 				{
 					smashPower = playr->getSmashPower();
 					AttackTemplates::stopSmashAttack(playr);
 				}
 				active = true;
+				holderItemAnimation();
 				switch(playr->getPlayerDir())
 				{
 					case Player::LEFT:
 					changeAnimation("swing2_left",FORWARD);
-					//playr.changeAnimation("melee_weapon_left", FORWARD);
 					break;
 					
 					case Player::RIGHT:
 					changeAnimation("swing2_right",FORWARD);
-					//playr.changeAnimation("melee_weapon_right", FORWARD);
 					break;
 				}
 			}
 			return true;
 		}
-		else if(attackDir==ATTACK_SMASH)
+		else if(attackDir==ATTACK_SIDESMASH)
 		{
 			if(!active)
 			{
 				Player*playr = getPlayer();
-				if(attackDir==ATTACK_SMASH)
+				if(attackDir==ATTACK_SIDESMASH)
 				{
 					smashPower = playr->getSmashPower();
 					AttackTemplates::stopSmashAttack(playr);
 				}
 				active = true;
+				holderItemAnimation();
 				switch(playr->getPlayerDir())
 				{
 					case Player::LEFT:
 					changeAnimation("swing2_left",FORWARD);
-					playr->changeAnimation("melee_weapon_left", FORWARD);
 					break;
 					
 					case Player::RIGHT:
 					changeAnimation("swing2_right",FORWARD);
-					playr->changeAnimation("melee_weapon_right", FORWARD);
 					break;
 				}
 			}
@@ -178,12 +171,12 @@ namespace SmashBros
 		    	{
 					case Player::LEFT:
 		    		causeHurtLaunch(collide, -1,2,3, -1,1,2);
-		    		causeHurt(collide, Player::RIGHT, 3);
+		    		causeHurt(collide, Player::RIGHT, 300);
 		    		break;
 		    		
 					case Player::RIGHT:
 		    		causeHurtLaunch(collide, 1,2,3, -1,1,2);
-		    		causeHurt(collide, Player::LEFT, 3);
+		    		causeHurt(collide, Player::LEFT, 300);
 		    		break;
 		    	}
 		    }
@@ -194,28 +187,28 @@ namespace SmashBros
 		    	{
 					case Player::LEFT:
 		    		causeHurtLaunch(collide, -1,3,3.5f, -1,2,2.3f);
-		    		causeHurt(collide, Player::RIGHT, 3);
+		    		causeHurt(collide, Player::RIGHT, 300);
 		    		break;
 		    		
 					case Player::RIGHT:
 		    		causeHurtLaunch(collide, 1,3,3.5f, -1,2,2.3f);
-		    		causeHurt(collide, Player::LEFT, 3);
+		    		causeHurt(collide, Player::LEFT, 300);
 		    		break;
 		    	}
 		    }
-		    else if(attackDir==ATTACK_SMASH)
+		    else if(attackDir==ATTACK_SIDESMASH)
 		    {
 		    	causeDamage(collide,smashPower);
 		    	switch(getPlayer()->getPlayerDir())
 		    	{
 					case Player::LEFT:
 		    		causeHurtLaunch(collide, -1,2+((float)smashPower/4),2.1f, -1,2+((float)smashPower/4),2.6f);
-		    		causeHurt(collide, Player::RIGHT, 4);
+		    		causeHurt(collide, Player::RIGHT, 400);
 		    		break;
 		    		
 					case Player::RIGHT:
 		    		causeHurtLaunch(collide, 1,2+((float)smashPower/4),2.1f, -1,2+((float)smashPower/4),2.6f);
-		    		causeHurt(collide, Player::LEFT, 4);
+		    		causeHurt(collide, Player::LEFT, 400);
 		    		break;
 		    	}
 		    }
@@ -257,7 +250,6 @@ namespace SmashBros
 			if(isHeld())
 			{
 				setHitState(true);
-				setHoldOffset(0, 0);
 			}
 		}
 		else
@@ -276,7 +268,6 @@ namespace SmashBros
 					changeAnimation("carry_right",FORWARD);
 					break;
 				}
-				setHoldOffset(4,-4);
 			}
 			else
 			{

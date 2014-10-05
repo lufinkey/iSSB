@@ -19,9 +19,10 @@ namespace GameEngine
 		AnimationManager(const AnimationManager& animMgr);
 		virtual ~AnimationManager();
 	
-		void add(Animation*a);
-		bool remove(String aName);
-		Animation*get(String aName);
+		void add(Animation*anim);
+		bool remove(const String&animName);
+		Animation*get(const String&animName);
+		bool contains(const String&animName);
 		AnimationManager& operator=(const AnimationManager& animMgr);
 	};
 }

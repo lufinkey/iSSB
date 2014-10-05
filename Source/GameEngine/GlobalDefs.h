@@ -41,6 +41,7 @@ namespace GameEngine
 			width=0;
 			height=0;
 		}
+		
 		Rectangle(int x,int y,int width,int height)
 		{
 			this->x = x;
@@ -48,9 +49,19 @@ namespace GameEngine
 			this->width = width;
 			this->height = height;
 		}
+		
 		~Rectangle()
 		{
 			//
+		}
+		
+		bool equals(const Rectangle&rect)
+		{
+			if(x==rect.x && y==rect.y && width==rect.width && height==rect.height)
+			{
+				return true;
+			}
+			return false;
 		}
 	};
 	
@@ -66,6 +77,7 @@ namespace GameEngine
 			width=0;
 			height=0;
 		}
+		
 		RectangleF(float x,float y,float width,float height)
 		{
 			this->x = x;
@@ -73,9 +85,19 @@ namespace GameEngine
 			this->width = width;
 			this->height = height;
 		}
+		
 		~RectangleF()
 		{
 			//
+		}
+		
+		bool equals(const RectangleF&rect)
+		{
+			if(x==rect.x && y==rect.y && width==rect.width && height==rect.height)
+			{
+				return true;
+			}
+			return false;
 		}
 	};
 }

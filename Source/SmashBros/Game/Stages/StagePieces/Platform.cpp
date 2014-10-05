@@ -58,6 +58,10 @@ namespace SmashBros
 		{
 			box->x = x;
 			box->y = y;
+			ground->x = x;
+			ground->y = y - 5;
+			ground->width = width;
+			ground->height = 6;
 		}
 	}
 
@@ -75,6 +79,10 @@ namespace SmashBros
 			box->Draw(g, gameTime);
 			width = box->width;
 			height = box->height;
+			ground->x = x;
+			ground->y = y - 5;
+			ground->width = width;
+			ground->height = 6;
 			break;
 		}
 	}
@@ -99,7 +107,22 @@ namespace SmashBros
 
 	byte Platform::getBoxDirection(GameElement*collide)
 	{
-		byte dir = PrimitiveActor::getDir(box, collide);
+		RectangleF r1 = RectangleF(collide->x - ((float)collide->width/2), collide->y - ((float)collide->height/2), (float)collide->width, (float)collide->height);
+		RectangleF r2 = RectangleF(box->x, box->y, (float)box->width, (float)box->height);
+		RectangleF overlap = GameElement::getOverlapRect(r1, r2);
+		float wRat = overlap.width/r1.width;
+		float hRat = overlap.height/r1.height;
+		byte dir;
+		if(wRat<=1.05f && wRat>=0.95f && hRat<=1.05f && hRat>=0.95f)
+		{
+			float xspeed = collide->x - collide->getXPrev();
+			float yspeed = collide->y - collide->getYPrev();
+			dir = PrimitiveActor::getDir2(xspeed, yspeed, 0,0);
+		}
+		else
+		{
+			dir = PrimitiveActor::getDir(box, collide);
+		}
 		if(dir==PrimitiveActor::DIR_UPLEFT || dir==PrimitiveActor::DIR_UPRIGHT)
 		{
 			dir = PrimitiveActor::DIR_UP;

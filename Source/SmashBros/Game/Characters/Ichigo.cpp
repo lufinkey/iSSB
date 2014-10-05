@@ -28,7 +28,7 @@ namespace SmashBros
 		fallWalk = 2.8f;
 		fallRun = 3;
 		
-		weight = 0.18;
+		weight = 0.16;
 		
 		name = "Ichigo";
 		
@@ -244,22 +244,13 @@ namespace SmashBros
 		else if(n.equals("standard_attack_left") || n.equals("standard_attack_right"))
 		{
 			animFinish();
-			switch(playerdir)
-			{
-				case LEFT:
-				changeAnimation("standard_attack_finish_left",FORWARD);
-				break;
-				
-				case RIGHT:
-				changeAnimation("standard_attack_finish_right",FORWARD);
-				break;
-			}
+			changeTwoSidedAnimation("standard_attack_finish",FORWARD);
 		}
 		else if(n.equals("special_attack_side_left") || n.equals("special_attack_side_right"))
 		{
 			xVel = 0;
 			animFinish();
-			AttackTemplates::normalSideA(this, 3,2);
+			attackSideA();
 		}
 		else if(n.equals("special_prep_down_left") || n.equals("special_prep_down_right"))
 		{
@@ -270,16 +261,7 @@ namespace SmashBros
 	            
 				addProjectileInfo(3, stab->getID(), x, y + 2);
 				
-				switch(playerdir)
-	            {
-	            	case LEFT:
-	            	changeAnimation("special_attack_down_left",FORWARD);
-	            	break;
-	            	
-	            	case RIGHT:
-	            	changeAnimation("special_attack_down_right",FORWARD);
-	            	break;
-	            }
+				changeTwoSidedAnimation("special_attack_down",FORWARD);
 			}
 			else
 			{
@@ -288,59 +270,22 @@ namespace SmashBros
 				{
 					yvelocity = 5;
 				}
-				switch(playerdir)
-	            {
-	            	case LEFT:
-	            	changeAnimation("special_drop_down_left",FORWARD);
-	            	break;
-	            	
-	            	case RIGHT:
-	            	changeAnimation("special_drop_down_right",FORWARD);
-	            	break;
-	            }
+				changeTwoSidedAnimation("special_drop_down",FORWARD);
 			}
 		}
 		else if(n.equals("finalsmash_change_left") || n.equals("finalsmash_change_right"))
 		{
-			switch(playerdir)
-			{
-				case LEFT:
-				changeAnimation("finalsmash_stand_left",FORWARD);
-				break;
-				
-				case RIGHT:
-				changeAnimation("finalsmash_stand_right",FORWARD);
-				break;
-			}
+			changeTwoSidedAnimation("finalsmash_stand",FORWARD);
 		}
 		else if(n.equals("finalsmash_stand_left") || n.equals("finalsmash_stand_right"))
 		{
-			switch(playerdir)
-			{
-				case LEFT:
-				changeAnimation("finalsmash_run_left", FORWARD);
-				xVel=-5;
-				break;
-				
-				case RIGHT:
-				changeAnimation("finalsmash_run_right", FORWARD);
-				xVel=5;
-				break;
-			}
+			changeTwoSidedAnimation("finalsmash_run", FORWARD);
+			xVel = 5 * getPlayerDirMult();
 		}
 		else if(n.equals("finalsmash_run_left") || n.equals("finalsmash_run_right"))
 		{
 			xVel=0;
-			switch(playerdir)
-			{
-				case LEFT:
-				changeAnimation("finalsmash_shoot_left", FORWARD);
-				break;
-				
-				case RIGHT:
-				changeAnimation("finalsmash_shoot_right", FORWARD);
-				break;
-			}
+			changeTwoSidedAnimation("finalsmash_shoot", FORWARD);
 			FinalSmashBlast*smashBlast = new FinalSmashBlast(getPlayerNo(),x,y);
 			createProjectile(smashBlast);
 			
@@ -369,16 +314,7 @@ namespace SmashBros
 			
 			addProjectileInfo(3, stab->getID(), x, y + 2);
 			
-            switch(playerdir)
-            {
-            	case LEFT:
-            	changeAnimation("special_attack_down_left",FORWARD);
-            	break;
-            	
-            	case RIGHT:
-            	changeAnimation("special_attack_down_right",FORWARD);
-            	break;
-            }
+            changeTwoSidedAnimation("special_attack_down",FORWARD);
 		}
 	}
 	
@@ -420,23 +356,14 @@ namespace SmashBros
 	
 	void Ichigo::jump()
 	{
-		Player::jump(5.2f,5.8f);
+		Player::jump(5.3f,5.9f);
 	}
 	
 	void Ichigo::whilePlayerColliding(Player*collide, byte dir)
 	{
 		if(attacksHolder==11)
 		{
-			switch(playerdir)
-			{
-				case LEFT:
-				collide->x -= std::abs(xVel)+1;
-				break;
-				
-				case RIGHT:
-				collide->x += std::abs(xVel)+1;
-				break;
-			}
+			collide->x += (std::abs(xVel)+1) * getPlayerDirMult();
 		}
 	}
 	
@@ -445,272 +372,142 @@ namespace SmashBros
 		switch(dir)
 		{
 			case DIR_LEFT:
-			{
-				switch(attacksHolder)
-			    {
-			        case 0:
-			        //A
-			        if(playerdir==LEFT)
-			        {
-				        causeDamage(collide,4);
-				        collide->y-=3;
-				        collide->x+=3;
-				        x-=2;
-				        causeHurt(collide, RIGHT, 1);
-			        }
-			        break;
-			        
-			        case 2:
-			        //A 2
-			        if(playerdir==LEFT)
-			        {
-				        causeDamage(collide,4);
-				        collide->y-=3;
-				        collide->x+=3;
-				        x-=4;
-				        causeHurt(collide, RIGHT, 1);
-			        }
-			        break;
-			        
-			        case 11:
-			        //B Side
-			        if(playerdir==LEFT)
-			        {
-			        	collide->x-=std::abs(xVel)+1;
-			        }
-			        break;
-			        
-			        case 15:
-			        //Smash Side
-			        if(playerdir==LEFT)
-			        {
-				        causeDamage(collide,smashPower);
-				        causeHurtLaunch(collide,-1,5,((float)smashPower/6), -1,3,((float)smashPower/7));
-				        causeHurt(collide, RIGHT, 8);
-			        }
-			        break;
-			        
-			        case 16:
-			        //Smash Up
-			        if(playerdir==LEFT)
-			        {
-				        causeDamage(collide,smashPower);
-				        causeHurtLaunch(collide,-1,2,((float)smashPower/7), -1,5,((float)smashPower/5));
-				        causeHurt(collide, RIGHT, 8);
-			        }
-			        break;
-			        
-			        case 17:
-			        //Smash Down
-			        if(playerdir==LEFT)
-			        {
-				        causeDamage(collide,smashPower);
-				        causeHurtLaunch(collide,-1,5,((float)smashPower/5), -1,5,((float)smashPower/5));
-				        causeHurt(collide, RIGHT, 8);
-			        }
-			        break;
-			    }
-			}
-			break;
-			
 			case DIR_RIGHT:
+			if(compareDirPlayerDir(dir, getPlayerDir())==CMPDIRPDIR_EQUAL)
 			{
 				switch(attacksHolder)
-			    {
-			        case 0:
-			        //A
-			        if(playerdir==RIGHT)
-			        {
-				        causeDamage(collide,4);
-				        collide->y-=3;
-				        collide->x-=3;
-				        x+=2;
-				        causeHurt(collide, LEFT, 1);
-			        }
-			        break;
-			 
-			        case 1:
-			        //A 2
-			        if(playerdir==RIGHT)
-			        {
-				        causeDamage(collide,4);
-				        collide->y-=3;
-				        collide->x-=3;
-				        x+=4;
-				        causeHurt(collide, LEFT, 1);
-			        }
-			        break;
-			 
-			        case 11:
-			        //B Side
-			        if(playerdir==RIGHT)
-			        {
-			        	collide->x+=std::abs(xVel)+1;
-			        }
-			        break;
-			 
-			        case 15:
-			        //Smash Side
-			        if(playerdir==RIGHT)
-			        {
-				        causeDamage(collide,smashPower);
-				        causeHurtLaunch(collide,1,5,((float)smashPower/6), -1,3,((float)smashPower/7));
-				        causeHurt(collide, LEFT, 8);
-			        }
-			        break;
-			 
-			        case 16:
-			        //Smash Up
-			        if(playerdir==RIGHT)
-			        {
-				        causeDamage(collide,smashPower);
-				        causeHurtLaunch(collide,1,2,((float)smashPower/7), -1,5,((float)smashPower/5));
-				        causeHurt(collide, LEFT, 8);
-			        }
-			        break;
-			 
-			        case 17:
-			        //Smash Down
-			        if(playerdir==RIGHT)
-			        {
-				        causeDamage(collide,smashPower);
-				        causeHurtLaunch(collide,1,5,((float)smashPower/5), -1,5,((float)smashPower/5));
-				        causeHurt(collide, LEFT, 8);
-			        }
-			        break;
-			    }
+				{
+					case 0:
+					//A
+					causeDamage(collide,4);
+					collide->y -= 8;
+					collide->x -= 3 * getPlayerDirMult();
+					x += 2 * getPlayerDirMult();
+					causeHurt(collide, getOppPlayerDir(), 100);
+					break;
+					
+					case 1:
+					//A 2
+					causeDamage(collide,4);
+					collide->y -= 8;
+					collide->x -= 3 * getPlayerDirMult();
+					x += 4 * getPlayerDirMult();
+					causeHurt(collide, getOppPlayerDir(), 100);
+					break;
+					
+					case 11:
+					//B Side
+					collide->x += (std::abs(xVel)+1) * getPlayerDirMult();
+					break;
+					
+					case 15:
+					//Smash Side
+					causeDamage(collide,smashPower);
+					causeHurtLaunch(collide, (int)getPlayerDirMult(),5,((float)smashPower/6), -1,3,((float)smashPower/7));
+					causeHurt(collide, getOppPlayerDir(), 800);
+					break;
+					
+					case 16:
+					//Smash Up
+					causeDamage(collide,smashPower);
+					causeHurtLaunch(collide, (int)getPlayerDirMult(),2,((float)smashPower/7), -1,5,((float)smashPower/5));
+					causeHurt(collide, getOppPlayerDir(), 800);
+					break;
+					
+					case 17:
+					//Smash Down
+					causeDamage(collide,smashPower);
+					causeHurtLaunch(collide, (int)getPlayerDirMult(),5,((float)smashPower/5), -1,5,((float)smashPower/5));
+					causeHurt(collide, getOppPlayerDir(), 800);
+					break;
+				}
 			}
 			break;
 			
 			case DIR_UP:
 			{
 				switch(attacksHolder)
-			    {
-			        case 0:
-			        //A
-			        causeDamage(collide,4);
-			        collide->y-=3;
-			        switch(playerdir)
-			        {
-			        	case LEFT:
-				        collide->x+=5;
-				        x-=2;
-				        causeHurt(collide, RIGHT, 1);
-				        break;
-				        
-			        	case RIGHT:
-				        collide->x-=5;
-				        x+=2;
-				        causeHurt(collide, LEFT, 1);
-				        break;
-			        }
-			        break;
-			 
-			        case 1:
-			        //A 2
-			        causeDamage(collide,4);
-			        collide->y-=3;
-			        switch(playerdir)
-			        {
-			        	case LEFT:
-				        collide->x+=5;
-				        x-=4;
-				        causeHurt(collide, RIGHT, 1);
-				        break;
-				        
-			        	case RIGHT:
-				        collide->x-=5;
-				        x+=4;
-				        causeHurt(collide, LEFT, 1);
-			        	break;
-			        }
-			        break;
-			 
-			        case 16:
-			        //Smash Up
-			        causeDamage(collide,smashPower);
-			        causeHurtLaunch(collide,0,0,0, -1,6,((float)smashPower/6));
-			        causeHurt(collide, collide->getPlayerDir(), 8);
-			        break;
-			    }
+				{
+					case 0:
+					//A
+					causeDamage(collide,4);
+					collide->y -= 3;
+					collide->x -= 5 * getPlayerDirMult();
+					x += 2 * getPlayerDirMult();
+					causeHurt(collide, getOppPlayerDir(), 100);
+					
+					case 1:
+					//A 2
+					causeDamage(collide,4);
+					collide->y -= 3;
+					collide->x -= 5 * getPlayerDirMult();
+					x += 4 * getPlayerDirMult();
+					causeHurt(collide, getOppPlayerDir(), 100);
+					break;
+					
+					case 16:
+					//Smash Up
+					causeDamage(collide,smashPower);
+					causeHurtLaunch(collide, 0,0,0, -1,6,((float)smashPower/6));
+					causeHurt(collide, collide->getPlayerDir(), 800);
+					break;
+				}
 			}
 			break;
 			
 			case DIR_DOWN:
 			{
 				switch(attacksHolder)
-			    {
-			        case 0:
-			        //A
-			        causeDamage(collide,4);
-			        collide->y-=3;
-			        switch(playerdir)
-			        {
-			        	case LEFT:
-				        collide->x+=5;
-				        x-=2;
-				        causeHurt(collide, RIGHT, 1);
-				        break;
-				        
-			        	case RIGHT:
-				        collide->x-=5;
-				        x+=2;
-				        causeHurt(collide, LEFT, 1);
-			        	break;
-			        }
-			        break;
-			 
-			        case 1:
-			        //A 2
-			        causeDamage(collide,4);
-			        collide->y-=3;
-			        switch(playerdir)
-			        {
-			        	case LEFT:
-				        collide->x+=5;
-				        x-=4;
-				        causeHurt(collide, RIGHT, 1);
-				        break;
-				        
-			        	case RIGHT:
-				        collide->x-=5;
-				        x+=4;
-				        causeHurt(collide, LEFT, 1);
-			        	break;
-			        }
-			        break;
-			        
-			        case 15:
-			        //Smash Side
-			        switch(playerdir)
-			        {
-			        	case LEFT:
-			        	if(collide->x < x)
-				        {
-				        	causeDamage(collide,smashPower);
-					        causeHurtLaunch(collide,-1,5,((float)smashPower/6), -1,3,((float)smashPower/7));
-					        causeHurt(collide, RIGHT, 8);
-				        }
-			        	break;
-			        	
-			        	case RIGHT:
-				        if(collide->x > x)
-				        {
-				        	causeDamage(collide,smashPower);
-					        causeHurtLaunch(collide,1,5,((float)smashPower/6), -1,3,((float)smashPower/7));
-					        causeHurt(collide, RIGHT, 8);
-				        }
-			        	break;
-			        }
-			        break;
-			 
-			        case 17:
-			        //Smash Down
-			        causeDamage(collide,smashPower);
-			        causeHurtLaunch(collide,0,0,0, 1,6,((float)smashPower/5));
-			        causeHurt(collide, collide->getPlayerDir(), smashPower/5);
-			        break;
-			    }
+				{
+					case 0:
+					//A
+					causeDamage(collide,4);
+					collide->y -= 8;
+					collide->x -= 5 * getPlayerDirMult();
+					x += 2 * getPlayerDirMult();
+					causeHurt(collide, getOppPlayerDir(), 100);
+					break;
+					
+					case 1:
+					//A 2
+					causeDamage(collide,4);
+					collide->y -= 8;
+					collide->x -= 5 * getPlayerDirMult();
+					x += 4 * getPlayerDirMult();
+					causeHurt(collide, getOppPlayerDir(), 100);
+					break;
+					
+					case 15:
+					//Smash Side
+					switch(playerdir)
+					{
+						case LEFT:
+						if(collide->x < x)
+						{
+							causeDamage(collide,smashPower);
+							causeHurtLaunch(collide,-1,5,((float)smashPower/6), -1,3,((float)smashPower/7));
+							causeHurt(collide, RIGHT, 800);
+						}
+						break;
+						
+						case RIGHT:
+						if(collide->x > x)
+						{
+							causeDamage(collide,smashPower);
+							causeHurtLaunch(collide,1,5,((float)smashPower/6), -1,3,((float)smashPower/7));
+							causeHurt(collide, RIGHT, 800);
+						}
+						break;
+					}
+					break;
+					
+					case 17:
+					//Smash Down
+					causeDamage(collide,smashPower);
+					causeHurtLaunch(collide,0,0,0, 1,6,((float)smashPower/5));
+					causeHurt(collide, collide->getPlayerDir(), 400);
+					break;
+				}
 			}
 			break;
 		}
@@ -749,24 +546,24 @@ namespace SmashBros
 	
 	void Ichigo::attackA()
 	{
-		addAttackInfo(DIR_LEFT, 2, LEFT, 4, 4, -1,3,5, -1,2,3);
-		addAttackInfo(DIR_RIGHT,2,RIGHT, 4, 4,  1,3,5, -1,2,3);
-		addAttackInfo(DIR_LEFT, 6, LEFT, 12, 4, -1,3,3, -1,2,3);
-		addAttackInfo(DIR_RIGHT,6,RIGHT, 12, 4,  1,3,3, -1,2,3);
-		addAttackInfo(DIR_UP, 2, LEFT, 4, 4, -1,3,5, -1,2,3);
-		addAttackInfo(DIR_UP, 2,RIGHT, 4, 4,  1,3,5, -1,2,3);
-		addAttackInfo(DIR_UP, 6, LEFT, 12, 4, -1,2,3, -1,3,3);
-		addAttackInfo(DIR_UP, 6,RIGHT, 12, 4,  1,2,3, -1,3,3);
-		addAttackInfo(DIR_DOWN, 2, LEFT, 4, 4, -1,3,5, -1,2,3);
-		addAttackInfo(DIR_DOWN, 2,RIGHT, 4, 4,  1,3,5, -1,2,3);
-		addAttackInfo(DIR_DOWN, 6, LEFT, 12, 4, -1,2,3, 1,3,3);
-		addAttackInfo(DIR_DOWN, 6,RIGHT, 12, 4,  1,2,3, 1,2,3);
+		addAttackInfo(DIR_LEFT, 2, LEFT, 4, 400, -1,3,5, -1,2,3);
+		addAttackInfo(DIR_RIGHT,2,RIGHT, 4, 400,  1,3,5, -1,2,3);
+		addAttackInfo(DIR_LEFT, 6, LEFT, 12, 400, -1,3,3, -1,2,3);
+		addAttackInfo(DIR_RIGHT,6,RIGHT, 12, 400,  1,3,3, -1,2,3);
+		addAttackInfo(DIR_UP, 2, LEFT, 4, 400, -1,3,5, -1,2,3);
+		addAttackInfo(DIR_UP, 2,RIGHT, 4, 400,  1,3,5, -1,2,3);
+		addAttackInfo(DIR_UP, 6, LEFT, 12, 400, -1,2,3, -1,3,3);
+		addAttackInfo(DIR_UP, 6,RIGHT, 12, 400,  1,2,3, -1,3,3);
+		addAttackInfo(DIR_DOWN, 2, LEFT, 4, 400, -1,3,5, -1,2,3);
+		addAttackInfo(DIR_DOWN, 2,RIGHT, 4, 400,  1,3,5, -1,2,3);
+		addAttackInfo(DIR_DOWN, 6, LEFT, 12, 400, -1,2,3, 1,3,3);
+		addAttackInfo(DIR_DOWN, 6,RIGHT, 12, 400,  1,2,3, 1,2,3);
 		
 	    if(!checkItemUse())
 	    {
 	        if(isOnGround())
 	        {
-	            AttackTemplates::combo3A(this, 7, 0,1.2, 1,1.1, 2,2.3);
+	            AttackTemplates::combo3A(this, 700, 0,1.2, 1,1.1, 2,2.3);
 	        }
 	        else
 	        {
@@ -777,16 +574,16 @@ namespace SmashBros
 	
 	void Ichigo::attackSideA()
 	{
-        addAttackInfo(DIR_LEFT, 3, LEFT, 12, 5, -1,2,4, -1,4,4);
-        addAttackInfo(DIR_RIGHT,3,RIGHT, 12, 5,  1,2,4, -1,4,4);
-        addAttackInfo(DIR_LEFT, 7, LEFT, 10, 5, -1,3,3, -1,3,3);
-        addAttackInfo(DIR_RIGHT,7,RIGHT, 10, 5,  1,3,3, -1,3,3);
-        addAttackInfo(DIR_UP, 3, LEFT, 12, 5, -1,2,3, -1,5,5);
-        addAttackInfo(DIR_UP, 3,RIGHT, 12, 5,  1,2,3, -1,5,5);
-        addAttackInfo(DIR_UP, 7, LEFT, 10, 5, -1,3,3, -1,3,3);
-        addAttackInfo(DIR_UP, 7,RIGHT, 10, 5,  1,3,3, -1,3,3);
-        addAttackInfo(DIR_DOWN, 3, LEFT, 12, 5, -1,2,3, 1,5,5);
-        addAttackInfo(DIR_DOWN, 3,RIGHT, 12, 5,  1,2,3, 1,5,5);
+        addAttackInfo(DIR_LEFT, 3, LEFT, 12, 500, -1,2,4, -1,4,4);
+        addAttackInfo(DIR_RIGHT,3,RIGHT, 12, 500,  1,2,4, -1,4,4);
+        addAttackInfo(DIR_LEFT, 7, LEFT, 10, 500, -1,3,3, -1,3,3);
+        addAttackInfo(DIR_RIGHT,7,RIGHT, 10, 500,  1,3,3, -1,3,3);
+        addAttackInfo(DIR_UP, 3, LEFT, 12, 500, -1,2,3, -1,5,5);
+        addAttackInfo(DIR_UP, 3,RIGHT, 12, 500,  1,2,3, -1,5,5);
+        addAttackInfo(DIR_UP, 7, LEFT, 10, 500, -1,3,3, -1,3,3);
+        addAttackInfo(DIR_UP, 7,RIGHT, 10, 500,  1,3,3, -1,3,3);
+        addAttackInfo(DIR_DOWN, 3, LEFT, 12, 500, -1,2,3, 1,5,5);
+        addAttackInfo(DIR_DOWN, 3,RIGHT, 12, 500,  1,2,3, 1,5,5);
         
 	    if(!checkItemUseSide())
 	    {
@@ -803,44 +600,50 @@ namespace SmashBros
 	
 	void Ichigo::attackUpA()
 	{
-        addAttackInfo(DIR_LEFT, 8, LEFT, 13, 6, -1,3.2f,3.4f, -1,2.9f,3.8f);
-        addAttackInfo(DIR_RIGHT,8,RIGHT, 13, 6,  1,3.2f,3.4f, -1,2.9f,3.8f);
-        addAttackInfo(DIR_UP, 4, LEFT, 9, 6, -1,1.2f,1.4f, -1,4,3.8f);
-        addAttackInfo(DIR_UP, 4,RIGHT, 9, 6,  1,1.2f,1.4f, -1,4,3.8f);
-        addAttackInfo(DIR_UP, 8, LEFT, 13, 6, -1,2.1f,2.3f, -1,4.5f,3.8f);
-        addAttackInfo(DIR_UP, 8,RIGHT, 13, 6,  1,2.1f,2.3f, -1,4.5f,3.8f);
-        addAttackInfo(DIR_DOWN, 4, LEFT, 9, 6, 0,0,0, -1,4,6);
-        addAttackInfo(DIR_DOWN, 4,RIGHT, 9, 6, 0,0,0, -1,4,6);
-        addAttackInfo(DIR_DOWN, 8, LEFT, 13, 6, 0,0,0, -1,4.5f,6);
-        addAttackInfo(DIR_DOWN, 8,RIGHT, 13, 6, 0,0,0, -1,4.5f,6);
+        addAttackInfo(DIR_LEFT, 8, LEFT, 13, 600, -1,3.2f,3.4f, -1,2.9f,3.8f);
+        addAttackInfo(DIR_RIGHT,8,RIGHT, 13, 600,  1,3.2f,3.4f, -1,2.9f,3.8f);
+        addAttackInfo(DIR_UP, 4, LEFT, 9, 600, -1,1.2f,1.4f, -1,4,3.8f);
+        addAttackInfo(DIR_UP, 4,RIGHT, 9, 600,  1,1.2f,1.4f, -1,4,3.8f);
+        addAttackInfo(DIR_UP, 8, LEFT, 13, 600, -1,2.1f,2.3f, -1,4.5f,3.8f);
+        addAttackInfo(DIR_UP, 8,RIGHT, 13, 600,  1,2.1f,2.3f, -1,4.5f,3.8f);
+        addAttackInfo(DIR_DOWN, 4, LEFT, 9, 600, 0,0,0, -1,4,6);
+        addAttackInfo(DIR_DOWN, 4,RIGHT, 9, 600, 0,0,0, -1,4,6);
+        addAttackInfo(DIR_DOWN, 8, LEFT, 13, 600, 0,0,0, -1,4.5f,6);
+        addAttackInfo(DIR_DOWN, 8,RIGHT, 13, 600, 0,0,0, -1,4.5f,6);
         
-	    if(isOnGround())
-	    {
-	        AttackTemplates::normalUpA(this, 4,1.94);
-	    }
-	    else
-	    {
-	        AttackTemplates::normalAirUpA(this, 8,2.36);
-	    }
+		if(!checkItemUseUp())
+		{
+			if(isOnGround())
+			{
+				AttackTemplates::normalUpA(this, 4,1.94);
+			}
+			else
+			{
+				AttackTemplates::normalAirUpA(this, 8,2.36);
+			}
+		}
 	}
 	
 	void Ichigo::attackDownA()
 	{
-		addAttackInfo(DIR_LEFT, 5, LEFT, 9, 5, -1,3,6, -1,2,3);
-		addAttackInfo(DIR_RIGHT,5,RIGHT, 9, 5,  1,3,6, -1,2,3);
-		addAttackInfo(DIR_LEFT, 9, LEFT, 12, 6, 0,0,0, -1,5,6);
-		addAttackInfo(DIR_RIGHT,9,RIGHT, 12, 6, 0,0,0, -1,5,6);
-		addAttackInfo(DIR_DOWN, 9, LEFT, 12, 6, 0,0,0, 1,5,6);
-		addAttackInfo(DIR_DOWN, 9,RIGHT, 12, 6, 0,0,0, 1,5,6);
+		addAttackInfo(DIR_LEFT, 5, LEFT, 9, 500, -1,3,6, -1,2,3);
+		addAttackInfo(DIR_RIGHT,5,RIGHT, 9, 500,  1,3,6, -1,2,3);
+		addAttackInfo(DIR_LEFT, 9, LEFT, 12, 600, 0,0,0, -1,5,6);
+		addAttackInfo(DIR_RIGHT,9,RIGHT, 12, 600, 0,0,0, -1,5,6);
+		addAttackInfo(DIR_DOWN, 9, LEFT, 12, 600, 0,0,0, 1,5,6);
+		addAttackInfo(DIR_DOWN, 9,RIGHT, 12, 600, 0,0,0, 1,5,6);
 		
-	    if(isOnGround())
-	    {
-	        AttackTemplates::normalDownA(this, 5,2.24);
-	    }
-	    else
-	    {
-	        AttackTemplates::normalAirDownA(this, 9,2.83);
-	    }
+		if(!checkItemUseDown())
+		{
+			if(isOnGround())
+			{
+				AttackTemplates::normalDownA(this, 5,2.24);
+			}
+			else
+			{
+				AttackTemplates::normalAirDownA(this, 9,2.83);
+			}
+		}
 	}
 	
 	void Ichigo::attackB()
@@ -853,20 +656,11 @@ namespace SmashBros
 	        }
 	        else
 	        {
-	        	AttackTemplates::chargeB(this, 30, 100, 30);
+	        	AttackTemplates::chargeB(this, 30, 100, 3000);
 	        	attacksHolder=10;
 	        	attacksPriority=0;
 	        	charging = 1;
-	        	switch(playerdir)
-	        	{
-	        		case LEFT:
-	        		changeAnimation("smash_charge_left",FORWARD);
-	        		break;
-	        		
-	        		case RIGHT:
-	        		changeAnimation("smash_charge_right",FORWARD);
-	        		break;
-	        	}
+	        	changeTwoSidedAnimation("smash_charge",FORWARD);
 	        }
 	    }
 	}
@@ -904,11 +698,11 @@ namespace SmashBros
 	
 	void Ichigo::attackSideSmash(byte type)
 	{
-	    if((!checkItemUseSmash(type))&&(!bUp))
+	    if(!bUp && !checkItemUseSideSmash(type))
 	    {
 	        if(isOnGround())
 	        {
-	            AttackTemplates::normalSmash(this,15,3.49,type,1,18,11,20);
+	            AttackTemplates::normalSmash(this,15,3.49,type,1,1800,11,20);
 	        }
 	        else
 	        {
@@ -919,11 +713,11 @@ namespace SmashBros
 	
 	void Ichigo::attackUpSmash(byte type)
 	{
-	    if(!bUp)
+	    if(!bUp && !checkItemUseUpSmash(type))
 	    {
 	        if(isOnGround())
 	        {
-	            AttackTemplates::normalSmash(this,16,3.65,type,2,17,11,20);
+	            AttackTemplates::normalSmash(this,16,3.65,type,2,1700,11,20);
 	        }
 	        else
 	        {
@@ -934,11 +728,11 @@ namespace SmashBros
 	
 	void Ichigo::attackDownSmash(byte type)
 	{
-	    if(!bUp)
+	    if(!bUp && !checkItemUseDownSmash(type))
 	    {
 	        if(isOnGround())
 	        {
-	            AttackTemplates::normalSmash(this,17,3.48,type,3,16,11,20);
+	            AttackTemplates::normalSmash(this,17,3.48,type,3,1600,11,20);
 	        }
 	        else
 	        {
@@ -949,8 +743,8 @@ namespace SmashBros
 	
 	void Ichigo::attackFinalSmash()
 	{
-        addAttackInfo(DIR_LEFT, 18, LEFT, 10, 9, -1,5,8, -1,5,8);
-        addAttackInfo(DIR_RIGHT,18,RIGHT, 10, 9,  1,5,8, -1,5,8);
+        addAttackInfo(DIR_LEFT, 18, LEFT, 10, 900, -1,5,8, -1,5,8);
+        addAttackInfo(DIR_RIGHT,18,RIGHT, 10, 900,  1,5,8, -1,5,8);
         
         if(isOnGround())
         {
@@ -960,18 +754,8 @@ namespace SmashBros
             finalSmash = true;
             AttackTemplates::finalSmash(this, 18);
             destroyCharge();
-            switch(playerdir)
-            {
-                case 1:
-                changeAnimation("finalsmash_change_left", FORWARD);
-                attacksPriority=7;
-                break;
-                
-                case 2:
-                changeAnimation("finalsmash_change_right", NO_CHANGE);
-                attacksPriority=7;
-                break;
-            }
+            changeTwoSidedAnimation("finalsmash_change", FORWARD);
+			attacksPriority=7;
         }
         else
         {
@@ -988,6 +772,8 @@ namespace SmashBros
 		anim = new Animation("right",1,"Images/Game/Characters/Ichigo/projectile.png");
 		anim->mirror(true);
 		addAnimation(anim);
+		
+		setDeflectable(true);
 			
 		switch(itemdir)
 		{
@@ -1010,7 +796,29 @@ namespace SmashBros
 	{
 		//
 	}
-		
+	
+	void Ichigo::Blast::deflect(byte dir)
+	{
+		switch(dir)
+		{
+			case DIR_LEFT:
+			case DIR_UPLEFT:
+			case DIR_DOWNLEFT:
+			itemdir = LEFT;
+			xvelocity = -5;
+			changeAnimation("left", NO_CHANGE);
+			break;
+			
+			case DIR_RIGHT:
+			case DIR_UPRIGHT:
+			case DIR_DOWNRIGHT:
+			itemdir = RIGHT;
+			xvelocity = 5;
+			changeAnimation("right", NO_CHANGE);
+			break;
+		}
+	}
+	
 	void Ichigo::Blast::Update(long gameTime)
 	{
 		Projectile::Update(gameTime);
@@ -1030,12 +838,12 @@ namespace SmashBros
 			{
 				case LEFT:
 				causeHurtLaunch(collide, -1,2.5f,((float)smashPower/5), -1,2.5f,((float)smashPower/5));
-				causeHurt(collide, RIGHT, 4);
+				causeHurt(collide, RIGHT, 400);
 				break;
 					
 				case RIGHT:
 				causeHurtLaunch(collide, 1,2.5f,((float)smashPower/5), -1,2.5f,((float)smashPower/5));
-				causeHurt(collide, LEFT, 4);
+				causeHurt(collide, LEFT, 400);
 				break;
 			}
 			destroy();
@@ -1084,8 +892,9 @@ namespace SmashBros
 		
 		x = owner->x;
 		y = owner->y - ((float)4*owner->Scale);
-			
-		if(owner->isHurt() || owner->isHanging())
+		
+		String ownerAnim = owner->getAnimName();
+		if(owner->isHurt() || owner->isHanging() || (!ownerAnim.equals("special_attack_up_left") && !ownerAnim.equals("special_attack_up_right")))
 		{
 			destroy();
 		}
@@ -1131,7 +940,7 @@ namespace SmashBros
 			        causeDamage(collide,2);
 			        collide->y=y-((height/2)+(collide->height/2)+2);
 			        hits+=1;
-			        causeHurt(collide, collide->getPlayerDir(), 1);
+			        causeHurt(collide, collide->getPlayerDir(), 100);
 			        break;
 			 
 			        case 6:
@@ -1140,7 +949,7 @@ namespace SmashBros
 			        hits+=1;
 			        collide->yvelocity=0;
 			        causeHurtLaunch(collide,0,0,0, -1,5,3);
-			        causeHurt(collide, collide->getPlayerDir(), 3);
+			        causeHurt(collide, collide->getPlayerDir(), 300);
 			        break;
 			    }
 			    break;
@@ -1159,7 +968,7 @@ namespace SmashBros
 			        //collide->y=y-((height/2)+(collide->height/2)+12);
 			        collide->y=y-((height/2)+(collide->height/2)+2);
 			        hits+=1;
-			        causeHurt(collide, collide->getPlayerDir(), 1);
+			        causeHurt(collide, collide->getPlayerDir(), 100);
 			        break;
 			 
 			        case 6:
@@ -1168,7 +977,7 @@ namespace SmashBros
 			        hits+=1;
 			        collide->yvelocity=0;
 			        causeHurtLaunch(collide,0,0,0, -1,5,3);
-			        causeHurt(collide, collide->getPlayerDir(), 3);
+			        causeHurt(collide, collide->getPlayerDir(), 300);
 			        break;
 			    }
 			    break;
@@ -1202,25 +1011,25 @@ namespace SmashBros
 				case DIR_LEFT:
 				causeDamage(collide,11);
 				causeHurtLaunch(collide, -1,4,3, -1,3,3);
-				causeHurt(collide, RIGHT, 4);
+				causeHurt(collide, RIGHT, 400);
 				break;
 					
 				case DIR_RIGHT:
 				causeDamage(collide,11);
 				causeHurtLaunch(collide, 1,4,3, -1,3,3);
-				causeHurt(collide, LEFT, 4);
+				causeHurt(collide, LEFT, 400);
 				break;
 					
 				case DIR_UP:
 				causeDamage(collide,11);
 				causeHurtLaunch(collide, 0,0,0, -1,4,5);
-				causeHurt(collide, collide->getPlayerDir(), 4);
+				causeHurt(collide, collide->getPlayerDir(), 400);
 				break;
 					
 				case DIR_DOWN:
 				causeDamage(collide,11);
 				causeHurtLaunch(collide, 0,0,0, 1,4,5);
-				causeHurt(collide, collide->getPlayerDir(), 4);
+				causeHurt(collide, collide->getPlayerDir(), 400);
 				break;
 			}
 		}
@@ -1273,25 +1082,25 @@ namespace SmashBros
 				case DIR_LEFT:
 				causeDamage(collide,34);
 				causeHurtLaunch(collide, -1,6,8, -1,6,8);
-				causeHurt(collide, RIGHT, 9);
+				causeHurt(collide, RIGHT, 900);
 				break;
-					
+				
 				case DIR_RIGHT:
 				causeDamage(collide,34);
 				causeHurtLaunch(collide, 1,6,8, -1,6,8);
-				causeHurt(collide, LEFT, 9);
+				causeHurt(collide, LEFT, 900);
 				break;
-					
+				
 				case DIR_UP:
 				causeDamage(collide, 34);
 				causeHurtLaunch(collide, 0,0,0, -1,6,8);
-				causeHurt(collide, collide->getPlayerDir(), 9);
+				causeHurt(collide, collide->getPlayerDir(), 900);
 				break;
-					
+				
 				case DIR_DOWN:
 				causeDamage(collide, 34);
 				causeHurtLaunch(collide, 0,0,0, 1,6,8);
-				causeHurt(collide, collide->getPlayerDir(), 9);
+				causeHurt(collide, collide->getPlayerDir(), 900);
 				break;
 			}
 		}

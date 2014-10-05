@@ -15,26 +15,26 @@ namespace GameEngine
 	private:
 		float xprev, yprev;
 		float xSpeed, ySpeed;
-
+		
 	    int currentImageX;
 	    int currentImageY;
 	    int currentImageW;
 	    int currentImageH;
-
+		
 		long frameTime;
 		long lastFrameTime;
 	    Color color;
-
+		
 		float Alpha;
 	    float Rotation;
-
+		
 		static const int totalEvents = 8;
 		bool enabledEvents[8];
 	    
 	    bool moving;
 	    float movePoint[2];
 	    float moveSpeed;
-
+		
 		bool showwire;
 	    bool visible;
 		
@@ -55,21 +55,21 @@ namespace GameEngine
 	    bool clicked;
 	    bool prevclicked;
 	    bool firstAnimChange;
-
+		
 		Animation*anim;
 	    Animation*lastAnim;
 		
 		void createActor(float x, float y);
-
+		
 		void updateMoveTo();
 		void updateSize();
 		void updateAnim();
 		
 		bool checkHover(float x1, float y1);
-
+		
 	protected:
 		void drawActor(Graphics2D& g, long gameTime, float x1, float y1, double scale, bool relativeToScreen=true);
-
+		
 	public:
 		static const unsigned char EVENT_MOUSECLICK = 0;
 		static const unsigned char EVENT_MOUSERELEASE = 1;
@@ -77,18 +77,18 @@ namespace GameEngine
 		static const unsigned char EVENT_MOUSELEAVE = 3;
 		static const unsigned char EVENT_ANIMATIONFINISH = 4;
 		static const unsigned char EVENT_MOVEFINISH = 5;
-
+		
 	    float xvelocity,yvelocity;
-
+		
 	    float Scale;
-
+		
 	    Actor();
 		Actor(const Actor& actor);
 	    Actor(float x1,float y1);
 		virtual ~Actor();
-
+		
 		Actor& operator=(const Actor& actor);
-	    
+		
 	    virtual void Update(long gameTime);
 	    virtual void Draw(Graphics2D& g,long gameTime);
 	    
@@ -99,18 +99,19 @@ namespace GameEngine
 	    void eventDisable(unsigned char eventCode);
 	    
 		void changeAnimation(Animation*anim, unsigned char dir);
-	    void changeAnimation(String animName, unsigned char dir);
+	    void changeAnimation(const String&animName, unsigned char dir);
 		void changeAnimation(unsigned int index, unsigned char dir);
 	    void changeAnimationDirection(unsigned char dir);
 	    virtual void onAnimationFinish(const String&n);
 	    void addAnimation(Animation*a);
-	    void removeAnimation(String aName);
-
+	    void removeAnimation(const String&animName);
+		bool hasAnimation(const String&animName);
+		
 		Animation*getAnimation();
 		Animation*getLastAnimation();
-
+		
 		void relativeToView(bool toggle);
-
+		
 		void mouseOverUsesPixel(bool toggle);
 		bool mouseOver();
 	    
@@ -123,7 +124,7 @@ namespace GameEngine
 	    bool wasClicked();
 		
 		long getTouchId();
-
+		
 	    void moveTo(float x1, float y1, float speed);
 	    
 	    virtual void onMoveFinish();
@@ -131,11 +132,11 @@ namespace GameEngine
 	    String getAnimName();
 		unsigned int getAnimIndex();
 		int getCurrentFrame();
-
+		
 		bool pixelAtPoint(int col, int row);
 	    
 		bool isColliding(Actor*collide);
-
+		
 	    bool rectsColliding(Actor*collide);
 	    bool rectsColliding(WireframeActor*collide);
 		
@@ -157,6 +158,9 @@ namespace GameEngine
 		
 		float getXSpeed();
 		float getYSpeed();
+		
+		float getXPrev();
+		float getYPrev();
 		
 		void setColor(const Color&c);
 	    Color getColor();

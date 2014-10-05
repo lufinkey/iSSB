@@ -4,7 +4,7 @@
 
 namespace SmashBros
 {
-	HeartContainer::HeartContainer(float x1, float y1) : Item(x1, y1, 200, TYPE_FOOD)
+	HeartContainer::HeartContainer(float x1, float y1) : Item(x1, y1, 20000, TYPE_FOOD)
 	{
 		weight = 0.8f;
 		accelerateGravity(false);

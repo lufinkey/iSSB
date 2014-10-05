@@ -5,7 +5,7 @@
 
 namespace SmashBros
 {
-	SmashBall::SmashBall(float x1, float y1) : Item(x1,y1, 400,TYPE_WIELD)
+	SmashBall::SmashBall(float x1, float y1) : Item(x1,y1, 40000,TYPE_WIELD)
 	{
 		moveTime = 0;
 		speed = 1;
@@ -98,7 +98,7 @@ namespace SmashBros
 			if(collide->getAttacksPriority()>0 && hittable)
 			{
 				hittable = false;
-				unHittableTime = Global::getWorldTime() + 3;
+				unHittableTime = Global::getWorldTime() + 300;
 				setDirection(dir,2*speed);
 				hitSmashBall(collide,dir);
 			}
@@ -168,7 +168,7 @@ namespace SmashBros
 			{
 				setDirection();
 			    
-			    moveTime = Global::getWorldTime() + 10;
+			    moveTime = Global::getWorldTime() + 1000;
 			}
 			
 			Rectangle borders = Global::currentStage->getItemBoundaries();

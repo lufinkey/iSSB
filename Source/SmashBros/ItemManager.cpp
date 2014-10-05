@@ -385,6 +385,14 @@ namespace SmashBros
 
 	void ItemManager::AddItem(Item*item)
 	{
+		for(int i=0; i<items.size(); i++)
+		{
+			if(item==items.get(i))
+			{
+				return;
+			}
+		}
+		
 		if(!item->isHeld())
 		{
 			item->onCreate();
@@ -426,14 +434,14 @@ namespace SmashBros
 		{
 			if(spawnTime==0)
 			{
-				spawnTime=Global::getWorldTime()+(int)((GameEngine::random()*300)+50);
+				spawnTime=Global::getWorldTime()+(long)((GameEngine::random()*30000)+5000);
 			}
 			else
 			{
 			    if(spawnTime<=Global::getWorldTime())
 			    {
 			        RandomItemSpawn();
-			        spawnTime=Global::getWorldTime()+(int)((GameEngine::random()*300)+50);
+			        spawnTime=Global::getWorldTime()+(long)((GameEngine::random()*30000)+5000);
 			    }
 			}
 		}
@@ -446,14 +454,15 @@ namespace SmashBros
 		}
 		for(int i=(items.size()-1); i>=0; i--)
 		{
-			if(items.get(i)->dead)
+			Item*item = items.get(i);
+			if(item->dead)
 			{
-				items.get(i)->onDestroy();
-				Console::WriteLine((String)"Destroyed Item " + Global::getItemName(items.get(i)->itemNo));
-				delete items.get(i);
+				item->onDestroy();
+				Console::WriteLine((String)"Destroyed Item " + Global::getItemName(item->itemNo));
+				delete item;
 				items.remove(i);
 			}
-			else if(items.get(i)->held)
+			else if(item->held)
 			{
 				items.remove(i);
 			}

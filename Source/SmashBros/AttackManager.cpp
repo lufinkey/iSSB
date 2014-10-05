@@ -8,7 +8,7 @@ namespace SmashBros
 		//
 	}
 	
-	AttackManager::AttackInfo::AttackInfo(int attackNo, byte playerdir, int damage, int delayTime, int xDir,float xAmount,float xMult,int yDir,float yAmount,float yMult)
+	AttackManager::AttackInfo::AttackInfo(int attackNo, byte playerdir, int damage, long delayTime, int xDir,float xAmount,float xMult,int yDir,float yAmount,float yMult, boolean dirIsPixelBased)
 	{
 		this->attackNo = attackNo;
 		this->playerdir = playerdir;
@@ -20,6 +20,7 @@ namespace SmashBros
 		this->yDir = yDir;
 		this->yAmount = yAmount;
 		this->yMult = yMult;
+		this->dirIsPixelBased = dirIsPixelBased;
 	}
 
 	AttackManager::AttackInfo::~AttackInfo()
@@ -47,35 +48,35 @@ namespace SmashBros
 		//
 	}
 
-	void AttackManager::addUpAttackInfo(int attackNo, byte playerdir, int damage, int delayTime, int xDir,float xAmount,float xMult,int yDir,float yAmount,float yMult)
+	void AttackManager::addUpAttackInfo(int attackNo, byte playerdir, int damage, long delayTime, int xDir,float xAmount,float xMult,int yDir,float yAmount,float yMult, boolean dirIsPixelBased)
 	{
 		if(!attackExists(up,attackNo,playerdir))
 		{
-			up.add(AttackInfo(attackNo,playerdir,damage,delayTime,xDir,xAmount,xMult,yDir,yAmount,yMult));
+			up.add(AttackInfo(attackNo,playerdir,damage,delayTime,xDir,xAmount,xMult,yDir,yAmount,yMult,dirIsPixelBased));
 		}
 	}
 
-	void AttackManager::addDownAttackInfo(int attackNo, byte playerdir, int damage, int delayTime, int xDir,float xAmount,float xMult,int yDir,float yAmount,float yMult)
+	void AttackManager::addDownAttackInfo(int attackNo, byte playerdir, int damage, long delayTime, int xDir,float xAmount,float xMult,int yDir,float yAmount,float yMult, boolean dirIsPixelBased)
 	{
 		if(!attackExists(down,attackNo,playerdir))
 		{
-			down.add(AttackInfo(attackNo,playerdir,damage,delayTime,xDir,xAmount,xMult,yDir,yAmount,yMult));
+			down.add(AttackInfo(attackNo,playerdir,damage,delayTime,xDir,xAmount,xMult,yDir,yAmount,yMult,dirIsPixelBased));
 		}
 	}
 
-	void AttackManager::addLeftAttackInfo(int attackNo, byte playerdir, int damage, int delayTime, int xDir,float xAmount,float xMult,int yDir,float yAmount,float yMult)
+	void AttackManager::addLeftAttackInfo(int attackNo, byte playerdir, int damage, long delayTime, int xDir,float xAmount,float xMult,int yDir,float yAmount,float yMult, boolean dirIsPixelBased)
 	{
 		if(!attackExists(left,attackNo,playerdir))
 		{
-			left.add(AttackInfo(attackNo,playerdir,damage,delayTime,xDir,xAmount,xMult,yDir,yAmount,yMult));
+			left.add(AttackInfo(attackNo,playerdir,damage,delayTime,xDir,xAmount,xMult,yDir,yAmount,yMult,dirIsPixelBased));
 		}
 	}
 
-	void AttackManager::addRightAttackInfo(int attackNo, byte playerdir, int damage, int delayTime, int xDir,float xAmount,float xMult,int yDir,float yAmount,float yMult)
+	void AttackManager::addRightAttackInfo(int attackNo, byte playerdir, int damage, long delayTime, int xDir,float xAmount,float xMult,int yDir,float yAmount,float yMult, boolean dirIsPixelBased)
 	{
 		if(!attackExists(right,attackNo,playerdir))
 		{
-			right.add(AttackInfo(attackNo,playerdir,damage,delayTime,xDir,xAmount,xMult,yDir,yAmount,yMult));
+			right.add(AttackInfo(attackNo,playerdir,damage,delayTime,xDir,xAmount,xMult,yDir,yAmount,yMult,dirIsPixelBased));
 		}
 	}
 

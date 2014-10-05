@@ -171,32 +171,32 @@ namespace SmashBros
 		platform->y = y;
 		GameElement::Update(gameTime);
 	}
-
+	
 	void Projectile::Draw(Graphics2D&g, long gameTime)
 	{
 		GameElement::Draw(g,gameTime);
 	}
-
+	
 	byte Projectile::getTeam()
 	{
 		return team;
 	}
-
+	
 	byte Projectile::getItemDir()
 	{
 		return itemdir;
 	}
-
+	
 	byte Projectile::getPlayerNo()
 	{
 		return playerNo;
 	}
-
+	
 	boolean Projectile::isDead()
 	{
 		return dead;
 	}
-
+	
 	void Projectile::setSolid(boolean toggle)
 	{
 		solid = toggle;
@@ -222,6 +222,11 @@ namespace SmashBros
 		return solidOwner;
 	}
 	
+	void Projectile::setDeflectable(boolean toggle)
+	{
+		deflectable = toggle;
+	}
+	
 	void Projectile::destroy()
 	{
 		if(!dead && P2PDataManager::isEnabled())
@@ -230,6 +235,16 @@ namespace SmashBros
 		}
 		dead = true;
 		setVisible(false);
+	}
+	
+	void Projectile::deflect(byte dir)
+	{
+		//Open for implementation
+	}
+	
+	void Projectile::setOwner(Player*owner)
+	{
+		playerNo = owner->getPlayerNo();
 	}
 	
 	void Projectile::setLayer(byte layer)
@@ -275,9 +290,13 @@ namespace SmashBros
 			switch(collide->playerdir)
 			{
 				case Player::LEFT:
-				if(x<collide->x && PrimitiveActor::getDir((PrimitiveActor*)collide->getHitbox(),(PrimitiveActor*)this)!=PrimitiveActor::DIR_LEFT)
+				if(x<collide->x && PrimitiveActor::getDir((PrimitiveActor*)collide,(PrimitiveActor*)this)==PrimitiveActor::DIR_LEFT)
 				{
-					boolean inflicted = collide->onProjectileDeflectDamage(this, amount);
+					boolean inflicted = false;
+					if(deflectable)
+					{
+						inflicted = collide->onDeflectProjectileDamage(this, amount);
+					}
 					if(inflicted)
 					{
 						canInflict = false;
@@ -287,9 +306,13 @@ namespace SmashBros
 				break;
 				
 				case Player::RIGHT:
-				if(x>collide->x && PrimitiveActor::getDir((PrimitiveActor*)collide,(PrimitiveActor*)this)!=PrimitiveActor::DIR_RIGHT)
+				if(x>collide->x && PrimitiveActor::getDir((PrimitiveActor*)collide,(PrimitiveActor*)this)==PrimitiveActor::DIR_RIGHT)
 				{
-					boolean inflicted = collide->onProjectileDeflectDamage(this, amount);
+					boolean inflicted = false;
+					if(deflectable)
+					{
+						inflicted = collide->onDeflectProjectileDamage(this, amount);
+					}
 					if(inflicted)
 					{
 						canInflict = false;
@@ -301,7 +324,11 @@ namespace SmashBros
 		}
 		else if(collide->attacksPriority==6)
 		{
-			boolean inflicted = collide->onProjectileDeflectDamage(this, amount);
+			boolean inflicted = false;
+			if(deflectable)
+			{
+				inflicted = collide->onDeflectProjectileDamage(this, amount);
+			}
 			if(inflicted)
 			{
 				canInflict = false;
@@ -310,26 +337,26 @@ namespace SmashBros
 		}
 		if(canInflict)
 		{
-		    collide->percent+=amount;
-		    if(collide->percent>999)
-		    {
-		        collide->percent=999;
-		    }
+			collide->percent+=amount;
+			if(collide->percent>999)
+			{
+				collide->percent=999;
+			}
 		}
 	}
-
+	
 	void Projectile::causeHurtLaunch(Player*collide, int xDir, float xAmount, float xMult, int yDir, float yAmount, float yMult)
 	{
 		if(collide->deflectState)
 		{
-			collide->onProjectileDeflectLaunch(this, xDir, xAmount, xMult, yDir, yAmount, yMult);
+			collide->onDeflectProjectileLaunch(this, xDir, xAmount, xMult, yDir, yAmount, yMult);
 		}
 		else
 		{
 		    //float oldXvel;
 		    //float oldYvel;
-		    float newyVel=(float)(yDir*(yAmount+(yMult*(collide->percent))/100));
-		    float newxVel=(float)(xDir*(xAmount+(xMult*(collide->percent))/100));
+		    float newyVel=(float)(yDir*(yAmount+(yMult*(collide->percent))/75));
+		    float newxVel=(float)(xDir*(xAmount+(xMult*(collide->percent))/75));
 		    //Console.WriteLine(this.attacksHolder + ": " + newyVel + "");
 		    if(newyVel>0)
 		    {
@@ -372,163 +399,64 @@ namespace SmashBros
 		if(!collide->deflectState)
 		{
 		    if(std::abs(collide->xvelocity)<=3)
-		    {
-		        if(std::abs(collide->yvelocity)<=3)
-		        {
-		            switch(dir)
-		            {
-						case Player::LEFT:
-		                collide->changeAnimation("hurt_minor_left", FORWARD);
-		                break;
-		 
-						case Player::RIGHT:
-		                collide->changeAnimation("hurt_minor_right", FORWARD);
-		                break;
-		            }
-		        }
-		        else if((std::abs(collide->yvelocity)>3)&&(std::abs(collide->yvelocity)<7))
-		        {
-		            switch(dir)
-		            {
-						case Player::LEFT:
-		                collide->changeAnimation("hurt_minor_left", FORWARD);
-		                break;
-		 
-						case Player::RIGHT:
-		                collide->changeAnimation("hurt_minor_right", FORWARD);
-		                break;
-		            }
-		        }
-		        else if((std::abs(collide->yvelocity)>=7)&&(std::abs(collide->yvelocity)<12))
-		        {
-		            switch(dir)
-		            {
-						case Player::LEFT:
-		                collide->changeAnimation("hurt_flip_left", FORWARD);
-		                break;
-		 
-						case Player::RIGHT:
-		                collide->changeAnimation("hurt_flip_left", FORWARD);
-		                break;
-		            }
-		        }
-		        else if(std::abs(collide->yvelocity)>=12)
-		        {
-		            collide->changeAnimation("hurt_spin_up", FORWARD);
-		        }
-		    }
-		 
-		    else if((std::abs(collide->xvelocity)>3)&&(std::abs(collide->xvelocity)<7))
-		    {
-		        if(std::abs(collide->yvelocity)<=3)
-		        {
-		            switch(dir)
-		            {
-						case Player::LEFT:
-		                collide->changeAnimation("hurt_fly_left", FORWARD);
-		                break;
-		 
-						case Player::RIGHT:
-		                collide->changeAnimation("hurt_fly_right", FORWARD);
-		                break;
-		            }
-		        }
-		        else if((std::abs(collide->yvelocity)>3)&&(std::abs(collide->yvelocity)<7))
-		        {
-		            switch(dir)
-		            {
-						case Player::LEFT:
-		                collide->changeAnimation("hurt_minor_left", FORWARD);
-		                break;
-		 
-						case Player::RIGHT:
-		                collide->changeAnimation("hurt_minor_right", FORWARD);
-		                break;
-		            }
-		        }
-		        else if((std::abs(collide->yvelocity)>=7)&&(std::abs(collide->yvelocity)<12))
-		        {
-		            switch(dir)
-		            {
-						case Player::LEFT:
-		                collide->changeAnimation("hurt_fly_left", FORWARD);
-		                break;
-		 
-						case Player::RIGHT:
-		                collide->changeAnimation("hurt_fly_right", FORWARD);
-		                break;
-		            }
-		        }
-		        else if(std::abs(collide->yvelocity)>=12)
-		        {
-		            switch(dir)
-		            {
-						case Player::LEFT:
-		                collide->changeAnimation("hurt_flip_left", FORWARD);
-		                break;
-		 
-						case Player::RIGHT:
-		                collide->changeAnimation("hurt_flip_right", FORWARD);
-		                break;
-		            }
-		        }
-		    }
-		 
-		    else if(std::abs(collide->xvelocity)>=7)
-		    {
-		        if(std::abs(collide->yvelocity)<=3)
-		        {
-		            switch(dir)
-		            {
-						case Player::LEFT:
-		                collide->changeAnimation("hurt_spin_left", FORWARD);
-		                break;
-		 
-						case Player::RIGHT:
-		                collide->changeAnimation("hurt_spin_right", FORWARD);
-		                break;
-		            }
-		        }
-		        else if((std::abs(collide->yvelocity)>3)&&(std::abs(collide->yvelocity)<7))
-		        {
-		            switch(dir)
-		            {
-						case Player::LEFT:
-		                collide->changeAnimation("hurt_spin_left", FORWARD);
-		                break;
-		 
-						case Player::RIGHT:
-		                collide->changeAnimation("hurt_spin_right", FORWARD);
-		                break;
-		            }
-		        }
-		        else if((std::abs(collide->yvelocity)>=7)&&(std::abs(collide->yvelocity)<12))
-		        {
-		            switch(dir)
-		            {
-						case Player::LEFT:
-		                collide->changeAnimation("hurt_spin_left", FORWARD);
-		                break;
-		 
-						case Player::RIGHT:
-		                collide->changeAnimation("hurt_spin_right", FORWARD);
-		                break;
-		            }
-		        }
-		        else if(std::abs(collide->yvelocity)>=12)
-		        {
-		            switch(dir)
-		            {
-						case Player::LEFT:
-		                collide->changeAnimation("hurt_flip_left", FORWARD);
-		                break;
-		 
-						case Player::RIGHT:
-		                collide->changeAnimation("hurt_flip_right", FORWARD);
-		                break;
-		            }
-		        }
-		    }
+			{
+				if(std::abs(collide->yvelocity)<=3)
+				{
+					collide->changeTwoSidedAnimation("hurt_minor", FORWARD, dir);
+				}
+				else if((std::abs(collide->yvelocity)>3)&&(std::abs(collide->yvelocity)<7))
+				{
+					collide->changeTwoSidedAnimation("hurt_minor", FORWARD, dir);
+				}
+				else if((std::abs(collide->yvelocity)>=7)&&(std::abs(collide->yvelocity)<12))
+				{
+					collide->changeTwoSidedAnimation("hurt_flip", FORWARD, dir);
+				}
+				else if(std::abs(collide->yvelocity)>=12)
+				{
+					collide->changeAnimation("hurt_spin_up", FORWARD);
+				}
+			}
+			
+			else if((std::abs(collide->xvelocity)>3)&&(std::abs(collide->xvelocity)<7))
+			{
+				if(std::abs(collide->yvelocity)<=3)
+				{
+					collide->changeTwoSidedAnimation("hurt_fly", FORWARD, dir);
+				}
+				else if((std::abs(collide->yvelocity)>3)&&(std::abs(collide->yvelocity)<7))
+				{
+					collide->changeTwoSidedAnimation("hurt_minor", FORWARD, dir);
+				}
+				else if((std::abs(collide->yvelocity)>=7)&&(std::abs(collide->yvelocity)<12))
+				{
+					collide->changeTwoSidedAnimation("hurt_fly", FORWARD, dir);
+				}
+				else if(std::abs(collide->yvelocity)>=12)
+				{
+					collide->changeTwoSidedAnimation("hurt_flip", FORWARD, dir);
+				}
+			}
+			
+			else if(std::abs(collide->xvelocity)>=7)
+			{
+				if(std::abs(collide->yvelocity)<=3)
+				{
+					collide->changeTwoSidedAnimation("hurt_spin", FORWARD, dir);
+				}
+				else if((std::abs(collide->yvelocity)>3)&&(std::abs(collide->yvelocity)<7))
+				{
+					collide->changeTwoSidedAnimation("hurt_spin", FORWARD, dir);
+				}
+				else if((std::abs(collide->yvelocity)>=7)&&(std::abs(collide->yvelocity)<12))
+				{
+					collide->changeTwoSidedAnimation("hurt_spin", FORWARD, dir);
+				}
+				else if(std::abs(collide->yvelocity)>=12)
+				{
+					collide->changeTwoSidedAnimation("hurt_flip", FORWARD, dir);
+				}
+			}
 		    collide->xVel=0;
 		    collide->yVel=0;
 		    collide->attackTime=0;
@@ -591,6 +519,11 @@ namespace SmashBros
 
 	byte Projectile::isPlatformColliding(Platform*collide)
 	{
+		if(Scale==0 || collide->Scale==0)
+		{
+			return 0;
+		}
+		
 		GameEngine::Rectangle r1 = GameEngine::Rectangle((int)(x - (float)width/2), (int)(y - (float)height/2), (int)width, (int)height);
 		GameEngine::Rectangle r2 = GameEngine::Rectangle((int)(collide->x - (float)collide->width/2),(int)(collide->y - (float)collide->height/2),(int)collide->width,(int)collide->height);
 		GameEngine::Rectangle collideOverlap = getOverlapRect(r2,r1);
@@ -690,6 +623,11 @@ namespace SmashBros
 
 	byte Projectile::solidPlatformCollision(Platform*collide)
 	{
+		if(Scale==0 || collide->Scale==0)
+		{
+			return 0;
+		}
+		
 		if(collide->getCollideType() == Platform::COLLIDE_SOLID)
 		{
 			//Rectangle rect = this.grid.getAreaRect();
@@ -705,15 +643,29 @@ namespace SmashBros
 				int startY2 = collideOverlap.y;
 				int endY2 = collideOverlap.y + collideOverlap.height;
 				
+				//rectangle inside of projectile's overlap box where pixels exist (relative to projectile's top left)
 				int left1=0;
 				int right1=0;
 				int top1=0;
 				int bottom1=0;
 				
+				//rectangle inside of platform's overlap box where pixels exist (relative to platform's top left)
 				int left2=0;
 				int right2=0;
 				int top2=0;
 				int bottom2=0;
+				
+				//rectangle inside of projectile where pixels overlap pixels in platform (relative to projectile's top left)
+				int left1b=0;
+				int right1b=0;
+				int top1b=0;
+				int bottom1b=0;
+				
+				//rectangle inside of projectile's overlap box where pixels from platform exist (not necessarily overlapping) (relative to projectile's top left)
+				int left12=0;
+				int right12=0;
+				int top12=0;
+				int bottom12=0;
 				
 				int startX1 = overlap.x;
 				int startY1 = overlap.y;
@@ -730,9 +682,9 @@ namespace SmashBros
 				float incr2 = (float)(1/collide->Scale);
 				
 				boolean itemCol = false;
-				
 				boolean colliding = false;
-
+				boolean bothCol = false;
+				
 				PixelIterator pxlIter(this);
 				pxlIter.reset(x1,y1,incr1,incr1,(int)collideOverlap.width,(int)collideOverlap.height);
 				PixelIterator colPxlIter(collide);
@@ -743,7 +695,9 @@ namespace SmashBros
 					xPnt = startX1;
 					for(int cntX=startX2; cntX<endX2; cntX++)
 					{
-						if(pxlIter.checkNextPixel())
+						boolean pxlCheck = pxlIter.checkNextPixel();
+						boolean colPxlCheck = colPxlIter.checkNextPixel();
+						if(pxlCheck)
 						{
 							if(!itemCol)
 							{
@@ -772,8 +726,39 @@ namespace SmashBros
 								}
 							}
 							itemCol = true;
+							
+							if(colPxlCheck)
+							{
+								if(!bothCol)
+								{
+									left1b = xPnt;
+									right1b = xPnt;
+									top1b = yPnt;
+									bottom1b = yPnt;
+								}
+								else
+								{
+									if(xPnt<left1b)
+									{
+										left1b = xPnt;
+									}
+									else if(xPnt>right1b)
+									{
+										right1b = xPnt;
+									}
+									if(yPnt<top1b)
+									{
+										top1b = yPnt;
+									}
+									else if(yPnt>bottom1b)
+									{
+										bottom1b = yPnt;
+									}
+								}
+								bothCol = true;
+							}
 						}
-						if(colPxlIter.checkNextPixel())
+						if(colPxlCheck)
 						{
 							if(!colliding)
 							{
@@ -781,6 +766,11 @@ namespace SmashBros
 								right2 = cntX;
 								top2 = cntY;
 								bottom2 = cntY;
+								
+								left12 = xPnt;
+								right12 = xPnt;
+								top12 = yPnt;
+								bottom12 = yPnt;
 							}
 							else
 							{
@@ -800,6 +790,23 @@ namespace SmashBros
 								{
 									bottom2 = cntY;
 								}
+								
+								if(xPnt<left12)
+								{
+									left12 = xPnt;
+								}
+								else if(xPnt>right12)
+								{
+									right12 = xPnt;
+								}
+								if(yPnt<top12)
+								{
+									top12 = yPnt;
+								}
+								else if(yPnt>bottom12)
+								{
+									bottom12 = yPnt;
+								}
 							}
 							colliding = true;
 						}
@@ -807,36 +814,70 @@ namespace SmashBros
 					}
 					yPnt++;
 				}
-
-				if(colliding)
+				
+				if(colliding && bothCol)
 				{
 					int w = right2 - left2;
 					int h = bottom2 - top2;
 					GameEngine::Rectangle collideOverlap2 = GameEngine::Rectangle(left2, top2, w, h);
-					int overlapX = (left2 - startX2) + overlap.x + (w/2);
-					int overlapY = (top2 - startY2) + overlap.y + (h/2);
-					byte dir = getDir2((float)width/2,(float)height/2,(float)overlapX, (float)overlapY);
+					//int overlapX = (left2 - startX2) + overlap.x + (w/2);
+					//int overlapY = (top2 - startY2) + overlap.y + (h/2);
+					//byte dir = getDir2((float)width/2,(float)height/2,(float)overlapX, (float)overlapY);
+					//try 2: byte dir = getDir(RectangleF(0,0,(float)width,(float)height), RectangleF((float)left3, (float)top3, (float)(right3-left3), (float)(bottom3-top3)));
+					byte dir = 0;
+					RectangleF checkR1 = RectangleF((float)left1, (float)top1, (float)(right1 - left1), (float)(top1 - bottom1));
+					RectangleF checkR12 = RectangleF((float)left12, (float)top12, (float)(right12 - left12), (float)(top12 - bottom12));
+					if(checkR1.equals(checkR12))
+					{
+						RectangleF checkR1b = RectangleF((float)left1b, (float)top1b, (float)(right1b - left1b), (float)(top1b - bottom1b));
+						if(checkR1.equals(checkR1b))
+						{
+							RectangleF selfRect = RectangleF(0,0, (float)width/2, (float)height/2);
+							if(checkR1.equals(selfRect))
+							{
+								float xspeed = x - getXPrev();
+								float yspeed = y - getYPrev();
+								dir = PrimitiveActor::getDir2(0,0, xspeed, yspeed);
+							}
+							else
+							{
+								dir = getDir(selfRect, checkR1);
+							}
+						}
+						else
+						{
+							dir = getDir(checkR1, checkR1b);
+						}
+					}
+					else
+					{
+						dir = getDir(checkR1, checkR12);
+					}
 					
 					byte type = collide->getType();
 					if((type == Platform::TYPE_NORMAL)||(type == Platform::TYPE_GOTHROUGH && dir == DIR_DOWN))
 					{
 						switch(dir)
 						{
-							case DIR_DOWN:
-							y = (collideOverlap2.y + (collide->y - collide->height/2)) - (float)(bottom1 - (height/2)) + 1;
+							case DIR_UPLEFT:
+							case DIR_UPRIGHT:
+							case DIR_UP:
+							y = (collideOverlap2.y + (collide->y - collide->height/2)) - (float)(bottom1b - (height/2)) + 1;
 							return DIR_UP;
 							
-							case DIR_UP:
-							y = ((collide->y - collide->height/2) + (collideOverlap2.y + collideOverlap2.height)) + (float)((height/2) - top1) + 1;
+							case DIR_DOWNLEFT:
+							case DIR_DOWNRIGHT:
+							case DIR_DOWN:
+							y = ((collide->y - collide->height/2) + (collideOverlap2.y + collideOverlap2.height)) + (float)((height/2) - top1b) + 1;
 							return DIR_DOWN;
 							
-							case DIR_LEFT:
-							x = ((collide->x - collide->width/2) + (collideOverlap2.x + collideOverlap2.width)) + (float)(right1 - (width/2));
+							case DIR_RIGHT:
+							x = ((collide->x - collide->width/2) + (collideOverlap2.x + collideOverlap2.width)) + (float)(right1b - (width/2));
 							xvelocity = 0;
 							return DIR_RIGHT;
 							
-							case DIR_RIGHT:
-							x = (collideOverlap2.x + (collide->x - collide->width/2)) - (float)((width/2) - left1);
+							case DIR_LEFT:
+							x = (collideOverlap2.x + (collide->x - collide->width/2)) - (float)((width/2) - left1b);
 							xvelocity = 0;
 							return DIR_LEFT;
 						}
@@ -954,6 +995,10 @@ namespace SmashBros
 	byte Projectile::solidPlayerCollision(Player*collide)
 	{
 		collide->updateHitbox();
+		if(Scale==0 || collide->Scale==0)
+		{
+			return 0;
+		}
 		GameEngine::Rectangle r1 = GameEngine::Rectangle((int)collide->hitbox->x, (int)collide->hitbox->y, collide->hitbox->width, collide->hitbox->height);
 		GameEngine::Rectangle r2 = GameEngine::Rectangle((int)(x - width/2),(int)(y - height/2),width,height);
 		GameEngine::Rectangle collideOverlap = getOverlapRect(r2,r1);

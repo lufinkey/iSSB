@@ -11,15 +11,13 @@ namespace SmashBros
 	
 	bool Preferences::highfps = false;
 	
-	const String Preferences::version = "2.2";
+	const String Preferences::version = "2.21";
 	
 	bool Preferences::newVersion = false;
 	
 	bool Preferences::debuglog = false;
 	
-	String Preferences::versionMessage = (String)"Welcome to iSSB v2.2! I apologize sincerely for the lack of updates. I have been incredibly "
-												+"busy over the past few months. To make up for it, I have added Pikachu as a new character! Please "
-												+"consider donating by going to \"Options\", selecting \"Other\", and then selecting \"Donate\". Thank you!";
+	String Preferences::versionMessage = (String)"Welcome to iSSB v2.21! Please consider donating by going to \"Options\", selecting \"Other\", and then selecting \"Donate\". Thank you!";
 	
 	PrefManager Preferences::prefMgr = PrefManager();
 	

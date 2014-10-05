@@ -33,7 +33,8 @@ namespace SmashBros
 			public:
 				ThunderboltGhost(Thunderbolt*bolt, byte playerNo, byte dir, bool drift, float x1, float y1);
 				virtual ~ThunderboltGhost();
-
+				
+				virtual void deflect(byte dir);
 				virtual void Update(long gameTime);
 				virtual void onPlayerHit(Player*collide, byte dir);
 			};
@@ -52,8 +53,10 @@ namespace SmashBros
 		public:
 			Thunderbolt(byte playerNo, float x1, float y1);
 			virtual ~Thunderbolt();
-
+			
+			virtual void deflect(byte dir);
 			virtual void Update(long gameTime);
+			virtual void setOwner(Player*owner);
 			virtual void whilePlatformColliding(Platform*platform, byte dir);
 			virtual void onPlayerHit(Player*collide, byte dir);
 

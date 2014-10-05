@@ -29,27 +29,27 @@ namespace SmashBros
 		friend class Stage;
 	private:
 		static const float jumpXBoost;
-
+		
 		ArrayList<String> files;
-
+		
 		byte aiType;
 		boolean firstUpdate;
 		Actor*indicator;
 		float indicX,indicY;
 		boolean setIndic;
-
+		
 		OffScreenExplode*offScreenExplosion;
-
+		
 		String folderPath;
-
+		
 		Vector2i hangPoint;
-
+		
 		Color playerColor;
-
+		
 		int stock;
-
+		
 		Chargebar*chargebar;
-
+		
 		boolean prevCollidePlatform[8];
 		boolean currentCollidePlatform[8];
 		SmashBros::Platform*currentCollidePlatformActor[8];
@@ -58,12 +58,12 @@ namespace SmashBros
 		boolean groundCollidedFrame;
 		HangPoint*currentHangPoint;
 		ArrayList<byte> collideQueue;
-
+		
 		CollisionManager playerCollisions;
 		CollisionManager playerRectCollisions;
 		AttackManager attackMgr;
 		AttackRandomizer randomizer;
-
+		
 		int itemCollidingIndex;
 		friend class Item;
 		friend class ItemManager;
@@ -73,26 +73,25 @@ namespace SmashBros
 		Item*itemWielding;
 		float itemOffsetX;
 		float itemOffsetY;
-
+		
 		boolean hangColliding;
 		boolean prevHangColliding;
 		boolean groundColliding;
 		boolean prevGroundColliding;
-
+		
 		boolean groundCheck;
-
+		
 		byte hurtFrame;
-
+		
 		HitBox*hitbox;
 		RectangleF hitboxPoint;
-
+		
 		boolean up;
-
+		
 		long runTime;
 		long smashTime;
-		long moveTime;
 		byte buttondir;
-
+		
 		byte playerNo;
 		byte team;
 		int charNo;
@@ -102,36 +101,38 @@ namespace SmashBros
 		friend class HUD;
 		boolean onGround;
 		boolean jumping;
+		boolean skidding;
 		byte hurt;
 		long hurtTime;
+		float moveProgress;
 		boolean invincible;
 		boolean deflectState;
-
+		
 		boolean dropping;
 		boolean canDropThrough;
 		long dropTime;
-
+		
 		boolean canDo;
-
+		
 		boolean cpu;
 		Player*currentEnemy;
 		long comboTime;
 		byte standardCombo;
-
+		
 		boolean grabbed;
 		boolean hasgrabbed;
 		boolean grabbing;
 		
 		boolean canFinalsmash;
 		boolean hanging;
-
+		
 		virtual void whenCreated();
 		
 		void reset();
-
+		
 		void updateHitbox();
 		void setIndicatorColor();
-
+		
 		void setInitialCPUTarget();
 		void updateCPUTarget();
 		boolean checkbUpRecovery();
@@ -154,7 +155,7 @@ namespace SmashBros
 		void followEnemy(boolean canAttack, int level);
 		boolean checkEnemyHang();
 		boolean recover(int level);
-
+		
 		void stopAI(int level);
 		void walkAI(int level);
 		void runAI(int level);
@@ -162,32 +163,35 @@ namespace SmashBros
 		void followAI(int level);
 		void normalAI(int level);
 		void cpuAI(byte type, int level);
-
+		
 		void hitHandlerRight(Player*collide);
 		void hitHandlerLeft(Player*collide);
 		boolean isHittableRight(Player*collide);
 		boolean isHittableLeft(Player*collide);
 		boolean isHittableUp(Player*collide);
 		boolean isHittableDown(Player*collide);
-
+		
 		byte isPlayerColliding(Player*collide);
 		byte solidPlatformCollision(Platform*collide);
 		void platformCollision(Platform*collide, byte dir);
-
+		void setCurrentCollidePlatformActor(byte dir, Platform* actor);
+		
 		void barrierCollide(byte barrierNo);
-
+		
 		void whilePlatformCollide(Platform*collide, byte dir);
 		void whileGroundColliding();
 		void finishGroundCollide();
 		void onHang(HangPoint*collide);
 		void whileHanging(HangPoint*collide);
 		void finishHang(HangPoint*collide);
-
+		
 		void checkPlayerCollision(Player*playr);
 		void playerColliding(Player*collide, byte dir);
 		void playerHitHandler(Player*collide, byte dir);
-
+		
 		void onBorderCollide(byte dir);
+		
+		void checkAttacks(const String&ignored);
 		
 		void handleAddP2PData(DataVoid&data);
 		void handleSetP2PData(byte*&data);
@@ -198,42 +202,42 @@ namespace SmashBros
 		
 		boolean upKey;
 		boolean down;
-
+		
 		String name;
-
+		
 		byte playerdir;
 		double weight;
 		boolean landing;
-
+		
 		int hitAmount;
 		long attackTime;
-
+		
 		int attacksHolder;
 		double attacksPriority;
-
+		
 		int chargeSmash;
-
+		
 		int smashPower;
 		boolean chargingAttack;
 		
 		boolean bUp;
 		byte doubleJump;
-
+		
 		float walkSpeed;
 		float runSpeed;
 		float fallWalk;
 		float fallRun;
-		int flyTime;
-		int flyRunTime;
+		float walkAmount;
+		float runAmount;
 		float recoverAmount;
 		float recoverRunAmount;
-
-		void addFile(String file);
-		void loadFile(String file);
-
+		
+		void addFile(const String&file);
+		void loadFile(const String&file);
+		
 		void setOnGround(boolean toggle);
 		void setItemOffset(float x1, float y1);
-
+		
 		void setCantDo();
 		void setHanging(boolean toggle);
 		void setJumping(boolean toggle);
@@ -241,16 +245,16 @@ namespace SmashBros
 		void resetAttackCollisions();
 		void setHitbox(float x1, float y1, int w, int h);
 		void showHitboxWireframe(boolean toggle);
-		void setHitboxColor(Color c);
-		void setFolderPath(String path);
-
-		void addTwoSidedAnimation(String name, String file, int fps, int rows, int cols);
-		void addSingleAnimation(String name, String file, int fps, int rows, int cols);
-
+		void setHitboxColor(const Color&c);
+		void setFolderPath(const String&path);
+		
+		void addTwoSidedAnimation(const String&name, const String&file, int fps, int rows, int cols);
+		void addSingleAnimation(const String&name, const String&file, int fps, int rows, int cols);
+		
 		void setHangPoint(int x1, int y1);
 		void destroyCharge();
 		void animFinish();
-
+		
 		void updateGravity();
 		void updateFrame();
 		void updateMovement();
@@ -258,22 +262,28 @@ namespace SmashBros
 		void updateHurt();
 		void updateDrop();
 		void updateAI();
-
+		
 		void createProjectile(Projectile*p);
-
+		
 		void causeDamage(Player*collide, int amount);
 		void causeHurtLaunch(Player*collide, int xDir, float xAmount, float xMult, int yDir, float yAmount, float yMult);
 		void causeHurt(Player*collide, byte dir, int time);
-
+		
 		boolean checkItemUse();
 		boolean checkItemUseSide();
-		boolean checkItemUseSmash(byte type);
+		boolean checkItemUseUp();
+		boolean checkItemUseDown();
+		boolean checkItemUseSideSmash(byte type);
+		boolean checkItemUseUpSmash(byte type);
+		boolean checkItemUseDownSmash(byte type);
 		void discardItem();
-
+		void tossItem(byte tossDir);
+		
 		void platformResponse(Platform*collide, byte dir, double multiplier);
-
-		void addAttackInfo(byte dir, int attackNo, byte playerdir, int damage, int delayTime, int xDir,float xAmount,float xMult,int yDir,float yAmount,float yMult);
-
+		Platform* getCurrentCollidePlatformActor(byte dir);
+		
+		void addAttackInfo(byte dir, int attackNo, byte playerdir, int damage, long delayTime, int xDir,float xAmount,float xMult,int yDir,float yAmount,float yMult, boolean dirIsPixelBased = true);
+		
 		void jump(float dist1, float dist2);
 		void climbUp();
 		void climbUpAttack();
@@ -283,14 +293,18 @@ namespace SmashBros
 		static const byte TEAM_BLUE = 2;
 		static const byte TEAM_GREEN = 3;
 		static const byte TEAM_YELLOW = 4;
-
+		
 		static const byte LEFT = 1;
 		static const byte RIGHT = 2;
-
+		
 		static const byte STEP_CHARGE = 1;
 		static const byte STEP_GO = 2;
 		static const byte STEP_FINISH = 3;
-
+		
+		static const int CMPDIRPDIR_EQUAL = 1;
+		static const int CMPDIRPDIR_OPP = -1;
+		static const int CMPDIRPDIR_INVALID = 0;
+		
 		static const byte ATTACK_A = 1;
 		static const byte ATTACK_SIDEA = 2;
 		static const byte ATTACK_UPA = 3;
@@ -303,7 +317,7 @@ namespace SmashBros
 		static const byte ATTACK_UPSMASH = 10;
 		static const byte ATTACK_DOWNSMASH = 11;
 		static const byte ATTACK_FINALSMASH = 12;
-
+		
 		static const byte ATTACKTYPE_MELEE = 1;
 		static const byte ATTACKTYPE_UPMELEE = 2;
 		static const byte ATTACKTYPE_DOWNMELEE = 3;
@@ -313,7 +327,7 @@ namespace SmashBros
 		static const byte ATTACKTYPE_DOWNMOVE = 7;
 		static const byte ATTACKTYPE_PROJECTILE = 8;
 		static const byte ATTACKTYPE_DEFENSIVE = 9;
-
+		
 		static const byte AI_STOP = 1;
 		static const byte AI_WALK = 2;
 		static const byte AI_RUN = 3;
@@ -338,7 +352,7 @@ namespace SmashBros
 		virtual void onDestroy();
 		virtual void Update(long gameTime);
 		virtual void Draw(Graphics2D&g, long gameTime);
-
+		
 		virtual void onPlatformCollide(Platform*collide, byte dir);
 		virtual void finishPlatformCollide(Platform*collide, byte dir);
 		virtual void onGroundCollide();
@@ -349,17 +363,19 @@ namespace SmashBros
 		virtual void onPlayerRectHit(Player*collide, byte dir);
 		virtual void whilePlayerRectHitting(Player*collide, byte dir);
 		virtual void finishPlayerRectHit(Player*collide);
-
-		virtual boolean onPlayerDeflectDamage(Player*collide, int damage);
-		virtual boolean onPlayerDeflectLaunch(Player*collide, int xDir, float xAmount, float xMult, int yDir, float yAmount, float yMult);
-		virtual boolean onItemDeflectDamage(Item*collide, int damage);
-		virtual boolean onItemDeflectLaunch(Item*collide, int xDir, float xAmount, float xMult, int yDir, float yAmount, float yMult);
-		virtual boolean onProjectileDeflectDamage(Projectile*collide, int damage);
-		virtual boolean onProjectileDeflectLaunch(Projectile*collide, int xDir, float xAmount, float xMult, int yDir, float yAmount, float yMult);
-
+		
+		virtual boolean onDeflectPlayerDamage(Player*collide, int damage);
+		virtual void onDeflectPlayerLaunch(Player*collide, int xDir, float xAmount, float xMult, int yDir, float yAmount, float yMult);
+		virtual boolean onDeflectItemCollision(Item*collide, byte dir);
+		virtual boolean onDeflectItemDamage(Item*collide, int damage);
+		virtual void onDeflectItemLaunch(Item*collide, int xDir, float xAmount, float xMult, int yDir, float yAmount, float yMult);
+		virtual boolean onDeflectProjectileCollision(Projectile*collide, byte dir);
+		virtual boolean onDeflectProjectileDamage(Projectile*collide, int damage);
+		virtual void onDeflectProjectileLaunch(Projectile*collide, int xDir, float xAmount, float xMult, int yDir, float yAmount, float yMult);
+		
 		virtual void onFinishCharge();
 		virtual void doChargingAttack(byte button);
-
+		
 		virtual void attackA();
 		virtual void attackSideA();
 		virtual void attackUpA();
@@ -372,14 +388,16 @@ namespace SmashBros
 		virtual void attackUpSmash(byte type);
 		virtual void attackDownSmash(byte type);
 		virtual void attackFinalSmash();
-
+		
 		void respawn();
 		void Unload();
 		void addAIAttackType(byte attack, byte attacktype, float probability, boolean charge = false);
 		
 		void addAnimation(Animation*a);
-		void setColor(Color c);
-
+		void changeTwoSidedAnimation(const String&name, byte direction);
+		void changeTwoSidedAnimation(const String&name, byte direction, byte playerdir);
+		void setColor(const Color&c);
+		
 		boolean isCPU();
 		boolean isAlive();
 		boolean isHurt();
@@ -399,6 +417,15 @@ namespace SmashBros
 		byte getTeam();
 		boolean canFinalSmash();
 		void setPlayerDir(byte dir);
+		float getPlayerDirMult();
+		static float getPlayerDirMult(byte playerdir);
+		String getPlayerDirSuffix();
+		static String getPlayerDirSuffix(byte playerdir);
+		byte getOppPlayerDir();
+		static byte getOppPlayerDir(byte playerdir);
+		byte getRelPlayerDir(GameElement*cmp);
+		static byte getRelPlayerDir(GameElement*playr, GameElement*cmp);
+		static int compareDirPlayerDir(byte dir, byte playerdir);
 		byte getPlayerNo();
 		boolean CanDo();
 		boolean isGrabbed();
@@ -415,11 +442,11 @@ namespace SmashBros
 		String getFolderPath();
 		void checkAttacks();
 		boolean pickUpItem(Item*item);
-
+		
 		boolean hitboxRectsColliding(HitBox*collide);
 		boolean hitboxRectsColliding(WireframeActor*collide);
 		boolean hitboxRectsColliding(Actor*collide);
-
+		
 		void stand();
 		void switchDirection();
 		void moveDown();

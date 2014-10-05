@@ -42,12 +42,12 @@ namespace SmashBros
 		//hitboxPoint = RectangleF();
 		moveLeft = 0;
 		moveRight = 0;
+		moveProgress = 0;
 		up = false;
 		upKey = false;
 		down = false;
 		runTime = 0;
 		smashTime = 0;
-		moveTime = 0;
 		buttondir = 0;
 		name = "unknown";
 		charNo = 0;
@@ -57,6 +57,7 @@ namespace SmashBros
 		percent = 0;
 		onGround = false;
 		landing = false;
+		skidding = false;
 		jumping = false;
 		hurt = 0;
 		hurtTime = 0;
@@ -90,10 +91,10 @@ namespace SmashBros
 		runSpeed = 3;
 		fallWalk = 1;
 		fallRun = 2;
-		flyTime = 4;
-		flyRunTime = 4;
-		recoverAmount = 7/8;
-		recoverRunAmount = 6/7;
+		walkAmount = 1;
+		runAmount = 1;
+		recoverAmount = 0.2f;
+		recoverRunAmount = 0.3f;
 		
 		this->playerNo = playerNo;
 		Console::WriteLine((String)"successfully created player " + playerNo);
@@ -326,12 +327,12 @@ namespace SmashBros
 		hurtFrame = 0;
 		moveLeft = 0;
 		moveRight = 0;
+		moveProgress = 0;
 		up = false;
 		upKey = false;
 		down = false;
 		runTime = 0;
 		smashTime = 0;
-		moveTime = 0;
 		buttondir = 0;
 		playerdir = 2;
 		lastHit = 0;
@@ -393,7 +394,7 @@ namespace SmashBros
 		}
 	}
 	
-	void Player::addFile(String file)
+	void Player::addFile(const String&file)
 	{
 		for(int i=0; i<files.size(); i++)
 		{
@@ -405,7 +406,7 @@ namespace SmashBros
 		files.add(file);
 	}
 	
-	void Player::loadFile(String file)
+	void Player::loadFile(const String&file)
 	{
 		AssetManager::loadImage(file);
 		addFile(file);
@@ -563,7 +564,17 @@ namespace SmashBros
 		Actor::addAnimation(a);
 	}
 	
-	void Player::setColor(Color c)
+	void Player::changeTwoSidedAnimation(const String&name, byte direction)
+	{
+		changeTwoSidedAnimation(name, direction, playerdir);
+	}
+	
+	void Player::changeTwoSidedAnimation(const String&name, byte direction, byte pDir)
+	{
+		changeAnimation(name + Player::getPlayerDirSuffix(pDir), direction);
+	}
+	
+	void Player::setColor(const Color&c)
 	{
 		playerColor = c;
 		Actor::setColor(c);
@@ -730,7 +741,7 @@ namespace SmashBros
 	
 	void Player::setPlayerDir(byte dir)
 	{
-		if(dir==1 || dir==2)
+		if(dir==LEFT || dir==RIGHT)
 		{
 			playerdir = dir;
 		}
@@ -738,6 +749,107 @@ namespace SmashBros
 		{
 			Console::WriteLine((String)"Error Player.setPlayerDir(byte): invalid argument " + dir);
 		}
+	}
+	
+	float Player::getPlayerDirMult()
+	{
+		return getPlayerDirMult(playerdir);
+	}
+	
+	float Player::getPlayerDirMult(byte dir)
+	{
+		switch(dir)
+		{
+			case LEFT:
+			return -1;
+			
+			case RIGHT:
+			return 1;
+		}
+		return 0;
+	}
+	
+	String Player::getPlayerDirSuffix()
+	{
+		return getPlayerDirSuffix(playerdir);
+	}
+	
+	String Player::getPlayerDirSuffix(byte dir)
+	{
+		switch(dir)
+		{
+			case LEFT:
+			return "_left";
+			
+			case RIGHT:
+			return "_right";
+		}
+		return "";
+	}
+	
+	byte Player::getOppPlayerDir()
+	{
+		return getOppPlayerDir(playerdir);
+	}
+	
+	byte Player::getOppPlayerDir(byte dir)
+	{
+		switch(dir)
+		{
+			case LEFT:
+			return RIGHT;
+			
+			case RIGHT:
+			return LEFT;
+		}
+		return 0;
+	}
+	
+	byte Player::getRelPlayerDir(GameElement*cmp)
+	{
+		if(cmp->x < x)
+		{
+			return LEFT;
+		}
+		else if(cmp->x > x)
+		{
+			return RIGHT;
+		}
+		return 0;
+	}
+	
+	byte Player::getRelPlayerDir(GameElement*playr, GameElement*cmp)
+	{
+		if(cmp->x < playr->x)
+		{
+			return LEFT;
+		}
+		else if(cmp->x > playr->x)
+		{
+			return RIGHT;
+		}
+		return 0;
+	}
+	
+	int Player::compareDirPlayerDir(byte dir, byte playerdir)
+	{
+		if(dir==DIR_LEFT && playerdir==LEFT)
+		{
+			return 1;
+		}
+		else if(dir==DIR_RIGHT && playerdir==RIGHT)
+		{
+			return 1;
+		}
+		else if(dir==DIR_LEFT && playerdir==RIGHT)
+		{
+			return -1;
+		}
+		else if(dir==DIR_RIGHT && playerdir==LEFT)
+		{
+			return -1;
+		}
+		return 0;
 	}
 	
 	byte Player::getPlayerNo()
@@ -858,7 +970,7 @@ namespace SmashBros
 		hitbox->setVisible(toggle);
 	}
 	
-	void Player::setHitboxColor(Color c)
+	void Player::setHitboxColor(const Color&c)
 	{
 		hitbox->setColor(c);
 	}
@@ -926,14 +1038,14 @@ namespace SmashBros
 	}
 	
 	/** Sets the folder path where all of the animations are stored. Default value is "/" */
-	void Player::setFolderPath(String path)
+	void Player::setFolderPath(const String&path)
 	{
-		this->folderPath = path;
+		folderPath = path;
 	}
 	
 	String Player::getFolderPath()
 	{
-		return this->folderPath;
+		return folderPath;
 	}
 	
 	/**
@@ -948,7 +1060,7 @@ namespace SmashBros
 	 * @param rows the number of rows that the image file contains.
 	 * @param cols the number of columns that the image file contains.
 	 */
-	void Player::addTwoSidedAnimation(String name, String file, int fps, int rows, int cols)
+	void Player::addTwoSidedAnimation(const String&name, const String&file, int fps, int rows, int cols)
 	{
 		Animation*anim;
 		anim = new Animation(name + "_left",fps, rows,cols);
@@ -970,7 +1082,7 @@ namespace SmashBros
 	 * @param rows the number of rows that the image file contains.
 	 * @param cols the number of columns that the image file contains.
 	 */
-	void Player::addSingleAnimation(String name, String file, int fps, int rows, int cols)
+	void Player::addSingleAnimation(const String&name, const String&file, int fps, int rows, int cols)
 	{
 		Animation*anim;
 		anim = new Animation(name,fps, rows,cols);
@@ -997,16 +1109,7 @@ namespace SmashBros
 		{
 			if(yvelocity>0)
 			{
-			    switch(playerdir)
-			    {
-			        case 1:
-			        changeAnimation("fall_left", NO_CHANGE);
-			        break;
-			 
-			        case 2:
-			        changeAnimation("fall_right", NO_CHANGE);
-			        break;
-			    }
+			    changeTwoSidedAnimation("fall", NO_CHANGE);
 			}
 		}
 		else if(n.equals("hurt_flip_left") || n.equals("hurt_flip_right"))
@@ -1024,6 +1127,10 @@ namespace SmashBros
 				animFinish();
 			}
 		}
+		else if(n.equals("skid_left") || n.equals("skid_right"))
+		{
+			landing = false;
+		}
 		else
 		{
 			animFinish();
@@ -1032,19 +1139,32 @@ namespace SmashBros
 	
 	void Player::checkAttacks()
 	{
+		checkAttacks("");
+	}
+	
+	void Player::checkAttacks(const String&ignored)
+	{
 		boolean itemDo = true;
 		if(itemHolding!=null)
 		{
 			itemDo = itemHolding->holderCanDo();
 		}
-	    if((attacksHolder==-1) && (!grabbed) && (hurt!=2) && (!landing) && checkIfAble() && itemDo)
-	    {
-	        canDo=true;
-	    }
-	    else
-	    {
-	        canDo=false;
-	    }
+		if(attacksHolder>-1 || grabbed || hurt==2 || !checkIfAble() || !itemDo)
+		{
+			canDo=false;
+		}
+		else if(skidding && !ignored.equals("skidding"))
+		{
+			canDo=false;
+		}
+		else if(landing && !ignored.equals("landing"))
+		{
+			canDo=false;
+		}
+		else
+		{
+			canDo=true;
+		}
 	}
 	
 	void Player::destroyCharge()
@@ -1054,50 +1174,28 @@ namespace SmashBros
 		if(chargebar!=null)
 		{
 			this->smashPower = (int)chargebar->currentPower;
+			delete chargebar;
 		}
 		chargebar = null;
 	}
 	
 	void Player::animFinish()
 	{
-		switch(playerdir)
-	    {
-	        case 1:
-	        if(onGround)
-	        {
-	            if(down)
-	            {
-	            	changeAnimation("crouch_left", NO_CHANGE);
-	            }
-	            else
-	            {
-	            	changeAnimation("stand_left", NO_CHANGE);
-	            }
-	        }
-	        else
-	        {
-	        	changeAnimation("fall_left", NO_CHANGE);
-	        }
-	        break;
-	 
-	        case 2:
-		    if(onGround)
-		    {
-		        if(down)
-		        {
-		         	changeAnimation("crouch_right", NO_CHANGE);
-		        }
-		        else
-		        {
-		          	changeAnimation("stand_right", NO_CHANGE);
-		        }
-		    }
-		    else
-		    {
-		      	changeAnimation("fall_right", NO_CHANGE);
-		    }
-		    break;
-	    }
+		if(onGround)
+		{
+			if(down)
+			{
+				changeTwoSidedAnimation("crouch", NO_CHANGE);
+			}
+			else
+			{
+				changeTwoSidedAnimation("stand", NO_CHANGE);
+			}
+		}
+		else
+		{
+			changeTwoSidedAnimation("fall", NO_CHANGE);
+		}
 		playerCollisions.clear();
 	    landing = false;
 	    up = false;
@@ -2368,14 +2466,14 @@ namespace SmashBros
 		switch(dir)
 		{
 			case DIR_UP:
-			if(isObstacle(currentCollidePlatformActor[DIR_DOWN]))
+			if(isObstacle(getCurrentCollidePlatformActor(DIR_DOWN)))
 			{
 				switch(playerdir)
 				{
 					case LEFT:
-					if(isObstacle(currentCollidePlatformActor[DIR_RIGHT]))
+					if(isObstacle(getCurrentCollidePlatformActor(DIR_RIGHT)))
 					{
-						if(!isObstacle(currentCollidePlatformActor[DIR_LEFT]))
+						if(!isObstacle(getCurrentCollidePlatformActor(DIR_LEFT)))
 						{
 							moveLeft = 0;
 							moveRight = 1;
@@ -2397,9 +2495,9 @@ namespace SmashBros
 					break;
 					
 					case RIGHT:
-					if(isObstacle(currentCollidePlatformActor[DIR_LEFT]))
+					if(isObstacle(getCurrentCollidePlatformActor(DIR_LEFT)))
 					{
-						if(!isObstacle(currentCollidePlatformActor[DIR_RIGHT]))
+						if(!isObstacle(getCurrentCollidePlatformActor(DIR_RIGHT)))
 						{
 							moveLeft = 1;
 							moveRight = 0;
@@ -2431,14 +2529,14 @@ namespace SmashBros
 			break;
 			
 			case DIR_UPLEFT:
-			if(!isObstacle(currentCollidePlatformActor[DIR_DOWN]))
+			if(!isObstacle(getCurrentCollidePlatformActor(DIR_DOWN)))
 			{
 				if(yvelocity>=0)
 				{
 					recoverJump();
 				}
 			}
-			if(!isObstacle(currentCollidePlatformActor[DIR_RIGHT]))
+			if(!isObstacle(getCurrentCollidePlatformActor(DIR_RIGHT)))
 			{
 				moveLeft = 1;
 				moveRight = 0;
@@ -2447,14 +2545,14 @@ namespace SmashBros
 			break;
 			
 			case DIR_UPRIGHT:
-			if(!isObstacle(currentCollidePlatformActor[DIR_DOWN]))
+			if(!isObstacle(getCurrentCollidePlatformActor(DIR_DOWN)))
 			{
 				if(yvelocity>=0)
 				{
 					recoverJump();
 				}
 			}
-			if(!isObstacle(currentCollidePlatformActor[DIR_LEFT]))
+			if(!isObstacle(getCurrentCollidePlatformActor(DIR_LEFT)))
 			{
 				moveLeft = 0;
 				moveRight = 1;
@@ -2463,7 +2561,7 @@ namespace SmashBros
 			break;
 			
 			case DIR_LEFT:
-			if(!isObstacle(currentCollidePlatformActor[DIR_RIGHT]))
+			if(!isObstacle(getCurrentCollidePlatformActor(DIR_RIGHT)))
 			{
 				moveLeft = 1;
 				moveRight = 0;
@@ -2479,7 +2577,7 @@ namespace SmashBros
 			break;
 			
 			case DIR_RIGHT:
-			if(!isObstacle(currentCollidePlatformActor[DIR_LEFT]))
+			if(!isObstacle(getCurrentCollidePlatformActor(DIR_LEFT)))
 			{
 				moveLeft = 0;
 				moveRight = 1;
@@ -2495,16 +2593,16 @@ namespace SmashBros
 			break;
 			
 			case DIR_DOWNLEFT:
-			if(currentCollidePlatformActor[DIR_UP]!=null)
+			if(getCurrentCollidePlatformActor(DIR_UP)!=null)
 			{
-				Platform*plat = currentCollidePlatformActor[DIR_UP];
+				Platform*plat = getCurrentCollidePlatformActor(DIR_UP);
 				if(plat->getType() == Platform::TYPE_GOTHROUGH)
 				{
 					moveDown();
 				}
 				else
 				{
-					if(!isObstacle(currentCollidePlatformActor[DIR_RIGHT]))
+					if(!isObstacle(getCurrentCollidePlatformActor(DIR_RIGHT)))
 					{
 						moveLeft = 1;
 						moveRight = 0;
@@ -2521,7 +2619,7 @@ namespace SmashBros
 			}
 			else
 			{
-				if(!isObstacle(currentCollidePlatformActor[DIR_RIGHT]))
+				if(!isObstacle(getCurrentCollidePlatformActor(DIR_RIGHT)))
 				{
 					moveLeft = 1;
 					moveRight = 0;
@@ -2531,16 +2629,16 @@ namespace SmashBros
 			break;
 			
 			case DIR_DOWNRIGHT:
-			if(currentCollidePlatformActor[DIR_UP]!=null)
+			if(getCurrentCollidePlatformActor(DIR_UP)!=null)
 			{
-				Platform*plat = currentCollidePlatformActor[DIR_UP];
+				Platform*plat = getCurrentCollidePlatformActor(DIR_UP);
 				if(plat->getType() == Platform::TYPE_GOTHROUGH)
 				{
 					moveDown();
 				}
 				else
 				{
-					if(!isObstacle(currentCollidePlatformActor[DIR_LEFT]))
+					if(!isObstacle(getCurrentCollidePlatformActor(DIR_LEFT)))
 					{
 						moveLeft = 0;
 						moveRight = 1;
@@ -2557,7 +2655,7 @@ namespace SmashBros
 			}
 			else
 			{
-				if(!isObstacle(currentCollidePlatformActor[DIR_LEFT]))
+				if(!isObstacle(getCurrentCollidePlatformActor(DIR_LEFT)))
 				{
 					moveLeft = 0;
 					moveRight = 1;
@@ -2567,9 +2665,9 @@ namespace SmashBros
 			break;
 			
 			case DIR_DOWN:
-			if(currentCollidePlatformActor[DIR_UP]!=null)
+			if(getCurrentCollidePlatformActor(DIR_UP)!=null)
 			{
-				Platform*plat = currentCollidePlatformActor[DIR_UP];
+				Platform*plat = getCurrentCollidePlatformActor(DIR_UP);
 				if(plat->getType() == Platform::TYPE_GOTHROUGH)
 				{
 					moveDown();
@@ -2579,7 +2677,7 @@ namespace SmashBros
 					switch(playerdir)
 					{
 						case LEFT:
-						if(!isObstacle(currentCollidePlatformActor[DIR_RIGHT]))
+						if(!isObstacle(getCurrentCollidePlatformActor(DIR_RIGHT)))
 						{
 							moveLeft = 1;
 							moveRight = 0;
@@ -2594,7 +2692,7 @@ namespace SmashBros
 						break;
 						
 						case RIGHT:
-						if(!isObstacle(currentCollidePlatformActor[DIR_LEFT]))
+						if(!isObstacle(getCurrentCollidePlatformActor(DIR_LEFT)))
 						{
 							moveLeft = 0;
 							moveRight = 1;
@@ -3291,7 +3389,7 @@ namespace SmashBros
 				}
 				else
 				{
-					if(checkTrappedOver(separatingRect) || isObstacle(currentCollidePlatformActor[DIR_UP]))
+					if(checkTrappedOver(separatingRect) || isObstacle(getCurrentCollidePlatformActor(DIR_UP)))
 					{
 						switch(playerdir)
 						{
@@ -3442,14 +3540,14 @@ namespace SmashBros
 		{
 			if(onGround)
 			{
-				Platform*plat = currentCollidePlatformActor[DIR_UP];
+				Platform*plat = getCurrentCollidePlatformActor(DIR_UP);
 				boolean leftSide = false;
-				if(currentCollidePlatformActor[DIR_RIGHT]!=null && currentCollidePlatformActor[DIR_RIGHT]!=currentCollidePlatformActor[DIR_UP])
+				if(getCurrentCollidePlatformActor(DIR_RIGHT)!=null && getCurrentCollidePlatformActor(DIR_RIGHT)!=getCurrentCollidePlatformActor(DIR_UP))
 				{
 					leftSide = true;
 				}
 				boolean rightSide = false;
-				if(currentCollidePlatformActor[DIR_LEFT]!=null && currentCollidePlatformActor[DIR_LEFT]!=currentCollidePlatformActor[DIR_UP])
+				if(getCurrentCollidePlatformActor(DIR_LEFT)!=null && getCurrentCollidePlatformActor(DIR_LEFT)!=getCurrentCollidePlatformActor(DIR_UP))
 				{
 					rightSide = true;
 				}
@@ -3505,14 +3603,14 @@ namespace SmashBros
 		{
 			if(onGround)
 			{
-				Platform*plat = currentCollidePlatformActor[DIR_UP];
+				Platform*plat = getCurrentCollidePlatformActor(DIR_UP);
 				boolean leftSide = false;
-				if(currentCollidePlatformActor[DIR_RIGHT]!=null && currentCollidePlatformActor[DIR_RIGHT]!=currentCollidePlatformActor[DIR_UP])
+				if(getCurrentCollidePlatformActor(DIR_RIGHT)!=null && getCurrentCollidePlatformActor(DIR_RIGHT)!=getCurrentCollidePlatformActor(DIR_UP))
 				{
 					leftSide = true;
 				}
 				boolean rightSide = false;
-				if(currentCollidePlatformActor[DIR_LEFT]!=null && currentCollidePlatformActor[DIR_LEFT]!=currentCollidePlatformActor[DIR_UP])
+				if(getCurrentCollidePlatformActor(DIR_LEFT)!=null && getCurrentCollidePlatformActor(DIR_LEFT)!=getCurrentCollidePlatformActor(DIR_UP))
 				{
 					rightSide = true;
 				}
@@ -3772,9 +3870,9 @@ namespace SmashBros
 		{
 			changeAnimation(getAnimName(), getAnimation()->getDirection());
 		}
-		/*if(playerNo==2 && currentCollidePlatformActor[DIR_UP]!=null)
+		/*if(playerNo==2 && getCurrentCollidePlatformActor(DIR_UP)!=null)
 		{
-			Console::WriteLine("" + (currentCollidePlatformActor[DIR_UP].x + currentCollidePlatformActor[DIR_UP].width/2) + ", " + (x + hitbox->width/2));
+			Console::WriteLine("" + (getCurrentCollidePlatformActor(DIR_UP)->x + getCurrentCollidePlatformActor(DIR_UP)->width/2) + ", " + (x + hitbox->width/2));
 		}*/
 		//updateBooleanGrid();
 		GameElement::Update(gameTime);
@@ -3917,208 +4015,172 @@ namespace SmashBros
 	
 	void Player::updateMovement()
 	{
-		//(int flyD, float recS, float waterS, float fallS, float moveS,
-        //        int flyRD,float recRS,float waterRS,float fallRS,float moveRS)
-		if((CanDo())&&(chargeSmash==0)&&(!chargingAttack))
+		checkAttacks("skidding");
+		
+		if(hurt==2)
 		{
-			if(moveRight>0)
+			moveProgress = 0;
+		}
+		else if(attacksHolder>-1)
+		{
+			if(moveLeft==0)
 			{
-				switch(moveRight)
-			    {
-			        case 1:
-			        if(moveTime<=Game::getGameTime())
-			        {
-			            moveTime=Game::getGameTime()+flyTime;
-			            if(!onGround)
-			            {
-			            	xvelocity=xvelocity*(recoverAmount);
-			            }
-			        }
-			        hurt=0;
-			        playerdir=2;
-			        if(!onGround)
-			        {
-			            /*if(inWater==1)
-			            {
-			                x+=waterS;
-			                if(jumping==0)
-			                {
-			                    changeAnimation("Event Actor", "walk_right", NO_CHANGE);
-			                }
-			            }
-			            else
-			            {*/
-			        	if(jumping)
-		                {
-		                	x+=(fallWalk+jumpXBoost);
-		                }
-		                else
-		                {
-		                	x+=fallWalk;
-		                }
-			            //}
-			        }
-			 
-			        else
-			        {
-			            if(canDo)
-			            {
-			                if(!jumping)
-			                {
-			                    changeAnimation("walk_right", NO_CHANGE);
-			                }
-			                x+=walkSpeed;
-			            }
-			        }
-			        break;
-			 
-			        case 2:
-			        if(moveTime<=Game::getGameTime())
-			        {
-			            moveTime=Game::getGameTime()+flyRunTime;
-			            if(!onGround)
-			            {
-			            	xvelocity=xvelocity*(recoverRunAmount);
-			            }
-			        }
-			        hurt=0;
-			        playerdir=2;
-			        if(!onGround)
-			        {
-			            /*if(inWater==1)
-			            {
-			                x+=waterRS;
-			                if(jumping==0)
-			                {
-			                    changeAnimation("Event Actor", "walk_right", NO_CHANGE);
-			                }
-			            }
-			            else
-			            {*/
-			        	if(jumping)
-		                {
-		                	x+=(fallRun+jumpXBoost);
-		                }
-		                else
-		                {
-		                	x+=fallRun;
-		                }
-			            //}
-			        }
-			 
-			        else
-			        {
-			            if(canDo)
-			            {
-			                if(!jumping)
-			                {
-			                    changeAnimation("run_right", NO_CHANGE);
-			                }
-			                x+=runSpeed;
-			            }
-			        }
-			        break;
-			    }
+				if(moveProgress < 0 || moveRight==0)
+				{
+					moveProgress = 0;
+				}
+			}
+			else if(moveRight==0)
+			{
+				if(moveProgress > 0 || moveLeft==0)
+				{
+					moveProgress = 0;
+				}
+			}
+		}
+		else if(xVel!=0)
+		{
+			moveProgress = xVel;
+		}
+		else if(!canDo)
+		{
+			moveProgress = 0;
+		}
+		
+		//(int flyD, float recS, float waterS, float fallS, float moveS,
+		//		int flyRD,float recRS,float waterRS,float fallRS,float moveRS)
+		if(canDo && chargeSmash==0 && !chargingAttack && xVel==0)
+		{
+			int moveVal = 0;
+			float moveMult = 0;
+			byte moveDir = 0;
+			if(moveRight>0 && moveRight>moveLeft)
+			{
+				moveVal = moveRight - moveLeft;
+				moveMult = 1;
+				moveDir = RIGHT;
+			}
+			else if(moveLeft>0 && moveLeft>moveRight)
+			{
+				moveVal = moveLeft - moveRight;
+				moveMult = -1;
+				moveDir = LEFT;
 			}
 			
-			else if(moveLeft>0)
+			if(moveVal>0)
 			{
-				switch(moveLeft)
-			    {
-			        case 1:
-			        if(moveTime<=Game::getGameTime())
-			        {
-			            moveTime=Game::getGameTime()+flyTime;
-			            if(!onGround)
-			            {
-			            	xvelocity=xvelocity*(recoverAmount);
-			            }
-			        }
-			        hurt=0;
-			        playerdir=1;
-			        if(!onGround)
-			        {
-			            /*if(inWater==1)
-			            {
-			                x-=waterS;
-			                if(jumping==0)
-			                {
-			                    changeAnimation("Event Actor", "walk_left", NO_CHANGE);
-			                }
-			            }
-			            else
-			            {*/
-			        	if(jumping)
-		                {
-		                	x-=(fallWalk+jumpXBoost);
-		                }
-		                else
-		                {
-		                	x-=fallWalk;
-		                }
-			            //}
-			        }
-			 
-			        else
-			        {
-			            if(canDo)
-			            {
-			                if(!jumping)
-			                {
-			                    changeAnimation("walk_left", NO_CHANGE);
-			                }
-			                x-=walkSpeed;
-			            }
-			        }
-			        break;
-			 
-			        case 2:
-			        if(moveTime<=Game::getGameTime())
-			        {
-			            moveTime=Game::getGameTime()+flyRunTime;
-			            if(!onGround)
-			            {
-			            	xvelocity=xvelocity*(recoverRunAmount);
-			            }
-			        }
-			        hurt=0;
-			        playerdir=1;
-			        if(!onGround)
-			        {
-			            /*if(inWater==1)
-			            {
-			                x-=waterRS;
-			                if(jumping==0)
-			                {
-			                    changeAnimation("Event Actor", "walk_left", NO_CHANGE);
-			                }
-			            }
-			            else
-			            {*/
-			        	if(jumping)
-		                {
-		                	x-=(fallRun+jumpXBoost);
-		                }
-		                else
-		                {
-		                	x-=fallRun;
-		                }
-			            //}
-			        }
-			 
-			        else
-			        {
-			            if(canDo)
-			            {
-			                if(!jumping)
-			                {
-			                    changeAnimation("run_left", NO_CHANGE);
-			                }
-			                x-=runSpeed;
-			            }
-			        }
-			        break;
-			    }
+				float recoverAmountVal;
+				float moveAmountVal;
+				float fallMoveVal;
+				float groundMoveVal;
+				switch(moveVal)
+				{
+					case 1:
+					recoverAmountVal = recoverAmount;
+					moveAmountVal = walkAmount;
+					fallMoveVal = fallWalk;
+					groundMoveVal = walkSpeed;
+					break;
+					
+					case 2:
+					recoverAmountVal = recoverRunAmount;
+					moveAmountVal = runAmount;
+					fallMoveVal = fallRun;
+					groundMoveVal = runSpeed;
+					break;
+				}
+				
+				hurt=0;
+				playerdir=moveDir;
+				if(!onGround)
+				{
+					if((xvelocity*moveMult) < 0)
+					{
+						moveProgress = 0;
+						xvelocity += (recoverAmountVal*moveMult);
+						if((xvelocity*moveMult) > 0)
+						{
+							moveProgress = xvelocity;
+							xvelocity = 0;
+						}
+					}
+					else
+					{
+						if(jumping)
+						{
+							float jumpMoveAmount = fallMoveVal+jumpXBoost;
+							float dif = jumpMoveAmount - (moveProgress*moveMult);
+							if(dif<=recoverAmountVal && (dif>=0 || (std::abs(dif)<=walkAmount)))
+							{
+								moveProgress = jumpMoveAmount*moveMult;
+							}
+							else if(dif>0)
+							{
+								moveProgress += (recoverAmountVal*moveMult);
+							}
+							else if(dif<0)
+							{
+								moveProgress -= (walkAmount*moveMult);
+							}
+						}
+						else
+						{
+							float dif = fallMoveVal - (moveProgress*moveMult);
+							if(dif<=recoverAmountVal && (dif>=0 || (std::abs(dif)<=walkAmount)))
+							{
+								moveProgress = fallMoveVal*moveMult;
+							}
+							else if(dif>0)
+							{
+								moveProgress += (recoverAmountVal*moveMult);
+							}
+							else if(dif<0)
+							{
+								moveProgress -= (walkAmount*moveMult);
+							}
+						}
+					}
+				}
+				else
+				{
+					if(canDo)
+					{
+						float dif = groundMoveVal - (moveProgress*moveMult);
+						if(dif<=moveAmountVal && (dif>=0 || (std::abs(dif)<=walkAmount)))
+						{
+							moveProgress = groundMoveVal*moveMult;
+						}
+						else if(dif>0)
+						{
+							moveProgress += (moveAmountVal*moveMult);
+						}
+						else if(dif<0)
+						{
+							moveProgress -= (walkAmount*moveMult);
+						}
+						
+						if(!jumping)
+						{
+							switch(moveVal)
+							{
+								case 1:
+								if(moveProgress > (((walkSpeed + runSpeed)/2)*moveMult) && moveProgress > (walkSpeed*moveMult))
+								{
+									changeTwoSidedAnimation("run", NO_CHANGE, moveDir);
+								}
+								else
+								{
+									changeTwoSidedAnimation("walk", NO_CHANGE, moveDir);
+								}
+								break;
+								
+								case 2:
+								changeTwoSidedAnimation("run", NO_CHANGE, moveDir);
+								break;
+							}
+						}
+					}
+				}
 			}
 			else
 			{
@@ -4127,7 +4189,72 @@ namespace SmashBros
 				{
 					animFinish();
 				}
+				
+				float moveMult = 1;
+				byte moveDir = RIGHT;
+				if(moveProgress < 0)
+				{
+					moveMult = -1;
+					moveDir = LEFT;
+				}
+				
+				if(moveProgress!=0)
+				{
+					if((moveProgress*moveMult) <= walkAmount)
+					{
+						moveProgress = 0;
+						if(isOnGround())
+						{
+							if(animName.equals("skid_left") || animName.equals("skid_right"))
+							{
+								changeTwoSidedAnimation("stand", FORWARD, moveDir);
+								animName = (String)"stand" + getPlayerDirSuffix(moveDir);
+								skidding = false;
+							}
+						}
+					}
+					else
+					{
+						moveProgress -= (walkAmount*moveMult);
+						float moveProgAbs = moveProgress*moveMult;
+						if(isOnGround() && moveProgAbs>walkSpeed && moveProgAbs>4)
+						{
+							if(hasAnimation("skid_right") && hasAnimation("skid_left") && 
+							   (animName.equals("walk_left")  || animName.equals("walk_right")
+								|| animName.equals("run_left")   || animName.equals("run_right")
+								|| animName.equals("stand_left") || animName.equals("stand_right")
+								|| animName.equals("land_left")  || animName.equals("land_right")))
+							{
+								changeTwoSidedAnimation("skid", FORWARD, moveDir);
+								animName = (String)"skid" + getPlayerDirSuffix(moveDir);
+								landing = false;
+								skidding = true;
+							}
+						}
+					}
+				}
+				
+				if(moveProgress==0)
+				{
+					if(animName.equals("skid_left"))
+					{
+						changeAnimation("stand_left", FORWARD);
+					}
+					else if(animName.equals("skid_right"))
+					{
+						changeAnimation("stand_right", FORWARD);
+					}
+					skidding = false;
+				}
 			}
+			
+			if(!((xvelocity < 0 && moveProgress < 0 && moveProgress > xvelocity)
+				 || (xvelocity > 0 && moveProgress > 0 && moveProgress < xvelocity)))
+			{
+				x += moveProgress;
+			}
+			
+			checkAttacks();
 		}
 	}
 	
@@ -4141,45 +4268,17 @@ namespace SmashBros
 	        attacksPriority=0;
 	        yvelocity=0;
 	        xvelocity=0;
-	        switch(playerdir)
-	        {
-	            case 1:
-	            changeAnimation("hang_left", NO_CHANGE);
-	            break;
-	 
-	            case 2:
-	            changeAnimation("hang_right", NO_CHANGE);
-	            break;
-	        }
-	        switch(currentHangPoint->getHangSide())
+	        changeTwoSidedAnimation("hang", NO_CHANGE);
+			if(playerdir!=currentHangPoint->getHangSide() || hurt==2)
 			{
-				case 1:
-				if(playerdir==2 || hurt==2)
-				{
-					x=(currentHangPoint->x+(currentHangPoint->width/2))-hangPoint.x;
-					y=currentHangPoint->y+((height/2)-hangPoint.y);
-				}
-				else
-				{
-					hanging = false;
-					currentHangPoint->hanging=0;
-					animFinish();
-				}
-				break;
-				
-				case 2:
-				if(playerdir==1 || hurt==2)
-				{
-					x=currentHangPoint->x+(currentHangPoint->width/2)+hangPoint.x;
-				    y=currentHangPoint->y+((height/2)-hangPoint.y);
-				}
-				else
-				{
-					hanging = false;
-					currentHangPoint->hanging=0;
-					animFinish();
-				}
-				break;
+				x = (currentHangPoint->x + (currentHangPoint->width/2)) - (getPlayerDirMult()*hangPoint.x);
+				y = currentHangPoint->y+((height/2)-hangPoint.y);
+			}
+			else
+			{
+				hanging = false;
+				currentHangPoint->hanging = 0;
+				animFinish();
 			}
 	    }
 	    updateHitbox();
@@ -4212,16 +4311,7 @@ namespace SmashBros
 	    	{
 	    		if(canDo && !onGround && !jumping)
 		        {
-		        	switch(playerdir)
-		        	{
-		        		case 1:
-		        		changeAnimation("fall_left", FORWARD);
-		        		break;
-		        		
-		        		case 2:
-		        		changeAnimation("fall_right", FORWARD);
-		        		break;
-		        	}
+		        	changeTwoSidedAnimation("fall", FORWARD);
 		        }
 	    	}
 	    }
@@ -4368,17 +4458,69 @@ namespace SmashBros
 		return false;
 	}
 	
-	boolean Player::checkItemUseSmash(byte type)
+	boolean Player::checkItemUseUp()
+	{
+		if(itemHolding!=null)
+		{
+			return itemHolding->use(Item::ATTACK_UP);
+		}
+		return false;
+	}
+	
+	boolean Player::checkItemUseDown()
+	{
+		if(itemHolding!=null)
+		{
+			return itemHolding->use(Item::ATTACK_DOWN);
+		}
+		return false;
+	}
+	
+	boolean Player::checkItemUseSideSmash(byte type)
 	{
 		if(itemHolding!=null)
 		{
 			if(type==STEP_CHARGE)
 			{
-				return itemHolding->chargeSmash();
+				return itemHolding->chargeSmash(Item::ATTACK_SIDESMASH);
 			}
 			else if(type==STEP_GO)
 			{
-				return itemHolding->use(Item::ATTACK_SMASH);
+				return itemHolding->use(Item::ATTACK_SIDESMASH);
+			}
+			return false;
+		}
+		return false;
+	}
+	
+	boolean Player::checkItemUseUpSmash(byte type)
+	{
+		if(itemHolding!=null)
+		{
+			if(type==STEP_CHARGE)
+			{
+				return itemHolding->chargeSmash(Item::ATTACK_UPSMASH);
+			}
+			else if(type==STEP_GO)
+			{
+				return itemHolding->use(Item::ATTACK_UPSMASH);
+			}
+			return false;
+		}
+		return false;
+	}
+	
+	boolean Player::checkItemUseDownSmash(byte type)
+	{
+		if(itemHolding!=null)
+		{
+			if(type==STEP_CHARGE)
+			{
+				return itemHolding->chargeSmash(Item::ATTACK_DOWNSMASH);
+			}
+			else if(type==STEP_GO)
+			{
+				return itemHolding->use(Item::ATTACK_DOWNSMASH);
 			}
 			return false;
 		}
@@ -4395,7 +4537,7 @@ namespace SmashBros
 				if(itemHolding == null)
 				{
 					itemHolding = item;
-					item->pickUp(this);
+					item->whenPickedUp(this);
 					return true;
 				}
 				return false;
@@ -4404,7 +4546,7 @@ namespace SmashBros
 				if(itemWearing == null)
 				{
 					itemWearing = item;
-					item->pickUp(this);
+					item->whenPickedUp(this);
 					return true;
 				}
 				return false;
@@ -4413,7 +4555,7 @@ namespace SmashBros
 				if(itemHatting == null)
 				{
 					itemHatting = item;
-					item->pickUp(this);
+					item->whenPickedUp(this);
 					return true;
 				}
 				return false;
@@ -4427,19 +4569,19 @@ namespace SmashBros
 					}
 					delete itemWielding;
 					itemWielding = item;
-					item->pickUp(this);
+					item->whenPickedUp(this);
 					return true;
 				}
 				else if(itemWielding == null)
 				{
 					itemWielding = item;
-					item->pickUp(this);
+					item->whenPickedUp(this);
 					return true;
 				}
 				return false;
 				
 				case Item::TYPE_FOOD:
-				item->pickUp(this);
+				item->whenPickedUp(this);
 				return true;
 			}
 		}
@@ -4448,11 +4590,20 @@ namespace SmashBros
 	
 	void Player::discardItem()
 	{
-		if(this->itemHolding!=null)
+		if(itemHolding!=null)
 		{
-			ItemManager::AddItem(itemHolding);
-			itemHolding->discard();
-			this->itemHolding = null;
+			Item*holding = itemHolding;
+			ItemManager::AddItem(holding);
+			holding->whenDiscarded();
+			//itemHolding = null;
+		}
+	}
+	
+	void Player::tossItem(byte tossDir)
+	{
+		if(itemHolding!=NULL)
+		{
+			itemHolding->toss(tossDir);
 		}
 	}
 	
@@ -4488,50 +4639,55 @@ namespace SmashBros
 	
 	boolean Player::isHittableRight(Player*collide)
 	{
-	    if((collide->playerNo>0)&&!((Global::teamBattle)&&(team==collide->team))&&!(collide->attacksPriority==6)
-	    &&!(collide->attacksPriority==7)&&(collide->attacksPriority<attacksPriority)
-	    &&!(collide->attacksPriority==attacksPriority)
-	    &&!((collide->playerdir==1)&&(collide->attacksPriority==5))&&(!collide->invincible))
-	    {
-	        return true;
-	    }
-	    return false;
+		if((collide->playerNo>0)&&!((Global::teamBattle)&&(team==collide->team))
+		&&!(collide->attacksPriority==7)&&!(collide->invincible)
+		&&!(collide->x <= x && collide->playerdir==RIGHT && playerdir==LEFT && collide->attacksPriority<5 && collide->attacksPriority>attacksPriority)
+		&&!(collide->x > x && collide->playerdir==LEFT && playerdir==RIGHT && collide->attacksPriority<5 && collide->attacksPriority>attacksPriority))
+		{
+			return true;
+		}
+		return false;
 	}
 	
 	boolean Player::isHittableLeft(Player*collide)
 	{
-	    if((collide->playerNo>0)&&!((Global::teamBattle)&&(team==collide->team))&&!(collide->attacksPriority==6)
-	    &&!(collide->attacksPriority==7)&&(collide->attacksPriority<attacksPriority)
-	    &&!(collide->attacksPriority==attacksPriority)
-	    &&!((collide->playerdir==2)&&(collide->attacksPriority==5))&&(!collide->invincible))
-	    {
-	        return true;
-	    }
-	    return false;
+	    if((collide->playerNo>0)&&!((Global::teamBattle)&&(team==collide->team))
+		&&!(collide->attacksPriority==7)&&!(collide->invincible)
+		&&!(collide->x <= x && collide->playerdir==RIGHT && playerdir==LEFT && collide->attacksPriority<5 && collide->attacksPriority>attacksPriority)
+		&&!(collide->x > x && collide->playerdir==LEFT && playerdir==RIGHT && collide->attacksPriority<5 && collide->attacksPriority>attacksPriority))
+		{
+			return true;
+		}
+		return false;
 	}
-
+	
 	boolean Player::isHittableUp(Player*collide)
 	{
-	    if((collide->playerNo>0)&&!((Global::teamBattle)&&(team==collide->team))&&(collide->attacksPriority<attacksPriority)
-	    &&!(collide->attacksPriority==6)&&!(collide->attacksPriority==7)&&(!collide->invincible))
-	    {
-	        return true;
-	    }
-	    return false;
+		if((collide->playerNo>0)&&!((Global::teamBattle)&&(team==collide->team))&&(collide->attacksPriority<attacksPriority)
+		&&!(collide->attacksPriority==7)&&(!collide->invincible))
+		{
+			return true;
+		}
+		return false;
 	}
 	
 	boolean Player::isHittableDown(Player*collide)
 	{
-	    if((collide->playerNo>0)&&!((Global::teamBattle)&&(team==collide->team))&&(collide->attacksPriority<attacksPriority)
-	    &&!(collide->attacksPriority==6)&&!(collide->attacksPriority==7)&&(!collide->invincible))
-	    {
-	        return true;
-	    }
-	    return false;
+		if((collide->playerNo>0)&&!((Global::teamBattle)&&(team==collide->team))&&(collide->attacksPriority<attacksPriority)
+		   &&!(collide->attacksPriority==7)&&(!collide->invincible))
+		{
+			return true;
+		}
+		return false;
 	}
 	
 	byte Player::isPlayerColliding(Player*collide)
 	{
+		if(Scale==0 || collide->Scale==0)
+		{
+			return 0;
+		}
+		
 		RectF overlap = getOverlapArea(collide);
 		if(overlap.left != -1)
 		{
@@ -4655,6 +4811,10 @@ namespace SmashBros
 	byte Player::solidPlatformCollision(Platform*collide)
 	{
 		updateHitbox();
+		if(Scale==0 || collide->Scale==0)
+		{
+			return 0;
+		}
 		RectangleF r1 = RectangleF(hitbox->x, hitbox->y, (float)hitbox->width, (float)hitbox->height);
 		RectangleF r2 = RectangleF((collide->x - collide->width/2),(collide->y - collide->height/2),(float)collide->width,(float)collide->height);
 		RectangleF collideOverlap = getOverlapRect(r2,r1);
@@ -5153,6 +5313,16 @@ namespace SmashBros
 		}
 	}
 	
+	Platform* Player::getCurrentCollidePlatformActor(byte dir)
+	{
+		return currentCollidePlatformActor[dir-1];
+	}
+	
+	void Player::setCurrentCollidePlatformActor(byte dir, Platform* actor)
+	{
+		currentCollidePlatformActor[dir-1] = actor;
+	}
+	
 	//TODO: add actions to these events
 	
 	void Player::onPlatformCollide(Platform*collide, byte dir)
@@ -5183,45 +5353,18 @@ namespace SmashBros
 					}
 				    jumping=false;
 				    landing=true;
-				    switch(playerdir)
-				    {
-				        case 1:
-				        changeAnimation("land_left", FORWARD);
-				        break;
-				 
-				        case 2:
-				        changeAnimation("land_right", FORWARD);
-				        break;
-				    }
+				    changeTwoSidedAnimation("land", FORWARD);
 				}
 				else if((yvelocity>=0)&&(canDo)&&(!chargingAttack)&&(moveRight==0)&&(moveLeft==0)
 				&&(!hasgrabbed)&&(!grabbing)&&(chargeSmash==0)&&(!chargingAttack))
 				{
 				    if(down)
 				    {
-				    	switch(playerdir)
-				        {
-				            case 1:
-				            changeAnimation("crouch_left", NO_CHANGE);
-				            break;
-				 
-				            case 2:
-				            changeAnimation("crouch_right", NO_CHANGE);
-				            break;
-				        }
+				    	changeTwoSidedAnimation("crouch", NO_CHANGE);
 				    }
 				    else if(chargeSmash==0 && !chargingAttack)
 				    {
-				        switch(playerdir)
-				        {
-				            case 1:
-				            changeAnimation("stand_left", NO_CHANGE);
-				            break;
-				 
-				            case 2:
-				            changeAnimation("stand_right", NO_CHANGE);
-				            break;
-				        }
+						changeTwoSidedAnimation("stand", NO_CHANGE);
 				    }
 				}
 				break;
@@ -5234,16 +5377,7 @@ namespace SmashBros
 				{
 				    jumping=false;
 				    landing=true;
-				    switch(playerdir)
-				    {
-				        case 1:
-				        changeAnimation("land_left", FORWARD);
-				        break;
-				 
-				        case 2:
-				        changeAnimation("land_right", FORWARD);
-				        break;
-				    }
+					changeTwoSidedAnimation("land", FORWARD);
 				}
 				else if((yvelocity>0)&&(canDo)&&(!chargingAttack)&&(moveRight==0)&&(moveLeft==0)&&(chargeSmash==0)&&(!chargingAttack))
 				{
@@ -5255,16 +5389,7 @@ namespace SmashBros
 				    }
 				    else
 				    {
-				        switch(playerdir)
-				        {
-				            case 1:
-				            changeAnimation("stand_left", NO_CHANGE);
-				            break;
-				 
-				            case 2:
-				            changeAnimation("stand_right", NO_CHANGE);
-				            break;
-				        }
+						changeTwoSidedAnimation("stand", NO_CHANGE);
 				    }
 				}
 				break;
@@ -5287,16 +5412,7 @@ namespace SmashBros
 			        canDo=true;
 			    }
 			    yvelocity=-(std::abs(yvelocity)/2);
-			    switch(playerdir)
-			    {
-			        case 1:
-			        changeAnimation("hurt_flip_left", NO_CHANGE);
-			        break;
-			 
-			        case 2:
-			        changeAnimation("hurt_flip_right", NO_CHANGE);
-			        break;
-			    }
+				changeTwoSidedAnimation("hurt_flip", NO_CHANGE);
 			}
 			else
 			{
@@ -5334,16 +5450,7 @@ namespace SmashBros
 				{
 					jumping=false;
 				    landing=true;
-				    switch(playerdir)
-				    {
-				        case 1:
-				        changeAnimation("land_left", FORWARD);
-				        break;
-				 
-				        case 2:
-				        changeAnimation("land_right", FORWARD);
-				        break;
-				    }
+					changeTwoSidedAnimation("land", FORWARD);
 				}
 				else if((hurt>0)&&(yvelocity>6))
 				{
@@ -5353,16 +5460,7 @@ namespace SmashBros
 				        hurt=1;
 				    }
 				    yvelocity=-(std::abs(yvelocity)/2);
-				    switch(playerdir)
-				    {
-				        case 1:
-				        changeAnimation("hurt_flip_left", NO_CHANGE);
-				        break;
-				 
-				        case 2:
-				        changeAnimation("hurt_flip_right", NO_CHANGE);
-				        break;
-				    }
+					changeTwoSidedAnimation("hurt_flip", NO_CHANGE);
 				}
 				else
 				{
@@ -5430,65 +5528,32 @@ namespace SmashBros
 	void Player::onHang(HangPoint*collide)
 	{
 		//Open for implementation, but call super method
-		switch(collide->getHangSide())
+		byte collideHangSide = collide->getHangSide();
+		if((playerdir!=collideHangSide)&&(collide->hanging==0)&&(!onGround))
 		{
-			case 1:
-			if((playerdir==2)&&(collide->hanging==0)&&(!onGround))
+			collide->hanging=playerNo;
+			moveLeft=0;
+			moveRight=0;
+			setToDefaultValues();
+			jumping=false;
+			landing=false;
+			hanging=true;
+			onGround = false;
+			bUp=false;
+			canDo=true;
+			doubleJump=1;
+			changeTwoSidedAnimation("hang", NO_CHANGE);
+			x=(collide->x+(collide->width/2)) + (getPlayerDirMult(collideHangSide) * hangPoint.x);
+			y=collide->y+((height/2)-hangPoint.y);
+			if(attacksPriority!=7)
 			{
-			    collide->hanging=playerNo;
-			    moveLeft=0;
-			    moveRight=0;
-			    setToDefaultValues();
-			    jumping=false;
-			    landing=false;
-			    hanging=true;
-			    onGround = false;
-			    bUp=false;
-			    canDo=true;
-			    doubleJump=1;
-			    changeAnimation("hang_right", NO_CHANGE);
-			    x=(collide->x+(collide->width/2))-hangPoint.x;
-			    y=collide->y+((height/2)-hangPoint.y);
-			    if(attacksPriority!=7)
-			    {
-			        attacksHolder=-1;
-			        attacksPriority=0;
-			    }
-			    yVel=0;
-			    xVel=0;
-			    xvelocity=0;
-			    yvelocity=0;
+				attacksHolder=-1;
+				attacksPriority=0;
 			}
-			break;
-			
-			case 2:
-			if((playerdir==1)&&(collide->hanging==0)&&(!onGround))
-			{
-			    collide->hanging=playerNo;
-			    moveLeft=0;
-			    moveRight=0;
-			    setToDefaultValues();
-			    jumping=false;
-			    landing=false;
-			    hanging=true;
-			    onGround = false;
-			    bUp=false;
-			    canDo=true;
-			    doubleJump=1;
-			    changeAnimation("hang_left", NO_CHANGE);
-			    x=collide->x+(collide->width/2)+hangPoint.x;
-			    y=collide->y+((height/2)-hangPoint.y);
-			    if(attacksPriority!=7)
-			    {
-			        attacksHolder=-1;
-			        attacksPriority=0;
-			    }
-			    yVel=0;
-			    xVel=0;
-			    xvelocity=0;
-			    yvelocity=0;
-			}
-			break;
+			yVel=0;
+			xVel=0;
+			xvelocity=0;
+			yvelocity=0;
 		}
 	}
 	
@@ -5748,6 +5813,19 @@ namespace SmashBros
 		if(attacksHolder>-1)
 		{
 			AttackManager::AttackInfo*nfo = attackMgr.getAttackInfo(dir, attacksHolder, playerdir);
+			if(nfo==null)
+			{
+				byte newDir = getDir(this, collide);
+				nfo = attackMgr.getAttackInfo(newDir, attacksHolder, playerdir);
+				if(nfo!=null && nfo->dirIsPixelBased)
+				{
+					dir = newDir;
+				}
+				else
+				{
+					nfo = null;
+				}
+			}
 			if(nfo!=null)
 			{
 				causeDamage(collide,nfo->damage);
@@ -5804,40 +5882,49 @@ namespace SmashBros
 		//Open for implementation
 	}
 	
-	boolean Player::onPlayerDeflectDamage(Player*collide, int damage)
+	boolean Player::onDeflectPlayerDamage(Player*collide, int damage)
 	{
 		//Open for implementation
 		return false;
 	}
 	
-	boolean Player::onPlayerDeflectLaunch(Player*collide, int xDir, float xAmount, float xMult, int yDir, float yAmount, float yMult)
+	void Player::onDeflectPlayerLaunch(Player*collide, int xDir, float xAmount, float xMult, int yDir, float yAmount, float yMult)
+	{
+		//Open for implementation
+	}
+	
+	boolean Player::onDeflectItemCollision(Item*collide, byte dir)
 	{
 		//Open for implementation
 		return false;
 	}
 	
-	boolean Player::onItemDeflectDamage(Item*collide, int damage)
+	boolean Player::onDeflectItemDamage(Item*collide, int damage)
 	{
 		//Open for implementation
 		return false;
 	}
 	
-	boolean Player::onItemDeflectLaunch(Item*collide, int xDir, float xAmount, float xMult, int yDir, float yAmount, float yMult)
+	void Player::onDeflectItemLaunch(Item*collide, int xDir, float xAmount, float xMult, int yDir, float yAmount, float yMult)
+	{
+		//Open for implementation
+	}
+	
+	boolean Player::onDeflectProjectileCollision(Projectile*collide, byte dir)
 	{
 		//Open for implementation
 		return false;
 	}
 	
-	boolean Player::onProjectileDeflectDamage(Projectile*collide, int damage)
+	boolean Player::onDeflectProjectileDamage(Projectile*collide, int damage)
 	{
 		//Open for implementation
 		return false;
 	}
 	
-	boolean Player::onProjectileDeflectLaunch(Projectile*collide, int xDir, float xAmount, float xMult, int yDir, float yAmount, float yMult)
+	void Player::onDeflectProjectileLaunch(Projectile*collide, int xDir, float xAmount, float xMult, int yDir, float yAmount, float yMult)
 	{
 		//Open for implementation
-		return false;
 	}
 	
 	void Player::onBorderCollide(byte dir)
@@ -5845,24 +5932,24 @@ namespace SmashBros
 		barrierCollide(dir);
 	}
 	
-	void Player::addAttackInfo(byte dir, int attackNo, byte playerdir, int damage, int delayTime, int xDir,float xAmount,float xMult,int yDir,float yAmount,float yMult)
+	void Player::addAttackInfo(byte dir, int attackNo, byte playerdir, int damage, long delayTime, int xDir,float xAmount,float xMult,int yDir,float yAmount,float yMult, boolean dirIsPixelBased)
 	{
 		switch(dir)
 		{
 			case DIR_LEFT:
-			attackMgr.addLeftAttackInfo(attackNo, playerdir, damage, delayTime, xDir, xAmount, xMult, yDir, yAmount, yMult);
+			attackMgr.addLeftAttackInfo(attackNo, playerdir, damage, delayTime, xDir, xAmount, xMult, yDir, yAmount, yMult, dirIsPixelBased);
 			break;
 			
 			case DIR_RIGHT:
-			attackMgr.addRightAttackInfo(attackNo, playerdir, damage, delayTime, xDir, xAmount, xMult, yDir, yAmount, yMult);
+			attackMgr.addRightAttackInfo(attackNo, playerdir, damage, delayTime, xDir, xAmount, xMult, yDir, yAmount, yMult, dirIsPixelBased);
 			break;
 			
 			case DIR_UP:
-			attackMgr.addUpAttackInfo(attackNo, playerdir, damage, delayTime, xDir, xAmount, xMult, yDir, yAmount, yMult);
+			attackMgr.addUpAttackInfo(attackNo, playerdir, damage, delayTime, xDir, xAmount, xMult, yDir, yAmount, yMult, dirIsPixelBased);
 			break;
 			
 			case DIR_DOWN:
-			attackMgr.addDownAttackInfo(attackNo, playerdir, damage, delayTime, xDir, xAmount, xMult, yDir, yAmount, yMult);
+			attackMgr.addDownAttackInfo(attackNo, playerdir, damage, delayTime, xDir, xAmount, xMult, yDir, yAmount, yMult, dirIsPixelBased);
 			break;
 		}
 	}
@@ -5924,31 +6011,13 @@ namespace SmashBros
 	    upKey=false;
 	    if((onGround)&&(canDo))
 	    {
-	        switch(playerdir)
-	        {
-	            case 1:
-	            changeAnimation("crouch_left", NO_CHANGE);
-	            break;
-	 
-	            case 2:
-	            changeAnimation("crouch_right", NO_CHANGE);
-	            break;
-	        }
+	        changeTwoSidedAnimation("crouch", NO_CHANGE);
 	    }
 	    if(hanging)
 	    {
 	        hanging=false;
 	        onGround = false;
-	        switch(playerdir)
-	        {
-	            case 1:
-	            changeAnimation("fall_left", NO_CHANGE);
-	            break;
-	 
-	            case 2:
-	            changeAnimation("fall_right", NO_CHANGE);
-	            break;
-	        }
+	        changeTwoSidedAnimation("fall", NO_CHANGE);
 	    }
 	    if(canDropThrough)
 	    {
@@ -5989,16 +6058,7 @@ namespace SmashBros
 		        jumping=true;
 		        yvelocity=-dist1;
 		        y-=1;
-		        switch(playerdir)
-		        {
-		            case 1:
-		            changeAnimation("jump_left", FORWARD);
-		            break;
-		 
-		            case 2:
-		            changeAnimation("jump_right", FORWARD);
-		            break;
-		        }
+				changeTwoSidedAnimation("jump", FORWARD);
 		        doubleJump=1;
 		    }
 		    else
@@ -6008,16 +6068,7 @@ namespace SmashBros
 		        	jumping = true;
 		            yvelocity=-dist2;
 		            doubleJump=0;
-		            switch(playerdir)
-		            {
-		                case 1:
-		                changeAnimation("jump2_left", FORWARD);
-		                break;
-		 
-		                case 2:
-		                changeAnimation("jump2_right", FORWARD);
-		                break;
-		            }
+					changeTwoSidedAnimation("jump2", FORWARD);
 		        }
 		    }
 		}
@@ -6037,18 +6088,8 @@ namespace SmashBros
 	    {
 	        yvelocity=-2;
 	        doubleJump=0;
-	        switch(playerdir)
-	        {
-	            case 1:
-	            x-=(hitbox->width);
-	            changeAnimation("jump2_left", FORWARD);
-	            break;
-	 
-	            case 2:
-	            x+=(hitbox->width);
-	            changeAnimation("jump2_right", FORWARD);
-	            break;
-	        }
+	        changeTwoSidedAnimation("jump2", FORWARD);
+			x += (getPlayerDirMult() * hitbox->width);
 	    }
 	    onGround = false;
 	}

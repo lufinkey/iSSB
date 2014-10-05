@@ -3,6 +3,7 @@
 #include "../../AttackTemplates.h"
 #include "../../Global.h"
 #include "../../P2PDataManager.h"
+#include "../../Item.h"
 #include <cmath>
 
 namespace SmashBros
@@ -33,7 +34,7 @@ namespace SmashBros
 		fallWalk = 2.8f;
 		fallRun = 3;
 		
-		weight = 0.29;
+		weight = 0.17;
 		
 		name = "Fox";
 		
@@ -253,17 +254,7 @@ namespace SmashBros
 	        xVel=0;
 	        landing=true;
 	        yvelocity=0;
-	        switch(playerdir)
-	        {
-	            case 1:
-	            changeAnimation("special_finish_side_left", FORWARD);
-	            break;
-
-
-	            case 2:
-	            changeAnimation("special_finish_side_right", FORWARD);
-	            break;
-	        }
+			changeTwoSidedAnimation("special_finish_side", FORWARD);
 		}
 		else if(n.equals("special_charge_up_left") || n.equals("special_charge_up_right"))
 		{
@@ -290,30 +281,12 @@ namespace SmashBros
 			{
 				default:
 				case DIR_UP:
-				switch(playerdir)
-				{
-					case LEFT:
-					changeAnimation("special_attack_up_up_left", FORWARD);
-					break;
-					
-					case RIGHT:
-					changeAnimation("special_attack_up_up_right", FORWARD);
-					break;
-				}
+				changeTwoSidedAnimation("special_attack_up_up", FORWARD);
 				yVel = -5;
 				break;
 				
 				case DIR_DOWN:
-				switch(playerdir)
-				{
-					case LEFT:
-					changeAnimation("special_attack_up_down_left", FORWARD);
-					break;
-					
-					case RIGHT:
-					changeAnimation("special_attack_up_down_right", FORWARD);
-					break;
-				}
+				changeTwoSidedAnimation("special_attack_up_down", FORWARD);
 				yVel = 5;
 				break;
 				
@@ -363,7 +336,7 @@ namespace SmashBros
 	
 	void Fox::jump()
 	{
-		Player::jump(7,(float)7.2);
+		Player::jump(6.2f,6.4f);
 	}
 	
 	void Fox::Update(long gameTime)
@@ -422,7 +395,7 @@ namespace SmashBros
 	            Scale = 0;
 	            finalSmashing=true;
 	            finalsmashFinishing=false;
-	            finalsmashTime = Global::getWorldTime() + 180;
+	            finalsmashTime = Global::getWorldTime() + 18000;
 	            float y1 = y - 200;
 				if(y1<((float)Global::currentStage->getItemBoundaries().y))
 				{
@@ -514,194 +487,104 @@ namespace SmashBros
 		switch(dir)
 		{
 			case DIR_LEFT:
-			switch(attacksHolder)
-		    {
-		        case 0:
-		        //A1
-		        if(playerdir==LEFT)
-		        {
-			        causeDamage(collide, 2);
-			        collide->y-=3;
-			        causeHurt(collide, RIGHT, 1);
-		        }
-		        break;
-		        
-		        case 1:
-		        //A2
-		        if(playerdir==LEFT)
-		        {
-			        causeDamage(collide, 2);
-			        collide->y-=3;
-			        causeHurt(collide, RIGHT, 1);
-		        }
-		        break;
-		        
-		        case 2:
-		        //A3
-		        if(playerdir==LEFT)
-		        {
-			        causeDamage(collide, 2);
-			        collide->y-=5;
-			        collide->x-=3;
-			        causeHurt(collide, RIGHT, 1);
-		        }
-		        break;
-		        
-		        case 3:
-		        //A Dash
-		        break;
-		        
-		        case 16:
-		        //Smash Side
-		        if(playerdir==LEFT)
-		        {
-			        causeDamage(collide, smashPower);
-			        causeHurtLaunch(collide, -1,((float)smashPower/6),4.3f, -1,2,2);
-			        causeHurt(collide, RIGHT, 6);
-		        }
-		        break;
-		        
-		        case 17:
-		        //Smash Up
-		        causeDamage(collide, smashPower);
-		        causeHurtLaunch(collide, -1,2,2, -1,((float)smashPower/5),4.3f);
-		        causeHurt(collide, RIGHT, 6);
-		        break;
-		        
-		        case 18:
-		        //Smash Down
-		        causeDamage(collide, smashPower);
-		        causeHurtLaunch(collide, -1,((float)smashPower/5),4.1f, -1,((float)smashPower/8),2.1f);
-		        causeHurt(collide, RIGHT, 6);
-		        break;
-		    }
-			break;
-			
 			case DIR_RIGHT:
+			if(compareDirPlayerDir(dir, getPlayerDir())==CMPDIRPDIR_EQUAL)
+			{
+				switch(attacksHolder)
+				{
+					case 0:
+					//A1
+					causeDamage(collide, 2);
+					collide->y -= 3;
+					causeHurt(collide, getOppPlayerDir(), 100);
+					break;
+					
+					case 1:
+					//A2
+					causeDamage(collide, 2);
+					collide->y -= 3;
+					causeHurt(collide, getOppPlayerDir(), 100);
+					break;
+					
+					case 2:
+					//A3
+					causeDamage(collide, 2);
+					collide->y -= 5;
+					collide->x += 3 * getPlayerDirMult();
+					causeHurt(collide, getOppPlayerDir(), 100);
+					break;
+					
+					case 3:
+					//A Dash
+					break;
+					
+					case 16:
+					//Smash Side
+					causeDamage(collide, smashPower);
+					causeHurtLaunch(collide, (int)getPlayerDirMult(),((float)smashPower/6),4.3f, -1,2,2);
+					causeHurt(collide, getOppPlayerDir(), 600);
+					break;
+				}
+			}
 			switch(attacksHolder)
-		    {
-		        case 0:
-		        //A1
-		        if(playerdir==RIGHT)
-		        {
-			        causeDamage(collide, 2);
-			        collide->y-=3;
-			        causeHurt(collide, LEFT, 1);
-		        }
-		        break;
-		        
-		        case 1:
-		        //A2
-		        if(playerdir==RIGHT)
-		        {
-			        causeDamage(collide, 2);
-			        collide->y-=3;
-			        causeHurt(collide, LEFT, 1);
-		        }
-		        break;
-		        
-		        case 2:
-		        //A3
-		        if(playerdir==RIGHT)
-		        {
-			        causeDamage(collide, 2);
-			        collide->y-=5;
-			        collide->x+=3;
-			        causeHurt(collide, LEFT, 1);
-		        }
-		        break;
-		        
-		        case 3:
-		        //A Dash
-		        break;
-		        
-		        case 16:
-		        //Smash Side
-		        if(playerdir==RIGHT)
-		        {
-			        causeDamage(collide, smashPower);
-			        causeHurtLaunch(collide, 1,((float)smashPower/6),4.3f, -1,2,2);
-			        causeHurt(collide, LEFT, 6);
-		        }
-		        break;
-		        
-		        case 17:
-		        //Smash Up
-		        causeDamage(collide, smashPower);
-		        causeHurtLaunch(collide, 1,2,2, -1,((float)smashPower/5),4.3f);
-		        causeHurt(collide, LEFT, 6);
-		        break;
-		        
-		        case 18:
-		        //Smash Down
-		        causeDamage(collide, smashPower);
-		        causeHurtLaunch(collide, 1,((float)smashPower/5),4.1f, -1,((float)smashPower/8),2.1f);
-		        causeHurt(collide, LEFT, 6);
-		        break;
-		    }
+			{
+				case 17:
+				//Smash Up
+				causeDamage(collide, smashPower);
+				causeHurtLaunch(collide, (int)getPlayerDirMult(),2,2, -1,((float)smashPower/5),4.3f);
+				causeHurt(collide, getOppPlayerDir(), 600);
+				break;
+				
+				case 18:
+				//Smash Down
+				causeDamage(collide, smashPower);
+				causeHurtLaunch(collide, (int)getPlayerDirMult(),((float)smashPower/5),4.1f, -1,((float)smashPower/8),2.1f);
+				causeHurt(collide, getOppPlayerDir(), 600);
+				break;
+			}
 			break;
 			
 			case DIR_UP:
 			switch(attacksHolder)
-		    {
-		        case 17:
-		        //Smash Up
-		        causeDamage(collide, smashPower);
-		        switch(playerdir)
-		        {
-		        	case LEFT:
-			        causeHurtLaunch(collide, -1,2,2, -1,((float)smashPower/5),4.3f);
-			        causeHurt(collide, RIGHT, 6);
-			        break;
-			        
-		        	case RIGHT:
-		        	causeHurtLaunch(collide, 1,2,2, -1,((float)smashPower/5),4.3f);
-		        	causeHurt(collide, LEFT, 6);
-		        	break;
-		        }
-		        break;
-		    }
+			{
+				case 17:
+				//Smash Up
+				causeDamage(collide, smashPower);
+				causeHurtLaunch(collide, (int)getPlayerDirMult(),2,2, -1,((float)smashPower/5),4.3f);
+				causeHurt(collide, getOppPlayerDir(), 600);
+				break;
+			}
 			break;
 			
 			case DIR_DOWN:
 			switch(attacksHolder)
-		    {
-		        case 18:
-		        //Smash Down
-		        causeDamage(collide, smashPower);
-		        switch(playerdir)
-		        {
-		        	case LEFT:
-		        	causeHurtLaunch(collide, -1,((float)smashPower/5),4.1f, 1,((float)smashPower/8),2.1f);
-			        causeHurt(collide, RIGHT, 6);
-			        break;
-			        
-		        	case RIGHT:
-		        	causeHurtLaunch(collide, 1,((float)smashPower/5),4.1f, 1,((float)smashPower/8),2.1f);
-		        	causeHurt(collide, LEFT, 6);
-		        	break;
-		        }
-		        break;
-		    }
+			{
+				case 18:
+				//Smash Down
+				causeDamage(collide, smashPower);
+				causeHurtLaunch(collide, (int)getPlayerDirMult(),((float)smashPower/5),4.1f, 1,((float)smashPower/8),2.1f);
+				causeHurt(collide, getOppPlayerDir(), 600);
+				break;
+			}
 			break;
 		}
 		
 		if(attacksHolder==13)
-	    {
-	    	causeDamage(collide,2);
-	        collide->y=y-60;
-	        if(collide->x<x)
-	        {
-	            collide->x+=2;
-	            causeHurt(collide, RIGHT, 1);
-	        }
-	        else
-	        {
-	            collide->x-=2;
-	            causeHurt(collide, LEFT, 1);
-	        }
-	        collide->xvelocity=0;
-	    }
+		{
+			causeDamage(collide,2);
+			collide->y=y-60;
+			if(collide->x<x)
+			{
+				collide->x+=2;
+				causeHurt(collide, RIGHT, 100);
+			}
+			else
+			{
+				collide->x-=2;
+				causeHurt(collide, LEFT, 100);
+			}
+			collide->xvelocity=0;
+		}
 		else if(attacksHolder==14)
 		{
 			double dist = distance(x,y,collide->x,collide->y);
@@ -722,17 +605,73 @@ namespace SmashBros
 				multY = -1;
 			}
 			
-			causeHurtLaunch(collide, multX,(float)std::abs(xDif/dist)*3,2.6f, multY,(float)std::abs(yDif/dist)*3,2.6f);
+			causeHurtLaunch(collide, multX,(float)abs(xDif/dist)*3,2.6f, multY,(float)abs(yDif/dist)*3,2.6f);
 			
 			if(collide->x<x)
 			{
-				causeHurt(collide, RIGHT, 6);
+				causeHurt(collide, RIGHT, 600);
 			}
 			else
 			{
-				causeHurt(collide, LEFT, 6);
+				causeHurt(collide, LEFT, 600);
 			}
 		}
+	}
+	
+	boolean Fox::onDeflectPlayerDamage(Player*collide, int damage)
+	{
+		if(attacksHolder==15)
+		{
+			causeDamage(collide, damage);
+			return true;
+		}
+		return false;
+	}
+	
+	void Fox::onDeflectPlayerLaunch(Player*collide, int xDir, float xAmount, float xMult, int yDir, float yAmount, float yMult)
+	{
+		byte dir = getDir(this, collide);
+		switch(dir)
+		{
+			case DIR_LEFT:
+			case DIR_RIGHT:
+			causeHurtLaunch(collide, -xDir,xAmount,xMult, yDir,yAmount,yMult);
+			break;
+			
+			case DIR_UP:
+			case DIR_DOWN:
+			causeHurtLaunch(collide, -xDir,xAmount,xMult, -yDir,yAmount,yMult);
+			break;
+		}
+		if(collide->x < x)
+		{
+			causeHurt(collide, RIGHT, 300);
+		}
+		else
+		{
+			causeHurt(collide, LEFT, 300);
+		}
+	}
+	
+	boolean Fox::onDeflectProjectileCollision(Projectile*collide, byte dir)
+	{
+		if(attacksHolder==15)
+		{
+			collide->deflect(dir);
+			collide->setOwner(this);
+			return true;
+		}
+		return false;
+	}
+	
+	boolean Fox::onDeflectItemCollision(Item*collide, byte dir)
+	{
+		if(attacksHolder==15)
+		{
+			collide->deflect(dir);
+			return true;
+		}
+		return false;
 	}
 	
 	void Fox::onFinishCharge()
@@ -747,24 +686,15 @@ namespace SmashBros
 	
 	void Fox::attackA()
 	{
-		addAttackInfo(DIR_LEFT, 7, LEFT, 7, 4, -1,3.2f,4, -1,1,4);
-		addAttackInfo(DIR_RIGHT,7,RIGHT, 7, 4,  1,3.2f,4, -1,1,4);
+		addAttackInfo(DIR_LEFT, 7, LEFT, 7, 400, -1,3.2f,4, -1,1,4);
+		addAttackInfo(DIR_RIGHT,7,RIGHT, 7, 400,  1,3.2f,4, -1,1,4);
 		
 	    if(!checkItemUse())
 	    {
 	        if(isOnGround())
 	        {
-	            switch(playerdir)
-	            {
-	                case LEFT:
-	                x-=5;
-	                break;
-	 
-	                case 2:
-	                x+=5;
-	                break;
-	            }
-	            AttackTemplates::combo3A(this, 5, 0,1.98, 1,2.21, 2,3.04);
+	            x += 5 * getPlayerDirMult();
+	            AttackTemplates::combo3A(this, 500, 0,1.98, 1,2.21, 2,3.04);
 	        }
 	        else
 	        {
@@ -778,12 +708,12 @@ namespace SmashBros
 	
 	void Fox::attackSideA()
 	{
-		addAttackInfo(DIR_LEFT, 4, LEFT, 6, 4, -1,2,2, -1,3,3.5f);
-		addAttackInfo(DIR_RIGHT,4,RIGHT, 6, 4,  1,2,2, -1,3,3.5f);
-		addAttackInfo(DIR_LEFT, 8, LEFT, 8, 4, -1,4,3.2f, -1,1,2);
-		addAttackInfo(DIR_RIGHT,8,RIGHT, 8, 4,  1,4,3.2f, -1,1,2);
-		addAttackInfo(DIR_UP, 8, LEFT, 8, 4, -1,4,3.2f, -1,1,2);
-		addAttackInfo(DIR_UP, 8,RIGHT, 8, 4,  1,4,3.2f, -1,1,2);
+		addAttackInfo(DIR_LEFT, 4, LEFT, 6, 400, -1,2,2, -1,3,3.5f);
+		addAttackInfo(DIR_RIGHT,4,RIGHT, 6, 400,  1,2,2, -1,3,3.5f);
+		addAttackInfo(DIR_LEFT, 8, LEFT, 8, 400, -1,4,3.2f, -1,1,2);
+		addAttackInfo(DIR_RIGHT,8,RIGHT, 8, 400,  1,4,3.2f, -1,1,2);
+		addAttackInfo(DIR_UP, 8, LEFT, 8, 400, -1,4,3.2f, -1,1,2);
+		addAttackInfo(DIR_UP, 8,RIGHT, 8, 400,  1,4,3.2f, -1,1,2);
 		
 	    //if(((playr->moveLeft==2) || (playr->moveRight==2)) && (playr->onGround==1))
 	    //{
@@ -795,16 +725,7 @@ namespace SmashBros
 	        {
 	            if(isOnGround())
 	            {
-	                switch(playerdir)
-	                {
-	                    case LEFT:
-	                    x-=5;
-	                    break;
-	 
-	                    case RIGHT:
-	                    x+=5;
-	                    break;
-	                }
+	                x += 5 * getPlayerDirMult();
 	                AttackTemplates::normalSideA(this, 4,2.411);
 	            }
 	            else
@@ -812,16 +733,7 @@ namespace SmashBros
 	                if(!bUp)
 	                {
 	                    AttackTemplates::normalAirSideA(this, 8,2.234);
-	                    switch(playerdir)
-	                    {
-	                        case LEFT:
-	                        xvelocity-=1;
-	                        break;
-	 
-	                        case RIGHT:
-	                        xvelocity+=1;
-	                        break;
-	                    }
+	                    xvelocity += 1 * getPlayerDirMult();
 	                    yvelocity-=1.5;
 	                }
 	            }
@@ -831,64 +743,61 @@ namespace SmashBros
 	
 	void Fox::attackUpA()
 	{
-		addAttackInfo(DIR_LEFT, 5, LEFT, 3, 4, -1,3,2.7f, -1,2,2);
-		addAttackInfo(DIR_LEFT, 5,RIGHT, 3, 4, -1,3,2.7f, -1,2,2);
-		addAttackInfo(DIR_RIGHT, 5, LEFT, 3, 4, 1,3,2.7f, -1,2,2);
-		addAttackInfo(DIR_RIGHT, 5,RIGHT, 3, 4, 1,3,2.7f, -1,2,2);
-		addAttackInfo(DIR_LEFT, 9, LEFT, 9, 5, -1,0.9f,1.2f, -1,2.1f,4.1f);
-		addAttackInfo(DIR_LEFT, 9,RIGHT, 9, 5, -1,0.9f,1.2f, -1,2.1f,4.1f);
-		addAttackInfo(DIR_RIGHT,9, LEFT, 9, 5,  1,0.9f,1.2f, -1,2.1f,4.1f);
-		addAttackInfo(DIR_RIGHT,9,RIGHT, 9, 5,  1,0.9f,1.2f, -1,2.1f,4.1f);
-		addAttackInfo(DIR_UP, 5, LEFT, 3, 4, -1,0.5f,1.1f, -1,3,2.8f);
-		addAttackInfo(DIR_UP, 5,RIGHT, 3, 4,  1,0.5f,1.1f, -1,3,2.8f);
-		addAttackInfo(DIR_UP, 9, LEFT, 9, 5, -1,0.9f,1.2f, -1,2.1f,4.1f);
-		addAttackInfo(DIR_UP, 9,RIGHT, 9, 5,  1,0.9f,1.2f, -1,2.1f,4.1f);
+		addAttackInfo(DIR_LEFT, 5, LEFT, 3, 400, -1,3,2.7f, -1,2,2);
+		addAttackInfo(DIR_LEFT, 5,RIGHT, 3, 400, -1,3,2.7f, -1,2,2);
+		addAttackInfo(DIR_RIGHT, 5, LEFT, 3, 400, 1,3,2.7f, -1,2,2);
+		addAttackInfo(DIR_RIGHT, 5,RIGHT, 3, 400, 1,3,2.7f, -1,2,2);
+		addAttackInfo(DIR_LEFT, 9, LEFT, 9, 500, -1,0.9f,1.2f, -1,2.1f,4.1f);
+		addAttackInfo(DIR_LEFT, 9,RIGHT, 9, 500, -1,0.9f,1.2f, -1,2.1f,4.1f);
+		addAttackInfo(DIR_RIGHT,9, LEFT, 9, 500,  1,0.9f,1.2f, -1,2.1f,4.1f);
+		addAttackInfo(DIR_RIGHT,9,RIGHT, 9, 500,  1,0.9f,1.2f, -1,2.1f,4.1f);
+		addAttackInfo(DIR_UP, 5, LEFT, 3, 400, -1,0.5f,1.1f, -1,3,2.8f);
+		addAttackInfo(DIR_UP, 5,RIGHT, 3, 400,  1,0.5f,1.1f, -1,3,2.8f);
+		addAttackInfo(DIR_UP, 9, LEFT, 9, 500, -1,0.9f,1.2f, -1,2.1f,4.1f);
+		addAttackInfo(DIR_UP, 9,RIGHT, 9, 500,  1,0.9f,1.2f, -1,2.1f,4.1f);
 		
-		if(isOnGround())
-	    {
-	        AttackTemplates::normalUpA(this, 5, 2.911);
-	    }
-		else
+		if(!checkItemUseUp())
 		{
-	        if(!bUp)
-	        {
-	            AttackTemplates::normalAirUpA(this, 9,2.956);
-	        }
-	    }
+			if(isOnGround())
+			{
+				AttackTemplates::normalUpA(this, 5, 2.911);
+			}
+			else
+			{
+				if(!bUp)
+				{
+					AttackTemplates::normalAirUpA(this, 9,2.956);
+				}
+			}
+		}
 	}
 	
 	void Fox::attackDownA()
 	{
-		addAttackInfo(DIR_LEFT, 6, LEFT, 9, 4, -1,3,2, -1,3,2);
-		addAttackInfo(DIR_RIGHT,6,RIGHT, 9, 4,  1,3,2, -1,3,2);
-		addAttackInfo(DIR_LEFT, 10, LEFT, 7, 4, -1,0.9f,1.2f, 1,2.1f,4.1f);
-		addAttackInfo(DIR_RIGHT,10,RIGHT, 7, 4,  1,0.9f,1.2f, 1,2.1f,4.1f);
-		addAttackInfo(DIR_DOWN, 6, LEFT, 9, 4, -1,2,1.4f, 1,3.5f,3.4f);
-		addAttackInfo(DIR_DOWN, 6,RIGHT, 9, 4,  1,2,1.4f, 1,3.5f,3.4f);
-		addAttackInfo(DIR_DOWN, 10, LEFT, 7, 4, -1,0.9f,1.2f, 1,3.1f,4.1f);
-		addAttackInfo(DIR_DOWN, 10,RIGHT, 7, 4,  1,0.9f,1.2f, 1,3.1f,4.1f);
+		addAttackInfo(DIR_LEFT, 6, LEFT, 9, 400, -1,3,2, -1,3,2);
+		addAttackInfo(DIR_RIGHT,6,RIGHT, 9, 400,  1,3,2, -1,3,2);
+		addAttackInfo(DIR_LEFT, 10, LEFT, 7, 400, -1,0.9f,1.2f, 1,2.1f,4.1f);
+		addAttackInfo(DIR_RIGHT,10,RIGHT, 7, 400,  1,0.9f,1.2f, 1,2.1f,4.1f);
+		addAttackInfo(DIR_DOWN, 6, LEFT, 9, 400, -1,2,1.4f, 1,3.5f,3.4f);
+		addAttackInfo(DIR_DOWN, 6,RIGHT, 9, 400,  1,2,1.4f, 1,3.5f,3.4f);
+		addAttackInfo(DIR_DOWN, 10, LEFT, 7, 400, -1,0.9f,1.2f, 1,3.1f,4.1f);
+		addAttackInfo(DIR_DOWN, 10,RIGHT, 7, 400,  1,0.9f,1.2f, 1,3.1f,4.1f);
 		
-		if(isOnGround())
-	    {
-	        switch(playerdir)
-	        {
-	            case LEFT:
-	            x-=3;
-	            break;
-	 
-	            case RIGHT:
-	            x+=3;
-	            break;
-	        }
-	        AttackTemplates::normalDownA(this, 6,1.399);
-	    }
-		else
+		if(!checkItemUseDown())
 		{
-	        if(!bUp)
-	        {
-	            AttackTemplates::normalAirDownA(this, 10,2.454);
-	        }
-	    }
+			if(isOnGround())
+			{
+				x += 3 * getPlayerDirMult();
+				AttackTemplates::normalDownA(this, 6,1.399);
+			}
+			else
+			{
+				if(!bUp)
+				{
+					AttackTemplates::normalAirDownA(this, 10,2.454);
+				}
+			}
+		}
 	}
 	
 	void Fox::attackB()
@@ -901,19 +810,8 @@ namespace SmashBros
 	        }
 	        else
 	        {
-	            int x1=25;
-	            switch(playerdir)
-	            {
-	                case LEFT:
-	                x1=-25;
-	                changeAnimation("special_attack_left",FORWARD);
-	                break;
-	 
-	                case RIGHT:
-	                x1=25;
-	                changeAnimation("special_attack_right",FORWARD);
-	                break;
-	            }
+	            int x1 = 25 * getPlayerDirMult();
+				changeTwoSidedAnimation("special_attack",FORWARD);
 	            if(!finalSmashing)
 	            {
 					Ray*ray = new Ray(getPlayerNo(),x + x1, y);
@@ -927,29 +825,20 @@ namespace SmashBros
 	
 	void Fox::attackSideB()
 	{
-		addAttackInfo(DIR_LEFT, 12, LEFT, 7, 5, -1,0.5f,1.2f, -1,4,1.6f);
-		addAttackInfo(DIR_LEFT, 12,RIGHT, 7, 5, -1,0.5f,1.2f, -1,4,1.6f);
-		addAttackInfo(DIR_RIGHT, 12, LEFT, 7, 5, 1,0.5f,1.2f, -1,4,1.6f);
-		addAttackInfo(DIR_RIGHT, 12,RIGHT, 7, 5, 1,0.5f,1.2f, -1,4,1.6f);
-		addAttackInfo(DIR_UP, 12, LEFT, 7, 5, -1,0.5f,1.2f, -1,4,1.6f);
-		addAttackInfo(DIR_UP, 12,RIGHT, 7, 5,  1,0.5f,1.2f, -1,4,1.6f);
-		addAttackInfo(DIR_DOWN, 12, LEFT, 7, 5, -1,0.5f,1.2f, -1,4,1.6f);
-		addAttackInfo(DIR_DOWN, 12,RIGHT, 7, 5,  1,0.5f,1.2f, -1,4,1.6f);
+		addAttackInfo(DIR_LEFT, 12, LEFT, 7, 500, -1,0.5f,1.2f, -1,4,1.6f);
+		addAttackInfo(DIR_LEFT, 12,RIGHT, 7, 500, -1,0.5f,1.2f, -1,4,1.6f);
+		addAttackInfo(DIR_RIGHT, 12, LEFT, 7, 500, 1,0.5f,1.2f, -1,4,1.6f);
+		addAttackInfo(DIR_RIGHT, 12,RIGHT, 7, 500, 1,0.5f,1.2f, -1,4,1.6f);
+		addAttackInfo(DIR_UP, 12, LEFT, 7, 500, -1,0.5f,1.2f, -1,4,1.6f);
+		addAttackInfo(DIR_UP, 12,RIGHT, 7, 500,  1,0.5f,1.2f, -1,4,1.6f);
+		addAttackInfo(DIR_DOWN, 12, LEFT, 7, 500, -1,0.5f,1.2f, -1,4,1.6f);
+		addAttackInfo(DIR_DOWN, 12,RIGHT, 7, 500,  1,0.5f,1.2f, -1,4,1.6f);
 		
         if(!bUp)
         {
             bUp=true;
             landing=true;
-            switch(playerdir)
-            {
-                case 1:
-                changeAnimation("special_prep_side_left", FORWARD);
-                break;
-
-                case 2:
-                changeAnimation("special_prep_side_right", FORWARD);
-                break;
-            }
+            changeTwoSidedAnimation("special_prep_side", FORWARD);
         }
 	}
 	
@@ -962,18 +851,7 @@ namespace SmashBros
             attacksHolder=13;
             xvelocity = 0;
             yvelocity = 0;
-            switch(playerdir)
-            {
-                case LEFT:
-                changeAnimation("special_charge_up_left", FORWARD);
-                break;
-
-
-                case 2:
-                changeAnimation("special_charge_up_right", FORWARD);
-                break;
-            }
-            
+            changeTwoSidedAnimation("special_charge_up", FORWARD);
             lastBUpChargeDir = 0;
 			lastDir = 0;
         }
@@ -989,24 +867,15 @@ namespace SmashBros
 	
 	void Fox::attackSideSmash(byte type)
 	{
-		if(!checkItemUseSmash(type)&&!bUp)
+		if(!bUp && !checkItemUseSideSmash(type))
 	    {
 	        if(isOnGround())
 	        {
-	            AttackTemplates::normalSmash(this,16,3.557,type,1,30,15,42);
+	            AttackTemplates::normalSmash(this,16,3.557,type,1,3000,15,42);
 	            if(type==STEP_GO)
 	            {
-	                yvelocity=-2*(((float)smashPower)/18);
-	                switch(playerdir)
-	                {
-	                    case 1:
-	                    xvelocity=-3*(((float)smashPower)/18);
-	                    break;
-	 
-	                    case 2:
-	                    xvelocity=3*(((float)smashPower)/18);
-	                    break;
-	                }
+	                yvelocity = -2*(((float)smashPower)/18);
+	                xvelocity = (3*(((float)smashPower)/18)) * getPlayerDirMult();
 	            }
 	        }
 	        else
@@ -1018,11 +887,11 @@ namespace SmashBros
 	
 	void Fox::attackUpSmash(byte type)
 	{
-		if(!bUp)
+		if(!bUp && !checkItemUseUpSmash(type))
 	    {
 	        if(isOnGround())
 	        {
-	            AttackTemplates::normalSmash(this,17,3.224,type,2,30,17,31);
+	            AttackTemplates::normalSmash(this,17,3.224,type,2,3000,17,31);
 	        }
 	        else
 	        {
@@ -1033,11 +902,11 @@ namespace SmashBros
 	
 	void Fox::attackDownSmash(byte type)
 	{
-		if(!bUp)
+		if(!bUp && !checkItemUseDownSmash(type))
 	    {
 	        if(isOnGround())
 	        {
-	            AttackTemplates::normalSmash(this,18,3.043,type,3,20,14,30);
+	            AttackTemplates::normalSmash(this,18,3.043,type,3,2000,14,30);
 	        }
 	        else
 	        {
@@ -1055,16 +924,7 @@ namespace SmashBros
             AttackTemplates::finalSmash(this, 19);
             setAlpha(0);
             discardItem();
-            switch(playerdir)
-            {
-                case 1:
-                changeAnimation("crouch_left", FORWARD);
-                break;
- 
-                case 2:
-                changeAnimation("crouch_right", FORWARD);
-                break;
-            }
+			changeTwoSidedAnimation("crouch", FORWARD);
 	    }
 	}
 	
@@ -1072,7 +932,9 @@ namespace SmashBros
 	{
 		addAnimation(new Animation("normal",1,"Images/Game/Characters/Fox/ray.png"));
 		changeAnimation("normal",FORWARD);
-			
+		
+		setDeflectable(true);
+		
 		switch(itemdir)
 		{
 			case LEFT:
@@ -1088,6 +950,26 @@ namespace SmashBros
 	Fox::Ray::~Ray()
 	{
 		//
+	}
+	
+	void Fox::Ray::deflect(byte dir)
+	{
+		switch(dir)
+		{
+			case DIR_LEFT:
+			case DIR_UPLEFT:
+			case DIR_DOWNLEFT:
+			itemdir = LEFT;
+			xvelocity = -7.5f;
+			break;
+			
+			case DIR_RIGHT:
+			case DIR_UPRIGHT:
+			case DIR_DOWNRIGHT:
+			itemdir = RIGHT;
+			xvelocity = 7.5f;
+			break;
+		}
 	}
 	
 	void Fox::Ray::onPlayerHit(Player*collide, byte dir)
@@ -1141,17 +1023,17 @@ namespace SmashBros
 			if(collide->x<x)
 			{
 			    causeHurtLaunch(collide, -1,6,6, -1,3,6);
-			    causeHurt(collide, RIGHT, 4);
+			    causeHurt(collide, RIGHT, 400);
 			}
 			else if(x<collide->x)
 			{
 			    causeHurtLaunch(collide, 1,6,6, -1,3,6);
-			    causeHurt(collide, LEFT, 4);
+			    causeHurt(collide, LEFT, 400);
 			}
 			else
 			{
 			    causeHurtLaunch(collide, 1,0,0, -1,6,6);
-			    causeHurt(collide, collide->getPlayerDir(), 4);
+			    causeHurt(collide, collide->getPlayerDir(), 400);
 			}
 		}
 	}
@@ -1202,7 +1084,7 @@ namespace SmashBros
 			
 		setSolid(true);
 		setOwnerSolid(false);
-			
+		
 		weight = 0.1f;
 			
 		attack = -1;

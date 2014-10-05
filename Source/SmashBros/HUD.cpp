@@ -161,7 +161,7 @@ namespace SmashBros
 	
 	void HUD::updateTimeActor()
 	{
-		if(Global::getWorldTime()%10==0)
+		if((Global::getWorldTime()/100)%10==0)
 		{
 			int tempSeconds=(int)(Global::timeAmount%60);
 			int tempMinutes=(int)(Global::timeAmount/60);
@@ -180,7 +180,7 @@ namespace SmashBros
 	{
 		if(firstUpdate)
 		{
-			startGameTime = (gameTime/100) + 10;
+			startGameTime = Global::getWorldTime() + 1000;
 			firstUpdate = false;
 		}
 		else if(startGameTime>0)
@@ -215,13 +215,13 @@ namespace SmashBros
 		}
 		if(Global::gamePlaying)
 		{
-			if(prevWorldTime!=Global::getWorldTime())
+			if(prevWorldTime!=(Global::getWorldTime()/100))
 			{
-				if((Global::getWorldTime()%10)==0)
+				if(((Global::getWorldTime()/100)%10)==0)
 		        {
 		            Global::timeAmount-=1;
 		        }
-				prevWorldTime = Global::getWorldTime();
+				prevWorldTime = (Global::getWorldTime()/100);
 			}
 		}
 		if(Global::gameMode == Global::MODE_TIME_LIMIT && Global::gamePlaying && !Global::suddenDeath)
@@ -235,7 +235,7 @@ namespace SmashBros
 			}
 			currentTime->Update(gameTime);
 		}
-		if(showFinishGame && Global::getWorldTime()>=finishGameTime)
+		if(showFinishGame && (Global::getWorldTime()/100)>=finishGameTime)
 		{
 			showFinishGame = false;
 			
@@ -320,7 +320,7 @@ namespace SmashBros
 			panel->scoreText->setText(amount);
 			panel->scoreText->setColor(Color::RED);
 			panel->scoreShowing = true;
-			panel->scoreTime = Global::getWorldTime() + 20;
+			panel->scoreTime = Global::getWorldTime() + 2000;
 		}
 		else if(amount>0)
 		{
@@ -328,10 +328,10 @@ namespace SmashBros
 			panel->scoreText->setText(amount);
 			panel->scoreText->setColor(Color::BLUE);
 			panel->scoreShowing = true;
-			panel->scoreTime = Global::getWorldTime() + 20;
+			panel->scoreTime = Global::getWorldTime() + 2000;
 		}
 	}
-
+	
 	HUD::CharacterPanel::CharacterPanel(HUD*hud, byte playerNo)
 	{
 		percentText = null;
@@ -340,15 +340,15 @@ namespace SmashBros
 		stockText = null;
 		playerName = null;
 		scoreText = null;
-
+		
 		percent = 00;
 		this->playerNo = 0;
 		scoreTime = 0;
 		scoreShowing = false;
-
+		
 		x = 0;
 		y = 0;
-
+		
 		this->playerNo = playerNo;
 		
 		String path = Global::getPlayerActor(playerNo)->getFolderPath();
@@ -646,7 +646,7 @@ namespace SmashBros
 			scoreText->Draw(g, gameTime);
 		}
 	}
-
+	
 	HUD::TrainingMenu::TrainingMenu(HUD*hud)
 	{
 		bg = new Actor(0,0);

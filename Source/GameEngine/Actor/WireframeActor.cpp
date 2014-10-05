@@ -201,6 +201,11 @@ namespace GameEngine
 
     bool WireframeActor::isColliding(Actor*collide)
 	{
+		if(collide->Scale==0 || width==0 || height==0)
+		{
+			return false;
+		}
+		
 		Rect collideOverlap = getCollideOverlapArea(collide);
 		
 		if(collideOverlap.left != -1)

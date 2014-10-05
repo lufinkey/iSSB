@@ -33,7 +33,7 @@ namespace SmashBros
 
 		bgType = 0;
 
-		gravity = 0.15;
+		gravity = 0.18;
 		terminalVelocity = 9;
 		
 		MusicManager::loadSong("Main Theme Remix");
@@ -376,7 +376,7 @@ namespace SmashBros
 				{
 					if(playr->isColliding(ground.get(j)))
 					{
-						if(!setGrounded)
+						if(setGrounded)
 						{
 							playr->whileGroundColliding();
 						}
@@ -400,7 +400,7 @@ namespace SmashBros
 				if(dir>0)
 				{
 					playr->platformCollision(platforms.get(j), dir);
-					playr->currentCollidePlatformActor[dir] = platforms.get(j);
+					playr->setCurrentCollidePlatformActor(dir, platforms.get(j));
 					playr->collideQueue.add(dir);
 				}
 				boolean grounded = false;
@@ -439,7 +439,7 @@ namespace SmashBros
 			{
 				if(!playr->currentCollidePlatform[j-1] && playr->prevCollidePlatform[j-1])
 				{
-					playr->finishPlatformCollide(playr->currentCollidePlatformActor[j], j);
+					playr->finishPlatformCollide(playr->getCurrentCollidePlatformActor(j), j);
 				}
 			}
 			playr->prevGroundColliding = playr->groundColliding;
@@ -993,6 +993,11 @@ namespace SmashBros
 	
 	boolean Stage::wireframeCollision(Player*playr, WireframeActor*collide)
 	{
+		if(playr->Scale==0 || collide->width==0 || collide->height==0)
+		{
+			return false;
+		}
+		
 		Rectangle r1 = Rectangle((int)(playr->x - playr->width/2), (int)(playr->y - playr->height/2), playr->width, playr->height);
 		Rectangle r2 = Rectangle((int)collide->x,(int)collide->y,collide->width,collide->height);
 		Rectangle overlap = Player::getOverlapRect(r1,r2);
