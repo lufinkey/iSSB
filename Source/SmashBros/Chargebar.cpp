@@ -66,8 +66,9 @@ namespace SmashBros
 		}
 		else if(lastTime < Global::getWorldTime())
 		{
+            long totalAmount = Global::getWorldTime() - lastTime;
 			lastTime = Global::getWorldTime();
-			currentPower+=increment;
+			currentPower += (increment*totalAmount);
 		}
 	}
 }
