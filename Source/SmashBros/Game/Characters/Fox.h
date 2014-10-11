@@ -39,12 +39,21 @@ namespace SmashBros
 			virtual void onPlayerHit(Player*collide, byte dir);
 		};
 		
+		class LandmasterHoverBlast : public Projectile
+		{
+		public:
+			LandmasterHoverBlast(byte playerNo, float x1, float y1);
+			virtual ~LandmasterHoverBlast();
+			
+			virtual void Update(long gameTime);
+			virtual void onAnimationFinish(const String&name);
+		};
+		
 		class Landmaster : public Projectile
 		{
 		private:
 			int attack;
 			float weight;
-			boolean hovering;
 			
 		public:
 			Landmaster(byte playerNo, float x1, float y1);

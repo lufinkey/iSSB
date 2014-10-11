@@ -137,6 +137,12 @@ namespace SmashBros
 						createProjectile(landmaster);
 					}
 					break;
+					
+					case 4:
+					{
+						Projectile::setNextID(projID);
+						createProjectile(new LandmasterHoverBlast(getPlayerNo(), x1, y1));
+					}
 				}
 			}
 		}
@@ -1038,6 +1044,60 @@ namespace SmashBros
 		}
 	}
 	
+	Fox::LandmasterHoverBlast::LandmasterHoverBlast(byte playerNo, float x1, float y1) : Projectile(playerNo, x1, y1)
+	{
+		Animation*anim;
+		
+		anim = new Animation("hover_left",10,3,1);
+		anim->addFrame("Images/Game/Characters/Fox/landmaster_hover_blast.png");
+		addAnimation(anim);
+		anim = new Animation("hover_right",10,3,1);
+		anim->addFrame("Images/Game/Characters/Fox/landmaster_hover_blast.png");
+		anim->mirror(true);
+		addAnimation(anim);
+		
+		Player* owner = Global::getPlayerActor(getPlayerNo());
+		switch(owner->getPlayerDir())
+		{
+			case Player::LEFT:
+			changeAnimation("hover_left", FORWARD);
+			break;
+			
+			case Player::RIGHT:
+			changeAnimation("hover_right", FORWARD);
+			break;
+		}
+	}
+	
+	Fox::LandmasterHoverBlast::~LandmasterHoverBlast()
+	{
+		//
+	}
+	
+	void Fox::LandmasterHoverBlast::Update(long gameTime)
+	{
+		Projectile::Update(gameTime);
+		
+		Player* owner = Global::getPlayerActor(getPlayerNo());
+		switch(owner->getPlayerDir())
+		{
+			case Player::LEFT:
+			changeAnimation("hover_left", NO_CHANGE);
+			break;
+			
+			case Player::RIGHT:
+			changeAnimation("hover_right", NO_CHANGE);
+			break;
+		}
+		x = owner->x;
+		y = owner->y + (30*Scale);
+	}
+	
+	void Fox::LandmasterHoverBlast::onAnimationFinish(const String&name)
+	{
+		destroy();
+	}
+	
 	Fox::Landmaster::Landmaster(byte playerNo, float x1, float y1) : Projectile(playerNo, x1, y1)
 	{
 		Animation*anim;
@@ -1103,12 +1163,7 @@ namespace SmashBros
 		
 	void Fox::Landmaster::onAnimationFinish(const String&n)
 	{
-		if(n.equals("hover_left") || n.equals("hover_right"))
-		{
-			hovering = false;
-			idle();
-		}
-		else if(n.equals("shoot_left") || n.equals("shoot_right"))
+		if(n.equals("shoot_left") || n.equals("shoot_right"))
 		{
 			Player*owner = Global::getPlayerActor(getPlayerNo());
 			Fox*fox = (Fox*)owner;
@@ -1147,61 +1202,48 @@ namespace SmashBros
 			
 		if(attack==-1)
 		{
-			if(owner->isJumping() && !hovering)
+			if(owner->isJumping())
 			{
-				hovering = true;
+				Fox*fox = (Fox*)owner;
 				switch(owner->getPlayerDir())
 				{
 					case LEFT:
-					changeAnimation("hover_left",FORWARD);
+					changeAnimation("idle_left",NO_CHANGE);
 					break;
 						
 					case RIGHT:
-					changeAnimation("hover_right",FORWARD);
+					changeAnimation("hover_right",NO_CHANGE);
 					break;
 				}
 				yvelocity -=5;
+				LandmasterHoverBlast* hoverBlast = new LandmasterHoverBlast(getPlayerNo(), x, y+(30*Scale));
+				hoverBlast->Scale = Scale;
+				createProjectile(hoverBlast);
+				fox->addProjectileInfo(4, hoverBlast->getID(), x, y+(30*Scale));
 			}
 			if(owner->getMoveLeft()>0)
 			{
 				x-=1;
 				owner->setPlayerDir(LEFT);
-				if(hovering)
-				{
-					changeAnimation("hover_left",NO_CHANGE);
-				}
-				else
-				{
-					changeAnimation("move_left",NO_CHANGE);
-				}
+				changeAnimation("move_left",NO_CHANGE);
 			}
 			else if(owner->getMoveRight()>0)
 			{
 				x+=1;
 				owner->setPlayerDir(RIGHT);
-				if(hovering)
-				{
-					changeAnimation("hover_right",NO_CHANGE);
-				}
-				else
-				{
-					changeAnimation("move_right",NO_CHANGE);
-				}
+				changeAnimation("move_right",NO_CHANGE);
 			}
 			else
 			{
-				if(!hovering)
+				switch(owner->getPlayerDir())
 				{
-					switch(owner->getPlayerDir())
-					{
-						case LEFT:
-						changeAnimation("idle_left",FORWARD);
-						break;
-							
-						case RIGHT:
-						changeAnimation("idle_right",FORWARD);
-						break;
-					}
+					case LEFT:
+					changeAnimation("idle_left",NO_CHANGE);
+					break;
+						
+					case RIGHT:
+					changeAnimation("idle_right",NO_CHANGE);
+					break;
 				}
 			}
 		}

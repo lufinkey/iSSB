@@ -10,6 +10,29 @@ namespace GameEngine
 	ArrayList<Font*> AssetManager::Fonts = ArrayList<Font*>();
 	ArrayList<String> AssetManager::FontNames = ArrayList<String>();
 	
+	bool AssetManager::loadStringFromFile(const String& fileName, String&str)
+	{
+		FILE*file = std::fopen(fileName, "r");
+		if (file == NULL)
+		{
+			return false;
+		}
+		
+		std::fseek(file, 0, SEEK_END);
+		int total = ftell(file);
+		std::fseek(file, 0, SEEK_SET);
+		
+		char*fileText = new char[total + 1];
+		fileText[total] = '\0';
+		
+		std::fread(fileText, 1, total + 1, file);
+		str = fileText;
+		
+		fclose(file);
+		delete[] fileText;
+		return true;
+	}
+	
 	bool AssetManager::loadImage(const String&imgName)
 	{
 		if(!alreadyStoredImage(imgName))

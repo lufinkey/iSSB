@@ -6063,11 +6063,11 @@ namespace SmashBros
 		    }
 		    else
 		    {
-		        if(doubleJump==1)
+		        if(doubleJump>0)
 		        {
 		        	jumping = true;
 		            yvelocity=-dist2;
-		            doubleJump=0;
+		            doubleJump--;
 					changeTwoSidedAnimation("jump2", FORWARD);
 		        }
 		    }

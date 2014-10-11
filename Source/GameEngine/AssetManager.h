@@ -19,7 +19,10 @@ namespace GameEngine
 		
 		static bool alreadyStoredImage(const String&imgName);
 		static bool alreadyStoredFont(const String&fontName);
+		
 	public:
+		static bool loadStringFromFile(const String& fileName, String&str);
+		
 		static bool loadImage(const String&imgName);
 		static BufferedImage* getImage(const String&imgName);
 		static void unloadImage(const String&imgName);

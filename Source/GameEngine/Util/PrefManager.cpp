@@ -26,7 +26,7 @@ namespace GameEngine
 		prefs.clear();
 	}
 	
-	void PrefManager::load(const String&fileName)
+	void PrefManager::load(const String&fileName, bool dynamic)
 	{
 		ArrayList<String> lines;
 		
@@ -117,7 +117,14 @@ namespace GameEngine
 					value = value.substring(1,name.length()-1);
 				}
 				
-				setValue(name, value);
+				if (dynamic)
+				{
+					addValue(name, value);
+				}
+				else
+				{
+					setValue(name,value);
+				}
 			}
 		}
 		
@@ -209,5 +216,15 @@ namespace GameEngine
 		}
 		
 		return "";
+	}
+	
+	ArrayList<String> PrefManager::getKeys()
+	{
+		ArrayList<String> keys;
+		for (int i = 0; i < prefs.size(); i++)
+		{
+			keys.add(prefs.get(i).name);
+		}
+		return keys;
 	}
 }

@@ -23,7 +23,7 @@ namespace GameEngine
 		PrefManager();
 		~PrefManager();
 		
-		void load(const String&fileName);
+		void load(const String&fileName, bool dynamic=false);
 		void save(const String&fileName);
 		
 		void addValue(const String&name, const String&value);
@@ -35,5 +35,7 @@ namespace GameEngine
 		long getLongValue(const String&name) const;
 		double getDoubleValue(const String&name) const;
 		String getStringValue(const String&name) const;
+		
+		ArrayList<String> getKeys();
 	};
 }

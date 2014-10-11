@@ -86,6 +86,7 @@ namespace SmashBros
 		data.add(&y, sizeof(y));
 		data.add(&animIndex, sizeof(animIndex));
 		data.add(&frame, sizeof(frame));
+		data.add(&Scale, sizeof(Scale));
 		data.add(&boolsByte, sizeof(boolsByte));
 		data.add(&layer, sizeof(layer));
 		data.add(&playerNo, sizeof(playerNo));
@@ -115,6 +116,9 @@ namespace SmashBros
 		int frame = DataVoid::toInt(data);
 		getAnimation()->setCurrentFrame(frame);
 		data += sizeof(int);
+		
+		Scale = DataVoid::toFloat(data);
+		data += sizeof(float);
 		
 		//bools
 		byte boolsByte = data[0];
@@ -627,7 +631,6 @@ namespace SmashBros
 		{
 			return 0;
 		}
-		
 		if(collide->getCollideType() == Platform::COLLIDE_SOLID)
 		{
 			//Rectangle rect = this.grid.getAreaRect();
@@ -635,13 +638,15 @@ namespace SmashBros
 			GameEngine::Rectangle r2 = GameEngine::Rectangle((int)(collide->x - collide->width/2),(int)(collide->y - collide->height/2),collide->width,collide->height);
 			GameEngine::Rectangle collideOverlap = getOverlapRect(r2,r1);
 			GameEngine::Rectangle overlap = getOverlapRect(r1,r2);
+			//overlap.expand(1, Rectangle(0,0,r1.width,r1.height));
+			//collideOverlap.expand(1, Rectangle(0,0,r2.width,r2.height));
 			
 			if(collideOverlap.x!=-1)
 			{
-				int startX2 = collideOverlap.x;
-				int endX2 = collideOverlap.x + collideOverlap.width;
-				int startY2 = collideOverlap.y;
-				int endY2 = collideOverlap.y + collideOverlap.height;
+				Rectangle overlapExpanded = overlap;
+				overlapExpanded.expand(1, Rectangle(0,0,r1.width,r1.height));
+				Rectangle collideOverlapExpanded = collideOverlap;
+				collideOverlapExpanded.expand(1, Rectangle(0,0,r2.width, r2.height));
 				
 				//rectangle inside of projectile's overlap box where pixels exist (relative to projectile's top left)
 				int left1=0;
@@ -661,17 +666,32 @@ namespace SmashBros
 				int top1b=0;
 				int bottom1b=0;
 				
+				//rectangle inside of projectile where pixels overlap pixels in platform (does NOT include values outside the regular overlap, ie the expanded overlap)
+				int left1c=0;
+				int right1c=0;
+				int top1c=0;
+				int bottom1c=0;
+				
 				//rectangle inside of projectile's overlap box where pixels from platform exist (not necessarily overlapping) (relative to projectile's top left)
 				int left12=0;
 				int right12=0;
 				int top12=0;
 				int bottom12=0;
 				
-				int startX1 = overlap.x;
-				int startY1 = overlap.y;
+				int startX1 = overlapExpanded.x;
+				int endX1 = overlapExpanded.x + overlapExpanded.width;
+				int startY1 = overlapExpanded.y;
+				int endY1 = overlapExpanded.y + overlapExpanded.height;
 				
-				int xPnt = startX1; // bounds checker for this
-				int yPnt = startY1;
+				int startX2 = collideOverlapExpanded.x;
+				int endX2 = collideOverlapExpanded.x + collideOverlapExpanded.width;
+				int startY2 = collideOverlapExpanded.y;
+				int endY2 = collideOverlapExpanded.y + collideOverlapExpanded.height;
+				
+				int startX1Orig = overlap.x;
+				int endX1Orig = overlap.x + overlap.width;
+				int startY1Orig = overlap.y;
+				int endY1Orig = overlap.y + overlap.height;
 				
 				float x1 = ((float)startX1/Scale);//pixel checker starter for this
 				float y1 = ((float)startY1/Scale);
@@ -684,19 +704,60 @@ namespace SmashBros
 				boolean itemCol = false;
 				boolean colliding = false;
 				boolean bothCol = false;
+				boolean bothColC = false;
 				
 				PixelIterator pxlIter(this);
 				pxlIter.reset(x1,y1,incr1,incr1,(int)collideOverlap.width,(int)collideOverlap.height);
 				PixelIterator colPxlIter(collide);
 				colPxlIter.reset(x2,y2,incr2,incr2,(int)collideOverlap.width,(int)collideOverlap.height);
 				
-				for(int cntY=startY2; cntY<endY2; cntY++)
+				Rect difOverlap = (Rect)overlapExpanded;
+				Rect difColOverlap = (Rect)collideOverlapExpanded;
+				difOverlap.left -= overlap.x;
+				difOverlap.top -= overlap.y;
+				difOverlap.right -= overlap.width;
+				difOverlap.bottom -= overlap.height;
+				difColOverlap.left -= collideOverlap.x;
+				difColOverlap.top -= collideOverlap.y;
+				difColOverlap.right -= collideOverlap.width;
+				difColOverlap.bottom -= collideOverlap.height;
+				Rect difOverlapTotal = {std::min(difOverlap.left, difColOverlap.left), std::min(difOverlap.top, difColOverlap.top), std::max(difOverlap.right, difColOverlap.right), std::max(difOverlap.bottom, difColOverlap.bottom)};
+				
+				int startExpX1 = overlap.x + difOverlapTotal.left;
+				int startExpY1 = overlap.y + difOverlapTotal.top;
+				
+				int startExpX2 = collideOverlap.x + difOverlapTotal.left;
+				int endExpX2 = collideOverlap.x + collideOverlap.width + difOverlapTotal.right;
+				int startExpY2 = collideOverlap.y + difOverlapTotal.top;
+				int endExpY2 = collideOverlap.y + collideOverlap.height + difOverlapTotal.bottom;
+				
+				int xPnt = startExpX1; // bounds checker for this
+				int yPnt = startExpY1;
+				
+				for(int cntY=startExpY2; cntY<endExpY2; cntY++)
 				{
-					xPnt = startX1;
-					for(int cntX=startX2; cntX<endX2; cntX++)
+					xPnt = startExpX1;
+					for(int cntX=startExpX2; cntX<endExpX2; cntX++)
 					{
-						boolean pxlCheck = pxlIter.checkNextPixel();
-						boolean colPxlCheck = colPxlIter.checkNextPixel();
+						boolean pxlCheck = false;
+						boolean colPxlCheck = false;
+						
+						bool inBounds = false;
+						
+						if(xPnt>startX1 && yPnt>startY1 && xPnt<endX1 && yPnt<endY1)
+						{
+							pxlCheck = pxlIter.checkNextPixel();
+						}
+						if(cntX>startX2 && cntY>startY2 && cntX<endX2 && cntY<endY2)
+						{
+							colPxlCheck = colPxlIter.checkNextPixel();
+						}
+						
+						if(xPnt>startX1Orig && yPnt>startY1Orig && xPnt<endX1Orig && yPnt<endY1Orig)
+						{
+							inBounds = true;
+						}
+						
 						if(pxlCheck)
 						{
 							if(!itemCol)
@@ -756,6 +817,37 @@ namespace SmashBros
 									}
 								}
 								bothCol = true;
+								
+								if(inBounds)
+								{
+									if(!bothColC)
+									{
+										left1c = xPnt;
+										right1c = xPnt;
+										top1c = yPnt;
+										bottom1c = yPnt;
+									}
+									else
+									{
+										if(xPnt<left1c)
+										{
+											left1c = xPnt;
+										}
+										else if(xPnt>right1c)
+										{
+											right1c = xPnt;
+										}
+										if(yPnt<top1c)
+										{
+											top1c = yPnt;
+										}
+										else if(yPnt>bottom1c)
+										{
+											bottom1c = yPnt;
+										}
+									}
+									bothColC = true;
+								}
 							}
 						}
 						if(colPxlCheck)
@@ -815,33 +907,109 @@ namespace SmashBros
 					yPnt++;
 				}
 				
-				if(colliding && bothCol)
+				if(colliding && bothColC)
 				{
-					int w = right2 - left2;
-					int h = bottom2 - top2;
+					int w = (right2 - left2);
+					int h = (bottom2 - top2);
 					GameEngine::Rectangle collideOverlap2 = GameEngine::Rectangle(left2, top2, w, h);
-					//int overlapX = (left2 - startX2) + overlap.x + (w/2);
-					//int overlapY = (top2 - startY2) + overlap.y + (h/2);
-					//byte dir = getDir2((float)width/2,(float)height/2,(float)overlapX, (float)overlapY);
-					//try 2: byte dir = getDir(RectangleF(0,0,(float)width,(float)height), RectangleF((float)left3, (float)top3, (float)(right3-left3), (float)(bottom3-top3)));
+					
 					byte dir = 0;
-					RectangleF checkR1 = RectangleF((float)left1, (float)top1, (float)(right1 - left1), (float)(top1 - bottom1));
-					RectangleF checkR12 = RectangleF((float)left12, (float)top12, (float)(right12 - left12), (float)(top12 - bottom12));
-					if(checkR1.equals(checkR12))
+					RectangleF checkR1 = RectangleF((float)left1, (float)top1, (float)(right1 - left1), (float)(bottom1 - top1));
+					RectangleF checkR12 = RectangleF((float)left12, (float)top12, (float)(right12 - left12), (float)(bottom12 - top12));
+					RectangleF checkR1b = RectangleF((float)left1b, (float)top1b, (float)(right1b - left1b), (float)(bottom1b - top1b));
+					if(checkR1.width==checkR12.width || checkR1.height==checkR12.height)
 					{
-						RectangleF checkR1b = RectangleF((float)left1b, (float)top1b, (float)(right1b - left1b), (float)(top1b - bottom1b));
-						if(checkR1.equals(checkR1b))
+						if(checkR1.width==checkR1b.width && checkR1.height!=checkR1b.height)
 						{
-							RectangleF selfRect = RectangleF(0,0, (float)width/2, (float)height/2);
-							if(checkR1.equals(selfRect))
+							float checkR1CenterY = checkR1.y + (checkR1.height/2);
+							float checkR1bCenterY = checkR1b.y + (checkR1b.height/2);
+							if(checkR1bCenterY<checkR1CenterY)
 							{
-								float xspeed = x - getXPrev();
-								float yspeed = y - getYPrev();
-								dir = PrimitiveActor::getDir2(0,0, xspeed, yspeed);
+								dir = DIR_UP;
+							}
+							else if(checkR1bCenterY>checkR1CenterY)
+							{
+								dir = DIR_DOWN;
 							}
 							else
 							{
-								dir = getDir(selfRect, checkR1);
+								float xspeed = (x-collide->x) - (getXPrev()-collide->getXPrev());
+								float yspeed = (y-collide->y) - (getYPrev()-collide->getYPrev());
+								dir = PrimitiveActor::getDir2(0,0, xspeed, yspeed);
+							}
+						}
+						else if(checkR1.height==checkR1b.height && checkR1.width!=checkR1b.width)
+						{
+							float checkR1CenterX = checkR1.x + (checkR1.width/2);
+							float checkR1bCenterX = checkR1b.x + (checkR1b.width/2);
+							if(checkR1bCenterX<checkR1CenterX)
+							{
+								dir = DIR_LEFT;
+							}
+							else if(checkR1bCenterX>checkR1CenterX)
+							{
+								dir = DIR_RIGHT;
+							}
+							else
+							{
+								float xspeed = (x-collide->x) - (getXPrev()-collide->getXPrev());
+								float yspeed = (y-collide->y) - (getYPrev()-collide->getYPrev());
+								dir = PrimitiveActor::getDir2(0,0, xspeed, yspeed);
+							}
+						}
+						else if(checkR1.width==checkR1b.width && checkR1.height==checkR1b.height)
+						{
+							RectangleF selfRect = RectangleF(0,0, (float)width/2, (float)height/2);
+							if(selfRect.width==checkR1b.width)
+							{
+								if(selfRect.height==checkR1b.height)
+								{
+									float xspeed = (x-collide->x) - (getXPrev()-collide->getXPrev());
+									float yspeed = (y-collide->y) - (getYPrev()-collide->getYPrev());
+									dir = PrimitiveActor::getDir2(0,0, xspeed, yspeed);
+								}
+							}
+							else if(selfRect.width==checkR1b.width)
+							{
+								float selfRectCenterY = selfRect.y + (selfRect.height/2);
+								float checkR1bCenterY = checkR1b.y + (checkR1b.height/2);
+								if(checkR1bCenterY<selfRectCenterY)
+								{
+									dir = DIR_UP;
+								}
+								else if(checkR1bCenterY>selfRectCenterY)
+								{
+									dir = DIR_DOWN;
+								}
+								else
+								{
+									float xspeed = (x-collide->x) - (getXPrev()-collide->getXPrev());
+									float yspeed = (y-collide->y) - (getYPrev()-collide->getYPrev());
+									dir = PrimitiveActor::getDir2(0,0, xspeed, yspeed);
+								}
+							}
+							else if(selfRect.height==checkR1b.height)
+							{
+								float selfRectCenterX = selfRect.x + (selfRect.width/2);
+								float checkR1bCenterX = checkR1b.x + (checkR1b.width/2);
+								if(checkR1bCenterX<selfRectCenterX)
+								{
+									dir = DIR_LEFT;
+								}
+								else if(checkR1bCenterX>selfRectCenterX)
+								{
+									dir = DIR_RIGHT;
+								}
+								else
+								{
+									float xspeed = (x-collide->x) - (getXPrev()-collide->getXPrev());
+									float yspeed = (y-collide->y) - (getYPrev()-collide->getYPrev());
+									dir = PrimitiveActor::getDir2(0,0, xspeed, yspeed);
+								}
+							}
+							else
+							{
+								dir = getDir(selfRect, checkR1b);
 							}
 						}
 						else
@@ -859,25 +1027,25 @@ namespace SmashBros
 					{
 						switch(dir)
 						{
-							case DIR_UPLEFT:
-							case DIR_UPRIGHT:
-							case DIR_UP:
-							y = (collideOverlap2.y + (collide->y - collide->height/2)) - (float)(bottom1b - (height/2)) + 1;
-							return DIR_UP;
-							
 							case DIR_DOWNLEFT:
 							case DIR_DOWNRIGHT:
 							case DIR_DOWN:
-							y = ((collide->y - collide->height/2) + (collideOverlap2.y + collideOverlap2.height)) + (float)((height/2) - top1b) + 1;
+							y = (collideOverlap2.y + (collide->y - collide->height/2)) - (float)(bottom1c - (height/2)) + 1;
+							return DIR_UP;
+								
+							case DIR_UPLEFT:
+							case DIR_UPRIGHT:
+							case DIR_UP:
+							y = ((collide->y - collide->height/2) + (collideOverlap2.y + collideOverlap2.height)) + (float)((height/2) - top1c) + 1;
 							return DIR_DOWN;
-							
-							case DIR_RIGHT:
-							x = ((collide->x - collide->width/2) + (collideOverlap2.x + collideOverlap2.width)) + (float)(right1b - (width/2));
+								
+							case DIR_LEFT:
+							x = ((collide->x - collide->width/2) + (collideOverlap2.x + collideOverlap2.width)) + (float)(right1c - (width/2));
 							xvelocity = 0;
 							return DIR_RIGHT;
-							
-							case DIR_LEFT:
-							x = (collideOverlap2.x + (collide->x - collide->width/2)) - (float)((width/2) - left1b);
+								
+							case DIR_RIGHT:
+							x = (collideOverlap2.x + (collide->x - collide->width/2)) - (float)((width/2) - left1c);
 							xvelocity = 0;
 							return DIR_LEFT;
 						}
