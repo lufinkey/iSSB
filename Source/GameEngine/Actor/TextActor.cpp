@@ -653,6 +653,8 @@ namespace GameEngine
 		text = s;
 		originalText = text;
 		updateSize();
+		this->width = (int)((float)width*Scale);
+		this->height = (int)((float)height*Scale);
 	}
 		
 	String TextActor::getText()
@@ -664,6 +666,8 @@ namespace GameEngine
 	{
 		font = f;
 		updateSize();
+		this->width = (int)((float)width*Scale);
+		this->height = (int)((float)height*Scale);
 	}
 		
 	Font*TextActor::getFont()
@@ -675,6 +679,8 @@ namespace GameEngine
 	{
 		fontSize = size;
 		updateSize();
+		this->width = (int)((float)width*Scale);
+		this->height = (int)((float)height*Scale);
 	}
 		
 	int TextActor::getSize()
@@ -717,6 +723,9 @@ namespace GameEngine
 	void TextActor::setLineSpacing(unsigned int space)
 	{
 		lineSpace = space;
+		updateSize();
+		this->width = (int)((float)width*Scale);
+		this->height = (int)((float)height*Scale);
 	}
 	
 	void TextActor::relativeToView(bool toggle)
