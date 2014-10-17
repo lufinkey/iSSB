@@ -135,7 +135,7 @@ namespace GameEngine
 		return pixels[(width*y)+x];
 	}
 	
-	SDL_Texture*BufferedImage::getTexture()
+	SDL_Texture*BufferedImage::getTexture() const
 	{
 		return texture;
 	}

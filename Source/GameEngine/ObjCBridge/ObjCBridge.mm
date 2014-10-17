@@ -2,6 +2,7 @@
 #import "ObjCBridge.h"
 #import <UIKit/UIKit.h>
 #import "MailViewController.h"
+#import "UIWebViewController.h"
 #import "MessageBoxDelegate.h"
 #import "SDL.h"
 #import "SDL_syswm.h"
@@ -33,9 +34,29 @@ UIViewController*getSDLViewController(SDL_Window*window)
     return rootViewController;
 }
 
-void openURL(const char*url)
+void openURL(const char*url, SDL_Window*window)
 {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithUTF8String:url]]];
+	if(window==NULL)
+	{
+		[[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithUTF8String:url]]];
+	}
+	else
+	{
+		UIWebViewController* webview = [[UIWebViewController alloc] init];
+		UIViewController*viewCtrl = getSDLViewController(window);
+		if(viewCtrl==nil)
+		{
+			return;
+		}
+		[webview openSite:[NSString stringWithUTF8String:url] inViewController:viewCtrl];
+		
+		while([webview isOpened])
+		{
+			updateAppEvents();
+			SDL_Delay(30);
+		}
+		[webview release];
+	}
 }
 
 void writeEmail(SDL_Window*window, const char*recipient, const char*subject, const char*body)
@@ -48,7 +69,8 @@ void writeEmail(SDL_Window*window, const char*recipient, const char*subject, con
 		//NSLogfile://localhost/Users/luis/Documents/Xcode/GameEngine/GameEngine/Image.cpp(@"Error getting SDL ViewController");
 		return;
 	}
-	[mailer openMail:nil viewCtrl:viewCtrl person:[NSString stringWithUTF8String:recipient] subject:[NSString stringWithUTF8String:subject] body:[NSString stringWithUTF8String:body]];
+	[mailer openMailInViewController:viewCtrl person:[NSString stringWithUTF8String:recipient] subject:[NSString stringWithUTF8String:subject] body:[NSString stringWithUTF8String:body]];
+	
 	while([mailer isOpened])
 	{
 		updateAppEvents();

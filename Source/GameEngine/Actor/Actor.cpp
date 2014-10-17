@@ -79,7 +79,7 @@ namespace GameEngine
 	    		x = movePoint[0];
 	    		y = movePoint[1];
 	    		moving = false;
-	    		if(eventEnabled(EVENT_MOVEFINISH))
+	    		if(isEventEnabled(EVENT_MOVEFINISH))
     			{
 	    			onMoveFinish();
     			}
@@ -100,11 +100,11 @@ namespace GameEngine
 		bool mirror = false;
 		bool mirrorVertical = false;
 
-		if((lastAnim->mirrored() && !this->mirrored) || (!lastAnim->mirrored() && this->mirrored))
+		if((lastAnim->isMirrored() && !this->mirrored) || (!lastAnim->isMirrored() && this->mirrored))
 		{
 			mirror = true;
 		}
-		if((lastAnim->mirroredVertical() && !this->mirroredVertical) || (!lastAnim->mirroredVertical() && this->mirroredVertical))
+		if((lastAnim->isMirroredVertical() && !this->mirroredVertical) || (!lastAnim->isMirroredVertical() && this->mirroredVertical))
 		{
 			mirrorVertical = true;
 		}
@@ -441,7 +441,7 @@ namespace GameEngine
 	    	if(!mouseover)
 	    	{
 	    		mouseover=true;
-	    		if(eventEnabled(EVENT_MOUSEENTER))
+	    		if(isEventEnabled(EVENT_MOUSEENTER))
 	    		{
 	    			onmouseenter = true;
 	    		}
@@ -449,7 +449,7 @@ namespace GameEngine
 	    	if(!prevMouseOver && !Application::checkPrevTouchActive(touchId))
 	    	{
 	    		clicked = true;
-	    		if(eventEnabled(EVENT_MOUSECLICK))
+	    		if(isEventEnabled(EVENT_MOUSECLICK))
 	    		{
 	    			onclick = true;
 	    		}
@@ -458,7 +458,7 @@ namespace GameEngine
 	    else if(mouseover)
 	    {
 	    	mouseover=false;
-	    	if(eventEnabled(EVENT_MOUSELEAVE))
+	    	if(isEventEnabled(EVENT_MOUSELEAVE))
 			{
 	    		onmouseleave = true;
 			}
@@ -466,7 +466,7 @@ namespace GameEngine
 	    if(clicked && prevMouseover && !Application::checkTouchActive(prevTouchId))
 	    {
 	    	clicked = false;
-	    	if(eventEnabled(EVENT_MOUSERELEASE))
+	    	if(isEventEnabled(EVENT_MOUSERELEASE))
 			{
 	    		onrelease = true;
 			}
@@ -513,7 +513,17 @@ namespace GameEngine
 		this->mirroredVertical = toggle;
 	}
 	
-	bool Actor::eventEnabled(unsigned char eventCode)
+	bool Actor::isMirrored()
+	{
+		return mirrored;
+	}
+	
+	bool Actor::isMirroredVertical()
+	{
+		return mirroredVertical;
+	}
+	
+	bool Actor::isEventEnabled(unsigned char eventCode)
 	{
 		if(eventCode>totalEvents)
 		{
@@ -526,7 +536,7 @@ namespace GameEngine
 		}
 	}
 	
-	void Actor::eventEnable(unsigned char eventCode)
+	void Actor::setEventEnabled(unsigned char eventCode, bool toggle)
 	{
 	    if(eventCode>totalEvents)
 	    {
@@ -534,19 +544,7 @@ namespace GameEngine
 	    }
 	    else
 	    {
-	    	enabledEvents[eventCode]=true;
-	    }
-	}
-	
-	void Actor::eventDisable(unsigned char eventCode)
-	{
-	    if(eventCode>totalEvents)
-	    {
-	    	Console::WriteLine((String)"Error: EventDisable(unsigned char). Invalid argument " + eventCode + (String)". Event does not exist");
-	    }
-	    else
-	    {
-	    	enabledEvents[eventCode]=false;
+	    	enabledEvents[eventCode]=toggle;
 	    }
 	}
 	
@@ -659,9 +657,14 @@ namespace GameEngine
 		return lastAnim;
 	}
 
-	void Actor::relativeToView(bool toggle)
+	void Actor::setRelativeToView(bool toggle)
 	{
 		relative = toggle;
+	}
+	
+	bool Actor::isRelativeToView()
+	{
+		return relative;
 	}
 
 	void Actor::mouseOverUsesPixel(bool toggle)
@@ -1299,7 +1302,7 @@ namespace GameEngine
 	    color = c;
 	}
 	    
-	Color Actor::getColor() //returns the current color of the actor
+	const Color& Actor::getColor() //returns the current color of the actor
 	{
 	    return color;
 	}

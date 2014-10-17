@@ -184,8 +184,8 @@ namespace SmashBros
 		MenuBarSmall*dpadLabel;
 		ToggleButtons*toggles;
 		
-		static const float farDist = 10000;
-		static const float centerDist = 625;
+		static const float farDist;
+		static const float centerDist;
 		
 		Actor*button_a;
 		Actor*button_b;

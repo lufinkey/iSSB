@@ -7,7 +7,7 @@
 
 namespace GameEngine
 {
-	void TextActor::drawString(Graphics2D& graphics, String text, float x1, float y1)
+	void TextActor::drawString(Graphics2D& graphics, const String& text, float x1, float y1)
 	{
 		Graphics2D g(graphics);
 		g.scale(Scale,Scale);
@@ -359,7 +359,7 @@ namespace GameEngine
 		this->height = (int)(height);
 	}
 		
-	TextActor::TextActor(String s, Font*f, const Color&c)
+	TextActor::TextActor(const String& s, Font*f, const Color&c)
 	{
 		alignment = ALIGN_BOTTOMLEFT;
 		text = s;
@@ -392,7 +392,7 @@ namespace GameEngine
 		relative = true;
 	}
 	
-	TextActor::TextActor(float x1, float y1,String s, Font*f, const Color&c)
+	TextActor::TextActor(float x1, float y1, const String& s, Font*f, const Color&c)
 	{
 		alignment = ALIGN_BOTTOMLEFT;
 		text = s;
@@ -430,7 +430,7 @@ namespace GameEngine
 		//
 	}
 		
-	String TextActor::toString()
+	const String& TextActor::toString()
 	{
 		return originalText;
 	}
@@ -648,7 +648,7 @@ namespace GameEngine
 		wireframeColor = c;
 	}
 		
-	void TextActor::setText(String s)
+	void TextActor::setText(const String& s)
 	{
 		text = s;
 		originalText = text;
@@ -657,7 +657,7 @@ namespace GameEngine
 		this->height = (int)((float)height*Scale);
 	}
 		
-	String TextActor::getText()
+	const String& TextActor::getText()
 	{
 		return text;
 	}
@@ -692,13 +692,18 @@ namespace GameEngine
 	{
 		fontStyle = style;
 	}
-		
+	
+	int TextActor::getStyle()
+	{
+		return fontStyle;
+	}
+	
 	void TextActor::setColor(const Color&c)
 	{
 		color = c;
 	}
 		
-	Color TextActor::getColor()
+	const Color& TextActor::getColor()
 	{
 		return color;
 	}
@@ -728,9 +733,14 @@ namespace GameEngine
 		this->height = (int)((float)height*Scale);
 	}
 	
-	void TextActor::relativeToView(bool toggle)
+	void TextActor::setRelativeToView(bool toggle)
 	{
 		relative = toggle;
+	}
+	
+	bool TextActor::isRelativeToView()
+	{
+		return relative;
 	}
 
 	void TextActor::onMouseEnter() //When mouse enters Actor
@@ -792,10 +802,15 @@ namespace GameEngine
 	{
 		return currentTouchId;
 	}
-		
-	void TextActor::antiAliasing(bool toggle)
+	
+	void TextActor::setAntiAliasing(bool toggle)
 	{
 		antialiasing = toggle;
+	}
+	
+	bool TextActor::getAntiAliasing()
+	{
+		return antialiasing;
 	}
 		
 	void TextActor::setRotation(double degrees) //sets rotation of Actor in degrees

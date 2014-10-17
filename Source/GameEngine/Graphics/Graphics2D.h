@@ -72,15 +72,16 @@ namespace GameEngine
 		void translate(float x1, float y1);
 		
 		void setColor(const Color&color);
-		Color getColor();
+		const Color& getColor();
 		
 		void setImageMask(const Color&color);
-		Color getImageMask();
+		const Color& getImageMask();
 		
 		void setAlpha(unsigned char alpha);
 		unsigned char getAlpha();
 		
 		void setFont(Font*font);
+		Font*getFont();
 		Font*getDefaultFont();
 		
 		void drawString(const String&text, float x1, float y1);

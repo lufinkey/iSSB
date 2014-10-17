@@ -16,7 +16,7 @@ namespace GameEngine
 			//
 		}
 		
-		Vector2(T X, T Y)
+		Vector2(const T&X, const T&Y)
 		{
 			x = X;
 			y = Y;
@@ -34,14 +34,24 @@ namespace GameEngine
 			y = vect.y;
 		}
 		
-		Vector2<T> operator+(const Vector2<T>&vect)
+		Vector2<T> operator+(const Vector2<T>&vect) const
 		{
 			return Vector2<T>(x+vect.x, y+vect.y);
 		}
 		
-		Vector2<T> operator-(const Vector2<T>&vect)
+		Vector2<T> operator-(const Vector2<T>&vect) const
 		{
 			return Vector2<T>(x-vect.x, y-vect.y);
+		}
+		
+		Vector2<T> operator*(const Vector2<T>&vect) const
+		{
+			return Vector2<T>(x*vect.x, y*vect.y);
+		}
+		
+		Vector2<T> operator/(const Vector2<T>&vect) const
+		{
+			return Vector2<T>(x/vect.x, y/vect.y);
 		}
 		
 		Vector2<T>&operator+=(const Vector2<T>&vect)
@@ -56,6 +66,47 @@ namespace GameEngine
 			x -= vect.x;
 			y -= vect.y;
 			return *this;
+		}
+		
+		Vector2<T>&operator*=(const Vector2<T>&vect)
+		{
+			x *= vect.x;
+			y *= vect.y;
+			return *this;
+		}
+		
+		Vector2<T>&operator/=(const Vector2<T>&vect)
+		{
+			x /= vect.x;
+			y /= vect.y;
+			return *this;
+		}
+		
+		bool operator==(const Vector2<T>&vect) const
+		{
+			if (x == vect.x && y == vect.y)
+			{
+				return true;
+			}
+			return false;
+		}
+		
+		bool operator!=(const Vector2<T>&vect) const
+		{
+			if (x != vect.x || y != vect.y)
+			{
+				return false;
+			}
+			return true;
+		}
+		
+		bool equals(const Vector2<T>&vect) const
+		{
+			if (x == vect.x && y == vect.y)
+			{
+				return true;
+			}
+			return false;
 		}
 	};
 	

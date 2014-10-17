@@ -5,7 +5,7 @@
 
 extern void GameEngine_init();
 
-extern void openURL(const char*url);
+extern void openURL(const char*url, SDL_Window*window=NULL);
 extern void writeEmail(SDL_Window*window, const char*recipient, const char*subject, const char*body);
 
 extern void getDeviceModel(char*deviceString);

@@ -1019,19 +1019,19 @@ namespace SmashBros
 			}
 			break;
 			
-			case TEAM_RED:
+			case Global::TEAM_RED:
 			indicator->setColor(Color::RED);
 			break;
 			
-			case TEAM_BLUE:
+			case Global::TEAM_BLUE:
 			indicator->setColor(Color::BLUE);
 			break;
 			
-			case TEAM_GREEN:
+			case Global::TEAM_GREEN:
 			indicator->setColor(Color::GREEN);
 			break;
 			
-			case TEAM_YELLOW:
+			case Global::TEAM_YELLOW:
 			indicator->setColor(Color::YELLOW);
 			break;
 		}
@@ -4443,7 +4443,7 @@ namespace SmashBros
 		{
 			if(itemHolding!=null)
 			{
-				return itemHolding->use(Item::ATTACK_NORMAL);
+				return itemHolding->use(Player::ATTACK_A);
 			}
 		}
 		return false;
@@ -4453,7 +4453,7 @@ namespace SmashBros
 	{
 		if(itemHolding!=null)
 		{
-			return itemHolding->use(Item::ATTACK_SIDE);
+			return itemHolding->use(Player::ATTACK_SIDEA);
 		}
 		return false;
 	}
@@ -4462,7 +4462,7 @@ namespace SmashBros
 	{
 		if(itemHolding!=null)
 		{
-			return itemHolding->use(Item::ATTACK_UP);
+			return itemHolding->use(Player::ATTACK_UPA);
 		}
 		return false;
 	}
@@ -4471,7 +4471,7 @@ namespace SmashBros
 	{
 		if(itemHolding!=null)
 		{
-			return itemHolding->use(Item::ATTACK_DOWN);
+			return itemHolding->use(Player::ATTACK_DOWNA);
 		}
 		return false;
 	}
@@ -4482,11 +4482,15 @@ namespace SmashBros
 		{
 			if(type==STEP_CHARGE)
 			{
-				return itemHolding->chargeSmash(Item::ATTACK_SIDESMASH);
+				bool usedItem = itemHolding->chargeSmash(Player::ATTACK_SIDESMASH);
+				if(!usedItem)
+				{
+					return itemHolding->use(Player::ATTACK_SIDESMASH);
+				}
 			}
 			else if(type==STEP_GO)
 			{
-				return itemHolding->use(Item::ATTACK_SIDESMASH);
+				return itemHolding->use(Player::ATTACK_SIDESMASH);
 			}
 			return false;
 		}
@@ -4499,11 +4503,15 @@ namespace SmashBros
 		{
 			if(type==STEP_CHARGE)
 			{
-				return itemHolding->chargeSmash(Item::ATTACK_UPSMASH);
+				bool usedItem = itemHolding->chargeSmash(Player::ATTACK_UPSMASH);
+				if(!usedItem)
+				{
+					return itemHolding->use(Player::ATTACK_UPSMASH);
+				}
 			}
 			else if(type==STEP_GO)
 			{
-				return itemHolding->use(Item::ATTACK_UPSMASH);
+				return itemHolding->use(Player::ATTACK_UPSMASH);
 			}
 			return false;
 		}
@@ -4516,11 +4524,15 @@ namespace SmashBros
 		{
 			if(type==STEP_CHARGE)
 			{
-				return itemHolding->chargeSmash(Item::ATTACK_DOWNSMASH);
+				bool usedItem = itemHolding->chargeSmash(Player::ATTACK_DOWNSMASH);
+				if(!usedItem)
+				{
+					return itemHolding->use(Player::ATTACK_DOWNSMASH);
+				}
 			}
 			else if(type==STEP_GO)
 			{
-				return itemHolding->use(Item::ATTACK_DOWNSMASH);
+				return itemHolding->use(Player::ATTACK_DOWNSMASH);
 			}
 			return false;
 		}

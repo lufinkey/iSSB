@@ -13,6 +13,7 @@ namespace GameEngine
 		friend class Actor;
 		friend class WireframeActor;
 		friend class TextActor;
+		
 	public:
 		static const unsigned char ACTORTYPE_PRIMITIVE = 0;
 		static const unsigned char ACTORTYPE_ACTOR = 1;
@@ -33,13 +34,16 @@ namespace GameEngine
 		
 		int width;
 		int height;
-
+		
+		PrimitiveActor();
+		virtual ~PrimitiveActor();
+		
 		unsigned char getActorType();
 		
 		static unsigned char getDir(float x1,float y1,float x2,float y2);
 		static unsigned char getDir2(float x1,float y1,float x2,float y2);
-		static unsigned char getDir(Rectangle& r1, Rectangle& r2);
-		static unsigned char getDir(RectangleF& r1, RectangleF& r2);
+		static unsigned char getDir(const Rectangle& r1, const Rectangle& r2);
+		static unsigned char getDir(const RectangleF& r1, const RectangleF& r2);
 		static unsigned char getDir(PrimitiveActor*a1, PrimitiveActor*a2);
 		
 		static double distance(float x1,float y1,float x2,float y2);

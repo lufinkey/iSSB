@@ -13,28 +13,28 @@ namespace SmashBros
 	{
 		this->screen = screen;
 	}
-
+	
 	TitleScreen::TitleScreenActor::~TitleScreenActor()
 	{
 		//
 	}
-
+	
 	void TitleScreen::TitleScreenActor::onRelease()
 	{
-		eventDisable(Actor::EVENT_MOUSERELEASE);
+		setEventEnabled(Actor::EVENT_MOUSERELEASE, false);
 		screen->changing = true;
 		screen->changeTime = Game::getGameTime() + 1600;
 		MusicManager::stop();
 		Menus::playSound("titlescreen click");
 	}
-
+	
 	TitleScreen::TitleScreen(const String&name) : Screen(name)
 	{
 		titleScreen = null;
 		changeTime = 0;
 		changing = false;
 	}
-
+	
 	TitleScreen::~TitleScreen()
 	{
 		if(titleScreen!=null)
@@ -42,17 +42,17 @@ namespace SmashBros
 			delete titleScreen;
 		}
 	}
-
+	
 	void TitleScreen::Initialize()
 	{
 		titleScreen = new TitleScreenActor(this, (float)View::ScaleWidth()/2,(float)View::ScaleHeight()/2);
 	}
-
+	
 	void TitleScreen::LoadContent()
 	{
 		MusicManager::loadSong("Main Theme");
 		Menus::playSong("Main Theme");
-		titleScreen->eventEnable(Actor::EVENT_MOUSERELEASE);
+		titleScreen->setEventEnabled(Actor::EVENT_MOUSERELEASE, true);
 		Game::showBackground(false);
 		Menus::menuNo = MENU_TITLESCREEN;
 		Animation*anim = new Animation("title",1);
@@ -555,11 +555,11 @@ namespace SmashBros
 		rules_arrows->Update(gameTime);
 		if(rules_arrows->wasClicked())
 		{
-			rules_bar->eventDisable(Actor::EVENT_MOUSERELEASE);
+			rules_bar->setEventEnabled(Actor::EVENT_MOUSERELEASE, false);
 		}
 		else
 		{
-			rules_bar->eventEnable(Actor::EVENT_MOUSERELEASE);
+			rules_bar->setEventEnabled(Actor::EVENT_MOUSERELEASE, true);
 		}
 		rules_bar->Update(gameTime);
 		int prevValue;
@@ -784,6 +784,9 @@ namespace SmashBros
 		Menus::button_back->Draw(g, gameTime);
 		Menus::description->Draw(g, gameTime);
 	}
+	
+	const float ControlOptions::farDist = 10000;
+	const float ControlOptions::centerDist = 625;
 
 	ControlOptions::ControlOptions(const String&name) : Screen(name)
 	{
@@ -797,49 +800,49 @@ namespace SmashBros
 		button_a = new Actor(820, 450);
         button_a->addAnimation(new Animation("normal", 1, "Images/Game/Controls/button_a.png"));
         button_a->changeAnimation("normal", FORWARD);
-        button_a->relativeToView(false);
+        button_a->setRelativeToView(false);
 		button_a->Scale = 2;
 		button_a->setAlpha(0.2f);
 		
         button_b = new Actor(707.5f, 525);
         button_b->addAnimation(new Animation("normal", 1, "Images/Game/Controls/button_b.png"));
         button_b->changeAnimation("normal", FORWARD);
-        button_b->relativeToView(false);
+        button_b->setRelativeToView(false);
 		button_b->Scale = 2;
 		button_b->setAlpha(0.2f);
 		
         button_x = new Actor(820, 337.5f);
         button_x->addAnimation(new Animation("normal", 1, "Images/Game/Controls/button_xy.png"));
         button_x->changeAnimation("normal", FORWARD);
-        button_x->relativeToView(false);
+        button_x->setRelativeToView(false);
 		button_x->Scale = 2;
 		button_x->setAlpha(0.2f);
 		
         arrow_up = new Actor(150, 375);
         arrow_up->addAnimation(new Animation("normal", 1, "Images/Game/Controls/arrow_up.png"));
         arrow_up->changeAnimation("normal", FORWARD);
-        arrow_up->relativeToView(false);
+        arrow_up->setRelativeToView(false);
 		arrow_up->Scale = 2;
 		arrow_up->setAlpha(0.5f);
 		
         arrow_down = new Actor(150, 525);
         arrow_down->addAnimation(new Animation("normal", 1, "Images/Game/Controls/arrow_down.png"));
         arrow_down->changeAnimation("normal", FORWARD);
-        arrow_down->relativeToView(false);
+        arrow_down->setRelativeToView(false);
 		arrow_down->Scale = 2;
 		arrow_down->setAlpha(0.5f);
 		
         arrow_left = new Actor(75, 450);
         arrow_left->addAnimation(new Animation("normal", 1, "Images/Game/Controls/arrow_left.png"));
         arrow_left->changeAnimation("normal", FORWARD);
-        arrow_left->relativeToView(false);
+        arrow_left->setRelativeToView(false);
 		arrow_left->Scale = 2;
 		arrow_left->setAlpha(0.5f);
 		
         arrow_right = new Actor(225, 450);
         arrow_right->addAnimation(new Animation("normal", 1, "Images/Game/Controls/arrow_right.png"));
         arrow_right->changeAnimation("normal", FORWARD);
-        arrow_right->relativeToView(false);
+        arrow_right->setRelativeToView(false);
 		arrow_right->Scale = 2;
 		arrow_right->setAlpha(0.5f);
 		
@@ -865,7 +868,7 @@ namespace SmashBros
 		joystick->addAnimation(new Animation("down_right", 1, "Images/Game/Controls/joystick_down_right.png"));
 		joystick->addAnimation(new Animation("down_right2", 1, "Images/Game/Controls/joystick_down_right2.png"));
 		joystick->changeAnimation("center", FORWARD);
-		joystick->relativeToView(false);
+		joystick->setRelativeToView(false);
 		joystick->Scale = 2;
 		joystick->setAlpha(0.5f);
 		
@@ -1374,14 +1377,14 @@ namespace SmashBros
 	OtherOptions::DonateButton::~DonateButton() {}
 	void OtherOptions::DonateButton::onRelease()
 	{
-		openURL("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=M43B9W76GWWBS&lc=US&item_name=Broken%20Physics&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted");
+		openURL("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=M43B9W76GWWBS&lc=US&item_name=Broken%20Physics&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted", Game::getWindow());
 	}
 	
 	OtherOptions::DonateBitcoinButton::DonateBitcoinButton(float x1, float y1, const String&label) : MenuBarSmallButton(x1,y1,label) {}
 	OtherOptions::DonateBitcoinButton::~DonateBitcoinButton() {}
 	void OtherOptions::DonateBitcoinButton::onRelease()
 	{
-		openURL("https://coinbase.com/checkouts/a1672e1864707bc7467e9a3572987ab9");
+		openURL("https://coinbase.com/checkouts/a1672e1864707bc7467e9a3572987ab9", Game::getWindow());
 	}
 	
 	OtherOptions::OtherOptions(const String&name) : Screen(name)

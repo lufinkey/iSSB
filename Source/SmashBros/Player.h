@@ -237,6 +237,7 @@ namespace SmashBros
 		
 		void setOnGround(boolean toggle);
 		void setItemOffset(float x1, float y1);
+		void setIndicatorOffset(float x1, float y1);
 		
 		void setCantDo();
 		void setHanging(boolean toggle);
@@ -254,6 +255,7 @@ namespace SmashBros
 		void setHangPoint(int x1, int y1);
 		void destroyCharge();
 		void animFinish();
+		void checkAttacks();
 		
 		void updateGravity();
 		void updateFrame();
@@ -289,11 +291,6 @@ namespace SmashBros
 		void climbUpAttack();
 		
 	public:
-		static const byte TEAM_RED = 1;
-		static const byte TEAM_BLUE = 2;
-		static const byte TEAM_GREEN = 3;
-		static const byte TEAM_YELLOW = 4;
-		
 		static const byte LEFT = 1;
 		static const byte RIGHT = 2;
 		
@@ -438,9 +435,7 @@ namespace SmashBros
 		byte getMoveLeft();
 		byte getMoveRight();
 		WireframeActor*getHitbox();
-		void setIndicatorOffset(float x1, float y1);
 		String getFolderPath();
-		void checkAttacks();
 		boolean pickUpItem(Item*item);
 		
 		boolean hitboxRectsColliding(HitBox*collide);

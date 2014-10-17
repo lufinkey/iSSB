@@ -317,7 +317,7 @@ namespace GameEngine
 		this->color = color;
 	}
 	
-	Color Graphics2D::getColor()
+	const Color& Graphics2D::getColor()
 	{
 		return color;
 	}
@@ -327,7 +327,7 @@ namespace GameEngine
 		this->imageColor = color;
 	}
 	
-	Color Graphics2D::getImageMask()
+	const Color& Graphics2D::getImageMask()
 	{
 		return imageColor;
 	}
@@ -345,6 +345,11 @@ namespace GameEngine
 	void Graphics2D::setFont(Font*font)
 	{
 		this->font = font;
+	}
+	
+	Font*Graphics2D::getFont()
+	{
+		return font;
 	}
 	
 	Font*Graphics2D::getDefaultFont()

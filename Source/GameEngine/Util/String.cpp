@@ -1254,7 +1254,7 @@ String& String::operator+=(const wchar_t*str)
 	return *this;
 }
 
-String& String::operator+=(const std::wstring str)
+String& String::operator+=(const std::wstring& str)
 {
 	String str2(str);
 	int total2 = total + str2.length();
@@ -1589,12 +1589,12 @@ String& String::operator=(const double num)
 	return *this;
 }
 
-bool String::operator==(String& cmp)
+bool String::operator==(String& cmp) const
 {
 	return equals(cmp);
 }
 
-bool String::operator==(const char*cmp)
+bool String::operator==(const char*cmp) const
 {
 	return equals(cmp);
 }

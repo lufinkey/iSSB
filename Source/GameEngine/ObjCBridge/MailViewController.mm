@@ -1,30 +1,38 @@
 
 #import "MailViewController.h"
 
-static bool mailOpened = false;
-static UIViewController*currentView = nil;
-
 @implementation MailViewController
 
-- (bool)isOpened
+- (id)init
+{
+	self = [super init];
+	if(self==nil)
+	{
+		return nil;
+	}
+	
+	mailOpened = NO;
+	
+	return self;
+}
+
+- (BOOL)isOpened
 {
 	return mailOpened;
 }
 
-- (IBAction)openMail:(id)sender viewCtrl:(UIViewController*)viewCtrl person:(NSString*)person subject:(NSString*)subject body:(NSString*)body
+- (void)openMailInViewController:(UIViewController*)viewCtrl person:(NSString*)person subject:(NSString*)subject body:(NSString*)body
 {
     if ([MFMailComposeViewController canSendMail] && !mailOpened)
     {
-		MFMailComposeViewController *mailer = [[MFMailComposeViewController alloc] init];
-        mailer.mailComposeDelegate = self;
-		[mailer setSubject:subject];
-        NSArray *toRecipients = [NSArray arrayWithObjects:person, nil];
-        [mailer setToRecipients:toRecipients];
-        [mailer setMessageBody:body isHTML:NO];
-        [viewCtrl presentModalViewController:mailer animated:YES];
-        [mailer release];
-		currentView = viewCtrl;
-		mailOpened = true;
+        self.mailComposeDelegate = self;
+		[self setSubject:subject];
+        NSArray *toRecipients = [[NSArray alloc] initWithObjects:person, nil];
+        [self setToRecipients:toRecipients];
+        [self setMessageBody:body isHTML:NO];
+		[viewCtrl presentModalViewController:self animated:YES];
+		mailOpened = YES;
+		[toRecipients release];
     }
     else
     {
@@ -64,7 +72,7 @@ static UIViewController*currentView = nil;
 		break;
     }
 	// Remove the mail view
-	[currentView dismissModalViewControllerAnimated:YES];
+	[self dismissModalViewControllerAnimated:YES];
 	mailOpened = false;
 }
 

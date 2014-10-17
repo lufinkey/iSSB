@@ -16,9 +16,9 @@ namespace SmashBros
 			friend class Controls;//nafe
 		private:
 			
-			static const float farDist = 12100;
-			static const float centerDist = 625;
-			static const long runDelay = 50;
+			static const float farDist;
+			static const float centerDist;
+			static const long runDelay;
 			
 			Actor*button_a;
 			Actor*button_b;

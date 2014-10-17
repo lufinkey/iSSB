@@ -304,7 +304,7 @@ namespace SmashBros
 				discard();
 				switch(tossDir)
 				{
-					case ATTACK_NORMAL:
+					case Player::ATTACK_A:
 					holderItemAnimation(holder);
 					switch(holder->getPlayerDir())
 					{
@@ -319,8 +319,8 @@ namespace SmashBros
 					yvelocity = -2;
 					break;
 					
-					case ATTACK_SIDE:
-					case ATTACK_SIDESMASH:
+					case Player::ATTACK_SIDEA:
+					case Player::ATTACK_SIDESMASH:
 					holderItemAnimation(holder);
 					switch(holder->getPlayerDir())
 					{
@@ -335,11 +335,11 @@ namespace SmashBros
 					yvelocity = -1.7f;
 					break;
 					
-					case ATTACK_UP:
+					case Player::ATTACK_UPA:
 					yvelocity = -6.2f;
 					break;
 					
-					case ATTACK_DOWN:
+					case Player::ATTACK_DOWNA:
 					yvelocity = 6.2f;
 					break;
 				}
@@ -389,7 +389,7 @@ namespace SmashBros
 				boolean prevTossing = tossing;
 				tossing = true;
 				
-				toss(ATTACK_NORMAL);
+				toss(Player::ATTACK_A);
 				
 				tossing = prevTossing;
 			}

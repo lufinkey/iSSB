@@ -69,33 +69,34 @@ namespace SmashBros
 
 		static int maxTime;
 		static int minTime;
-
+		
 		static const int TYPE_TRAINING = 0;
 		static const int TYPE_GROUPBRAWL = 1;
 		
 		static const int MODE_FREEFORALL = 0;
 		static const int MODE_TIME_LIMIT = 1;
 		static const int MODE_STOCK = 2;
-
+		
 		static const byte TEAM_RED = 1;
 		static const byte TEAM_BLUE = 2;
 		static const byte TEAM_GREEN = 3;
 		static const byte TEAM_YELLOW = 4;
-
+		
 		//CHARACTER CONSTANTS
 		static const int CHAR_MARIO = 1;
 		static const int CHAR_ICHIGO = 2;
 		static const int CHAR_SONIC = 3;
 		static const int CHAR_FOX = 4;
 		static const int CHAR_PIKACHU = 5;
-
+		static const int CHAR_LINK = 6;
+		
 		//STAGE CONSTANTS
 		static const int STAGE_FRACTALSTAGE = 0;
 		static const int STAGE_HILLSIDEBATTLEGROUND = 1;
 		static const int STAGE_BATTLEFIELDBRAWL = 2;
 		static const int STAGE_FINALDESTINATION = 3;
 		static const int STAGE_HYRULETEMPLE = 4;
-
+		
 		//ITEM CONSTANTS
 		static const int ITEM_CUSTOM = 0;
 		static const int ITEM_SMASHBALL = 1;
@@ -105,7 +106,7 @@ namespace SmashBros
 		static const int ITEM_SUPERMUSHROOM = 5;
 		static const int ITEM_POISONMUSHROOM = 6;
 		
-		static const int totalCharacters = 5;
+		static const int totalCharacters = 6;
 		static const int totalItems = 6;
 		static const int totalStages = 4;
 		

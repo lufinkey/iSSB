@@ -6,6 +6,7 @@
 #include "Game/Characters/Ichigo.h"
 #include "Game/Characters/Fox.h"
 #include "Game/Characters/Pikachu.h"
+#include "Game/Characters/Link.h"
 
 #include "Game/Stages/FractalStage.h"
 #include "Game/Stages/HillsideBattleground.h"
@@ -36,6 +37,9 @@ namespace SmashBros
 			
 			case Global::CHAR_PIKACHU:
 			return "pikachu.png";
+			
+			case Global::CHAR_LINK:
+			return "link.png";
 		}
 	}
 	
@@ -65,6 +69,9 @@ namespace SmashBros
 			
 			case Global::CHAR_PIKACHU:
 			return "Pikachu";
+			
+			case Global::CHAR_LINK:
+			return "Link";
 		}
 	}
 	
@@ -108,6 +115,10 @@ namespace SmashBros
 			p = new Pikachu(x1,y1,playerNo,team);
 			p->charNo = Global::CHAR_PIKACHU;
 			break;
+			
+			case Global::CHAR_LINK:
+			p = new Link(x1,y1,playerNo,team);
+			p->charNo = Global::CHAR_LINK;
 		}
 		return p;
 	}
@@ -152,6 +163,10 @@ namespace SmashBros
 			win_fps = 6;
 			winhold_fps = 6;
 			winhold_rows = 10;
+			break;
+			
+			case Global::CHAR_LINK:
+			//TODO add link win animations
 			break;
 		}
 		

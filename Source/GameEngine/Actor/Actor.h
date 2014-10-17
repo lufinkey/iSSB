@@ -94,9 +94,10 @@ namespace GameEngine
 	    
 		void mirror(bool toggle);
 		void mirrorVertical(bool toggle);
-	    bool eventEnabled(unsigned char eventCode);
-	    void eventEnable(unsigned char eventCode);
-	    void eventDisable(unsigned char eventCode);
+		bool isMirrored();
+		bool isMirroredVertical();
+	    bool isEventEnabled(unsigned char eventCode);
+	    void setEventEnabled(unsigned char eventCode, bool toggle);
 	    
 		void changeAnimation(Animation*anim, unsigned char dir);
 	    void changeAnimation(const String&animName, unsigned char dir);
@@ -110,7 +111,8 @@ namespace GameEngine
 		Animation*getAnimation();
 		Animation*getLastAnimation();
 		
-		void relativeToView(bool toggle);
+		void setRelativeToView(bool toggle);
+		bool isRelativeToView();
 		
 		void mouseOverUsesPixel(bool toggle);
 		bool mouseOver();
@@ -163,7 +165,7 @@ namespace GameEngine
 		float getYPrev();
 		
 		void setColor(const Color&c);
-	    Color getColor();
+		const Color& getColor();
 	    
 	    void setRotation(float degrees);
 	    float getRotation();

@@ -12,16 +12,16 @@ namespace GameEngine
 	class MenuScreen : public Screen
 	{
 	private:
-
+		
 		static const unsigned char TEXT = 0;
 		static const unsigned char IMAGE = 1;
-
+		
 		class TextMenuItem : TextActor
 		{
 			friend class MenuScreen;
 			private:
 				MenuScreen*menu;
-
+				
 				unsigned char type;
 				
 				Color normColor;
@@ -32,15 +32,15 @@ namespace GameEngine
 				
 				bool selected;
 			public:
-				TextMenuItem(MenuScreen*menu, float x1, float y1, String s, Font*f, const Color&normC, const Color&hoverC, String target);
-				TextMenuItem(MenuScreen*menu, float x1, float y1, String s, Font*f, const Color&normC, const Color&hoverC, const Color&clickC, String target);
+				TextMenuItem(MenuScreen*menu, float x1, float y1, const String& s, Font*f, const Color&normC, const Color&hoverC, const String& target);
+				TextMenuItem(MenuScreen*menu, float x1, float y1, const String& s, Font*f, const Color&normC, const Color&hoverC, const Color&clickC, const String& target);
 				virtual ~TextMenuItem();
-
+				
 				void OnRelease();
 				virtual void Draw(Graphics2D& g, long gameTime);
 
 		};
-
+		
 		class ImageMenuItem : Actor
 		{
 			friend class MenuScreen;
@@ -54,10 +54,10 @@ namespace GameEngine
 				bool selected;
 				
 			public:
-				ImageMenuItem(MenuScreen*menu, float x1, float y1,Animation*normAnim, Animation*hoverAnim, String target);
-				ImageMenuItem(MenuScreen*menu, float x1, float y1,Animation*normAnim, Animation*hoverAnim, Animation*clickAnim, String target);
-				ImageMenuItem(MenuScreen*menu, float x1, float y1,Animation*anim, const Color&hoverColor, String target);
-				ImageMenuItem(MenuScreen*menu, float x1, float y1,Animation*anim, const Color&hoverColor, const Color&clickColor, String target);
+				ImageMenuItem(MenuScreen*menu, float x1, float y1,Animation*normAnim, Animation*hoverAnim, const String& target);
+				ImageMenuItem(MenuScreen*menu, float x1, float y1,Animation*normAnim, Animation*hoverAnim, Animation*clickAnim, const String& target);
+				ImageMenuItem(MenuScreen*menu, float x1, float y1,Animation*anim, const Color&hoverColor, const String& target);
+				ImageMenuItem(MenuScreen*menu, float x1, float y1,Animation*anim, const Color&hoverColor, const Color&clickColor, const String& target);
 				virtual ~ImageMenuItem();
 
 				void OnRelease();
@@ -84,7 +84,7 @@ namespace GameEngine
 
 				void Update(long gameTime);
 				void Draw(Graphics2D& g, long gameTime);
-
+				
 				bool MouseOver();
 				void OnRelease();
 				void setSelected(bool toggle);
@@ -94,35 +94,35 @@ namespace GameEngine
 				void setRotation(float rotation);
 				void setColor(const Color&color);
 		};
-
+		
 		ArrayList<MenuItem*> Items;
 		
 	protected:
 		int selectedIndex;
 		bool selecting;
 		bool soundEnabled;
-
+		
 	public:
-		MenuScreen(String n);
+		MenuScreen(const String& name);
 		virtual ~MenuScreen();
-
+		
 		virtual void Update(long gameTime);
 		virtual void Draw(Graphics2D& g, long gameTime);
-
+		
 		//ImageMenuItem
-		void addItem(float x1, float y1,Animation*normAnim, Animation*hoverAnim, String target);
-		void addItem(float x1, float y1,Animation*normAnim, Animation*hoverAnim, Animation*clickAnim, String target);
-		void addItem(float x1, float y1,Animation*anim, const Color&hoverColor, String target);
-		void addItem(float x1, float y1,Animation*anim, const Color&hoverColor, const Color&clickColor, String target);
-		void addItem(float x1, float y1,String normAnim, String hoverAnim, String target);
-		void addItem(float x1, float y1,String normAnim, String hoverAnim, String clickAnim, String target);
-		void addItem(float x1, float y1,String anim, const Color&hoverColor, String target);
-		void addItem(float x1, float y1,String anim, const Color&hoverColor, const Color&clickColor, String target);
-
+		void addItem(float x1, float y1,Animation*normAnim, Animation*hoverAnim, const String& target);
+		void addItem(float x1, float y1,Animation*normAnim, Animation*hoverAnim, Animation*clickAnim, const String& target);
+		void addItem(float x1, float y1,Animation*anim, const Color&hoverColor, const String& target);
+		void addItem(float x1, float y1,Animation*anim, const Color&hoverColor, const Color&clickColor, const String& target);
+		void addItem(float x1, float y1,const String& normAnim, const String& hoverAnim, const String& target);
+		void addItem(float x1, float y1,const String& normAnim, const String& hoverAnim, const String& clickAnim, const String& target);
+		void addItem(float x1, float y1,const String& anim, const Color&hoverColor, const String& target);
+		void addItem(float x1, float y1,const String& anim, const Color&hoverColor, const Color&clickColor, const String& target);
+		
 		//TextMenuItem
-		void addItem(float x1, float y1, String s, Font*f, const Color&normC, const Color&hoverC, String target);
-		void addItem(float x1, float y1, String s, Font*f, const Color&normC, const Color&hoverC, const Color&clickC, String target);
-
+		void addItem(float x1, float y1, const String& s, Font*f, const Color&normC, const Color&hoverC, const String& target);
+		void addItem(float x1, float y1, const String& s, Font*f, const Color&normC, const Color&hoverC, const Color&clickC, const String& target);
+		
 		void setItemScale(int index, float scale);
 		void setItemRotation(int index, float degrees);
 		void setItemColor(int index, const Color&c);

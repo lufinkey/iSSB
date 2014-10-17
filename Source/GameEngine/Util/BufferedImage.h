@@ -34,6 +34,6 @@ namespace GameEngine
 		bool pixelAtPoint(unsigned int index) const;
 		bool pixelAtPoint(unsigned int x,unsigned int y) const;
 		
-		SDL_Texture*getTexture();
+		SDL_Texture*getTexture() const;
 	};
 }

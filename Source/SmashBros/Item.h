@@ -95,14 +95,6 @@ namespace SmashBros
 		void causeHurt(Player*collide, byte dir, int time);
 		
 	public:
-		static const byte ATTACK_NORMAL = 0;
-		static const byte ATTACK_SIDE = 1;
-		static const byte ATTACK_UP = 2;
-		static const byte ATTACK_DOWN = 3;
-		static const byte ATTACK_SIDESMASH = 4;
-		static const byte ATTACK_UPSMASH = 5;
-		static const byte ATTACK_DOWNSMASH = 6;
-		
 		static const byte TYPE_HOLD = 0;
 		static const byte TYPE_WEAR = 1;
 		static const byte TYPE_HAT = 2;

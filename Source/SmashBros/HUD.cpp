@@ -10,15 +10,15 @@ namespace SmashBros
 {
 	HUD::ReadyGoActor::ReadyGoActor(float x1, float y1, HUD*hud) : Actor(x1,y1)
 	{
-		relativeToView(false);
+		setRelativeToView(false);
 		this->hud = hud;
 	}
-
+	
 	HUD::ReadyGoActor::~ReadyGoActor()
 	{
 		//
 	}
-
+	
 	void HUD::ReadyGoActor::onAnimationFinish(const String&n)
 	{
 		if(n.equals("go"))
@@ -26,11 +26,11 @@ namespace SmashBros
 			hud->showReadyGo = false;
 		}
 	}
-
+	
 	HUD::HUD()
 	{
 		Load();
-
+		
 		showReadyGo = true;
 		showFinishGame = false;
 		finishGameTime = 0;
@@ -49,7 +49,7 @@ namespace SmashBros
 		}
 		
 		ReadyGo = new ReadyGoActor(View::ScaleWidth() * 0.5f,View::ScaleHeight() * 0.5f, this);
-		ReadyGo->relativeToView(false);
+		ReadyGo->setRelativeToView(false);
 		
 		ReadyGo->addAnimation(new Animation("ready",1,"Images/Game/HUD/Ready.png"));
 		ReadyGo->addAnimation(new Animation("go",1,"Images/Game/HUD/Go.png"));
@@ -65,7 +65,7 @@ namespace SmashBros
 		ReadyGo->Scale = 0.7f;
 		
 		FinishGame = new Actor(View::ScaleWidth() * 0.5f,View::ScaleHeight() * 0.5f);
-		FinishGame->relativeToView(false);
+		FinishGame->setRelativeToView(false);
 		
 		FinishGame->addAnimation(new Animation("game", 1, "Images/Game/HUD/Game.png"));
 		FinishGame->changeAnimation("game", FORWARD);
@@ -96,7 +96,7 @@ namespace SmashBros
 		if(Global::gameMode == Global::MODE_TIME_LIMIT)
 		{
 			currentTime = new TextActor((float)View::ScaleWidth()/2, 40, "0:00", AssetManager::getFont("Fonts/arial.ttf", Font::BOLD, 48), Color::WHITE);
-			currentTime->relativeToView(false);
+			currentTime->setRelativeToView(false);
 			currentTime->setAlignment(TextActor::ALIGN_CENTER);
 		}
 		else
@@ -362,7 +362,7 @@ namespace SmashBros
 					drawActor(g, gameTime, this.x, this.y, this.Scale, false);
 				}
 			};*/
-			stockIcon->relativeToView(false);
+			stockIcon->setRelativeToView(false);
 			int exists = AssetManager::loadImage(path + "stock.png");
 			
 			if(exists == 1)
@@ -389,7 +389,7 @@ namespace SmashBros
 					drawActor(g, gameTime, false);
 				}
 			};*/
-			stockText->relativeToView(false);
+			stockText->setRelativeToView(false);
 			
 			stockText->setAlignment(TextActor::ALIGN_TOPLEFT);
 		}
@@ -402,7 +402,7 @@ namespace SmashBros
 				drawActor(g, gameTime, false);
 			}
 		};*/
-		scoreText->relativeToView(false);
+		scoreText->setRelativeToView(false);
 		scoreText->setAlignment(TextActor::ALIGN_CENTER);
 		
 		percentText = new Actor(0,0);
@@ -415,7 +415,7 @@ namespace SmashBros
 		        height*= Scale;
 			}
 		};*/
-		percentText->relativeToView(false);
+		percentText->setRelativeToView(false);
 		
 		percentText->addAnimation(new Animation("0",1,"Images/Game/HUD/PercentText/0.png"));
 		percentText->addAnimation(new Animation("1",1,"Images/Game/HUD/PercentText/1.png"));
@@ -446,7 +446,7 @@ namespace SmashBros
 			        height*= Scale;
 				}
 			};*/
-			symbol->relativeToView(false);
+			symbol->setRelativeToView(false);
 			symbol->addAnimation(new Animation("normal",1,image));
 			symbol->changeAnimation("normal", FORWARD);
 			symbol->setAlpha(0.5f);
@@ -465,7 +465,7 @@ namespace SmashBros
 			        height*= Scale;
 				}
 			};*/
-			symbol->relativeToView(false);
+			symbol->setRelativeToView(false);
 			symbol->addAnimation(new Animation("normal",1,"Images/Game/HUD/default_symbol.png"));
 			symbol->changeAnimation("normal", FORWARD);
 			symbol->setAlpha(0.5f);
@@ -509,7 +509,7 @@ namespace SmashBros
 				drawActor(g,gameTime,false);
 			}
 		};*/
-		playerName->relativeToView(false);
+		playerName->setRelativeToView(false);
 		playerName->setAlignment(TextActor::ALIGN_CENTER);
 	}
 
@@ -654,7 +654,7 @@ namespace SmashBros
 		bg->addAnimation(new Animation("normal",1,"Images/Game/HUD/Training/bg.png"));
 		bg->changeAnimation("normal", FORWARD);
 		bg->setVisible(false);
-		bg->relativeToView(false);
+		bg->setRelativeToView(false);
 		
 		bg->x = (float)bg->width/2;
 		bg->y = (float)bg->height/2;
@@ -663,7 +663,7 @@ namespace SmashBros
 		tab->addAnimation(new Animation("closed",1,"Images/Game/HUD/Training/button_open.png"));
 		tab->addAnimation(new Animation("opened",1,"Images/Game/HUD/Training/button_close.png"));
 		tab->changeAnimation("closed", FORWARD);
-		tab->relativeToView(false);
+		tab->setRelativeToView(false);
 		
 		tab->x = (float)tab->width/2;
 		tab->y = 100;
@@ -671,14 +671,14 @@ namespace SmashBros
 		apply = new Actor(100,450);
 		apply->addAnimation(new Animation("normal",1,"Images/Game/HUD/Training/button_apply.png"));
 		apply->changeAnimation("normal", FORWARD);
-		apply->relativeToView(false);
+		apply->setRelativeToView(false);
 		apply->setVisible(false);
 		apply->Scale = 1.2f;
 		
 		finish = new Actor(100,500);
 		finish->addAnimation(new Animation("normal",1,"Images/Game/HUD/Training/button_finish.png"));
 		finish->changeAnimation("normal", FORWARD);
-		finish->relativeToView(false);
+		finish->setRelativeToView(false);
 		finish->setVisible(false);
 		finish->Scale = 1.2f;
 		
@@ -973,9 +973,9 @@ namespace SmashBros
 		value = 0;
 		label = new TextActor("",AssetManager::getFont("Fonts/arial.ttf", Font::BOLD, textSize),Color::BLACK);
 		label->setAlignment(TextActor::ALIGN_CENTER);
-		label->relativeToView(false);
+		label->setRelativeToView(false);
 		
-		relativeToView(false);
+		setRelativeToView(false);
 		
 		addAnimation(new Animation("normal",1,anim));
 		changeAnimation("normal",FORWARD);
@@ -983,14 +983,14 @@ namespace SmashBros
 		left = new Actor(0,0);
 		left->addAnimation(new Animation("normal",1,"Images/Game/HUD/Training/arrow.png"));
 		left->changeAnimation("normal", FORWARD);
-		left->relativeToView(false);
+		left->setRelativeToView(false);
 		left->setAlpha(0.6f);
 		right = new Actor(0,0);
 		Animation*a = new Animation("normal",1,"Images/Game/HUD/Training/arrow.png");
 		a->mirror(true);
 		right->addAnimation(a);
 		right->changeAnimation("normal", FORWARD);
-		right->relativeToView(false);
+		right->setRelativeToView(false);
 		right->setAlpha(0.6f);
 	}
 
@@ -1098,28 +1098,28 @@ namespace SmashBros
 		pauseButton = new Actor(110,60);
 		pauseButton->addAnimation(new Animation("normal", 1, "Images/Game/Controls/button_start.png"));
 		pauseButton->changeAnimation("normal", FORWARD);
-		pauseButton->relativeToView(false);
+		pauseButton->setRelativeToView(false);
 		pauseButton->setAlpha(0.2f);
 		pauseButton->Scale = 2.0f;
 		
 		resumeButton = new Actor(220,160);
 		resumeButton->addAnimation(new Animation("normal", 1, "Images/Game/HUD/ResumeButton.png"));
 		resumeButton->changeAnimation("normal", FORWARD);
-		resumeButton->relativeToView(false);
+		resumeButton->setRelativeToView(false);
 		resumeButton->setAlpha(0.2f);
 		resumeButton->Scale = 1.6f;
 		
 		finishButton = new Actor(View::ScaleWidth()/2, View::ScaleHeight()/2);
 		finishButton->addAnimation(new Animation("normal", 1, "Images/Game/HUD/FinishButton.png"));
 		finishButton->changeAnimation("normal", FORWARD);
-		finishButton->relativeToView(false);
+		finishButton->setRelativeToView(false);
 		finishButton->setAlpha(0.2f);
 		finishButton->Scale = 1.6f;
 		
 		exitButton = new Actor(680, 440);
 		exitButton->addAnimation(new Animation("normal", 1, "Images/Game/HUD/ExitButton.png"));
 		exitButton->changeAnimation("normal", FORWARD);
-		exitButton->relativeToView(false);
+		exitButton->setRelativeToView(false);
 		exitButton->setAlpha(0.2f);
 		exitButton->Scale = 1.6f;
 	}

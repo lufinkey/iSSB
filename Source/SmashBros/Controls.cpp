@@ -12,6 +12,9 @@ namespace SmashBros
 	bool Controls::touchEnabled = true;
 	bool Controls::joystickEnabled = true;
 	byte Controls::touchPlayer = 1;
+	const float Controls::ControlHUD::farDist = 12100;
+	const float Controls::ControlHUD::centerDist = 625;
+	const long Controls::ControlHUD::runDelay = 50;
 	
 	typedef struct
 	{
@@ -35,56 +38,56 @@ namespace SmashBros
         button_a = new Actor(820, 450);
         button_a->addAnimation(new Animation("normal", 1, "Images/Game/Controls/button_a.png"));
         button_a->changeAnimation("normal", FORWARD);
-        button_a->relativeToView(false);
+        button_a->setRelativeToView(false);
 		button_a->Scale = 2;
 		button_a->setAlpha(0.2f);
 		
         button_b = new Actor(707.5f, 525);
         button_b->addAnimation(new Animation("normal", 1, "Images/Game/Controls/button_b.png"));
         button_b->changeAnimation("normal", FORWARD);
-        button_b->relativeToView(false);
+        button_b->setRelativeToView(false);
 		button_b->Scale = 2;
 		button_b->setAlpha(0.2f);
 		
         button_x = new Actor(820, 337.5f);
         button_x->addAnimation(new Animation("normal", 1, "Images/Game/Controls/button_xy.png"));
         button_x->changeAnimation("normal", FORWARD);
-        button_x->relativeToView(false);
+        button_x->setRelativeToView(false);
 		button_x->Scale = 2;
 		button_x->setAlpha(0.2f);
 		
 		button_z = new Actor(790, 60);
         button_z->addAnimation(new Animation("normal", 1, "Images/Game/Controls/button_z.png"));
         button_z->changeAnimation("normal", FORWARD);
-        button_z->relativeToView(false);
+        button_z->setRelativeToView(false);
 		button_z->Scale = 2;
 		button_z->setAlpha(0.2f);
 		
         arrow_up = new Actor(150, 375);
         arrow_up->addAnimation(new Animation("normal", 1, "Images/Game/Controls/arrow_up.png"));
         arrow_up->changeAnimation("normal", FORWARD);
-        arrow_up->relativeToView(false);
+        arrow_up->setRelativeToView(false);
 		arrow_up->Scale = 2;
 		arrow_up->setAlpha(0.5f);
 		
         arrow_down = new Actor(150, 525);
         arrow_down->addAnimation(new Animation("normal", 1, "Images/Game/Controls/arrow_down.png"));
         arrow_down->changeAnimation("normal", FORWARD);
-        arrow_down->relativeToView(false);
+        arrow_down->setRelativeToView(false);
 		arrow_down->Scale = 2;
 		arrow_down->setAlpha(0.5f);
 		
         arrow_left = new Actor(75, 450);
         arrow_left->addAnimation(new Animation("normal", 1, "Images/Game/Controls/arrow_left.png"));
         arrow_left->changeAnimation("normal", FORWARD);
-        arrow_left->relativeToView(false);
+        arrow_left->setRelativeToView(false);
 		arrow_left->Scale = 2;
 		arrow_left->setAlpha(0.5f);
 		
         arrow_right = new Actor(225, 450);
         arrow_right->addAnimation(new Animation("normal", 1, "Images/Game/Controls/arrow_right.png"));
         arrow_right->changeAnimation("normal", FORWARD);
-        arrow_right->relativeToView(false);
+        arrow_right->setRelativeToView(false);
 		arrow_right->Scale = 2;
 		arrow_right->setAlpha(0.5f);
 		
@@ -110,7 +113,7 @@ namespace SmashBros
 		joystick->addAnimation(new Animation("down_right", 1, "Images/Game/Controls/joystick_down_right.png"));
 		joystick->addAnimation(new Animation("down_right2", 1, "Images/Game/Controls/joystick_down_right2.png"));
 		joystick->changeAnimation("center", FORWARD);
-		joystick->relativeToView(false);
+		joystick->setRelativeToView(false);
 		joystick->Scale = 2;
 		joystick->setAlpha(0.5f);
 		

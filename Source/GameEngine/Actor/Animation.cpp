@@ -14,8 +14,8 @@ namespace GameEngine
 		names = anim.names;
 		currentFrame = anim.currentFrame;
 		recentFrame = anim.recentFrame;
-		isMirrored = anim.isMirrored;
-		isMirroredVertical = anim.isMirroredVertical;
+		mirrored = anim.mirrored;
+		mirroredVertical = anim.mirroredVertical;
 		rows = anim.rows;
 		cols = anim.cols;
 		
@@ -42,7 +42,7 @@ namespace GameEngine
 		name = anim.name;
 	}
 	
-	Animation::Animation(String n,int speed)
+	Animation::Animation(const String& n, int speed)
 	{
 		rows = 0;
 		cols = 0;
@@ -57,11 +57,11 @@ namespace GameEngine
 		direction = FORWARD;
 		width = 1;
 		height = 1;
-		isMirrored = false;
-		isMirroredVertical = false;
+		mirrored = false;
+		mirroredVertical = false;
 	}
 	
-	Animation::Animation(String n,int speed,String frame) //(animType 0)
+	Animation::Animation(const String& n, int speed, const String& frame) //(animType 0)
 	{
 		rows = 0;
 		cols = 0;
@@ -76,13 +76,13 @@ namespace GameEngine
 		direction = FORWARD;
 		width = 1;
 		height = 1;
-		isMirrored = false;
-		isMirroredVertical = false;
+		mirrored = false;
+		mirroredVertical = false;
 		
 		addFrame(frame);
 	}
     
-	Animation::Animation(String n,int speed,int xFrames,int yFrames) //(animType 1)
+	Animation::Animation(const String& n,int speed,int xFrames,int yFrames) //(animType 1)
 	{
 		sequence = NULL;
 		names = ArrayList<String>();
@@ -97,11 +97,11 @@ namespace GameEngine
 		rows = xFrames;
 		cols = yFrames;
 		frames = 0;
-		isMirrored=false;
-		isMirroredVertical = false;
+		mirrored=false;
+		mirroredVertical = false;
 	}
     
-	Animation::Animation(String n,int speed,int xFrames,int yFrames,ArrayList<int> seq) //(animType 2)
+	Animation::Animation(const String& n, int speed, int xFrames, int yFrames, const ArrayList<int>& seq) //(animType 2)
 	{
 		sequence = new int[seq.size()];
 		names = ArrayList<String>();
@@ -121,8 +121,8 @@ namespace GameEngine
 		rows = xFrames;
 		cols = yFrames;
 		frames = seq.size();
-		isMirrored=false;
-		isMirroredVertical = false;
+		mirrored=false;
+		mirroredVertical = false;
 	}
 	
 	Animation::~Animation()
@@ -149,8 +149,8 @@ namespace GameEngine
 		
 		currentFrame = anim.currentFrame;
 		recentFrame = anim.recentFrame;
-		isMirrored = anim.isMirrored;
-		isMirroredVertical = anim.isMirroredVertical;
+		mirrored = anim.mirrored;
+		mirroredVertical = anim.mirroredVertical;
 		rows = anim.rows;
 		cols = anim.cols;
 		
@@ -181,22 +181,22 @@ namespace GameEngine
 	
 	void Animation::mirror(bool toggle)
 	{
-		isMirrored=toggle;
+		mirrored=toggle;
 	}
 	
 	void Animation::mirrorVertical(bool toggle)
 	{
-		isMirroredVertical=toggle;
+		mirroredVertical=toggle;
 	}
 	
-	bool Animation::mirrored()
+	bool Animation::isMirrored()
 	{
-    	return isMirrored;
+    	return mirrored;
 	}
 	
-	bool Animation::mirroredVertical()
+	bool Animation::isMirroredVertical()
 	{
-    	return isMirroredVertical;
+    	return mirroredVertical;
 	}
 	
 	int Animation::getWidth()
@@ -230,7 +230,7 @@ namespace GameEngine
     	return size;
 	}
     
-	void Animation::addFrame(String fName) //adds a frame to the animation
+	void Animation::addFrame(const String& fName) //adds a frame to the animation
 	{
     	bool success=AssetManager::loadImage(fName);
     	switch(animType)
@@ -300,6 +300,19 @@ namespace GameEngine
 		}
 	}
 	
+	const String& Animation::getFrame(int frameNo)
+	{
+		switch (animType)
+		{
+			default:
+			return names.get(frameNo);
+			
+			case 1:
+			case 2:
+			return names.get(0);
+		}
+	}
+	
 	int Animation::getTotalFrames()
 	{
 		return frames;
@@ -349,8 +362,8 @@ namespace GameEngine
     	unsigned char alpha = 255;
     	Color color;
 		
-		bool isMirrored = this->isMirrored;
-		bool isMirroredVertical = this->isMirroredVertical;
+		bool mirrored = this->mirrored;
+		bool mirroredVertical = this->mirroredVertical;
 		
 		Graphics2D g(graphics);
     	
@@ -361,24 +374,24 @@ namespace GameEngine
 	    	color = a->getColor();
 			if(a->mirrored)
 	    	{
-	    		if(isMirrored)
+	    		if(mirrored)
 	    		{
-	    			isMirrored = false;
+	    			mirrored = false;
 	    		}
 	    		else
 	    		{
-	    			isMirrored = true;
+	    			mirrored = true;
 	    		}
 	    	}
 			if(a->mirroredVertical)
 	    	{
-	    		if(isMirroredVertical)
+	    		if(mirroredVertical)
 	    		{
-	    			isMirroredVertical = false;
+	    			mirroredVertical = false;
 	    		}
 	    		else
 	    		{
-	    			isMirroredVertical = true;
+	    			mirroredVertical = true;
 	    		}
 	    	}
     	}
@@ -501,9 +514,9 @@ namespace GameEngine
     	
     	if(onScreen)
     	{
-	    	if(isMirrored)
+	    	if(mirrored)
 	    	{
-				if(isMirroredVertical)
+				if(mirroredVertical)
 				{
 					g.drawImage(img, (float)(x1+(width*scale)), (float)(y1+(height*scale)), (x1), (y1),drawX1,drawY1,drawX2,drawY2);
 				}
@@ -514,7 +527,7 @@ namespace GameEngine
 	    	}
 	    	else
 	    	{
-				if(isMirroredVertical)
+				if(mirroredVertical)
 				{
 					g.drawImage(img, (x1), (float)(y1+(height*scale)), (float)(x1+(width*scale)), (y1),drawX1,drawY1,drawX2,drawY2);
 				}
@@ -533,8 +546,8 @@ namespace GameEngine
     	unsigned char alpha = 255;
     	Color color;
 
-		bool isMirrored = this->isMirrored;
-		bool isMirroredVertical = this->isMirroredVertical;
+		bool mirrored = this->mirrored;
+		bool mirroredVertical = this->mirroredVertical;
 		
 		Graphics2D g(graphics);
     	
@@ -545,24 +558,24 @@ namespace GameEngine
 	    	color = a->getColor();
 			if(a->mirrored)
 	    	{
-	    		if(isMirrored)
+	    		if(mirrored)
 	    		{
-	    			isMirrored = false;
+	    			mirrored = false;
 	    		}
 	    		else
 	    		{
-	    			isMirrored = true;
+	    			mirrored = true;
 	    		}
 	    	}
 			if(a->mirroredVertical)
 	    	{
-	    		if(isMirroredVertical)
+	    		if(mirroredVertical)
 	    		{
-	    			isMirroredVertical = false;
+	    			mirroredVertical = false;
 	    		}
 	    		else
 	    		{
-	    			isMirroredVertical = true;
+	    			mirroredVertical = true;
 	    		}
 	    	}
     	}
@@ -673,9 +686,9 @@ namespace GameEngine
     		
     	if(onScreen)
     	{
-	    	if(isMirrored)
+	    	if(mirrored)
 	    	{
-				if(isMirroredVertical)
+				if(mirroredVertical)
 				{
 					g.drawImage(img ,(x2), (y2), (x1), (y1), drawX1,drawY1,drawX2,drawY2);
 				}
@@ -686,7 +699,7 @@ namespace GameEngine
 	    	}
 	    	else
 	    	{
-				if(isMirroredVertical)
+				if(mirroredVertical)
 				{
 					g.drawImage(img, (x1), (y2), (x2), (y1), drawX1,drawY1,drawX2,drawY2);
 				}
@@ -708,7 +721,7 @@ namespace GameEngine
 				currentFrame=0;
 				if(a!=NULL)
 				{
-					if(a->eventEnabled(Actor::EVENT_ANIMATIONFINISH))
+					if(a->isEventEnabled(Actor::EVENT_ANIMATIONFINISH))
 	    			{
 	                	a->onAnimationFinish(name); //is called when Animation has finished the last frame. defined in Actor
 	                	if(!this->name.equals(a->anim->name))
@@ -731,7 +744,7 @@ namespace GameEngine
 				currentFrame=(frames-1);
 				if(a!=NULL)
 				{
-					if(a->eventEnabled(Actor::EVENT_ANIMATIONFINISH))
+					if(a->isEventEnabled(Actor::EVENT_ANIMATIONFINISH))
 	    			{
 	                	a->onAnimationFinish(name); //is called when Animation has finished the last frame. defined in Actor
 	                	if(!this->name.equals(a->anim->name))

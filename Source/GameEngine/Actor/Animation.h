@@ -24,8 +24,8 @@ namespace GameEngine
 		int currentFrame;
 		int recentFrame;
 		
-		bool isMirrored;
-		bool isMirroredVertical;
+		bool mirrored;
+		bool mirroredVertical;
 		int rows;
 		int cols;
 		
@@ -48,23 +48,25 @@ namespace GameEngine
 		String name;
 		
 		Animation(const Animation& anim);
-		Animation(String n,int speed);
-		Animation(String n,int speed,String frame);
-		Animation(String n,int speed,int xFrames,int yFrames);
-		Animation(String n,int speed,int xFrames,int yFrames,ArrayList<int> seq);
+		Animation(const String& name, int speed);
+		Animation(const String& name, int speed, const String& frame);
+		Animation(const String& name, int speed, int xFrames, int yFrames);
+		Animation(const String& name, int speed, int xFrames, int yFrames, const ArrayList<int>& seq);
 		virtual ~Animation();
 		
 		void mirror(bool toggle);
 		void mirrorVertical(bool toggle);
-		bool mirrored();
-		bool mirroredVertical();
+		bool isMirrored();
+		bool isMirroredVertical();
 		
 		int getWidth();
 		int getHeight();
 		Vector2i getSize();
 		
-		void addFrame(String fName);
+		void addFrame(const String& fName);
 		void setFrame(int frameNo, const String&fImage);
+		const String& getFrame(int frameNo);
+		
 		int getTotalFrames();
 		
 		BufferedImage*getCurrentImage();

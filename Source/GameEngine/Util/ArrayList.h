@@ -133,11 +133,12 @@ public:
 		return *this;
 	}
 	
-	bool contains(const T& obj)
+	bool contains(const T& obj) const
 	{
 		for(int i=0; i<total; i++)
 		{
-			if(objects[i]==obj)
+			const T& cmp = (const T&)objects[i];
+			if((const T&)obj==(const T&)cmp)
 			{
 				return true;
 			}

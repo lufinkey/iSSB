@@ -31,11 +31,11 @@ namespace GameEngine
 		bool mirror = false;
 		bool mirrorVertical = false;
 		
-		if((lastAnim->mirrored() && !actor->mirrored) || (!lastAnim->mirrored() && actor->mirrored))
+		if((lastAnim->isMirrored() && !actor->mirrored) || (!lastAnim->isMirrored() && actor->mirrored))
 		{
 			mirror = true;
 		}
-		if((lastAnim->mirroredVertical() && !actor->mirroredVertical) || (!lastAnim->mirroredVertical() && actor->mirroredVertical))
+		if((lastAnim->isMirroredVertical() && !actor->mirroredVertical) || (!lastAnim->isMirroredVertical() && actor->mirroredVertical))
 		{
 			mirrorVertical = true;
 		}

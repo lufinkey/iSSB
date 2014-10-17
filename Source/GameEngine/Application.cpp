@@ -170,13 +170,7 @@ namespace GameEngine
 			
 			{
 				int flags = MIX_INIT_FLAC | MIX_INIT_MP3 | MIX_INIT_MOD | MIX_INIT_OGG;
-				int initted = Mix_Init(flags);
-				if(initted&flags != 0)
-				{
-					Console::WriteLine("failed to initalize SDL_mixer library");
-					gameRunning = false;
-					return false;
-				}
+				Mix_Init(flags);
 			}
 			
 			if(Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 4096)<0)

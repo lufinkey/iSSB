@@ -28,7 +28,7 @@ public:
 	static unsigned long asULong(const String&str);
 	static unsigned short asUShort(const String&str);
 	static unsigned long long asULongLong(const String&str);
-
+	
 	String();
 	String(const String& str);
 	String(const std::string&str);
@@ -44,7 +44,7 @@ public:
 	String(const double num);
 	String(const long num);
 	virtual ~String();
-
+	
 	operator char*();
 	operator const char*();
 	operator std::string();
@@ -53,7 +53,7 @@ public:
 	operator const char*() const;
 	operator std::string() const;
 	operator std::wstring() const;
-
+	
 	String operator+(const String& str) const;
 	String operator+(const std::string& str) const;
 	String operator+(const char*str) const;
@@ -67,12 +67,12 @@ public:
 	String operator+(const long num) const;
 	String operator+(const float num) const;
 	String operator+(const double num) const;
-
+	
 	String& operator+=(const String& str);
 	String& operator+=(const std::string& str);
 	String& operator+=(const char*str);
 	String& operator+=(const wchar_t*str);
-	String& operator+=(const std::wstring str);
+	String& operator+=(const std::wstring& str);
 	String& operator+=(const bool b);
 	String& operator+=(const char c);
 	String& operator+=(const unsigned char num);
@@ -81,7 +81,7 @@ public:
 	String& operator+=(const long num);
 	String& operator+=(const float num);
 	String& operator+=(const double num);
-
+	
 	String& operator=(const String& str);
 	String& operator=(const std::string& str);
 	String& operator=(const char*str);
@@ -95,12 +95,12 @@ public:
 	String& operator=(const long num);
 	String& operator=(const float num);
 	String& operator=(const double num);
-
-	bool operator==(String& cmp);
-	bool operator==(const char*cmp);
-
+	
+	bool operator==(String& cmp) const;
+	bool operator==(const char*cmp) const;
+	
 	friend std::ostream& operator<<(std::ostream& stream, const String& str);
-
+	
 	bool equals(const String& cmp) const;
 	bool equals(const char*cmp) const;
 	

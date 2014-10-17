@@ -7,7 +7,7 @@
 namespace SmashBros
 {
 	Actor*Magnifier::magnifier = NULL;
-
+	
 	void Magnifier::load()
 	{
 		if(magnifier==NULL)
@@ -16,10 +16,10 @@ namespace SmashBros
 			magnifier->Scale = 0.8f;
 			magnifier->addAnimation(new Animation("normal", 1, "Images/Game/Misc/magnifier.png"));
 			magnifier->changeAnimation("normal", FORWARD);
-			magnifier->relativeToView(false);
+			magnifier->setRelativeToView(false);
 		}
 	}
-
+	
 	void Magnifier::Draw(Graphics2D&g, long gameTime, GameElement*element)
 	{
 		if(Global::currentStage!=NULL && element!=NULL)
@@ -28,16 +28,16 @@ namespace SmashBros
 			float y = (element->y*Camera::Zoom - View::y);
 			float w = element->width*Camera::Zoom;
 			float h = element->height*Camera::Zoom;
-
+			
 			byte dir = 0;
-
-			if((y+(h/2)) <= 0)
+			
+			if((y-(h/2)) <= 0)
 			{
-				if((x+(w/2)) <= 0)
+				if((x-(w/2)) <= 0)
 				{
 					dir = PrimitiveActor::DIR_UPLEFT;
 				}
-				else if((x-(w)) >= View::ScaleWidth())
+				else if((x+(w/2)) >= View::ScaleWidth())
 				{
 					dir = PrimitiveActor::DIR_UPRIGHT;
 				}
@@ -46,13 +46,13 @@ namespace SmashBros
 					dir = PrimitiveActor::DIR_UP;
 				}
 			}
-			else if((y-(h/2)) >= View::ScaleHeight())
+			else if((y+(h/2)) >= View::ScaleHeight())
 			{
-				if((x+(w/2)) <= 0)
+				if((x-(w/2)) <= 0)
 				{
 					dir = PrimitiveActor::DIR_DOWNLEFT;
 				}
-				else if((x-(w/2)) >= View::ScaleWidth())
+				else if((x+(w/2)) >= View::ScaleWidth())
 				{
 					dir = PrimitiveActor::DIR_DOWNRIGHT;
 				}
@@ -61,11 +61,11 @@ namespace SmashBros
 					dir = PrimitiveActor::DIR_DOWN;
 				}
 			}
-			else if((x+(w/2)) <= 0)
+			else if((x-(w/2)) <= 0)
 			{
 				dir = PrimitiveActor::DIR_LEFT;
 			}
-			else if((x-(w/2)) >= View::ScaleWidth())
+			else if((x+(w/2)) >= View::ScaleWidth())
 			{
 				dir = PrimitiveActor::DIR_RIGHT;
 			}
@@ -92,7 +92,7 @@ namespace SmashBros
 					height = newHeight;
 					width = width*scale;
 				}
-
+				
 				switch(dir)
 				{
 					case PrimitiveActor::DIR_UP:
@@ -102,7 +102,7 @@ namespace SmashBros
 						magnifier->setRotation(0);
 					}
 					break;
-
+					
 					case PrimitiveActor::DIR_UPLEFT:
 					{
 						magnifier->x = (float)(magnifier->width)/2;
@@ -110,7 +110,7 @@ namespace SmashBros
 						magnifier->setRotation(-45);
 					}
 					break;
-
+					
 					case PrimitiveActor::DIR_UPRIGHT:
 					{
 						magnifier->x = (float)View::ScaleWidth() - (float)(magnifier->width)/2;
@@ -118,7 +118,7 @@ namespace SmashBros
 						magnifier->setRotation(45);
 					}
 					break;
-
+					
 					case PrimitiveActor::DIR_LEFT:
 					{
 						magnifier->x = (float)(magnifier->width)/2;
@@ -126,7 +126,7 @@ namespace SmashBros
 						magnifier->setRotation(-90);
 					}
 					break;
-
+					
 					case PrimitiveActor::DIR_RIGHT:
 					{
 						magnifier->x = View::ScaleWidth() - (float)(magnifier->width)/2;
@@ -134,7 +134,7 @@ namespace SmashBros
 						magnifier->setRotation(90);
 					}
 					break;
-
+					
 					case PrimitiveActor::DIR_DOWNLEFT:
 					{
 						magnifier->x = (float)(magnifier->width)/2;
@@ -142,7 +142,7 @@ namespace SmashBros
 						magnifier->setRotation(-135);
 					}
 					break;
-
+					
 					case PrimitiveActor::DIR_DOWNRIGHT:
 					{
 						magnifier->x = View::ScaleWidth() - (float)(magnifier->width)/2;
@@ -150,7 +150,7 @@ namespace SmashBros
 						magnifier->setRotation(135);
 					}
 					break;
-
+					
 					case PrimitiveActor::DIR_DOWN:
 					{
 						magnifier->x = x;
@@ -161,12 +161,12 @@ namespace SmashBros
 				}
 				magnifier->Update(gameTime);
 				magnifier->Draw(g, gameTime);
-
+				
 				float x1 = View::x + magnifier->x - (width/2);
 				float y1 = View::y + magnifier->y - (height/2);
 				float x2 = x1 + width;
 				float y2 = y1 + height;
-
+				
 				//anim->drawFrame(NULL, g, anim->getCurrentFrame(), magnifier->x, magnifier->y, (double)scale, false);
 				anim->drawFrame(NULL, g, anim->getCurrentFrame(), x1, y1, x2, y2);
 			}
