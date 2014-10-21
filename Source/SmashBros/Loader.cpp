@@ -166,7 +166,8 @@ namespace SmashBros
 			break;
 			
 			case Global::CHAR_LINK:
-			//TODO add link win animations
+			win_fps = 8;
+			win_rows = 4;
 			break;
 		}
 		
