@@ -14,7 +14,7 @@ namespace SmashBros
 	byte Controls::touchPlayer = 1;
 	const float Controls::ControlHUD::farDist = 12100;
 	const float Controls::ControlHUD::centerDist = 625;
-	const long Controls::ControlHUD::runDelay = 50;
+	const long Controls::ControlHUD::runDelay = 100;
 	
 	typedef struct
 	{
