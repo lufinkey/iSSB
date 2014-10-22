@@ -6041,7 +6041,7 @@ namespace SmashBros
 	        dropping=true;
 	        canDropThrough=false;
 	        yvelocity+=2;
-	        dropTime=Global::worldTime+4;
+	        dropTime=Global::worldTime+400;
 	    }
 	}
 	

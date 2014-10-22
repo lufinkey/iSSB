@@ -325,7 +325,6 @@ namespace SmashBros
 	
 	void Link::Update(long gameTime)
 	{
-
 		if(isOnGround() && attacksHolder==9)
 		{
 			animFinish();
