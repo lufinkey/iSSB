@@ -235,7 +235,7 @@ namespace SmashBros
 			}
 			currentTime->Update(gameTime);
 		}
-		if(showFinishGame && (Global::getWorldTime()/100)>=finishGameTime)
+		if(showFinishGame && Global::getWorldTime()>=finishGameTime)
 		{
 			showFinishGame = false;
 			
