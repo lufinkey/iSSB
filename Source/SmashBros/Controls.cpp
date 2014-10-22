@@ -1020,6 +1020,7 @@ namespace SmashBros
 		Player*playr=Global::getPlayerActor(pNum);
 		playr->checkAttacks();
 		playr->smashTime=0;
+		playr->runTime=0;
 		playr->buttondir=0;
 		playr->down=false;
 		playr->up=false;
@@ -1091,6 +1092,7 @@ namespace SmashBros
 			playr->checkAttacks();
 			playr->buttondir=0;
 			playr->smashTime=0;
+			playr->runTime=0;
 			playr->down=false;
 			playr->up=false;
 			playr->upKey=false;
@@ -1118,6 +1120,14 @@ namespace SmashBros
 		Player*playr=Global::getPlayerActor(pNum);
 		if(playr->attacksPriority!=-1)
 		{
+			if(!joystickDown[pNum])
+			{
+				playr->smashTime = Global::worldTime+100;
+			}
+			else
+			{
+				playr->smashTime = 0;
+			}
 			playr->buttondir=1;
 			playr->moveLeft=0;
 			playr->moveRight=0;
@@ -1157,7 +1167,14 @@ namespace SmashBros
 		Player*playr=Global::getPlayerActor(pNum);
 		if(playr->attacksPriority!=-1)
 		{
-			
+			if(!joystickDown[pNum] || justPulled[pNum])
+			{
+				playr->smashTime = Global::worldTime+100;
+			}
+			else
+			{
+				playr->smashTime = 0;
+			}
 			playr->buttondir=1;
 			if((joystickDir[pNum] == PrimitiveActor::DIR_UPLEFT)||(joystickDir[pNum] == PrimitiveActor::DIR_UPRIGHT))
 			{
@@ -1402,6 +1419,10 @@ namespace SmashBros
 			playr->down=false;
 			playr->moveRight=0;
 			playr->moveLeft=1;
+			if(justPulled[pNum] || joystickDir[pNum]==0)
+			{
+				playr->runTime = Global::worldTime+200;
+			}
 			if(playr->hanging && !((joystickDir[pNum]==PrimitiveActor::DIR_LEFT || joystickDir[pNum]==PrimitiveActor::DIR_DOWNLEFT) && joystickFar[pNum])
 			   && joystickDir[pNum]!=PrimitiveActor::DIR_UPLEFT)
 			{
@@ -1439,9 +1460,10 @@ namespace SmashBros
 			playr->upKey=false;
 			playr->down=false;
 			playr->moveRight=0;
-			if(justPulled[pNum])
+			if(justPulled[pNum] || playr->runTime>Global::getWorldTime())
 			{
 				playr->moveLeft=2;
+				playr->smashTime = Global::worldTime+100;
 			}
 			else
 			{
@@ -1485,6 +1507,10 @@ namespace SmashBros
 			playr->down=false;
 			playr->moveLeft=0;
 			playr->moveRight=1;
+			if(justPulled[pNum] || joystickDir[pNum]==0)
+			{
+				playr->runTime = Global::worldTime+100;
+			}
 			if(playr->hanging && !((joystickDir[pNum]==PrimitiveActor::DIR_RIGHT || joystickDir[pNum]==PrimitiveActor::DIR_DOWNRIGHT) && joystickFar[pNum])
 			   && joystickDir[pNum]!=PrimitiveActor::DIR_UPRIGHT)
 			{
@@ -1522,9 +1548,10 @@ namespace SmashBros
 			playr->upKey=false;
 			playr->down=false;
 			playr->moveLeft=0;
-			if(justPulled[pNum])
+			if(justPulled[pNum] || playr->runTime>Global::getWorldTime())
 			{
 				playr->moveRight=2;
+				playr->smashTime = Global::worldTime+100;
 			}
 			else
 			{
@@ -1568,6 +1595,14 @@ namespace SmashBros
 			playr->upKey=false;
 			playr->down = true;
 			playr->checkAttacks();
+			if(!joystickDown[pNum] || justPulled[pNum])
+			{
+				playr->smashTime = Global::worldTime+100;
+			}
+			else
+			{
+				playr->smashTime = 0;
+			}
 			if((playr->isOnGround())&&(playr->canDo)&&(!playr->isGrabbing())&&(!playr->hasGrabbed())&&(!playr->isGrabbed()))
 			{
 				playr->changeTwoSidedAnimation("crouch", NO_CHANGE);
@@ -1589,6 +1624,14 @@ namespace SmashBros
 		{
 			playr->buttondir=3;
 			playr->checkAttacks();
+			if(!joystickDown[pNum] || justPulled[pNum])
+			{
+				playr->smashTime = Global::worldTime+100;
+			}
+			else
+			{
+				playr->smashTime = 0;
+			}
 			if(justPulled[pNum] && playr->canDo)
 			{
 				playr->moveDown();
@@ -2203,7 +2246,7 @@ namespace SmashBros
 	            playr->moveLeft=1;
 	            if(playr->isOnGround())
 	            {
-	                playr->runTime=Global::worldTime+100;
+	                playr->runTime=Global::worldTime+200;
 	            }
 	        }
 	        if(playr->hanging)
@@ -2387,7 +2430,7 @@ namespace SmashBros
 	                break;
 					
 	                case 1:
-	                if(Global::worldTime<=playr->smashTime+1)
+	                if(Global::worldTime<=playr->smashTime)
 	                {
 	                    playr->attackUpSmash(Player::STEP_CHARGE);
 	                    if(playr->jumping)
@@ -2403,7 +2446,7 @@ namespace SmashBros
 	                break;
 	 
 	                case 2:
-	                if(Global::worldTime<=playr->smashTime+1)
+	                if(Global::worldTime<=playr->smashTime)
 	                {
 	                    playr->attackSideSmash(Player::STEP_CHARGE);
 	                }
@@ -2414,7 +2457,7 @@ namespace SmashBros
 	                break;
 	 
 	                case 3:
-	                if(Global::worldTime<=playr->smashTime+1)
+	                if(Global::worldTime<=playr->smashTime)
 	                {
 	                    playr->attackDownSmash(Player::STEP_CHARGE);
 	                    playr->canDropThrough=false;
@@ -2428,7 +2471,7 @@ namespace SmashBros
 	                break;
 	 
 	                case 4:
-	                if(Global::worldTime<=playr->smashTime+1)
+	                if(Global::worldTime<=playr->smashTime)
 	                {
 	                    playr->attackSideSmash(Player::STEP_CHARGE);
 	                }
