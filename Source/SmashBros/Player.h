@@ -265,7 +265,8 @@ namespace SmashBros
 		void updateDrop();
 		void updateAI();
 		
-		void createProjectile(Projectile*p);
+		void createProjectile(Projectile*proj);
+		void createItem(Item*item);
 		
 		void causeDamage(Player*collide, int amount);
 		void causeHurtLaunch(Player*collide, int xDir, float xAmount, float xMult, int yDir, float yAmount, float yMult);
@@ -285,6 +286,7 @@ namespace SmashBros
 		Platform* getCurrentCollidePlatformActor(byte dir);
 		
 		void addAttackInfo(byte dir, int attackNo, byte playerdir, int damage, long delayTime, int xDir,float xAmount,float xMult,int yDir,float yAmount,float yMult, boolean dirIsPixelBased = true);
+		void addAIAttackType(byte attack, byte attacktype, float probability, boolean charge = false);
 		
 		void jump(float dist1, float dist2);
 		void climbUp();
@@ -388,7 +390,6 @@ namespace SmashBros
 		
 		void respawn();
 		void Unload();
-		void addAIAttackType(byte attack, byte attacktype, float probability, boolean charge = false);
 		
 		void addAnimation(Animation*a);
 		void changeTwoSidedAnimation(const String&name, byte direction);

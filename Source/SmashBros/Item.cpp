@@ -105,6 +105,7 @@ namespace SmashBros
 		data.add(&y, sizeof(y));
 		data.add(&animIndex, sizeof(animIndex));
 		data.add(&frame, sizeof(frame));
+		data.add(&Scale, sizeof(Scale));
 		data.add(&boolsByte, sizeof(boolsByte));
 		data.add(&ownerNo, sizeof(ownerNo));
 		data.add(&holderNo, sizeof(holderNo));
@@ -133,6 +134,10 @@ namespace SmashBros
 		int frame = DataVoid::toInt(data);
 		getAnimation()->setCurrentFrame(frame);
 		data += sizeof(int);
+		
+		//Scale
+		Scale = DataVoid::toFloat(data);
+		data += sizeof(float);
 		
 		//bools
 		byte boolsByte = data[0];

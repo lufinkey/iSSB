@@ -4402,9 +4402,14 @@ namespace SmashBros
 		offScreenExplosion->Draw(g, gameTime);
 	}
 	
-	void Player::createProjectile(Projectile*p)
+	void Player::createProjectile(Projectile*proj)
 	{
-		ProjectileManager::AddProjectile(p);
+		ProjectileManager::AddProjectile(proj);
+	}
+	
+	void Player::createItem(Item*item)
+	{
+		ItemManager::AddItem(item);
 	}
 	
 	void Player::causeDamage(Player*collide, int amount)

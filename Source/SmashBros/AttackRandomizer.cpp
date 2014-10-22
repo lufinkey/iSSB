@@ -321,7 +321,7 @@ namespace SmashBros
 		{
 			int indexNo = -1;
 			byte type = Player::ATTACKTYPE_MELEE;
-			while(type<=7)
+			while(type<=9)
 			{
 				ArrayList<AttackProbability>*list = getAttackList(type);
 				indexNo = getAttackIndex(list, attack);

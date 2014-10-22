@@ -9,6 +9,19 @@ namespace SmashBros
 	class Link : public Player
 	{
 	private:
+		typedef struct
+		{
+			byte type;
+			int projID;
+			float x;
+			float y;
+			float power;
+		} ProjectileInfo;
+		
+		void addProjectileInfo(byte type, int projID, float x, float y, float power = 0);
+		
+		ArrayList<ProjectileInfo> createdProjectiles;
+		
 		class Arrow : public Projectile
 		{
 		private:
@@ -92,6 +105,9 @@ namespace SmashBros
 	public:
 		Link(float x1, float y1, byte playerNo, byte team);
 		virtual ~Link();
+		
+		virtual void addP2PData(DataVoid&data);
+		virtual void setP2PData(byte*&data);
 
 		virtual void Update(long gameTime);
 		virtual void Draw(Graphics2D&g, long gameTime);

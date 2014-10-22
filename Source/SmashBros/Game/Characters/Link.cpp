@@ -2,25 +2,36 @@
 #include "Link.h"
 #include "../../AttackTemplates.h"
 #include "../../Global.h"
-
+#include "../../P2PDataManager.h"
 #include <cmath>
 
 namespace SmashBros
 {
 	const float Link::finalsmashOffsetX = 60;
-	const float Link::finalsmashOffsetY = 0;
-
+	const float Link::finalsmashOffsetY = 10;
+	
 #define LINK_FINALSMASH_SEQUENCE {1,2,3,4,5,6,1,2,3,7,8,1,2,3,9,10,9,11,9,12,9,7,8,13,14,14,14,15}
 #define LINK_FINALSMASHFINISH_SEQUENCE {16,17,18,19,20}
 #define LINK_FINALSMASH_SEQUENCE_HITFRAMES {2,5,7,10,11,12,13}
-
+	
+	void Link::addProjectileInfo(byte type, int projID, float x, float y, float power)
+	{
+		ProjectileInfo info;
+		info.type = type;
+		info.projID = projID;
+		info.x = x;
+		info.y = y;
+		info.power = power;
+		createdProjectiles.add(info);
+	}
+	
 	Link::Link(float x1, float y1, byte playerNo, byte team) : Player(x1, y1, playerNo, team)
 	{
 		walkSpeed = 1.5f;
 		runSpeed = 4.5f;
 		fallWalk = 2;
 		fallRun = 2;
-
+		
 		Scale = 0.8f;
 		
 		prepping = false;
@@ -32,7 +43,7 @@ namespace SmashBros
 		weight = 0.09;
 		
 		name = "Link";
-
+		
 		//setItemOffset(17, 13);
 		setItemOffset(13, 9);
 		
@@ -46,10 +57,100 @@ namespace SmashBros
 		
 		Console::WriteLine((String)"finished creating player " + playerNo);
 	}
-
+	
 	Link::~Link()
 	{
 		//
+	}
+	
+	void Link::addP2PData(DataVoid&data)
+	{
+		int total = createdProjectiles.size();
+		
+		if(total>0)
+		{
+			P2PDataManager::setReliable();
+			
+			bool avail = true;
+			data.add(&avail, sizeof(avail));
+			
+			int total = createdProjectiles.size();
+			data.add(&total, sizeof(total));
+			
+			for(int i=0; i<createdProjectiles.size(); i++)
+			{
+				ProjectileInfo proj = createdProjectiles.get(i);
+				
+				data.add(&proj.type, sizeof(proj.type));
+				data.add(&proj.projID, sizeof(proj.projID));
+				data.add(&proj.x, sizeof(proj.x));
+				data.add(&proj.y, sizeof(proj.y));
+				if(proj.type==1)
+				{
+					data.add(&proj.power, sizeof(proj.power));
+				}
+			}
+			createdProjectiles.clear();
+		}
+		else
+		{
+			bool avail = false;
+			data.add(&avail, sizeof(avail));
+		}
+	}
+	
+	void Link::setP2PData(byte*&data)
+	{
+		bool avail = data[0];
+		data += sizeof(bool);
+		
+		if(avail)
+		{
+			int total = DataVoid::toInt(data);
+			data += sizeof(int);
+			
+			for(int i=0; i<total; i++)
+			{
+				byte type = data[0];
+				data += sizeof(byte);
+				
+				int projID = DataVoid::toInt(data);
+				data += sizeof(int);
+				
+				float x1 = DataVoid::toFloat(data);
+				data += sizeof(float);
+				float y1 = DataVoid::toFloat(data);
+				data += sizeof(float);
+				
+				switch(type)
+				{
+					case 1:
+					{
+						float power = DataVoid::toFloat(data);
+						data += sizeof(float);
+						
+						Projectile::setNextID(projID);
+						Arrow*arrow = new Arrow(getPlayerNo(), x1, y1, power);
+						createProjectile(arrow);
+					}
+					break;
+					
+					case 2:
+					{
+						Projectile::setNextID(projID);
+						createProjectile(new Boomerang(getPlayerNo(), x1, y1));
+					}
+					break;
+					
+					case 3:
+					{
+						Item::setNextID(projID);
+						createItem(new Bomb(x1, y1));
+					}
+					break;
+				}
+			}
+		}
 	}
 
 	void Link::setToDefaultValues()
@@ -201,7 +302,20 @@ namespace SmashBros
 	
 	void Link::LoadAttackTypes()
 	{
-		//
+		addAIAttackType(ATTACK_A,		  ATTACKTYPE_MELEE, 6);
+		addAIAttackType(ATTACK_SIDEA,	  ATTACKTYPE_MELEE, 3);
+		addAIAttackType(ATTACK_UPA,	      ATTACKTYPE_UPMELEE, 1);
+		addAIAttackType(ATTACK_DOWNA,	  ATTACKTYPE_DOWNMELEE, 1);
+		addAIAttackType(ATTACK_DOWNA,	  ATTACKTYPE_MELEE, 2);
+		addAIAttackType(ATTACK_B,	      ATTACKTYPE_PROJECTILE, 2, true);
+		addAIAttackType(ATTACK_SIDEB,	  ATTACKTYPE_PROJECTILE, 2);
+		addAIAttackType(ATTACK_DOWNB,     ATTACKTYPE_PROJECTILE, 1);
+		addAIAttackType(ATTACK_UPB,	      ATTACKTYPE_STRONGMELEE, 1);
+		addAIAttackType(ATTACK_UPB,       ATTACKTYPE_UPMOVE, 1);
+		addAIAttackType(ATTACK_SIDESMASH, ATTACKTYPE_STRONGMELEE, 2, true);
+		addAIAttackType(ATTACK_UPSMASH,   ATTACKTYPE_STRONGMELEE, 1, true);
+		addAIAttackType(ATTACK_DOWNSMASH, ATTACKTYPE_STRONGMELEE, 1, true);
+		addAIAttackType(ATTACK_FINALSMASH,ATTACKTYPE_MELEE, 1);
 	}
 	
 	void Link::Unload()
@@ -253,13 +367,13 @@ namespace SmashBros
 			{
 				Player* collide = finalsmashVictims.get(i);
 				collide->x = x + (finalsmashOffsetX*getPlayerDirMult()*Scale);
-				collide->y = y;
+				collide->y = y + (finalsmashOffsetY*Scale);
 			}
 
 			attacksHolder = 14;
 
 			int finalsmashSeq[] = LINK_FINALSMASH_SEQUENCE;
-			int finalsmashSeqTotal = sizeof(finalsmashSeq)/sizeof(int);
+			//int finalsmashSeqTotal = sizeof(finalsmashSeq)/sizeof(int);
 			int finalsmashHitSeq[] = LINK_FINALSMASH_SEQUENCE_HITFRAMES;
 			int finalsmashHitSeqTotal = sizeof(finalsmashHitSeq)/sizeof(int);
 
@@ -347,13 +461,16 @@ namespace SmashBros
 			float x1 = x;
 			x1 = x+(getPlayerDirMult()*5*Scale);
 			changeTwoSidedAnimation("special_attack_side", FORWARD);
-
-			createProjectile(new Boomerang(getPlayerNo(), x1, y));
+			
+			Boomerang*boomerang = new Boomerang(getPlayerNo(), x1, y);
+			createProjectile(boomerang);
+			addProjectileInfo(2, boomerang->getID(), x1, y);
 		}
 		else if(n.equals("special_prep_down_left") || n.equals("special_prep_down_right"))
 		{
 			Player::onAnimationFinish(n);
 			Bomb* bomb = new Bomb(x, y);
+			addProjectileInfo(1, bomb->getID(), x, y);
 			bomb->Scale = Scale;
 			pickUpItem(bomb);
 		}
@@ -566,7 +683,7 @@ namespace SmashBros
 
 						causeDamage(collide, 4);
 						hitAmount += 1;
-						causeHurtLaunch(collide, multX,(float)std::abs((float)(xDif/dist))*1.6f,3.3f, -1, 2.6f, 3.1f);
+						causeHurtLaunch(collide, multX,(float)std::abs(xDif/dist)*1.6f,3.3f, -1, 2.6f, 3.1f);
 						causeHurt(collide, collide->getPlayerDir(), 300);
 					}
 					break;
@@ -618,7 +735,7 @@ namespace SmashBros
 			}
 
 			causeDamage(collide, 4);
-			causeHurtLaunch(collide, multX,(float)std::abs((float)(xDif/dist))*1.6f,3.3f, -1, 2.6f, 3.1f);
+			causeHurtLaunch(collide, multX,(float)std::abs(xDif/dist)*1.6f,3.3f, -1, 2.6f, 3.1f);
 			causeHurt(collide, collide->getPlayerDir(), 300);
 		}
 	}
@@ -649,7 +766,10 @@ namespace SmashBros
 		{
 			destroyCharge();
 			float amount = (float)smashPower/100;
-			createProjectile(new Arrow(getPlayerNo(), x, y + 8*Scale, amount));
+			Arrow*arrow = new Arrow(getPlayerNo(), x, y + (8*Scale), amount);
+			createProjectile(arrow);
+			addProjectileInfo(1, arrow->getID(), x, y + (8*Scale));
+			
 			changeTwoSidedAnimation("special_release", FORWARD);
 		}
 	}
@@ -934,7 +1054,7 @@ namespace SmashBros
 			case DIR_UPLEFT:
 			case DIR_DOWNLEFT:
 			{
-				xvelocity = -std::abs((float)xvelocity);
+				xvelocity = -std::abs(xvelocity);
 				arrowdir = LEFT;
 				changeAnimation(animPrefix + "_left", NO_CHANGE);
 			}
@@ -944,7 +1064,7 @@ namespace SmashBros
 			case DIR_UPRIGHT:
 			case DIR_DOWNRIGHT:
 			{
-				xvelocity = std::abs((float)xvelocity);
+				xvelocity = std::abs(xvelocity);
 				arrowdir = RIGHT;
 				changeAnimation(animPrefix + "right", NO_CHANGE);
 			}
@@ -964,7 +1084,7 @@ namespace SmashBros
 		{
 			yvelocity += (1-power)*0.07f + 0.09f;
 
-			float ratio = std::abs((float)(yvelocity / xvelocity));
+			float ratio = std::abs(yvelocity / xvelocity);
 			if(ratio>0.4f)
 			{
 				switch(arrowdir)
@@ -1113,14 +1233,14 @@ namespace SmashBros
 				canTurn = false;
 				returning = true;
 				boomerangdir = LEFT;
-				xvelocity = -std::abs((float)xvelocity);
+				xvelocity = -std::abs(xvelocity);
 				if(dir==DIR_UPLEFT)
 				{
-					yvelocity = -std::abs((float)yvelocity);
+					yvelocity = -std::abs(yvelocity);
 				}
 				else if(dir==DIR_DOWNLEFT)
 				{
-					yvelocity = std::abs((float)yvelocity);
+					yvelocity = std::abs(yvelocity);
 				}
 				changeAnimation("boomerang_left", NO_CHANGE);
 			}
@@ -1133,14 +1253,14 @@ namespace SmashBros
 				canTurn = false;
 				returning = true;
 				boomerangdir = RIGHT;
-				xvelocity = std::abs((float)xvelocity);
+				xvelocity = std::abs(xvelocity);
 				if(dir==DIR_UPRIGHT)
 				{
-					yvelocity = -std::abs((float)yvelocity);
+					yvelocity = -std::abs(yvelocity);
 				}
 				else if(dir==DIR_DOWNRIGHT)
 				{
-					yvelocity = std::abs((float)yvelocity);
+					yvelocity = std::abs(yvelocity);
 				}
 				changeAnimation("boomerang_right", NO_CHANGE);
 			}
@@ -1439,7 +1559,7 @@ namespace SmashBros
 				{
 					multY = -1;
 				}
-				causeHurtLaunch(collide, multX,std::abs((float)xvelocity)/2,2.4f, multY,std::abs(yvelocity)/1.2f,2.4f);
+				causeHurtLaunch(collide, multX,std::abs(xvelocity)/2,2.4f, multY,std::abs(yvelocity)/1.2f,2.4f);
 				switch(multX)
 				{
 					case -1:
