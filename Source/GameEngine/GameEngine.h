@@ -44,10 +44,8 @@
 
 namespace GameEngine
 {
-	static double random()
-	{
-		return (double)rand()/RAND_MAX;
-	}
+	double random();
+	bool isOnPlatform(const char* platform);
 }
 
 using namespace GameEngine;

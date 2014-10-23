@@ -13,13 +13,9 @@
 		#import "MailViewController.h"
 		#import "UIWebViewController.h"
 		#import "MessageBoxDelegate.h"
-
+		
 		//static NSDate*startDate = nil;
 		static iCadeControllerReceiver* iCade_receiver = nil;
-
-		static iCadeEventCallback iCade_stateChangedCallback = NULL;
-		static iCadeEventCallback iCade_buttonDownCallback = NULL;
-		static iCadeEventCallback iCade_buttonUpCallback = NULL;
 	#endif
 #elif defined(__ANDROID__)
 	#include <iostream>
@@ -27,6 +23,10 @@
 	#include "../Util/String.h"
 	#include "../Application.h"
 #endif
+
+static iCadeEventCallback iCade_stateChangedCallback = NULL;
+static iCadeEventCallback iCade_buttonDownCallback = NULL;
+static iCadeEventCallback iCade_buttonUpCallback = NULL;
 
 void GameEngine_init()
 {
@@ -192,9 +192,9 @@ void getDeviceName(char*nameString)
 
 
 
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 void iCade_enable(bool toggle, SDL_Window*window)
 {
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 	if(toggle && iCade_receiver==nil)
 	{
 		iCade_receiver = [[iCadeControllerReceiver alloc] initWithFrame:CGRectMake(0,0,0,0)];
@@ -210,44 +210,52 @@ void iCade_enable(bool toggle, SDL_Window*window)
 		[iCade_receiver release];
 		iCade_receiver = nil;
 	}
+#endif
 }
 
 bool iCade_enabled()
 {
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 	if(iCade_receiver!=nil)
 	{
 		return true;
 	}
+#endif
 	return false;
 }
 
 void iCade_setStateChangedCallback(iCadeEventCallback callback)
 {
 	iCade_stateChangedCallback = callback;
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 	if(iCade_receiver!=nil)
 	{
 		iCade_receiver.stateChangedCallback = callback;
 	}
+#endif
 }
 
 void iCade_setButtonDownCallback(iCadeEventCallback callback)
 {
 	iCade_buttonDownCallback = callback;
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 	if(iCade_receiver!=nil)
 	{
 		iCade_receiver.buttonDownCallback = callback;
 	}
+#endif
 }
 
 void iCade_setButtonUpCallback(iCadeEventCallback callback)
 {
 	iCade_buttonUpCallback = callback;
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 	if(iCade_receiver!=nil)
 	{
 		iCade_receiver.buttonUpCallback = callback;
 	}
-}
 #endif
+}
 
 
 

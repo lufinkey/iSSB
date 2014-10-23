@@ -1,15 +1,20 @@
 
-#ifdef __OBJC__
+#if defined(__APPLE__)
+#include "TargetConditionals.h"
+#endif
+
+#if (defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)) && defined(__OBJC__)
 #import <Foundation/Foundation.h>
 #import "iCade/iCadeReaderView.h"
-#endif //__OBJC__
+#endif
+
 #include "iCade/iCadeState.h"
 
 #pragma once
 
 typedef void (*iCadeEventCallback)(iCadeState);
 
-#ifdef __OBJC__
+#if (defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)) && defined(__OBJC__)
 @interface iCadeControllerReceiver : iCadeReaderView <iCadeEventDelegate>
 {
 	iCadeEventCallback stateChangedCallback;
@@ -22,4 +27,4 @@ typedef void (*iCadeEventCallback)(iCadeState);
 @property (nonatomic) iCadeEventCallback buttonUpCallback;
 
 @end
-#endif //__OBJC__
+#endif

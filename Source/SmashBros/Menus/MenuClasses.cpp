@@ -108,8 +108,11 @@ namespace SmashBros
 		addItem(700, 395, "Images/Menus/Buttons/Options/options.png", "Images/Menus/Buttons/Options/options_selected.png", "OptionsMenu");
 		setItemScale(2,1.25f);
 		setItemSound(2, Menus::soundMgr->getSound("select menu item"));
-		addItem(200, 400, "Images/Menus/Buttons/Bluetooth/Bluetooth.png", "Images/Menus/Buttons/Bluetooth/Bluetooth_selected.png", "BluetoothMenu");
-		setItemSound(3, Menus::soundMgr->getSound("select menu item"));
+		if(GameEngine::isOnPlatform("ios"))
+		{
+			addItem(200, 400, "Images/Menus/Buttons/Bluetooth/Bluetooth.png", "Images/Menus/Buttons/Bluetooth/Bluetooth_selected.png", "BluetoothMenu");
+			setItemSound(3, Menus::soundMgr->getSound("select menu item"));
+		}
 	}
 
 	void MainMenu::LoadContent()
