@@ -1,5 +1,6 @@
 
 #include "SDL.h"
+#include "iCadeControllerReceiver.h"
 
 #pragma once
 
@@ -10,6 +11,12 @@ extern void writeEmail(SDL_Window*window, const char*recipient, const char*subje
 
 extern void getDeviceModel(char*deviceString);
 extern void getDeviceName(char*nameString);
+
+extern void iCade_enable(bool toggle, SDL_Window*window);
+extern bool iCade_enabled();
+extern void iCade_setStateChangedCallback(iCadeEventCallback callback);
+extern void iCade_setButtonDownCallback(iCadeEventCallback callback);
+extern void iCade_setButtonUpCallback(iCadeEventCallback callback);
 
 extern void SDL_ShowSimpleMessageBoxFixed(const char*title, const char*message);
 extern int SDL_ShowMessageBoxFixed(const char*title, const char*message, const char**options, int numOptions);

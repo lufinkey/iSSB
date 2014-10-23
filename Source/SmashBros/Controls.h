@@ -1,6 +1,7 @@
 
 #include "Global.h"
 #include "../GameEngine/GameEngine.h"
+#include "../GameEngine/ObjCBridge/iCade/iCadeState.h"
 
 #pragma once
 
@@ -69,17 +70,23 @@ namespace SmashBros
 		static void handleP2PData(byte*&data);
 		
 		static int**controls;
+		static bool ControllerButtonStates[20];
+		static bool PrevControllerButtonStates[20];
 		static ControlHUD*touchControls;
 		static bool touchEnabled;
 		static bool joystickEnabled;
 		static byte touchPlayer;
 		
+		static void iCadeStateChangedHandler(iCadeState);
+		static void iCadeButtonDownHandler(iCadeState);
+		static void iCadeButtonUpHandler(iCadeState);
+		
 	public:
 		static const byte UP = 0;
 		static const byte DOWN = 1;
-
+		
 		static const byte BUTTONS_TOTAL = 7;
-
+		
 		static const byte BUTTON_UP = 0;
 		static const byte BUTTON_LEFT = 1;
 		static const byte BUTTON_DOWN = 2;
@@ -89,10 +96,10 @@ namespace SmashBros
 		static const byte BUTTON_SPECIAL = 6;
 		static const byte BUTTON_GRAB = 7;
 		static const byte BUTTON_NONE = 8;
-
+		
 		static const byte BUTTONS_TOTAL2 = 1;
-
-		static const byte BUTTON_PAUSE = 8;
+		
+		static const byte BUTTON_PAUSE = 9;
 		
 		static void enableTouchControls(bool toggle);
 		static void setJoystickActive(bool toggle);

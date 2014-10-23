@@ -11,6 +11,11 @@
 #include <sys/time.h>
 
 //static NSDate*startDate = nil;
+static iCadeControllerReceiver* iCade_receiver = nil;
+
+static iCadeEventCallback iCade_stateChangedCallback = NULL;
+static iCadeEventCallback iCade_buttonDownCallback = NULL;
+static iCadeEventCallback iCade_buttonUpCallback = NULL;
 
 void GameEngine_init()
 {
@@ -66,7 +71,7 @@ void writeEmail(SDL_Window*window, const char*recipient, const char*subject, con
 	UIViewController*viewCtrl = getSDLViewController(window);
 	if(viewCtrl==nil)
 	{
-		//NSLogfile://localhost/Users/luis/Documents/Xcode/GameEngine/GameEngine/Image.cpp(@"Error getting SDL ViewController");
+		NSLog(@"%s", "Error getting SDL ViewController");
 		return;
 	}
 	[mailer openMailInViewController:viewCtrl person:[NSString stringWithUTF8String:recipient] subject:[NSString stringWithUTF8String:subject] body:[NSString stringWithUTF8String:body]];
@@ -94,6 +99,61 @@ void getDeviceName(char*nameString)
 	{
 		UIDevice*device = [UIDevice currentDevice];
 		strcpy(nameString, [[device name] UTF8String]);
+	}
+}
+
+void iCade_enable(bool toggle, SDL_Window*window)
+{
+	if(toggle && iCade_receiver==nil)
+	{
+		iCade_receiver = [[iCadeControllerReceiver alloc] initWithFrame:CGRectMake(0,0,0,0)];
+		iCade_receiver.stateChangedCallback = iCade_stateChangedCallback;
+		iCade_receiver.buttonDownCallback = iCade_buttonDownCallback;
+		iCade_receiver.buttonUpCallback = iCade_buttonUpCallback;
+		iCade_receiver.active = YES;
+		[getSDLViewController(window).view addSubview:iCade_receiver];
+	}
+	else if(!toggle && iCade_receiver!=nil)
+	{
+		[iCade_receiver removeFromSuperview];
+		[iCade_receiver release];
+		iCade_receiver = nil;
+	}
+}
+
+bool iCade_enabled()
+{
+	if(iCade_receiver!=nil)
+	{
+		return true;
+	}
+	return false;
+}
+
+void iCade_setStateChangedCallback(iCadeEventCallback callback)
+{
+	iCade_stateChangedCallback = callback;
+	if(iCade_receiver!=nil)
+	{
+		iCade_receiver.stateChangedCallback = callback;
+	}
+}
+
+void iCade_setButtonDownCallback(iCadeEventCallback callback)
+{
+	iCade_buttonDownCallback = callback;
+	if(iCade_receiver!=nil)
+	{
+		iCade_receiver.buttonDownCallback = callback;
+	}
+}
+
+void iCade_setButtonUpCallback(iCadeEventCallback callback)
+{
+	iCade_buttonUpCallback = callback;
+	if(iCade_receiver!=nil)
+	{
+		iCade_receiver.buttonUpCallback = callback;
 	}
 }
 

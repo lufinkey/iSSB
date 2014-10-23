@@ -7,12 +7,12 @@ namespace SmashBros
 	{
 		collisions = ArrayList<int>();
 	}
-
+	
 	CollisionManager::~CollisionManager()
 	{
 		collisions.clear();
 	}
-
+	
 	void CollisionManager::addCollision(int id)
 	{
 		if(!isColliding(id))
@@ -20,7 +20,7 @@ namespace SmashBros
 			collisions.add(id);
 		}
 	}
-
+	
 	void CollisionManager::removeCollision(int id)
 	{
 		for(int i=0; i<collisions.size(); i++)
@@ -33,12 +33,12 @@ namespace SmashBros
 			}
 		}
 	}
-
+	
 	void CollisionManager::clear()
 	{
 		collisions.clear();
 	}
-
+	
 	boolean CollisionManager::isColliding(int id)
 	{
 		for(int i=0; i<collisions.size(); i++)

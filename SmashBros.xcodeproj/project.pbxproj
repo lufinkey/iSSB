@@ -11,6 +11,8 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		28FD15000DC6FC520079059D /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FD14FF0DC6FC520079059D /* OpenGLES.framework */; };
 		28FD15080DC6FC5B0079059D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FD15070DC6FC5B0079059D /* QuartzCore.framework */; };
+		A003DB1C19F873BF00CA7E21 /* iCadeControllerReceiver.mm in Sources */ = {isa = PBXBuildFile; fileRef = A003DB1B19F873BF00CA7E21 /* iCadeControllerReceiver.mm */; };
+		A003DB2119F89EC000CA7E21 /* iCadeReaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = A003DB1F19F89EC000CA7E21 /* iCadeReaderView.m */; };
 		A006580317F8C09D00B54DF7 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A006580217F8C09C00B54DF7 /* MessageUI.framework */; };
 		A0136BB419F1E7190041FDA3 /* Images in Resources */ = {isa = PBXBuildFile; fileRef = A0136BB319F1E7190041FDA3 /* Images */; };
 		A05C8D72180780B600A30C28 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A05C8D71180780B600A30C28 /* GameKit.framework */; };
@@ -147,6 +149,11 @@
 		28FD14FF0DC6FC520079059D /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		28FD15070DC6FC5B0079059D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A003DB1A19F873BF00CA7E21 /* iCadeControllerReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCadeControllerReceiver.h; sourceTree = "<group>"; };
+		A003DB1B19F873BF00CA7E21 /* iCadeControllerReceiver.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = iCadeControllerReceiver.mm; sourceTree = "<group>"; };
+		A003DB1E19F89EC000CA7E21 /* iCadeReaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCadeReaderView.h; sourceTree = "<group>"; };
+		A003DB1F19F89EC000CA7E21 /* iCadeReaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCadeReaderView.m; sourceTree = "<group>"; };
+		A003DB2019F89EC000CA7E21 /* iCadeState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCadeState.h; sourceTree = "<group>"; };
 		A006580217F8C09C00B54DF7 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		A0136BB319F1E7190041FDA3 /* Images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Images; sourceTree = "<group>"; };
 		A05C8D71180780B600A30C28 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
@@ -564,6 +571,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		A003DB1D19F89EC000CA7E21 /* iCade */ = {
+			isa = PBXGroup;
+			children = (
+				A003DB1E19F89EC000CA7E21 /* iCadeReaderView.h */,
+				A003DB1F19F89EC000CA7E21 /* iCadeReaderView.m */,
+				A003DB2019F89EC000CA7E21 /* iCadeState.h */,
+			);
+			path = iCade;
+			sourceTree = "<group>";
+		};
 		A0A7FC97195A2FDF003924CD /* Source */ = {
 			isa = PBXGroup;
 			children = (
@@ -642,8 +659,11 @@
 		A0A7FCB8195A2FDF003924CD /* ObjCBridge */ = {
 			isa = PBXGroup;
 			children = (
+				A003DB1D19F89EC000CA7E21 /* iCade */,
 				A0A7FCBA195A2FDF003924CD /* CPPBridge.h */,
 				A0A7FCB9195A2FDF003924CD /* CPPBridge.cpp */,
+				A003DB1A19F873BF00CA7E21 /* iCadeControllerReceiver.h */,
+				A003DB1B19F873BF00CA7E21 /* iCadeControllerReceiver.mm */,
 				A0A7FCBB195A2FDF003924CD /* MailViewController.h */,
 				A0A7FCBC195A2FDF003924CD /* MailViewController.mm */,
 				A0A7FCBD195A2FDF003924CD /* MessageBoxDelegate.h */,
@@ -1209,6 +1229,8 @@
 				A071A7D3197B136F003DB16F /* Loader.cpp in Sources */,
 				A0D2320919E9A2600090B6BD /* UIWebViewController.mm in Sources */,
 				A081FA8419F1C7F8000D1EAB /* Link.cpp in Sources */,
+				A003DB1C19F873BF00CA7E21 /* iCadeControllerReceiver.mm in Sources */,
+				A003DB2119F89EC000CA7E21 /* iCadeReaderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

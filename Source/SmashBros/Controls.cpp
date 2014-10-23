@@ -8,6 +8,8 @@
 namespace SmashBros
 {
 	int**Controls::controls = null;
+	bool Controls::ControllerButtonStates[20];
+	bool Controls::PrevControllerButtonStates[20];
 	Controls::ControlHUD*Controls::touchControls = null;
 	bool Controls::touchEnabled = true;
 	bool Controls::joystickEnabled = true;
@@ -168,6 +170,13 @@ namespace SmashBros
 		ArrayList<ControlData> buttonsPressed;
 		bool storeButtons = false;
 		
+		bool CtrlButtonStates[20];
+		
+		for(int i=0; i<sizeof(ControllerButtonStates); i++)
+		{
+			CtrlButtonStates[i] = ControllerButtonStates[i];
+		}
+		
 		if(P2PDataManager::isEnabled() && !P2PDataManager::isServer())
 		{
 			storeButtons = true;
@@ -180,7 +189,8 @@ namespace SmashBros
 		
 		if(Controls::touchEnabled && !Global::hud->isClicked())
 		{
-			if(button_a->isClicked() && !button_a->wasClicked())
+			if((button_a->isClicked() && !button_a->wasClicked()) ||
+			   (CtrlButtonStates[BUTTON_STANDARD] && !PrevControllerButtonStates[BUTTON_STANDARD]))
 			{
 				if(storeButtons)
 				{
@@ -197,7 +207,8 @@ namespace SmashBros
 				}
 				button_a->setColor(Color::BLUE);
 			}
-			else if(!button_a->isClicked() && button_a->wasClicked())
+			else if((!button_a->isClicked() && button_a->wasClicked()) ||
+				(!CtrlButtonStates[BUTTON_STANDARD] && PrevControllerButtonStates[BUTTON_STANDARD]))
 			{
 				if(storeButtons)
 				{
@@ -214,7 +225,8 @@ namespace SmashBros
 				}
 				button_a->setColor(Color::WHITE);
 			}
-			else if(button_b->isClicked() && !button_b->wasClicked())
+			else if((button_b->isClicked() && !button_b->wasClicked()) ||
+				(CtrlButtonStates[BUTTON_SPECIAL] && !PrevControllerButtonStates[BUTTON_SPECIAL]))
 			{
 				if(storeButtons)
 				{
@@ -231,7 +243,8 @@ namespace SmashBros
 				}
 				button_b->setColor(Color::GREEN);
 			}
-			else if(!button_b->isClicked() && button_b->wasClicked())
+			else if((!button_b->isClicked() && button_b->wasClicked()) ||
+				(!CtrlButtonStates[BUTTON_SPECIAL] && PrevControllerButtonStates[BUTTON_SPECIAL]))
 			{
 				if(storeButtons)
 				{
@@ -248,7 +261,8 @@ namespace SmashBros
 				}
 				button_b->setColor(Color::WHITE);
 			}
-			else if(button_x->isClicked() && !button_x->wasClicked())
+			else if((button_x->isClicked() && !button_x->wasClicked()) ||
+				(CtrlButtonStates[BUTTON_JUMP] && !PrevControllerButtonStates[BUTTON_JUMP]))
 			{
 				if(storeButtons)
 				{
@@ -265,7 +279,8 @@ namespace SmashBros
 				}
 				button_x->setColor(Color::YELLOW);
 			}
-			else if(!button_x->isClicked() && button_x->wasClicked())
+			else if((!button_x->isClicked() && button_x->wasClicked()) ||
+				(!CtrlButtonStates[BUTTON_JUMP] && PrevControllerButtonStates[BUTTON_JUMP]))
 			{
 				if(storeButtons)
 				{
@@ -282,7 +297,8 @@ namespace SmashBros
 				}
 				button_x->setColor(Color::WHITE);
 			}
-			else if(button_z->isClicked() && !button_z->wasClicked())
+			else if((button_z->isClicked() && !button_z->wasClicked()) ||
+				(CtrlButtonStates[BUTTON_GRAB] && !PrevControllerButtonStates[BUTTON_GRAB]))
 			{
 				if(storeButtons)
 				{
@@ -299,7 +315,8 @@ namespace SmashBros
 				}
 				button_z->setColor(Color::YELLOW);
 			}
-			else if(!button_z->isClicked() && button_z->wasClicked())
+			else if((!button_z->isClicked() && button_z->wasClicked()) ||
+				(!CtrlButtonStates[BUTTON_GRAB] && PrevControllerButtonStates[BUTTON_GRAB]))
 			{
 				button_z->setColor(Color::WHITE);
 			}
@@ -584,9 +601,10 @@ namespace SmashBros
 					joystickDir[touchPlayer] = 0;
 				}
 			}
-			else
+			if(!joystickEnabled || iCade_enabled())
 			{
-				if(arrow_up->isClicked() && !arrow_up->wasClicked())
+				if((arrow_up->isClicked() && !arrow_up->wasClicked()) ||
+				   (CtrlButtonStates[BUTTON_UP] && !PrevControllerButtonStates[BUTTON_UP]))
 				{
 					if(storeButtons)
 					{
@@ -603,7 +621,8 @@ namespace SmashBros
 					}
 					arrow_up->setColor(Color::YELLOW);
 				}
-				else if(!arrow_up->isClicked() && arrow_up->wasClicked())
+				else if((!arrow_up->isClicked() && arrow_up->wasClicked()) ||
+					(!CtrlButtonStates[BUTTON_UP] && PrevControllerButtonStates[BUTTON_UP]))
 				{
 					if(storeButtons)
 					{
@@ -620,7 +639,8 @@ namespace SmashBros
 					}
 					arrow_up->setColor(Color::WHITE);
 				}
-				if(arrow_down->isClicked() && !arrow_down->wasClicked())
+				if((arrow_down->isClicked() && !arrow_down->wasClicked()) ||
+					(CtrlButtonStates[BUTTON_DOWN] && !PrevControllerButtonStates[BUTTON_DOWN]))
 				{
 					if(storeButtons)
 					{
@@ -637,7 +657,8 @@ namespace SmashBros
 					}
 					arrow_down->setColor(Color::YELLOW);
 				}
-				else if(!arrow_down->isClicked() && arrow_down->wasClicked())
+				else if((!arrow_down->isClicked() && arrow_down->wasClicked()) ||
+					(!CtrlButtonStates[BUTTON_DOWN] && PrevControllerButtonStates[BUTTON_DOWN]))
 				{
 					if(storeButtons)
 					{
@@ -654,7 +675,8 @@ namespace SmashBros
 					}
 					arrow_down->setColor(Color::WHITE);
 				}
-				if(arrow_left->isClicked() && !arrow_left->wasClicked())
+				if((arrow_left->isClicked() && !arrow_left->wasClicked()) ||
+					(CtrlButtonStates[BUTTON_LEFT] && !PrevControllerButtonStates[BUTTON_LEFT]))
 				{
 					if(storeButtons)
 					{
@@ -671,7 +693,8 @@ namespace SmashBros
 					}
 					arrow_left->setColor(Color::YELLOW);
 				}
-				else if(!arrow_left->isClicked() && arrow_left->wasClicked())
+				else if((!arrow_left->isClicked() && arrow_left->wasClicked()) ||
+					(!CtrlButtonStates[BUTTON_LEFT] && PrevControllerButtonStates[BUTTON_LEFT]))
 				{
 					if(storeButtons)
 					{
@@ -688,7 +711,8 @@ namespace SmashBros
 					}
 					arrow_left->setColor(Color::WHITE);
 				}
-				if(arrow_right->isClicked() && !arrow_right->wasClicked())
+				if((arrow_right->isClicked() && !arrow_right->wasClicked()) ||
+					(CtrlButtonStates[BUTTON_RIGHT] && !PrevControllerButtonStates[BUTTON_RIGHT]))
 				{
 					if(storeButtons)
 					{
@@ -705,7 +729,8 @@ namespace SmashBros
 					}
 					arrow_right->setColor(Color::YELLOW);
 				}
-				else if(!arrow_right->isClicked() && arrow_right->wasClicked())
+				else if((!arrow_right->isClicked() && arrow_right->wasClicked()) ||
+					(!CtrlButtonStates[BUTTON_RIGHT] && PrevControllerButtonStates[BUTTON_RIGHT]))
 				{
 					if(storeButtons)
 					{
@@ -750,6 +775,11 @@ namespace SmashBros
 			}
 			
 			P2PManager::sendData(data.getData(), data.length(), P2PManager::SENDDATA_RELIABLE);
+		}
+		
+		for(int i=0; i<sizeof(ControllerButtonStates); i++)
+		{
+			PrevControllerButtonStates[i] = CtrlButtonStates[i];
 		}
 	}
 	
@@ -1874,8 +1904,19 @@ namespace SmashBros
 				controls[i][j] = 0;
 			}
 		}
-
+		
+		for(int i=0; i<sizeof(ControllerButtonStates); i++)
+		{
+			ControllerButtonStates[i]=false;
+			PrevControllerButtonStates[i]=false;
+		}
+		
 		setDefaultControls();
+		
+		iCade_enable(true, Game::getWindow());
+		iCade_setStateChangedCallback(&Controls::iCadeStateChangedHandler);
+		iCade_setButtonDownCallback(&Controls::iCadeButtonDownHandler);
+		iCade_setButtonUpCallback(&Controls::iCadeButtonUpHandler);
 	}
 	
 	void Controls::setDefaultControls()
@@ -2559,5 +2600,38 @@ namespace SmashBros
 	        }
 	        break;
 	    }
+	}
+	
+	void Controls::iCadeStateChangedHandler(iCadeState state)
+	{
+		ControllerButtonStates[BUTTON_UP] = (state&iCadeJoystickUp);
+		ControllerButtonStates[BUTTON_DOWN] = (state&iCadeJoystickDown);
+		ControllerButtonStates[BUTTON_LEFT] = (state&iCadeJoystickLeft);
+		ControllerButtonStates[BUTTON_RIGHT] = (state&iCadeJoystickRight);
+		
+		//ControllerButtonStates[BUTTON_SELECT] = (state&iCadeButtonA); // Select
+		//ControllerButtonStates[BUTTON_SHEILD] = (state&iCadeButtonB); // Left Shoulder
+		ControllerButtonStates[BUTTON_PAUSE] = (state&iCadeButtonC);
+		ControllerButtonStates[BUTTON_GRAB] = (state&iCadeButtonD);
+		if((state&iCadeButtonE) || (state&iCadeButtonH))
+		{
+			ControllerButtonStates[BUTTON_JUMP] = true;
+		}
+		else
+		{
+			ControllerButtonStates[BUTTON_JUMP] = false;
+		}
+		ControllerButtonStates[BUTTON_STANDARD] = (state&iCadeButtonF);
+		ControllerButtonStates[BUTTON_SPECIAL] = (state&iCadeButtonG);
+	}
+	
+	void Controls::iCadeButtonDownHandler(iCadeState button)
+	{
+		//
+	}
+	
+	void Controls::iCadeButtonUpHandler(iCadeState button)
+	{
+		//
 	}
 }
