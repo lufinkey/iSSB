@@ -708,17 +708,75 @@ namespace GameEngine
 		}
 	}
 	
-	void Application::addTouchPoint(long ID, float x, float y)
+	void Application::addTouchPoint(long givenID, float x, float y)
 	{
-		touchPoints.add(createTouchPoint(ID, x, y));
+		long touchID = TouchPoint_currentID;
+		
+		TouchPoint_currentID++;
+		if(TouchPoint_currentID>10000)
+		{
+			TouchPoint_currentID = 0;
+		}
+		
+		bool exists = false;
+		
+		do
+		{
+			exists = false;
+			
+			for(int i=0; i<touchPoints.size(); i++)
+			{
+				if(touchPoints.get(i).ID == TouchPoint_currentID)
+				{
+					exists = true;
+					i=touchPoints.size();
+				}
+			}
+			
+			if(!exists)
+			{
+				for(int i=0; i<currentTouchPoints.size(); i++)
+				{
+					if(currentTouchPoints.get(i).ID == TouchPoint_currentID)
+					{
+						exists = true;
+						i=currentTouchPoints.size();
+					}
+				}
+			}
+			
+			if(!exists)
+			{
+				for(int i=0; i<prevTouchPoints.size(); i++)
+				{
+					if(prevTouchPoints.get(i).ID == TouchPoint_currentID)
+					{
+						exists = true;
+						i=prevTouchPoints.size();
+					}
+				}
+			}
+			
+			if(exists)
+			{
+				TouchPoint_currentID++;
+				if(TouchPoint_currentID>10000)
+				{
+					TouchPoint_currentID = 0;
+				}
+			}
+		}
+		while(exists);
+		
+		touchPoints.add(createTouchPoint(touchID, givenID, x, y));
 	}
 	
-	void Application::updateTouchPoint(long ID, float x, float y)
+	void Application::updateTouchPoint(long givenID, float x, float y)
 	{
 		for(int i=0; i<touchPoints.size(); i++)
 		{
 			TouchPoint point = touchPoints.get(i);
-			if(point.ID == ID)
+			if(point.givenID == givenID)
 			{
 				point.x = x;
 				point.y = y;
@@ -728,12 +786,12 @@ namespace GameEngine
 		}
 	}
 	
-	void Application::removeTouchPoint(long ID, float x, float y)
+	void Application::removeTouchPoint(long givenID, float x, float y)
 	{
 		for(int i=0; i<touchPoints.size(); i++)
 		{
 			TouchPoint&point = touchPoints.get(i);
-			if(point.ID == ID)
+			if(point.givenID == givenID)
 			{
 				touchPoints.remove(i);
 				return;

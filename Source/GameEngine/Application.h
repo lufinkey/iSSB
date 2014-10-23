@@ -80,9 +80,9 @@ namespace GameEngine
 		static void keyReleased(int keycode);
 		static void mousePressed(int eventcode);
 		static void mouseReleased(int eventcode);
-		static void addTouchPoint(long ID, float x, float y);
-		static void updateTouchPoint(long ID, float x, float y);
-		static void removeTouchPoint(long ID, float x, float y);
+		static void addTouchPoint(long givenID, float x, float y);
+		static void updateTouchPoint(long givenID, float x, float y);
+		static void removeTouchPoint(long givenID, float x, float y);
 		static TouchPoint*getTouchPoint(long ID);
 		static TouchPoint*getPrevTouchPoint(long ID);
 		
