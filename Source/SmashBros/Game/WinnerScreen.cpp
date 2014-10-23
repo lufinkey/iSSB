@@ -3,7 +3,7 @@
 #include "../Global.h"
 #include "../Preferences.h"
 #include "../Menus/Menus.h"
-#include "Loader.h"
+#include "../Loader.h"
 
 namespace SmashBros
 {

@@ -86,7 +86,7 @@ GameEngine::String GameEngine_urlencode(char*str)
 		? i : (i == ' ') ? '+' : 0;
 	}
 	
-	charToUrlEncoding(str, enc, rfc3986);
+	GameEngine_charToUrlEncoding(str, enc, rfc3986);
 	GameEngine::String result = enc;
 	delete enc;
 	
@@ -149,7 +149,7 @@ void writeEmail(SDL_Window*window, const char*recipient, const char*subject, con
 	GameEngine::String subj = subject;
 	GameEngine::String bod = body;
 	
-	GameEngine::String url = (GameEngine::String)"mailto:" + recipient + "?subject=" + urlencode(subj) + "&body=" + urlencode(bod);
+	GameEngine::String url = (GameEngine::String)"mailto:" + recipient + "?subject=" + GameEngine_urlencode(subj) + "&body=" + GameEngine_urlencode(bod);
 	GameEngine::String command = (GameEngine::String)"./adb shell am start -a android.intent.action.VIEW -d " + url;
 	system(command);
 #endif

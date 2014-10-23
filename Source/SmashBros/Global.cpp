@@ -67,22 +67,22 @@ namespace SmashBros
 	{
 		for(int i=0; i<possPlayers; i++)
 		{
-			selectedChar[i]=NULL;
+			selectedChar[i]=0;
 			CPU[i] = false;
 		}
 		for(int i=0; i<=possPlayers; i++)
 		{
-			players[i] = NULL;
+			players[i] = 0;
 			characters[i] = NULL;
 			currentTeams[i] = 0;
-			scores[i] = NULL;
-			KOs[i] = NULL;
-			deaths[i] = NULL;
-			winners[i] = NULL;
+			scores[i] = 0;
+			KOs[i] = 0;
+			deaths[i] = 0;
+			winners[i] = 0;
 		}
 		for(int i=0; i<=possTeams; i++)
 		{
-			teamWinners[i] = NULL;
+			teamWinners[i] = 0;
 		}
 		for(int i=0; i<30; i++)
 		{

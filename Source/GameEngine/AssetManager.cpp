@@ -1,6 +1,7 @@
 
 #include "AssetManager.h"
 #include "Output/Console.h"
+#include <cstdio>
 
 namespace GameEngine
 {
