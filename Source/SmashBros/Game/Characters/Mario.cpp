@@ -568,8 +568,8 @@ namespace SmashBros
 		addAttackInfo(DIR_DOWN, 8,RIGHT, 10, 600, 0,0,0, 1,4,5);
 		addAttackInfo(DIR_UP, 4, LEFT, 7, 400, 0,0,0, -1,2,3);
 		addAttackInfo(DIR_UP, 4,RIGHT, 7, 400, 0,0,0, -1,2,3);
-		addAttackInfo(DIR_LEFT,  4, LEFT, 700, 4, -1,1,2, -1,1,1.6f);
-		addAttackInfo(DIR_RIGHT, 4,RIGHT, 700, 4, 1,1,2, -1,1,1.6f);
+		addAttackInfo(DIR_LEFT,  4, LEFT, 7, 400, -1,1,2, -1,1,1.6f);
+		addAttackInfo(DIR_RIGHT, 4,RIGHT, 7, 400, 1,1,2, -1,1,1.6f);
 		
 		if(!checkItemUseUp())
 		{
