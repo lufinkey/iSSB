@@ -16,17 +16,17 @@ namespace SmashBros
 	{
 		//
 	}
-
+	
 	void WinnerScreen::FinishButton::onMouseEnter()
 	{
 		changeAnimation("hover",FORWARD);
 	}
-
+	
 	void WinnerScreen::FinishButton::onMouseLeave()
 	{
 		changeAnimation("normal",FORWARD);
 	}
-
+	
 	void WinnerScreen::FinishButton::onRelease()
 	{
 		if(Global::gameType==Global::TYPE_GROUPBRAWL)
@@ -34,7 +34,7 @@ namespace SmashBros
 			ScreenManager::GoToScreen("BrawlCharSelect");
 		}
 	}
-
+	
 	WinnerScreen::WinnerScreen(const String&name) : Screen(name)
 	{
 		button_finish = new FinishButton(800,500);
@@ -43,7 +43,7 @@ namespace SmashBros
 		button_finish->addAnimation(new Animation("hover", 1, "Images/Game/WinnerScreen/continue_selected.png"));
 		button_finish->changeAnimation("normal", FORWARD);
 	}
-
+	
 	WinnerScreen::~WinnerScreen()
 	{
 		for(int i=0; i<stats.size(); i++)
@@ -55,12 +55,12 @@ namespace SmashBros
 		files.clear();
 		delete button_finish;
 	}
-
+	
 	void WinnerScreen::Initialize()
 	{
 		//
 	}
-
+	
 	void WinnerScreen::LoadContent()
 	{
 		for(int i=0; i<Global::possTeams; i++)
@@ -108,7 +108,6 @@ namespace SmashBros
 			int death;
 			
 			pNum = i;
-			
 			
 			if(Global::selectedChar[i-1]!=0)
 			{

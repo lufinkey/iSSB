@@ -655,7 +655,7 @@ namespace SmashBros
 			preppingDownB = false;
 			attacksHolder = 12;
 			attacksPriority = 0;
-			changeAnimation("special_hold_down", FORWARD);
+			changeTwoSidedAnimation("special_hold_down", FORWARD);
 			
 			Lightning* lightning = new Lightning(getPlayerNo(), x, y);
 			createProjectile(lightning);
