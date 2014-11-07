@@ -356,7 +356,7 @@ namespace SmashBros
 	{
 		for(int i=0; i<charAmount; i++)
 	    {
-	    	Vector2i pnt = currentStage->getSpawnPoint(players[i+1]);
+	    	Vector2f pnt = currentStage->getSpawnPoint(players[i+1]);
 	    	byte teamNo = 0;
 	    	if(teamBattle)
 	    	{

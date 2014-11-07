@@ -74,9 +74,6 @@ namespace SmashBros
 		standardCombo = 0;
 		hitAmount = 0;
 		attackTime = 0;
-		grabbed = false;
-		hasgrabbed = false;
-		grabbing = false;
 		attacksHolder = -1;
 		attacksPriority = 0;
 		chargeSmash = 0;
@@ -85,6 +82,7 @@ namespace SmashBros
 		canFinalsmash = false;
 		bUp = false;
 		doubleJump = 0;
+		maxDoubleJumps = 1;
 		hanging = false;
 		
 		walkSpeed = 2;
@@ -157,11 +155,6 @@ namespace SmashBros
 		hitbox = new HitBox(playerNo, x,y,1,1);
 		setHitbox(-10, -10, 20, 20);
 		setHangPoint(8, 16);
-
-		attacksHolder=-1;
-		grabbed = false;
-		hasgrabbed = false;
-		grabbing = false;
 	}
 
 	Player::~Player()
@@ -349,9 +342,6 @@ namespace SmashBros
 		xVel = 0;
 		yVel = 0;
 		currentEnemy = null;
-		grabbed = false;
-		hasgrabbed = false;
-		grabbing = false;
 		attacksHolder = -1;
 		attacksPriority = 0;
 		chargeSmash = 0;
@@ -370,7 +360,7 @@ namespace SmashBros
 	void Player::respawn()
 	{
 		reset();
-		Vector2i pnt = Global::currentStage->getSpawnPoint(playerNo);
+		Vector2f pnt = Global::currentStage->getSpawnPoint(playerNo);
 		x = (float)pnt.x;
 		y = (float)pnt.y;
 		animFinish();
@@ -873,24 +863,9 @@ namespace SmashBros
 		return true;
 	}
 	
-	boolean Player::isGrabbed()
-	{
-		return grabbed;
-	}
-	
 	int Player::getStock()
 	{
 		return stock;
-	}
-	
-	boolean Player::hasGrabbed()
-	{
-		return hasgrabbed;
-	}
-	
-	boolean Player::isGrabbing()
-	{
-		return grabbing;
 	}
 	
 	boolean Player::isJumping()
@@ -911,11 +886,6 @@ namespace SmashBros
 	void Player::setJumping(boolean toggle)
 	{
 		jumping = toggle;
-	}
-	
-	void Player::finishDeflect()
-	{
-		deflectState = false;
 	}
 	
 	void Player::resetAttackCollisions()
@@ -1149,7 +1119,7 @@ namespace SmashBros
 		{
 			itemDo = itemHolding->holderCanDo();
 		}
-		if(attacksHolder>-1 || grabbed || hurt==2 || !checkIfAble() || !itemDo)
+		if(attacksHolder>-1 || hurt==2 || !checkIfAble() || !itemDo) //TODO add grabbing checks
 		{
 			canDo=false;
 		}
@@ -3989,7 +3959,7 @@ namespace SmashBros
 	
 	void Player::updateGravity()
 	{
-		if(!grabbed && !hanging && yvelocity<Global::currentStage->getTerminalVelocity())
+		if(!hanging && yvelocity<Global::currentStage->getTerminalVelocity()) //TODO add grabbing checks
 		{
 			yvelocity+=(float)(Global::currentStage->getGravity()+weight);
 		}
@@ -5373,7 +5343,7 @@ namespace SmashBros
 				    changeTwoSidedAnimation("land", FORWARD);
 				}
 				else if((yvelocity>=0)&&(canDo)&&(!chargingAttack)&&(moveRight==0)&&(moveLeft==0)
-				&&(!hasgrabbed)&&(!grabbing)&&(chargeSmash==0)&&(!chargingAttack))
+				&&(chargeSmash==0)&&(!chargingAttack)) //TODO add grabbing support
 				{
 				    if(down)
 				    {
@@ -5527,7 +5497,7 @@ namespace SmashBros
 	{
 		//Open for implementation, but call super method
 		onGround=false;
-		doubleJump=1;
+		doubleJump=maxDoubleJumps;
 		checkAttacks();
 		if((!hanging)&&(yvelocity>0)&&(canDo))
 		{
@@ -5558,7 +5528,7 @@ namespace SmashBros
 			onGround = false;
 			bUp=false;
 			canDo=true;
-			doubleJump=1;
+			doubleJump=maxDoubleJumps;
 			changeTwoSidedAnimation("hang", NO_CHANGE);
 			x=(collide->x+(collide->width/2)) + (getPlayerDirMult(collideHangSide) * hangPoint.x);
 			y=collide->y+((height/2)-hangPoint.y);
@@ -6076,7 +6046,7 @@ namespace SmashBros
 		        yvelocity=-dist1;
 		        y-=1;
 				changeTwoSidedAnimation("jump", FORWARD);
-		        doubleJump=1;
+		        doubleJump=maxDoubleJumps;
 		    }
 		    else
 		    {
@@ -6101,10 +6071,10 @@ namespace SmashBros
 	    up=true;
 	    hanging=false;
 	    y-=((float)hitbox->height + ((float)height*0.26f));
-	    if(doubleJump==1)
+	    if(doubleJump>0)
 	    {
 	        yvelocity=-2;
-	        doubleJump=0;
+	        doubleJump--;
 	        changeTwoSidedAnimation("jump2", FORWARD);
 			x += (getPlayerDirMult() * hitbox->width);
 	    }

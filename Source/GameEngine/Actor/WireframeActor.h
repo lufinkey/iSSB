@@ -78,7 +78,7 @@ namespace GameEngine
 		
 		long getTouchId();
 
-	    bool isOnScreen();
+	    virtual bool isOnScreen();
 
 		float getXSpeed();
 		float getYSpeed();

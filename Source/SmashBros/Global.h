@@ -82,6 +82,10 @@ namespace SmashBros
 		static const byte TEAM_GREEN = 3;
 		static const byte TEAM_YELLOW = 4;
 		
+		static const int totalCharacters = 6;
+		static const int totalItems = 6;
+		static const int totalStages = 4;
+		
 		//CHARACTER CONSTANTS
 		static const int CHAR_MARIO = 1;
 		static const int CHAR_ICHIGO = 2;
@@ -105,10 +109,6 @@ namespace SmashBros
 		static const int ITEM_BEAMSWORD = 4;
 		static const int ITEM_SUPERMUSHROOM = 5;
 		static const int ITEM_POISONMUSHROOM = 6;
-		
-		static const int totalCharacters = 6;
-		static const int totalItems = 6;
-		static const int totalStages = 4;
 		
 		static void onReturnToMenu();
 		

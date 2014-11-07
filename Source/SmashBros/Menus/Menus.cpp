@@ -259,6 +259,7 @@ namespace SmashBros
 		BatchLoader::addImage("Images/Menus/CharacterSelect/icons/fox.png");
 		BatchLoader::addImage("Images/Menus/CharacterSelect/icons/sonic.png");
 		BatchLoader::addImage("Images/Menus/CharacterSelect/icons/pikachu.png");
+		BatchLoader::addImage("Images/Menus/CharacterSelect/icons/link.png");
 		BatchLoader::addImage("Images/Menus/CharacterSelect/icons/bowser.png");
 		BatchLoader::addImage("Images/Menus/CharacterSelect/coins/coin.png");
 		BatchLoader::addImage("Images/Menus/CharacterSelect/coins/coin1.png");
@@ -277,7 +278,9 @@ namespace SmashBros
 		BatchLoader::addImage("Images/Menus/CharacterSelect/previews/sonic.png");
 		BatchLoader::addImage("Images/Menus/CharacterSelect/previews/fox.png");
 		BatchLoader::addImage("Images/Menus/CharacterSelect/previews/pikachu.png");
+		BatchLoader::addImage("Images/Menus/CharacterSelect/previews/link.png");
 		BatchLoader::addImage("Images/Menus/StageSelect/test.png");
+		BatchLoader::addImage("Images/Menus/StageSelect/default.png");
 		BatchLoader::addImage("Images/Menus/StageSelect/hillside_battleground.png");
 		BatchLoader::addImage("Images/Menus/StageSelect/battlefield.png");
 		BatchLoader::addImage("Images/Menus/StageSelect/final_destination.png");

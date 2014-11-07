@@ -1076,7 +1076,7 @@ namespace SmashBros
 				break;
 			}
 		}
-		else if((playr->isOnGround())&&(playr->canDo)&&(!playr->isGrabbing())&&(!playr->hasGrabbed())&&(!playr->isGrabbed()))
+		else if((playr->isOnGround())&&(playr->canDo)) //TODO add grabbing support
 		{
 			playr->changeTwoSidedAnimation("stand", NO_CHANGE);
 		}
@@ -1130,7 +1130,7 @@ namespace SmashBros
 			playr->moveRight=0;
 			if(playr->canDo)
 			{
-				if((playr->isOnGround())&&(!playr->isGrabbing())&&(!playr->hasGrabbed())&&(!playr->isGrabbed()))
+				if(playr->isOnGround()) //TODO add grabbing support
 				{
 					playr->changeTwoSidedAnimation("stand", NO_CHANGE);
 				}
@@ -1164,7 +1164,7 @@ namespace SmashBros
 			playr->down=false;
 			playr->upKey=true;
 			playr->checkAttacks();
-			if((playr->canDo)&&(!playr->isGrabbing())&&(!playr->hasGrabbed())&&(!playr->isGrabbed()))
+			if(playr->canDo) //TODO add grabbing support
 			{
 				if(playr->hanging)
 				{
@@ -1221,7 +1221,7 @@ namespace SmashBros
 				playr->down=false;
 				playr->upKey=true;
 				playr->checkAttacks();
-				if(justPulled[pNum] && (playr->canDo)&&(!playr->isGrabbing())&&(!playr->hasGrabbed())&&(!playr->isGrabbed()))
+				if(justPulled[pNum] && playr->canDo) // TODO add grabbing support
 				{
 					if(playr->hanging)
 					{
@@ -1319,7 +1319,7 @@ namespace SmashBros
 				playr->down=false;
 				playr->upKey=true;
 				playr->checkAttacks();
-				if(justPulled[pNum] && (playr->canDo)&&(!playr->isGrabbing())&&(!playr->hasGrabbed())&&(!playr->isGrabbed()))
+				if(justPulled[pNum] && playr->canDo) //TODO add grabbing support
 				{
 					if(playr->hanging)
 					{
@@ -1417,7 +1417,7 @@ namespace SmashBros
 				playr->down=false;
 				playr->upKey=true;
 				playr->checkAttacks();
-				if(justPulled[pNum] && (playr->canDo)&&(!playr->isGrabbing())&&(!playr->hasGrabbed())&&(!playr->isGrabbed()))
+				if(justPulled[pNum] && playr->canDo) //TODO add grabbing support
 				{
 					if(playr->hanging)
 					{
@@ -1633,7 +1633,7 @@ namespace SmashBros
 			{
 				playr->smashTime = 0;
 			}
-			if((playr->isOnGround())&&(playr->canDo)&&(!playr->isGrabbing())&&(!playr->hasGrabbed())&&(!playr->isGrabbed()))
+			if((playr->isOnGround())&&playr->canDo) //TODO add grabbing support
 			{
 				playr->changeTwoSidedAnimation("crouch", NO_CHANGE);
 			}
@@ -2177,7 +2177,7 @@ namespace SmashBros
 	            playr->hanging=false;
 	            playr->climbUp();
 	        }
-	        else if((playr->canDo)&&(!playr->isGrabbing())&&(!playr->hasGrabbed())&&(!playr->isGrabbed()))
+	        else if(playr->canDo) //TODO add grabbing support
 	        {
 	            playr->jump();
 	            //ActorEndDownB();
@@ -2258,7 +2258,7 @@ namespace SmashBros
 	                break;
 	            }
 	        }
-	        else if((playr->isOnGround())&&(playr->canDo)&&(!playr->chargingAttack)&&(!playr->isGrabbing())&&(!playr->hasGrabbed())&&(!playr->isGrabbed()))
+	        else if(playr->isOnGround() && playr->canDo && !playr->chargingAttack) //TODO add grabbing support
 	        {
 	            playr->changeTwoSidedAnimation("stand", NO_CHANGE);
 	        }
@@ -2339,7 +2339,7 @@ namespace SmashBros
 	                break;
 	            }
 	        }
-	        else if((playr->isOnGround())&&(playr->canDo)&&(!playr->chargingAttack)&&(!playr->isGrabbing())&&(!playr->hasGrabbed())&&(!playr->isGrabbed()))
+	        else if(playr->isOnGround() && playr->canDo && !playr->chargingAttack) //TODO add grabbing support
 	        {
 	            playr->changeTwoSidedAnimation("stand", NO_CHANGE);
 	        }
@@ -2420,7 +2420,7 @@ namespace SmashBros
 	                break;
 	            }
 	        }
-	        else if((playr->isOnGround())&&(playr->canDo)&&(!playr->chargingAttack)&&(!playr->isGrabbing())&&(!playr->hasGrabbed())&&(!playr->isGrabbed()))
+	        else if(playr->isOnGround() && playr->canDo && !playr->chargingAttack) //TODO add grabbing support
 	        {
 	            playr->changeTwoSidedAnimation("stand", NO_CHANGE);
 	        }
@@ -2441,7 +2441,7 @@ namespace SmashBros
 			playr->checkAttacks();
 			playr->hanging=false;
 			playr->upKey=true;
-			if((playr->canDo)&&(!playr->isGrabbing())&&(!playr->hasGrabbed())&&(!playr->isGrabbed()))
+			if(playr->canDo) //TODO add grabbing support
 			{
 				playr->destroyCharge();
 				playr->jump();
@@ -2461,7 +2461,7 @@ namespace SmashBros
 	    {
 	        case DOWN:
 	        playr->checkAttacks();
-	        if((playr->canDo)&&(!playr->isGrabbing())&&(!playr->hasGrabbed())&&(!playr->isGrabbed())&&(!playr->hanging))
+	        if(playr->canDo && !playr->hanging) //TODO add grabbing support
 	        {
 	            //ActorEndDownB(pNum);
 	            switch(playr->buttondir)
@@ -2564,7 +2564,7 @@ namespace SmashBros
 	        case DOWN:
 	        playr->checkAttacks();
 	        playr->smashTime=0;
-	        if((playr->canDo)&&(!playr->isGrabbing())&&(!playr->hasGrabbed())&&(!playr->isGrabbed()))
+	        if(playr->canDo) //TODO add grabbing support
 	        {
 	            switch(playr->buttondir)
 	            {

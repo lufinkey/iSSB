@@ -123,7 +123,79 @@ namespace SmashBros
 		Actor*a = get(index);
 		return a;
 	}
-
+	
+	void ActorGrid::remove(int index, boolean deallocate)
+	{
+		if(deallocate)
+		{
+			delete actors.get(index);
+		}
+		actors.remove(index);
+		for(int i=index; i<actors.size(); i++)
+		{
+			addToGrid(actors.get(i),x,y,cols,rows,xSpace,ySpace,i);
+		}
+		currentIndex = actors.size();
+	}
+	
+	void ActorGrid::remove(Actor*a, boolean deallocate)
+	{
+		int index = -1;
+		for(int i=0; i<actors.size(); i++)
+		{
+			if(actors.get(i) == a)
+			{
+				if(deallocate)
+				{
+					delete a;
+				}
+				index = i;
+			}
+		}
+		if(index == -1)
+		{
+			return;
+		}
+		actors.remove(index);
+		for(int i=index; i<actors.size(); i++)
+		{
+			addToGrid(actors.get(i),x,y,cols,rows,xSpace,ySpace,i);
+		}
+		currentIndex = actors.size();
+	}
+	
+	void ActorGrid::remove(const ArrayList<Actor*>&actrs, boolean deallocate)
+	{
+		int earliestIndex = actors.size();
+		for(int i=0; i<actrs.size(); i++)
+		{
+			Actor* a = actrs.get(i);
+			for(int j=0; j<actors.size(); j++)
+			{
+				if(a == actors.get(j))
+				{
+					if(deallocate)
+					{
+						delete a;
+					}
+					actors.remove(j);
+					if(j < earliestIndex)
+					{
+						earliestIndex = j;
+					}
+					j = actors.size();
+				}
+			}
+		}
+		
+		for(int i=earliestIndex; i<actors.size(); i++)
+		{
+			addToGrid(actors.get(i),x,y,cols,rows,xSpace,ySpace,i);
+		}
+		
+		currentIndex = actors.size();
+	}
+	
 	void ActorGrid::addToGrid(Actor*a,float x1,float y1,int xAmount,int yAmount,float xspace,float yspace,int num)
 	{
 	    int xLoc;

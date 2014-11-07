@@ -14,7 +14,7 @@ namespace SmashBros
 		void loadGround();
 
 	public:
-		HillsideBattleground(int x1, int y1);
+		HillsideBattleground(float x1, float y1);
 		~HillsideBattleground();
 
 		virtual void Draw(Graphics2D&g, long gameTime);

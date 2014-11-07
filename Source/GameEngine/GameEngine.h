@@ -52,3 +52,29 @@ using namespace GameEngine;
 
 typedef unsigned char byte;
 typedef bool boolean;
+
+#ifdef TRANSPARENT
+#undef TRANSPARENT
+#endif
+
+
+
+#ifndef _COMMA
+#define _COMMA ,
+#endif
+
+#ifndef _CONCAT_TOKENS_X
+#define _CONCAT_TOKENS_X(token1, token2) token1##token2
+#endif
+
+#ifndef _CONCAT_TOKENS
+#define _CONCAT_TOKENS(token1, token2) _CONCAT_TOKENS_X(token1, token2)
+#endif
+
+#ifndef _STRINGIZEX
+#define _STRINGIZEX(x) #x
+#endif
+
+#ifndef _STRINGIZE
+#define _STRINGIZE(x) _STRINGIZEX(x)
+#endif

@@ -550,6 +550,10 @@ namespace GameEngine
 	
 	void Actor::changeAnimation(Animation*animation, unsigned char dir)
 	{
+		if(animation == NULL)
+		{
+			return;
+		}
 		if(dir==NO_CHANGE)
 	    {
 	        String aName=animation->name;
@@ -610,12 +614,20 @@ namespace GameEngine
 	void Actor::changeAnimation(const String&animName, unsigned char dir)
 	{
 		Animation*animation = animMgr->get(animName);
+		if(animation == NULL)
+		{
+			return;
+		}
 		changeAnimation(animation, dir);
 	}
 	
 	void Actor::changeAnimation(unsigned int index, unsigned char dir)
 	{
 		Animation*animation = animMgr->animations[index];
+		if(animation == NULL)
+		{
+			return;
+		}
 		changeAnimation(animation, dir);
 	}
 
@@ -639,6 +651,14 @@ namespace GameEngine
 	
 	void Actor::removeAnimation(const String&animName) //removes an animation from Actor's AnimationManager
 	{
+		if(anim != NULL && anim->name.equals(animName))
+		{
+			anim = NULL;
+		}
+		if(lastAnim != NULL && lastAnim->name.equals(animName))
+		{
+			lastAnim = NULL;
+		}
 	    animMgr->remove(animName);
 	}
 	

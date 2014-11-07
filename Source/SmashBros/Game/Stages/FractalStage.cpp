@@ -5,7 +5,7 @@
 
 namespace SmashBros
 {
-	FractalStage::FractalStage(int x1, int y1) : Stage(x1,y1)
+	FractalStage::FractalStage(float x1, float y1) : Stage(x1,y1)
 	{
 		Console::WriteLine("loading fractal");
 		f = new Fractal();

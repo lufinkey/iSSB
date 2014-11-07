@@ -428,7 +428,7 @@ namespace SmashBros
 				xVel = 0;
 				attacksHolder = -1;
 				attacksPriority = 7;
-				doubleJump = 1;
+				doubleJump = maxDoubleJumps;
 				bUp = false;
 				landmaster->setAlpha(landmaster->getAlpha()+0.05f);
 				if(landmaster->getAlpha()>=1)
@@ -466,7 +466,7 @@ namespace SmashBros
 				xVel = 0;
 				attacksHolder = -1;
 				attacksPriority = 7;
-				doubleJump = 1;
+				doubleJump = maxDoubleJumps;
 				bUp = false;
 				
 				if(isJumping() && prevJumping)

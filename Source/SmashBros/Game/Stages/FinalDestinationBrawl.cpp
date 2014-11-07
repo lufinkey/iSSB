@@ -3,7 +3,7 @@
 
 namespace SmashBros
 {
-	FinalDestinationBrawl::FinalDestinationBrawl(int x1, int y1) : Stage(x1,y1)
+	FinalDestinationBrawl::FinalDestinationBrawl(float x1, float y1) : Stage(x1,y1)
 	{
 		fg_left = null;
 		fg_right = null;

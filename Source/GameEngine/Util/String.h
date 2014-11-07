@@ -111,6 +111,7 @@ namespace GameEngine
 		void clear();
 		int length() const;
 		char charAt(int index) const;
+		void replace(char find, char replace);
 		void replace(const String&find, const String&rep);
 		String substring(int beginIndex) const;
 		String substring(int beginIndex, int endIndex) const;

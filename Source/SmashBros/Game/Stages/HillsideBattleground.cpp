@@ -3,7 +3,7 @@
 
 namespace SmashBros
 {
-	HillsideBattleground::HillsideBattleground(int x1, int y1) : Stage(x1, y1)
+	HillsideBattleground::HillsideBattleground(float x1, float y1) : Stage(x1, y1)
 	{
 		setSpawnPoint(0, 0,0);
 		setSpawnPoint(1, -110,-110);

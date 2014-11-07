@@ -281,10 +281,10 @@ namespace SmashBros
 		            {
 		                yvelocity=-8;
 		            }
-		            else if(doubleJump==1)
+		            else if(doubleJump>0)
 		            {
 		                yvelocity=-7;
-		                doubleJump=0;
+		                doubleJump--;
 		            }
 		            upKey=false;
 		        }

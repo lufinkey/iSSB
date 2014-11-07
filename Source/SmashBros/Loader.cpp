@@ -14,15 +14,17 @@
 #include "Game/Stages/FinalDestinationBrawl.h"
 #include "Game/Stages/HyruleTemple.h"
 
+#ifndef SMASHBROS_SCRIPT_DISABLE
+#include "../ScriptModule/ScriptManager.h"
+#include "../ScriptModule/modules/SmashBros/inherit/lib_sb_inherit_Stage.h"
+#endif //SMASHBROS_SCRIPT_DISABLE
+
 namespace SmashBros
 {
 	String CharacterLoader::getMenuFilename(int charNo)
 	{
 		switch(charNo)
 		{
-			default:
-			return "random.png";
-			
 			case Global::CHAR_MARIO:
 			return "mario.png";
 			
@@ -40,6 +42,18 @@ namespace SmashBros
 			
 			case Global::CHAR_LINK:
 			return "link.png";
+			
+			default:
+			if(charNo <= Global::totalCharacters)
+			{
+				return "random.png";
+			}
+			else
+			{
+				//TODO implement getting of Scripted Players here.
+				return "random.png";
+			}
+			break;
 		}
 	}
 	
@@ -196,6 +210,110 @@ namespace SmashBros
 	
 	
 	
+#ifndef SMASHBROS_SCRIPT_DISABLE
+	ArrayList<ScriptModule::ScriptEntityInfo*> StageLoader::scriptEntities = ArrayList<ScriptModule::ScriptEntityInfo*>();
+	ArrayList<int> StageLoader::disabledScriptEntities = ArrayList<int>();
+	
+	void StageLoader::loadScriptEntities(const String& path)
+	{
+		ArrayList<String> folders = FileTools::getFoldersInDirectory(path);
+		for(int i=0; i<folders.size(); i++)
+		{
+			String folderName = folders.get(i);
+			if(FileTools::fileExists(path + '/' + folderName + "/Info.plist"))
+			{
+				ScriptModule::ScriptEntityInfo* info = new ScriptModule::ScriptEntityInfo();
+				String errorMessage;
+				bool success = info->loadFromFile(path + '/' + folderName, errorMessage);
+				if(success)
+				{
+					bool success = ScriptModule::ScriptManager::loadScriptEntity(*info, errorMessage);
+					if(success)
+					{
+						AssetManager::loadImage(info->getPath() + '/' + info->getIcon());
+						scriptEntities.add(info);
+					}
+					else
+					{
+						Game::showMessage("Error", (String)"Unable to load ScriptModule \"" + folderName + "\": " + errorMessage);
+						delete info;
+					}
+				}
+				else
+				{
+					Game::showMessage("Error", (String)"Unable to load ScriptModule \"" + folderName + "\": " + errorMessage);
+					delete info;
+				}
+			}
+		}
+		
+		for(int i=0; i<scriptEntities.size(); i++)
+		{
+			for(int j=1; j<(scriptEntities.size()-i); j++)
+			{
+				ScriptModule::ScriptEntityInfo* info1 = scriptEntities.get(j-1);
+				ScriptModule::ScriptEntityInfo* info2 = scriptEntities.get(j);
+				if(info1->getMainScript().name.compare(info2->getMainScript().name) == 1)
+				{
+					scriptEntities.set(j-1, info2);
+					scriptEntities.set(j, info1);
+				}
+				else if(info1->getCreator().compare(info2->getCreator()) == 1)
+				{
+					scriptEntities.set(j-1, info2);
+					scriptEntities.set(j, info1);
+				}
+				else if(info1->getVersion().compare(info2->getVersion()) == 1)
+				{
+					scriptEntities.set(j-1, info2);
+					scriptEntities.set(j, info1);
+				}
+			}
+		}
+	}
+	
+	void StageLoader::unloadScriptEntities()
+	{
+		for(int i=0; i<scriptEntities.size(); i++)
+		{
+			ScriptModule::ScriptEntityInfo* info = scriptEntities.get(i);
+			ScriptModule::ScriptManager::unloadScriptEntity(*info);
+			AssetManager::unloadImage(info->getPath() + '/' + info->getIcon());
+			delete info;
+		}
+		scriptEntities.clear();
+	}
+	
+	void StageLoader::setDisabledScriptEntities(const ArrayList<int>& disabled)
+	{
+		disabledScriptEntities = disabled;
+	}
+	
+	ArrayList<ScriptModule::ScriptEntityInfo*> StageLoader::getScriptEntities()
+	{
+		ArrayList<ScriptModule::ScriptEntityInfo*> entities;
+		for(int i=0; i<scriptEntities.size(); i++)
+		{
+			bool canAdd = true;
+			for(int j=0; j<disabledScriptEntities.size(); j++)
+			{
+				if(disabledScriptEntities.get(j) == i)
+				{
+					canAdd = false;
+					j = disabledScriptEntities.size();
+				}
+			}
+			
+			if(canAdd)
+			{
+				entities.add(scriptEntities.get(i));
+			}
+		}
+		
+		return entities;
+	}
+#endif //SMASHBROS_SCRIPT_DISABLE
+	
 	String StageLoader::getMenuFilename(int stageNo)
 	{
 		switch(stageNo)
@@ -223,7 +341,7 @@ namespace SmashBros
 		return (String)"Images/Menus/StageSelect/" + getMenuFilename(stageNo);
 	}
 	
-	Stage* StageLoader::createStage(int x1, int y1, int stageNum)
+	Stage* StageLoader::createStage(float x1, float y1, int stageNum)
 	{
 		switch(stageNum)
 		{
@@ -241,6 +359,21 @@ namespace SmashBros
 			
 			case Global::STAGE_FINALDESTINATION:
 			return new FinalDestinationBrawl(x1,y1);
+			
+			default:
+#ifndef SMASHBROS_SCRIPT_DISABLE
+			if(stageNum > Global::totalStages)
+			{
+				//TODO add loading of scripted stages
+				int scriptStageNum = stageNum - Global::totalStages - 1;
+				ArrayList<ScriptModule::ScriptEntityInfo*> entities = getScriptEntities();
+				ScriptModule::ScriptEntityInfo* entityInfo = entities.get(scriptStageNum);
+				String scriptPath = entityInfo->getPath() + '/' + entityInfo->getMainScript().script;
+				ScriptModule::ScriptData* scriptData = ScriptModule::ScriptManager::getScriptData(scriptPath);
+				SCRIPTMGR_ERRORHANDLE(return SCRIPTEDCLASS_NEWFUNCTION_CALL(Stage)(scriptData, x1, y1, std::vector<chaiscript::Boxed_Value>());, "TemplateStage.chai", )
+			}
+#endif //SMASHBROS_SCRIPT_DISABLE
+			return null;
 		}
 		return null;
 	}

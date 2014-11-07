@@ -1,6 +1,14 @@
 
 #include "Global.h"
 
+#ifndef SMASHBROS_SCRIPT_DISABLE
+#include "../ScriptModule/ScriptEntity.h"
+#endif //SMASHBROS_SCRIPT_DISABLE
+
+#if defined(__APPLE__)
+	#include "TargetConditionals.h"
+#endif
+
 #pragma once
 
 namespace SmashBros
@@ -25,11 +33,29 @@ namespace SmashBros
 	class StageLoader
 	{
 	private:
+	private:
+#ifndef SMASHBROS_SCRIPT_DISABLE
+		static ArrayList<ScriptModule::ScriptEntityInfo*> scriptEntities;
+		static ArrayList<int> disabledScriptEntities;
+#endif //SMASHBROS_SCRIPT_DISABLE
+		
 		static String getMenuFilename(int stageNo);
 		
 	public:
+#ifndef SMASHBROS_SCRIPT_DISABLE
+	#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR) || defined(ANDROID)
+		static void loadScriptEntities(const String&path = (String)getenv("HOME")+"/Library/iSSB/addons/stages");
+	#else
+		static void loadScriptEntities(const String&path = "addons/stages");
+	#endif
+		static void unloadScriptEntities();
+		
+		static void setDisabledScriptEntities(const ArrayList<int>& disabled);
+		static ArrayList<ScriptModule::ScriptEntityInfo*> getScriptEntities();
+#endif //SMASHBROS_SCRIPT_DISABLE
+		
 		static String getIconPath(int stageNo);
 		
-		static Stage* createStage(int x1, int y1, int stageNum);
+		static Stage* createStage(float x1, float y1, int stageNum);
 	};
 }

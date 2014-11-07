@@ -13,7 +13,7 @@ namespace SmashBros
 		void loadHangPoints();
 
 	public:
-		BattlefieldBrawl(int x1, int y1);
+		BattlefieldBrawl(float x1, float y1);
 		virtual ~BattlefieldBrawl();
 		
 		virtual void Draw(Graphics2D&g, long gameTime);

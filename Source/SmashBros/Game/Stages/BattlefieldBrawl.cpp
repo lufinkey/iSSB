@@ -3,7 +3,7 @@
 
 namespace SmashBros
 {
-	BattlefieldBrawl::BattlefieldBrawl(int x1, int y1) : Stage(x1, y1)
+	BattlefieldBrawl::BattlefieldBrawl(float x1, float y1) : Stage(x1, y1)
 	{
 		setSpawnPoint(0, 0,0);
 		setSpawnPoint(1,  115, -70);

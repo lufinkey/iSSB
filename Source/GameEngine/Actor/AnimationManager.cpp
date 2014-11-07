@@ -43,6 +43,8 @@ namespace GameEngine
 			if(animName.equals(cAnim->name))
 			{
 				animations.remove(i);
+				delete cAnim;
+				totalAnimations--;
 				return true;
 			}
 		}

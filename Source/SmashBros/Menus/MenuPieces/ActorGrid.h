@@ -41,5 +41,8 @@ namespace SmashBros
 		void add(Actor*a);
 		Actor*get(int index);
 		Actor*get(int row, int col);
+		void remove(int index, boolean deallocate=true);
+		void remove(Actor*a, boolean deallocate=true);
+		void remove(const ArrayList<Actor*>&actors, boolean deallocate=true);
 	};
 }

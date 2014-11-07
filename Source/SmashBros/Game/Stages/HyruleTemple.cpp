@@ -3,10 +3,10 @@
 
 namespace SmashBros
 {
-	HyruleTemple::HyruleTemple(int x1, int y1) : Stage(x1,y1)
+	HyruleTemple::HyruleTemple(float x1, float y1) : Stage(x1,y1)
 	{
 		watchPlat = null;
-
+		
 		setSpawnPoint(0, 0,0);
 		setSpawnPoint(1, -115, -95);
 		setSpawnPoint(2,  198,-162);

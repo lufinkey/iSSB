@@ -17,7 +17,7 @@ namespace SmashBros
 		void loadHangPoints();
 
 	public:
-		FinalDestinationBrawl(int x1,int y1);
+		FinalDestinationBrawl(float x1,float y1);
 		~FinalDestinationBrawl();
 
 		virtual void Draw(Graphics2D&g, long gameTime);

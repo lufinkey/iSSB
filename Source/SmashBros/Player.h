@@ -119,10 +119,6 @@ namespace SmashBros
 		long comboTime;
 		byte standardCombo;
 		
-		boolean grabbed;
-		boolean hasgrabbed;
-		boolean grabbing;
-		
 		boolean canFinalsmash;
 		boolean hanging;
 		
@@ -222,6 +218,7 @@ namespace SmashBros
 		
 		boolean bUp;
 		byte doubleJump;
+		byte maxDoubleJumps;
 		
 		float walkSpeed;
 		float runSpeed;
@@ -242,7 +239,6 @@ namespace SmashBros
 		void setCantDo();
 		void setHanging(boolean toggle);
 		void setJumping(boolean toggle);
-		void finishDeflect();
 		void resetAttackCollisions();
 		void setHitbox(float x1, float y1, int w, int h);
 		void showHitboxWireframe(boolean toggle);
@@ -426,10 +422,7 @@ namespace SmashBros
 		static int compareDirPlayerDir(byte dir, byte playerdir);
 		byte getPlayerNo();
 		boolean CanDo();
-		boolean isGrabbed();
 		int getStock();
-		boolean hasGrabbed();
-		boolean isGrabbing();
 		boolean isJumping();
 		boolean isHanging();
 		int getSmashPower();

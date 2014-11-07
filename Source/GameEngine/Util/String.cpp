@@ -1783,24 +1783,35 @@ namespace GameEngine
 			return 0;
 		}
 	}
-
+	
 	void String::clear()
 	{
 		characters = (char*)realloc(characters, 1);
 		characters[0] = '\0';
 		total = 0;
 	}
-
+	
 	int String::length() const
 	{
 		return total;
 	}
-
+	
 	char String::charAt(int index) const
 	{
 		return characters[index];
 	}
-
+	
+	void String::replace(char find, char replace)
+	{
+		for(int i=0; i<total; i++)
+		{
+			if(characters[i] == find)
+			{
+				characters[i] = replace;
+			}
+		}
+	}
+	
 	void String::replace(const String&find, const String&rep)
 	{
 		if(find.total==0)
@@ -1920,7 +1931,7 @@ namespace GameEngine
 			}
 		}
 	}
-
+	
 	String String::substring(int beginIndex) const
 	{
 		String str;

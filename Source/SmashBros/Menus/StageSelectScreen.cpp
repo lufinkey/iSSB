@@ -1,7 +1,7 @@
 
 #include "StageSelectScreen.h"
-#include "../Global.h"
 #include "Menus.h"
+#include "../Global.h"
 #include "../Loader.h"
 
 namespace SmashBros
@@ -85,16 +85,60 @@ namespace SmashBros
 		ScreenManager::GoToScreen("Game");
 	}
 	
+#ifndef SMASHBROS_SCRIPT_DISABLE
+	void StageSelectScreen::unloadScriptedStages()
+	{
+		stageGrid->remove(scriptStageIcons, false);
+		for(int i=0; i<scriptStageIcons.size(); i++)
+		{
+			delete scriptStageIcons.get(i);
+		}
+		scriptStageIcons.clear();
+	}
+	
+	void StageSelectScreen::reloadScriptedStages()
+	{
+		unloadScriptedStages();
+		
+		ArrayList<ScriptModule::ScriptEntityInfo*> scriptEntities = StageLoader::getScriptEntities();
+		for(int i=0; i<scriptEntities.size(); i++)
+		{
+			ScriptModule::ScriptEntityInfo* info = scriptEntities.get(i);
+			String iconPath = info->getPath() + '/' + info->getIcon();
+			bool loadedIcon = AssetManager::loadImage(iconPath);
+			if(!loadedIcon)
+			{
+				iconPath = "Images/Menus/StageSelect/default.png";
+				AssetManager::loadImage(iconPath);
+			}
+			
+			StageIcon* stageIcon = new StageIcon(this, 0,0, Global::totalStages+i+1);
+			stageIcon->addAnimation(new Animation("normal",1,iconPath));
+			stageIcon->changeAnimation("normal", FORWARD);
+			scriptStageIcons.add(stageIcon);
+			stageGrid->add(stageIcon);
+		}
+	}
+#endif //SMASHBROS_SCRIPT_DISABLE
+	
 	void StageSelectScreen::LoadContent()
 	{
+		Screen::LoadContent();
 		queueLoad = 0;
 		drawnOnce = false;
+#ifndef SMASHBROS_SCRIPT_DISABLE
+		reloadScriptedStages();
+#endif //SMASHBROS_SCRIPT_DISABLE
 	}
 	
 	void StageSelectScreen::UnloadContent()
 	{
+		Screen::UnloadContent();
 		queueLoad = 0;
 		drawnOnce = false;
+#ifndef SMASHBROS_SCRIPT_DISABLE
+		unloadScriptedStages();
+#endif //SMASHBROS_SCRIPT_DISABLE
 	}
 	
 	void StageSelectScreen::Update(long gameTime)

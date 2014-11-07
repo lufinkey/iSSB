@@ -111,7 +111,7 @@ namespace SmashBros
 		void createSolidPlatform(float x1, float y1);
 
 	public:
-		FractalStage(int x1, int y1);
+		FractalStage(float x1, float y1);
 		virtual ~FractalStage();
 
 		virtual void Update(long gameTime);

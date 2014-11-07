@@ -80,7 +80,7 @@ namespace GameEngine
 		virtual void Update(long gameTime);
 		virtual void Draw(Graphics2D& g, long gameTime);
 		
-		bool isOnScreen();
+		virtual bool isOnScreen();
 		
 		void showWireframe(bool toggle);
 		void setWireframeColor(const Color&c);
