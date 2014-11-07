@@ -259,6 +259,7 @@ namespace SmashBros
 		delete currentStage;
 		currentStage = null;
 		ItemManager::RemoveAll();
+		Global::suddenDeath = false;
 		Global::gameFinished = true;
 		Global::gamePlaying = false;
 	}
@@ -320,6 +321,7 @@ namespace SmashBros
 	    
 	    itemsActive.clear();
 	    
+	    Global::suddenDeath = false;
 	    Global::playerHasSmashBall = false;
 	    Global::smashBallOnField = false;
 		
