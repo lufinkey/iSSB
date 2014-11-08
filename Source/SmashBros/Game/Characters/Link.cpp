@@ -189,7 +189,16 @@ namespace SmashBros
 		addTwoSidedAnimation("fall", "fall.png", 30, 3, 1);
 		addTwoSidedAnimation("hang", "hang.png", 1, 1, 1);
 		addTwoSidedAnimation("crouch", "crouch.png", 1, 1, 1);
+		addTwoSidedAnimation("grab", "grab.png", 16, 16, 1);
+		addTwoSidedAnimation("grabbed", "grabbed.png", 30, 1, 1);
+		addTwoSidedAnimation("hold", "hold.png", 30, 1, 1);
+		addTwoSidedAnimation("release", "release.png", 12, 3, 1);
+		addTwoSidedAnimation("toss", "toss.png", 12, 3, 1);
+		addTwoSidedAnimation("toss_up", "toss_up.png", 12, 3, 1);
+		addTwoSidedAnimation("toss_down", "toss_down.png", 12, 3, 1);
 		addTwoSidedAnimation("melee_weapon", "melee_weapon.png", 15, 3, 1);
+		addTwoSidedAnimation("melee_weapon_up", "melee_weapon_up.png", 20, 4, 1);
+		addTwoSidedAnimation("melee_weapon_down", "melee_weapon_down.png", 15, 3, 1);
 		addTwoSidedAnimation("hurt_minor", "hurt_minor.png", 10, 1, 1);
 		addTwoSidedAnimation("hurt_fly", "hurt_fly.png", 2, 1, 1);
 		addTwoSidedAnimation("hurt_flip", "hurt_flip.png", 10, 4, 1);

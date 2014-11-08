@@ -565,7 +565,7 @@ namespace GameEngine
 				//anim.drawFrame(graphics,0,x,y);
 				this->anim->direction=FORWARD;
 			}
-	        else if(!(aName.equals(this->anim->name)))
+	        else if(anim==NULL || !(aName.equals(this->anim->name)))
 	        {
 	            this->anim=animation;
 	            //anim.drawFrame(graphics,0,x,y);

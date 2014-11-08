@@ -59,6 +59,7 @@ namespace SmashBros
 		landing = false;
 		skidding = false;
 		jumping = false;
+		tossing = false;
 		hurt = 0;
 		hurtTime = 0;
 		invincible = false;
@@ -67,6 +68,11 @@ namespace SmashBros
 		canDropThrough = false;
 		dropTime = 0;
 		canDo = false;
+		grabbing = false;
+		holdingPlayer = false;
+		heldByPlayer = false;
+		grabStartTime = 0;
+		grabbedPlayer = NULL;
 		xVel = 0;
 		yVel = 0;
 		cpu = false;
@@ -93,6 +99,7 @@ namespace SmashBros
 		runAmount = 1;
 		recoverAmount = 0.2f;
 		recoverRunAmount = 0.3f;
+		grabTime = 2000;
 		
 		this->playerNo = playerNo;
 		Console::WriteLine((String)"successfully created player " + playerNo);
@@ -333,12 +340,18 @@ namespace SmashBros
 		onGround = false;
 		landing = false;
 		jumping = false;
+		tossing = false;
 		hurt = 0;
 		hurtTime = 0;
 		dropping = false;
 		canDropThrough = false;
 		dropTime = 0;
 		canDo = true;
+		grabbing = false;
+		holdingPlayer = false;
+		heldByPlayer = false;
+		grabStartTime = 0;
+		grabbedPlayer = NULL;
 		xVel = 0;
 		yVel = 0;
 		currentEnemy = null;
@@ -734,6 +747,26 @@ namespace SmashBros
 		if(dir==LEFT || dir==RIGHT)
 		{
 			playerdir = dir;
+			String animName = getAnimName();
+			if(animName.equals("stand_left") || animName.equals("stand_right"))
+			{
+				changeTwoSidedAnimation("stand", NO_CHANGE);
+			}
+			else if(animName.equals("hold_left") || animName.equals("hold_right"))
+			{
+				changeTwoSidedAnimation("hold", NO_CHANGE);
+			}
+			else if(animName.equals("grabbed_left") || animName.equals("grabbed_right"))
+			{
+				changeTwoSidedAnimation("grabbed", NO_CHANGE);
+			}
+			
+			if(holdingPlayer)
+			{
+				grabbedPlayer->setPlayerDir(getOppPlayerDir());
+				grabbedPlayer->setPoint(x+(((itemOffsetX*Scale)+grabbedPlayer->hitbox->width)*getPlayerDirMult()), y+(itemOffsetY*Scale));
+				grabbedPlayer->changeTwoSidedAnimation("grabbed", NO_CHANGE);
+			}
 		}
 		else
 		{
@@ -916,6 +949,17 @@ namespace SmashBros
 		return moveRight;
 	}
 	
+	void Player::setPoint(float x, float y)
+	{
+		this->x = x;
+		this->y = y - (((hitboxPoint.height*Scale)/2)+(hitboxPoint.y*Scale));
+	}
+	
+	Player* Player::getGrabbedPlayer()
+	{
+		return grabbedPlayer;
+	}
+	
 	/** Sets the hitbox coordinates relative to the center of the character. Default value is -10, -10, 20, 20 */
 	void Player::setHitbox(float x1, float y1, int w, int h)
 	{
@@ -1071,7 +1115,8 @@ namespace SmashBros
 	{
 		if(n.equals("walk_left") || n.equals("walk_right") || n.equals("run_left") || n.equals("run_right") ||
 			n.equals("smash_charge_left") || n.equals("smash_charge_right") || n.equals("hang_left") || 
-			n.equals("hang_right"))
+		   n.equals("hang_right") || n.equals("hold_left") || n.equals("hold_right") || n.equals("grabbed_left") ||
+		   n.equals("grabbed_right"))
 		{
 			//
 		}
@@ -1119,7 +1164,7 @@ namespace SmashBros
 		{
 			itemDo = itemHolding->holderCanDo();
 		}
-		if(attacksHolder>-1 || hurt==2 || !checkIfAble() || !itemDo) //TODO add grabbing checks
+		if(attacksHolder>-1 || hurt==2 || !checkIfAble() || !itemDo || grabbing || heldByPlayer || tossing)
 		{
 			canDo=false;
 		}
@@ -1153,7 +1198,11 @@ namespace SmashBros
 	{
 		if(onGround)
 		{
-			if(down)
+			if(holdingPlayer)
+			{
+				changeTwoSidedAnimation("hold", NO_CHANGE);
+			}
+			else if(down)
 			{
 				changeTwoSidedAnimation("crouch", NO_CHANGE);
 			}
@@ -1171,6 +1220,8 @@ namespace SmashBros
 	    up = false;
 	    jumping = false;
 	    canDo=true;
+		grabbing = false;
+		tossing = false;
 	    chargingAttack = false;
 	    attacksHolder=-1;
 	    attacksPriority=0;
@@ -3910,6 +3961,35 @@ namespace SmashBros
 	        	itemWielding = null;
 			}
 		}
+		if(grabbing)
+		{
+			if(itemHolding == null)
+			{
+				checkItemUse();
+			}
+		}
+		else if(holdingPlayer && grabbedPlayer != NULL)
+		{
+			if((grabStartTime + grabTime) < Global::getWorldTime())
+			{
+				releasePlayer();
+				landing = true;
+			}
+			else
+			{
+				grabbedPlayer->setPoint(x+(((itemOffsetX*Scale)+grabbedPlayer->hitbox->width)*getPlayerDirMult()), y+(itemOffsetY*Scale));
+				grabbedPlayer->xvelocity = 0;
+				grabbedPlayer->yvelocity = 0;
+				grabbedPlayer->xVel = 0;
+				grabbedPlayer->yVel = 0;
+				grabbedPlayer->attacksHolder=-1;
+				grabbedPlayer->attacksPriority=0;
+				grabbedPlayer->setToDefaultValues();
+				grabbedPlayer->playerdir = getOppPlayerDir();
+				grabbedPlayer->onGround = false;
+				grabbedPlayer->changeTwoSidedAnimation("grabbed", NO_CHANGE);
+			}
+		}
 		if(alive)
 		{
 			if(yVel!=0)
@@ -3959,7 +4039,7 @@ namespace SmashBros
 	
 	void Player::updateGravity()
 	{
-		if(!hanging && yvelocity<Global::currentStage->getTerminalVelocity()) //TODO add grabbing checks
+		if(!hanging && yvelocity<Global::currentStage->getTerminalVelocity() && !heldByPlayer)
 		{
 			yvelocity+=(float)(Global::currentStage->getGravity()+weight);
 		}
@@ -4019,7 +4099,7 @@ namespace SmashBros
 		
 		//(int flyD, float recS, float waterS, float fallS, float moveS,
 		//		int flyRD,float recRS,float waterRS,float fallRS,float moveRS)
-		if(canDo && chargeSmash==0 && !chargingAttack && xVel==0)
+		if(canDo && chargeSmash==0 && !chargingAttack && xVel==0 && !holdingPlayer)
 		{
 			int moveVal = 0;
 			float moveMult = 0;
@@ -4347,6 +4427,20 @@ namespace SmashBros
 			indicator->Draw(g, gameTime);
 			updateHitbox();
 			hitbox->Draw(g, gameTime);
+			
+			if(holdingPlayer)
+			{
+				grabbedPlayer->setPoint(x+(((itemOffsetX*Scale)+grabbedPlayer->hitbox->width)*getPlayerDirMult()), y+(itemOffsetY*Scale));
+				grabbedPlayer->xvelocity = 0;
+				grabbedPlayer->yvelocity = 0;
+				grabbedPlayer->xVel = 0;
+				grabbedPlayer->yVel = 0;
+				grabbedPlayer->attacksHolder=-1;
+				grabbedPlayer->attacksPriority=0;
+				grabbedPlayer->setToDefaultValues();
+				grabbedPlayer->playerdir = getOppPlayerDir();
+				grabbedPlayer->changeTwoSidedAnimation("grabbed", NO_CHANGE);
+			}
 		}
 		else
 		{
@@ -4418,7 +4512,7 @@ namespace SmashBros
 		{
 			if(itemHolding!=null)
 			{
-				return itemHolding->use(Player::ATTACK_A);
+				return useItem(Player::ATTACK_A);
 			}
 		}
 		return false;
@@ -4428,7 +4522,7 @@ namespace SmashBros
 	{
 		if(itemHolding!=null)
 		{
-			return itemHolding->use(Player::ATTACK_SIDEA);
+			return useItem(Player::ATTACK_SIDEA);
 		}
 		return false;
 	}
@@ -4437,7 +4531,7 @@ namespace SmashBros
 	{
 		if(itemHolding!=null)
 		{
-			return itemHolding->use(Player::ATTACK_UPA);
+			return useItem(Player::ATTACK_UPA);
 		}
 		return false;
 	}
@@ -4446,70 +4540,34 @@ namespace SmashBros
 	{
 		if(itemHolding!=null)
 		{
-			return itemHolding->use(Player::ATTACK_DOWNA);
+			return useItem(Player::ATTACK_DOWNA);
 		}
 		return false;
 	}
 	
-	boolean Player::checkItemUseSideSmash(byte type)
+	boolean Player::checkItemUseSideSmash(byte stepType)
 	{
 		if(itemHolding!=null)
 		{
-			if(type==STEP_CHARGE)
-			{
-				bool usedItem = itemHolding->chargeSmash(Player::ATTACK_SIDESMASH);
-				if(!usedItem)
-				{
-					return itemHolding->use(Player::ATTACK_SIDESMASH);
-				}
-			}
-			else if(type==STEP_GO)
-			{
-				return itemHolding->use(Player::ATTACK_SIDESMASH);
-			}
-			return false;
+			return useItemSmash(Player::ATTACK_SIDESMASH, stepType);
 		}
 		return false;
 	}
 	
-	boolean Player::checkItemUseUpSmash(byte type)
+	boolean Player::checkItemUseUpSmash(byte stepType)
 	{
 		if(itemHolding!=null)
 		{
-			if(type==STEP_CHARGE)
-			{
-				bool usedItem = itemHolding->chargeSmash(Player::ATTACK_UPSMASH);
-				if(!usedItem)
-				{
-					return itemHolding->use(Player::ATTACK_UPSMASH);
-				}
-			}
-			else if(type==STEP_GO)
-			{
-				return itemHolding->use(Player::ATTACK_UPSMASH);
-			}
-			return false;
+			return useItemSmash(Player::ATTACK_UPSMASH, stepType);
 		}
 		return false;
 	}
 	
-	boolean Player::checkItemUseDownSmash(byte type)
+	boolean Player::checkItemUseDownSmash(byte stepType)
 	{
 		if(itemHolding!=null)
 		{
-			if(type==STEP_CHARGE)
-			{
-				bool usedItem = itemHolding->chargeSmash(Player::ATTACK_DOWNSMASH);
-				if(!usedItem)
-				{
-					return itemHolding->use(Player::ATTACK_DOWNSMASH);
-				}
-			}
-			else if(type==STEP_GO)
-			{
-				return itemHolding->use(Player::ATTACK_DOWNSMASH);
-			}
-			return false;
+			return useItemSmash(Player::ATTACK_DOWNSMASH, stepType);
 		}
 		return false;
 	}
@@ -4518,6 +4576,11 @@ namespace SmashBros
 	{
 		if(!item->held)
 		{
+			if(grabbing)
+			{
+				grabbing = false;
+				animFinish();
+			}
 			switch(item->type)
 			{
 				case Item::TYPE_HOLD:
@@ -4575,6 +4638,63 @@ namespace SmashBros
 		return false;
 	}
 	
+	boolean Player::useItem(byte attackType)
+	{
+		if(itemHolding != null)
+		{
+			String animName = getAnimName();
+			int frameNo = getCurrentFrame();
+			bool usedItem = itemHolding->use(attackType);
+			if(usedItem)
+			{
+				if(animName.equals(getAnimName()) && frameNo==getCurrentFrame())
+				{
+					switch(attackType)
+					{
+						case Player::ATTACK_A:
+						case Player::ATTACK_SIDEA:
+						changeTwoSidedAnimation("melee_weapon", FORWARD);
+						break;
+						
+						case Player::ATTACK_UPA:
+						changeTwoSidedAnimation("melee_weapon_up", FORWARD);
+						break;
+						
+						case Player::ATTACK_DOWNA:
+						changeTwoSidedAnimation("melee_weapon_down", FORWARD);
+						break;
+					}
+				}
+			}
+			return usedItem;
+		}
+		return false;
+	}
+	
+	boolean Player::useItemSmash(byte attackType, byte stepType)
+	{
+		if(attackType != Player::ATTACK_SIDESMASH && attackType != Player::ATTACK_UPSMASH && attackType != Player::ATTACK_DOWNSMASH)
+		{
+			return false;
+		}
+		if(itemHolding != null)
+		{
+			if(stepType==STEP_CHARGE)
+			{
+				bool chargingSmash = itemHolding->chargeSmash(attackType);
+				if(!chargingSmash)
+				{
+					return useItem(attackType);
+				}
+			}
+			else if(stepType==STEP_GO)
+			{
+				return useItem(attackType);
+			}
+		}
+		return false;
+	}
+	
 	void Player::discardItem()
 	{
 		if(itemHolding!=null)
@@ -4586,17 +4706,106 @@ namespace SmashBros
 		}
 	}
 	
-	void Player::tossItem(byte tossDir)
+	void Player::tossItem(byte tossAttackType)
 	{
 		if(itemHolding!=NULL)
 		{
-			itemHolding->toss(tossDir);
+			String animName = getAnimName();
+			itemHolding->whenTossed(tossAttackType);
+			if(animName.equals(getAnimName()))
+			{
+				switch(tossAttackType)
+				{
+					case Player::ATTACK_A:
+					case Player::ATTACK_SIDEA:
+					case Player::ATTACK_SIDESMASH:
+					changeTwoSidedAnimation("toss", FORWARD);
+					tossing = true;
+					break;
+					
+					case Player::ATTACK_UPA:
+					changeTwoSidedAnimation("toss_up", FORWARD);
+					tossing = true;
+					break;
+					
+					case Player::ATTACK_DOWNA:
+					changeTwoSidedAnimation("toss_down", FORWARD);
+					tossing = true;
+					break;
+				}
+			}
+		}
+	}
+	
+	void Player::grabPlayer(Player* playr)
+	{
+		if(grabbing && !playr->heldByPlayer && !holdingPlayer && !heldByPlayer)
+		{
+			grabbing = false;
+			holdingPlayer = true;
+			playr->animFinish();
+			playr->onGround = false;
+			grabStartTime = Global::getWorldTime();
+			playr->heldByPlayer = true;
+			grabbedPlayer = playr;
+			changeTwoSidedAnimation("hold", FORWARD);
+			playr->setPlayerDir(getOppPlayerDir());
+			playr->changeTwoSidedAnimation("grabbed", FORWARD);
+			onGrab(playr);
+			playr->onGrabbed(this);
+		}
+	}
+	
+	void Player::releasePlayer()
+	{
+		if(holdingPlayer)
+		{
+			holdingPlayer = false;
+			grabStartTime = 0;
+			grabbedPlayer->heldByPlayer = false;
+			animFinish();
+			changeTwoSidedAnimation("release", FORWARD);
+			grabbedPlayer->changeTwoSidedAnimation("fall", FORWARD);
+			grabbedPlayer = NULL;
+		}
+	}
+	
+	void Player::tossPlayer(byte tossAttackType, float xspeed, float yspeed)
+	{
+		if(holdingPlayer)
+		{
+			Player* grabbedPlayer = this->grabbedPlayer;
+			releasePlayer();
+			switch(tossAttackType)
+			{
+				case Player::ATTACK_A:
+				case Player::ATTACK_SIDEA:
+				case Player::ATTACK_SIDESMASH:
+				changeTwoSidedAnimation("toss", FORWARD);
+				tossing = true;
+				break;
+				
+				case Player::ATTACK_UPA:
+				changeTwoSidedAnimation("toss_up", FORWARD);
+				tossing = true;
+				grabbedPlayer->x = x + (((float)width/4)*getPlayerDirMult());
+				break;
+				
+				case Player::ATTACK_DOWNA:
+				changeTwoSidedAnimation("toss_down", FORWARD);
+				tossing = true;
+				grabbedPlayer->x = x + (((float)width/4)*getPlayerDirMult());
+				grabbedPlayer->y = y - ((float)height/4);
+				break;
+			}
+			causeHurtLaunch(grabbedPlayer, (int)getPlayerDirMult(),xspeed,1, 1, yspeed, 1);
+			causeHurt(grabbedPlayer, getOppPlayerDir(), 100);
 		}
 	}
 	
 	void Player::hitHandlerRight(Player*collide)
 	{
-	    if((collide->playerNo>0)&&!((Global::teamBattle)&&(team==collide->team)))
+	    if((collide->playerNo>0)&&!((Global::teamBattle)&&(team==collide->team))&&(collide!=grabbedPlayer)&&(collide->grabbedPlayer!=this))
 	    {
 	        if(cpu)
 	        {
@@ -4611,7 +4820,7 @@ namespace SmashBros
 	
 	void Player::hitHandlerLeft(Player*collide)
 	{
-	    if((collide->playerNo>0)&&!((Global::teamBattle)&&(team==collide->team)))
+	    if((collide->playerNo>0)&&!((Global::teamBattle)&&(team==collide->team))&&(collide!=grabbedPlayer)&&(collide->grabbedPlayer!=this))
 	    {
 	        if(cpu)
 	        {
@@ -5051,7 +5260,7 @@ namespace SmashBros
 						lastGroundX = collide->x;
 					}
 				}
-				whilePlatformCollide(collide, dir);
+				whilePlatformColliding(collide, dir);
 				collide->whilePlayerColliding(this, dir);
 			}
 			else
@@ -5062,7 +5271,7 @@ namespace SmashBros
 				}
 				onPlatformCollide(collide, dir);
 				collide->onPlayerCollide(this, dir);
-				whilePlatformCollide(collide, dir);
+				whilePlatformColliding(collide, dir);
 				collide->whilePlayerColliding(this, dir);
 			}
 		}
@@ -5325,14 +5534,14 @@ namespace SmashBros
 				if(hurt==2)
 				{
 				    hurt=1;
-				    if(yvelocity>=0)
+				    if(yvelocity<6)
 				    {
 				        hurt=0;
 				    }
 				    checkAttacks();
 				}
 				lastHit=0;
-				if((canDo)&&((jumping && yvelocity>=-1)||(yvelocity>16))&&!landing)
+				if(canDo && ((jumping && yvelocity>=-1) || (yvelocity>16)) && !landing && !holdingPlayer)
 				{
 					if(chargingAttack || chargeSmash>0)
 					{
@@ -5342,8 +5551,8 @@ namespace SmashBros
 				    landing=true;
 				    changeTwoSidedAnimation("land", FORWARD);
 				}
-				else if((yvelocity>=0)&&(canDo)&&(!chargingAttack)&&(moveRight==0)&&(moveLeft==0)
-				&&(chargeSmash==0)&&(!chargingAttack)) //TODO add grabbing support
+				else if(yvelocity>=0 && canDo && !chargingAttack && moveRight==0 && moveLeft==0
+				&& chargeSmash==0 && !chargingAttack && !holdingPlayer)
 				{
 				    if(down)
 				    {
@@ -5360,19 +5569,19 @@ namespace SmashBros
 				canDropThrough=true;
 				checkAttacks();
 				lastHit=0;
-				if((canDo)&&((jumping && yvelocity>=-1)||(yvelocity>16))&&!landing)
+				if(canDo && ((jumping && yvelocity>=-1) || (yvelocity>16)) && !landing && !holdingPlayer)
 				{
 				    jumping=false;
 				    landing=true;
 					changeTwoSidedAnimation("land", FORWARD);
 				}
-				else if((yvelocity>0)&&(canDo)&&(!chargingAttack)&&(moveRight==0)&&(moveLeft==0)&&(chargeSmash==0)&&(!chargingAttack))
+				else if(yvelocity>0 && canDo && !chargingAttack && moveRight==0 && moveLeft==0 && chargeSmash==0 && !chargingAttack && !holdingPlayer)
 				{
 				    if(down)
 				    {
 				        dropping=true;
 				        canDropThrough=false;
-				        dropTime=Global::worldTime+4;
+				        dropTime=Global::worldTime+400;
 				    }
 				    else
 				    {
@@ -5384,14 +5593,14 @@ namespace SmashBros
 		}
 	}
 	
-	void Player::whilePlatformCollide(Platform*collide, byte dir)
+	void Player::whilePlatformColliding(Platform*collide, byte dir)
 	{
 		//Open for implementation, but call super method
 		switch(collide->getType())
 		{
 			default:
 			case Platform::TYPE_NORMAL:
-			if((hurt>0)&&(std::abs(yvelocity)>6))
+			if(hurt>0 && std::abs(yvelocity)>6)
 			{
 			    if(hurt==2)
 			    {
@@ -5408,7 +5617,7 @@ namespace SmashBros
 			    {
 			    	if(yvelocity<0)
 			    	{
-			    		y+=(ceil(std::abs(yvelocity)));
+			    		y+=(std::ceil(std::abs(yvelocity)));
 			    	}
 			    }
 			    else if(dir == DIR_UP)
@@ -5433,13 +5642,13 @@ namespace SmashBros
 			case Platform::TYPE_GOTHROUGH:
 			if(dir == DIR_UP)
 			{
-				if(canDo && hurt==0 && yvelocity>=-0.5f && jumping && !landing)
+				if(canDo && hurt==0 && yvelocity>=-0.5f && jumping && !landing && !holdingPlayer)
 				{
 					jumping=false;
 				    landing=true;
 					changeTwoSidedAnimation("land", FORWARD);
 				}
-				else if((hurt>0)&&(yvelocity>6))
+				else if(hurt>0 && yvelocity>6)
 				{
 				    canDo=true;
 				    if(hurt==2)
@@ -5664,6 +5873,10 @@ namespace SmashBros
 				}
 			}
 			whilePlayerColliding(playr,dir);
+			if(grabbing)
+			{
+				grabPlayer(playr);
+			}
 		}
 		else if(playerCollisions.isColliding(playr->playerNo))
 		{
@@ -5802,7 +6015,9 @@ namespace SmashBros
 			AttackManager::AttackInfo*nfo = attackMgr.getAttackInfo(dir, attacksHolder, playerdir);
 			if(nfo==null)
 			{
-				byte newDir = getDir(this, collide);
+				updateHitbox();
+				collide->updateHitbox();
+				byte newDir = getDir(this->getHitbox(), collide->getHitbox());
 				nfo = attackMgr.getAttackInfo(newDir, attacksHolder, playerdir);
 				if(nfo!=null && nfo->dirIsPixelBased)
 				{
@@ -5996,23 +6211,31 @@ namespace SmashBros
 	    hurt=0;
 	    down=true;
 	    upKey=false;
-	    if((onGround)&&(canDo))
-	    {
-	        changeTwoSidedAnimation("crouch", NO_CHANGE);
-	    }
-	    if(hanging)
-	    {
-	        hanging=false;
-	        onGround = false;
-	        changeTwoSidedAnimation("fall", NO_CHANGE);
-	    }
-	    if(canDropThrough)
-	    {
-	        dropping=true;
-	        canDropThrough=false;
-	        yvelocity+=2;
-	        dropTime=Global::worldTime+400;
-	    }
+		checkAttacks();
+		if(canDo && holdingPlayer)
+		{
+			grabAttackDown();
+		}
+		else
+		{
+			if((onGround)&&(canDo))
+			{
+				changeTwoSidedAnimation("crouch", NO_CHANGE);
+			}
+			if(hanging)
+			{
+				hanging=false;
+				onGround = false;
+				changeTwoSidedAnimation("fall", NO_CHANGE);
+			}
+			if(canDropThrough)
+			{
+				dropping=true;
+				canDropThrough=false;
+				yvelocity+=2;
+				dropTime=Global::worldTime+400;
+			}
+		}
 	}
 	
 	void Player::jump()
@@ -6061,6 +6284,19 @@ namespace SmashBros
 		}
 	}
 	
+	void Player::grab()
+	{
+		if(!holdingPlayer)
+		{
+			grabbing = true;
+			changeTwoSidedAnimation("grab", FORWARD);
+			if(itemHolding == null)
+			{
+				checkItemUse();
+			}
+		}
+	}
+	
 	void Player::climbUp()
 	{
 	    if((hurt==2)&&(onGround))
@@ -6087,6 +6323,16 @@ namespace SmashBros
 	    attackA();
 	}
 	
+	void Player::onGrab(Player*held)
+	{
+		//Open for implementation
+	}
+	
+	void Player::onGrabbed(Player*holder)
+	{
+		//Open for implementation
+	}
+	
 	void Player::onFinishCharge()
 	{
 		//
@@ -6095,6 +6341,41 @@ namespace SmashBros
 	void Player::doChargingAttack(byte button)
 	{
 		//
+	}
+	
+	void Player::grabAttack()
+	{
+		resetAttackCollisions();
+		attackA();
+	}
+	
+	void Player::grabAttackSide()
+	{
+		Player* grabbedPlayer = getGrabbedPlayer();
+		causeDamage(grabbedPlayer, 3);
+		tossPlayer(Player::ATTACK_SIDEA, 3.3f, -2.6f);
+	}
+	
+	void Player::grabAttackSwing()
+	{
+		Player* grabbedPlayer = getGrabbedPlayer();
+		setPlayerDir(getOppPlayerDir());
+		causeDamage(grabbedPlayer, 4);
+		tossPlayer(Player::ATTACK_SIDEA, 3.6f+(1.4f*grabbedPlayer->getPercent())/75, -3.6f+(1.4f*grabbedPlayer->getPercent())/75);
+	}
+	
+	void Player::grabAttackUp()
+	{
+		Player* grabbedPlayer = getGrabbedPlayer();
+		causeDamage(grabbedPlayer, 4);
+		tossPlayer(Player::ATTACK_UPA, 0.4f, -5.3f-((2.1f*grabbedPlayer->getPercent())/75));
+	}
+	
+	void Player::grabAttackDown()
+	{
+		Player* grabbedPlayer = this->grabbedPlayer;
+		grabbedPlayer->setPoint(x + (10 * Scale), y - (10*Scale));
+		tossPlayer(Player::ATTACK_DOWNA, 0.4f, 6.2f+((2.1f*grabbedPlayer->getPercent())/75));
 	}
 	
 	/**

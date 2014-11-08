@@ -8,6 +8,10 @@
 #include "Magnifier.h"
 #include "Loader.h"
 
+#if defined(__APPLE__)
+	#include "TargetConditionals.h"
+#endif
+
 namespace SmashBros
 {
 	long Global::worldTime = 0;
@@ -117,6 +121,15 @@ namespace SmashBros
 			return "upright";
 		}
 		return "";
+	}
+	
+	String Global::getAddonsFolder()
+	{
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR) || defined(ANDROID)
+		return (String)getenv("HOME") + "/Library/iSSB/addons";
+#else
+		return (String)"addons";
+#endif
 	}
 
 	long Global::getWorldTime()

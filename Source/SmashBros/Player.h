@@ -102,6 +102,7 @@ namespace SmashBros
 		boolean onGround;
 		boolean jumping;
 		boolean skidding;
+		boolean tossing;
 		byte hurt;
 		long hurtTime;
 		float moveProgress;
@@ -113,6 +114,12 @@ namespace SmashBros
 		long dropTime;
 		
 		boolean canDo;
+		
+		boolean grabbing;
+		boolean holdingPlayer;
+		boolean heldByPlayer;
+		long grabStartTime;
+		Player* grabbedPlayer;
 		
 		boolean cpu;
 		Player*currentEnemy;
@@ -174,7 +181,7 @@ namespace SmashBros
 		
 		void barrierCollide(byte barrierNo);
 		
-		void whilePlatformCollide(Platform*collide, byte dir);
+		void whilePlatformColliding(Platform*collide, byte dir);
 		void whileGroundColliding();
 		void finishGroundCollide();
 		void onHang(HangPoint*collide);
@@ -228,6 +235,7 @@ namespace SmashBros
 		float runAmount;
 		float recoverAmount;
 		float recoverRunAmount;
+		long grabTime;
 		
 		void addFile(const String&file);
 		void loadFile(const String&file);
@@ -272,11 +280,16 @@ namespace SmashBros
 		boolean checkItemUseSide();
 		boolean checkItemUseUp();
 		boolean checkItemUseDown();
-		boolean checkItemUseSideSmash(byte type);
-		boolean checkItemUseUpSmash(byte type);
-		boolean checkItemUseDownSmash(byte type);
+		boolean checkItemUseSideSmash(byte stepType);
+		boolean checkItemUseUpSmash(byte stepType);
+		boolean checkItemUseDownSmash(byte stepType);
+		boolean useItem(byte attackType);
+		boolean useItemSmash(byte attackType, byte stepType);
 		void discardItem();
-		void tossItem(byte tossDir);
+		void tossItem(byte tossAttackType);
+		void grabPlayer(Player*playr);
+		void releasePlayer();
+		void tossPlayer(byte tossAttackType, float xspeed, float yspeed);
 		
 		void platformResponse(Platform*collide, byte dir, double multiplier);
 		Platform* getCurrentCollidePlatformActor(byte dir);
@@ -368,8 +381,20 @@ namespace SmashBros
 		virtual boolean onDeflectProjectileDamage(Projectile*collide, int damage);
 		virtual void onDeflectProjectileLaunch(Projectile*collide, int xDir, float xAmount, float xMult, int yDir, float yAmount, float yMult);
 		
+		virtual void jump();
+		virtual void grab();
+		
+		virtual void onGrab(Player*held);
+		virtual void onGrabbed(Player*holder);
+		
 		virtual void onFinishCharge();
 		virtual void doChargingAttack(byte button);
+		
+		virtual void grabAttack();
+		virtual void grabAttackSide();
+		virtual void grabAttackSwing();
+		virtual void grabAttackUp();
+		virtual void grabAttackDown();
 		
 		virtual void attackA();
 		virtual void attackSideA();
@@ -428,6 +453,8 @@ namespace SmashBros
 		int getSmashPower();
 		byte getMoveLeft();
 		byte getMoveRight();
+		void setPoint(float x, float y);
+		Player* getGrabbedPlayer();
 		WireframeActor*getHitbox();
 		String getFolderPath();
 		boolean pickUpItem(Item*item);
@@ -439,6 +466,5 @@ namespace SmashBros
 		void stand();
 		void switchDirection();
 		void moveDown();
-		virtual void jump();
 	};
 }

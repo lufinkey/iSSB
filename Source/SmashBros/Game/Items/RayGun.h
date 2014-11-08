@@ -12,7 +12,7 @@ namespace SmashBros
 		int ammo;
 		long activeTime;
 		boolean active;
-		byte attackDir;
+		byte attackType;
 		
 		class Ray : public Projectile
 		{
@@ -35,7 +35,7 @@ namespace SmashBros
 		virtual void Update(long gameTime);
 		
 		virtual void onDiscard(Player*discarder);
-		virtual boolean use(byte attackDir);
+		virtual boolean use(byte attackType);
 		virtual boolean holderCanDo();
 	};
 }

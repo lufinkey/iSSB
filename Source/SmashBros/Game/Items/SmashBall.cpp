@@ -137,6 +137,7 @@ namespace SmashBros
 		{
 		    if(health<=0 && active)
 		    {
+				//TODO add creation of finalsmash fire for P2P
 		        active=false;
 		        readyFire = new Projectile(collide->getPlayerNo(), collide->x,collide->y);
 		        readyFire->addAnimation(new Animation("normal",1,"Images/Game/Items/SmashBall/finalsmash_fire.png"));

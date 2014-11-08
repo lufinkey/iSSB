@@ -374,7 +374,7 @@ namespace SmashBros
 			{
 				for(int j=0; j<ground.size(); j++)
 				{
-					if(playr->isColliding(ground.get(j)))
+					if(!playr->heldByPlayer && playr->isColliding(ground.get(j)))
 					{
 						if(setGrounded)
 						{

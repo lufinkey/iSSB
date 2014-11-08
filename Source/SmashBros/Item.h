@@ -64,6 +64,7 @@ namespace SmashBros
 		
 		void whenPickedUp(Player*collide);
 		void whenDiscarded();
+		void whenTossed(byte tossAttackType);
 		
 		void platformCollision(Platform*collide, byte dir);
 		void checkPlayerCollision(Player*playr);
@@ -88,8 +89,6 @@ namespace SmashBros
 		void setCollideType(byte type);
 		void accelerateGravity(boolean toggle);
 		void enableTossOnDiscard(boolean toggle);
-		void holderItemAnimation();
-		void holderItemAnimation(Player*holder);
 		void causeDamage(Player*collide, int amount);
 		void causeHurtLaunch(Player*collide, int xDir, float xAmount, float xMult, int yDir, float yAmount, float yMult);
 		void causeHurt(Player*collide, byte dir, int time);
@@ -120,6 +119,7 @@ namespace SmashBros
 		virtual void Draw(Graphics2D&g, long gameTime);
 		virtual void onPickUp(Player*collide);
 		virtual void onDiscard(Player*discarder);
+		virtual void onToss(Player*tosser, byte tossAttackType);
 		virtual void onPlayerCollide(Player*collide);
 		virtual void whilePlayerColliding(Player*collide);
 		virtual void finishPlayerCollide(Player*collide);
@@ -140,8 +140,7 @@ namespace SmashBros
 		
 		virtual boolean canPickUp();
 		virtual boolean allowsGrabDelay();
-		virtual boolean use(byte attackDir);
-		virtual void toss(byte tossDir);
+		virtual boolean use(byte attackType);
 		
 		void addAnimation(Animation*a);
 		
@@ -154,8 +153,9 @@ namespace SmashBros
 		void setHoldOffset(float x1, float y1);
 		Player*getPlayer();
 		boolean isHeld();
-		boolean chargeSmash(byte attackDir);
+		boolean chargeSmash(byte attackType);
 		void discard();
+		void toss(byte tossAttackType);
 		void destroy();
 		
 		void doPowerUp(Player*collide, byte type, float value);

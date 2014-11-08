@@ -70,10 +70,22 @@ namespace SmashBros
 		addTwoSidedAnimation("jump", "jump.png", 10, 6, 1);
 		addTwoSidedAnimation("jump2", "jump2.png", 30, 20, 1);
 		addTwoSidedAnimation("land", "land.png", 20, 3, 1);
+		addTwoSidedAnimation("skid", "skid.png", 30, 1, 1);
 		addTwoSidedAnimation("fall", "fall.png", 30, 2, 1);
 		addTwoSidedAnimation("hang", "hang.png", 1, 1, 1);
 		addTwoSidedAnimation("crouch", "crouch.png", 1, 1, 1);
-		addTwoSidedAnimation("melee_weapon", "melee_weapon.png", 6, 3, 1);
+		addTwoSidedAnimation("grab", "grab.png", 10, 4, 1);
+		addTwoSidedAnimation("grabbed", "grabbed.png", 30, 1, 1);
+		addTwoSidedAnimation("hold", "hold.png", 30, 1, 1);
+		addTwoSidedAnimation("release", "release.png", 12, 4, 1);
+		addTwoSidedAnimation("toss", "toss.png", 14, 4, 1);
+		addTwoSidedAnimation("toss_up", "toss_up.png", 17, 5, 1);
+		addTwoSidedAnimation("toss_down", "toss_down.png", 20, 6, 1);
+		addTwoSidedAnimation("grab_attack", "grab_attack.png", 10, 3, 1);
+		addTwoSidedAnimation("grab_attack_swing", "grab_attack_swing.png", 18, 13, 1);
+		addTwoSidedAnimation("melee_weapon", "melee_weapon.png", 8, 4, 1);
+		addTwoSidedAnimation("melee_weapon_up", "melee_weapon_up.png", 8, 4, 1);
+		addTwoSidedAnimation("melee_weapon_down", "melee_weapon_down.png", 8, 4, 1);
 		addTwoSidedAnimation("hurt_minor", "hurt_minor.png", 2, 1, 1);
 		addTwoSidedAnimation("hurt_fly", "hurt_fly.png", 2, 1, 1);
 		addTwoSidedAnimation("hurt_flip", "hurt_flip.png", 10, 4, 1);
@@ -91,7 +103,7 @@ namespace SmashBros
 		addTwoSidedAnimation("air_attack_up", "air_attack_up.png", 45, 20, 1);
 		addSingleAnimation("air_attack_down", "air_attack_down.png", 20, 14, 1);
 		addTwoSidedAnimation("special_attack", "special_attack.png", 14, 4, 1);
-		addTwoSidedAnimation("special_attack_side", "special_attack_side.png", 14, 5, 1);
+		addTwoSidedAnimation("special_attack_side", "special_attack_side.png", 18, 8, 1);
 		addTwoSidedAnimation("special_attack_up", "special_attack_up.png", 7, 4, 1);
 		addTwoSidedAnimation("special_charge_down", "special_charge_down.png", 0, 1, 1);
 		addTwoSidedAnimation("special_attack_down", "special_attack_down.png", 0, 1, 1);
@@ -941,6 +953,9 @@ namespace SmashBros
 
 	void Mario::FluddWater::Update(long gameTime)
 	{
+		Player* owner = Global::getPlayerActor(getPlayerNo());
+		this->x = owner->x+(owner->getPlayerDirMult()*(66*owner->Scale));
+		this->y = owner->y - owner->Scale;
 		Projectile::Update(gameTime);
 		Player*playr = Global::getPlayerActor(this->getPlayerNo());
 		if(!playr->isAlive() && !playr->isHurt())

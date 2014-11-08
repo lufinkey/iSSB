@@ -16,6 +16,7 @@
 		A003DB2319F9646000CA7E21 /* GameEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A003DB2219F9645F00CA7E21 /* GameEngine.cpp */; };
 		A006580317F8C09D00B54DF7 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A006580217F8C09C00B54DF7 /* MessageUI.framework */; };
 		A0136BB419F1E7190041FDA3 /* Images in Resources */ = {isa = PBXBuildFile; fileRef = A0136BB319F1E7190041FDA3 /* Images */; };
+		A01FB2581A0D7CBB00A9099D /* animation checklist.txt in Resources */ = {isa = PBXBuildFile; fileRef = A01FB2571A0D7CBB00A9099D /* animation checklist.txt */; };
 		A05C8D72180780B600A30C28 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A05C8D71180780B600A30C28 /* GameKit.framework */; };
 		A071A7CE197B11C0003DB16F /* Pikachu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A071A7CC197B11C0003DB16F /* Pikachu.cpp */; };
 		A071A7D3197B136F003DB16F /* Loader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A071A7D2197B136F003DB16F /* Loader.cpp */; };
@@ -158,6 +159,7 @@
 		A003DB2219F9645F00CA7E21 /* GameEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameEngine.cpp; sourceTree = "<group>"; };
 		A006580217F8C09C00B54DF7 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		A0136BB319F1E7190041FDA3 /* Images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Images; sourceTree = "<group>"; };
+		A01FB2571A0D7CBB00A9099D /* animation checklist.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "animation checklist.txt"; sourceTree = "<group>"; };
 		A05C8D71180780B600A30C28 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		A071A7CC197B11C0003DB16F /* Pikachu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Pikachu.cpp; sourceTree = "<group>"; };
 		A071A7CD197B11C0003DB16F /* Pikachu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pikachu.h; sourceTree = "<group>"; };
@@ -536,6 +538,7 @@
 				A0BF9FEA17DA4C2900ECBEF4 /* Fonts */,
 				A0FB9C8E17EE153200A2EBBE /* Music */,
 				A088D51D17F48E9D001E85E5 /* Sounds */,
+				A01FB2571A0D7CBB00A9099D /* animation checklist.txt */,
 				A0FFD14119F83CD70009D011 /* Default.png */,
 				A0FFD14319F83CFC0009D011 /* Default@2x.png */,
 				A0FFD14519F83D1E0009D011 /* Default-568h@2x.png */,
@@ -1127,6 +1130,7 @@
 				A0FFD1D619F842020009D011 /* iTunesArtwork.png in Resources */,
 				A0FFD1D819F842EB0009D011 /* Icon-72@2x.png in Resources */,
 				A0FFD1DA19F8431E0009D011 /* Icon-72.png in Resources */,
+				A01FB2581A0D7CBB00A9099D /* animation checklist.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

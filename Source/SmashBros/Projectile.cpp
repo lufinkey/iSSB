@@ -357,6 +357,11 @@ namespace SmashBros
 		}
 		else
 		{
+			if(collide->holdingPlayer)
+			{
+				collide->releasePlayer();
+			}
+			
 		    //float oldXvel;
 		    //float oldYvel;
 		    float newyVel=(float)(yDir*(yAmount+(yMult*(collide->percent))/75));
@@ -468,13 +473,14 @@ namespace SmashBros
 		    collide->xVel=0;
 		    collide->yVel=0;
 		    collide->attackTime=0;
-		    collide->setToDefaultValues();
 		    collide->chargingAttack=false;
 		    collide->bUp=false;
 		    collide->up=false;
 		    collide->hurt=2;
 		    collide->landing=false;
 		    collide->jumping=false;
+			collide->tossing=false;
+			collide->grabbing=false;
 		    collide->moveLeft=0;
 		    collide->moveRight=0;
 		    collide->hanging=false;
@@ -486,8 +492,8 @@ namespace SmashBros
 		    collide->runTime=0;
 		    collide->chargeSmash=0;
 		    collide->lastHit = this->playerNo;
-		    
 		    collide->destroyCharge();
+			collide->setToDefaultValues();
 		    
 		    if(collide->itemHolding!=null)
 		    {

@@ -161,11 +161,15 @@ namespace SmashBros
 			case Global::CHAR_ICHIGO:
 			win_fps = 6;
 			win_rows = 5;
+			lose_fps = 8;
+			lose_rows = 4;
 			break;
 			
 			case Global::CHAR_SONIC:
 			win_fps = 5;
 			win_rows = 6;
+			lose_fps = 8;
+			lose_rows = 4;
 			break;
 			
 			case Global::CHAR_FOX:

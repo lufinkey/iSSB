@@ -113,6 +113,7 @@ namespace SmashBros
 		static void onReturnToMenu();
 		
 		static String getDirText(byte dir);
+		static String getAddonsFolder();
 		
 		static long getWorldTime();
 		

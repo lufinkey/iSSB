@@ -9,7 +9,7 @@ namespace SmashBros
 	{
 	private:
 		boolean active;
-		byte attackDir;
+		byte attackType;
 		int smashPower;
 
 	public:
@@ -20,8 +20,8 @@ namespace SmashBros
 
 		virtual boolean holderCanDo();
 		virtual void onDiscard(Player*discarder);
-		virtual boolean chargeSmash(byte attackDir);
-		virtual boolean use(byte attackDir);
+		virtual boolean chargeSmash(byte attackType);
+		virtual boolean use(byte attackType);
 		virtual void onPlayerHit(Player*collide, byte dir);
 		virtual void onAnimationFinish(const String&name);
 	};

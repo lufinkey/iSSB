@@ -276,12 +276,12 @@ namespace SmashBros
 		isSolid = toggle;
 	}
 	
-	boolean Item::chargeSmash(byte attackDir)
+	boolean Item::chargeSmash(byte attackType)
 	{
 		return false;
 	}
 	
-	boolean Item::use(byte attackDir)
+	boolean Item::use(byte attackType)
 	{
 		return false;
 	}
@@ -295,67 +295,16 @@ namespace SmashBros
 		}
 	}
 	
-	void Item::toss(byte tossDir)
+	void Item::toss(byte tossAttackType)
 	{
-		boolean prevTossing = tossing;
-		tossing = true;
-		
-		//TODO add throw animations for every direction for Player
 		if(isHeld())
 		{
-			if(type==Item::TYPE_HOLD)
+			Player* owner = Global::getPlayerActor(getItemHolder());
+			if(owner->itemHolding==this)
 			{
-				Player* holder = Global::getPlayerActor(getItemHolder());
-				discard();
-				switch(tossDir)
-				{
-					case Player::ATTACK_A:
-					holderItemAnimation(holder);
-					switch(holder->getPlayerDir())
-					{
-						case Player::LEFT:
-						xvelocity = -5.5f;
-						break;
-						
-						case Player::RIGHT:
-						xvelocity = 5.5f;
-						break;
-					}
-					yvelocity = -2;
-					break;
-					
-					case Player::ATTACK_SIDEA:
-					case Player::ATTACK_SIDESMASH:
-					holderItemAnimation(holder);
-					switch(holder->getPlayerDir())
-					{
-						case Player::LEFT:
-						xvelocity = -9.3f;
-						break;
-						
-						case Player::RIGHT:
-						xvelocity = 9.3f;
-						break;
-					}
-					yvelocity = -1.7f;
-					break;
-					
-					case Player::ATTACK_UPA:
-					yvelocity = -6.2f;
-					break;
-					
-					case Player::ATTACK_DOWNA:
-					yvelocity = 6.2f;
-					break;
-				}
-			}
-			else
-			{
-				discard();
+				owner->tossItem(tossAttackType);
 			}
 		}
-		
-		tossing = prevTossing;
 	}
 	
 	void Item::whenPickedUp(Player*collide)
@@ -422,12 +371,76 @@ namespace SmashBros
 		}
 	}
 	
+	void Item::whenTossed(byte tossAttackType)
+	{
+		boolean prevTossing = tossing;
+		tossing = true;
+		
+		Player* holder = Global::getPlayerActor(getItemHolder());
+		if(type==Item::TYPE_HOLD)
+		{
+			discard();
+			switch(tossAttackType)
+			{
+				case Player::ATTACK_A:
+				switch(holder->getPlayerDir())
+				{
+					case Player::LEFT:
+					xvelocity = -5.2f;
+					break;
+					
+					case Player::RIGHT:
+					xvelocity = 5.2f;
+					break;
+				}
+				yvelocity = -2;
+				break;
+				
+				case Player::ATTACK_SIDEA:
+				case Player::ATTACK_SIDESMASH:
+				switch(holder->getPlayerDir())
+				{
+					case Player::LEFT:
+					xvelocity = -6.6f;
+					break;
+					
+					case Player::RIGHT:
+					xvelocity = 6.6f;
+					break;
+				}
+				yvelocity = -1.7f;
+				break;
+				
+				case Player::ATTACK_UPA:
+				yvelocity = -6.2f;
+				break;
+				
+				case Player::ATTACK_DOWNA:
+				yvelocity = 6.2f;
+				break;
+			}
+		}
+		else
+		{
+			discard();
+		}
+		
+		tossing = prevTossing;
+		
+		onToss(holder, tossAttackType);
+	}
+	
 	void Item::onPickUp(Player*collide)
 	{
 		//Open for implementation
 	}
 	
 	void Item::onDiscard(Player*discarder)
+	{
+		//Open for implementation
+	}
+	
+	void Item::onToss(Player*tosser, byte tossAttackType)
 	{
 		//Open for implementation
 	}
@@ -821,20 +834,6 @@ namespace SmashBros
 		tossOnDiscard = toggle;
 	}
 	
-	void Item::holderItemAnimation()
-	{
-		if(isHeld())
-		{
-			Player* holder = Global::getPlayerActor(holderNo);
-			holderItemAnimation(holder);
-		}
-	}
-	
-	void Item::holderItemAnimation(Player* holder)
-	{
-		holder->changeTwoSidedAnimation("melee_weapon", FORWARD);
-	}
-	
 	boolean Item::isHittable(Player*collide)
 	{
 		byte team = 0;
@@ -925,6 +924,11 @@ namespace SmashBros
 		}
 		else
 		{
+			if(collide->holdingPlayer)
+			{
+				collide->releasePlayer();
+			}
+			
 		    //float oldXvel;
 		    //float oldYvel;
 		    float newyVel=(float)(yDir*(yAmount+(yMult*(collide->percent))/75));
@@ -1034,13 +1038,14 @@ namespace SmashBros
 		    collide->xVel=0;
 		    collide->yVel=0;
 		    collide->attackTime=0;
-		    collide->setToDefaultValues();
 		    collide->chargingAttack=false;
 		    collide->bUp=false;
 		    collide->up=false;
 		    collide->hurt=2;
 		    collide->landing=false;
 		    collide->jumping=false;
+			collide->tossing=false;
+			collide->grabbing=false;
 		    //collide->moveLeft=0;
 		    //collide->moveRight=0;
 		    collide->hanging=false;
@@ -1051,6 +1056,9 @@ namespace SmashBros
 		    collide->hurtFrame=4;
 		    collide->runTime=0;
 		    collide->chargeSmash=0;
+			collide->destroyCharge();
+			collide->setToDefaultValues();
+			
 		    if(holderNo>0)
 		    {
 		    	collide->lastHit = holderNo;
@@ -1059,8 +1067,6 @@ namespace SmashBros
 		    {
 		    	collide->lastHit = ownerNo;
 		    }
-		    
-		    collide->destroyCharge();
 		    
 		    if(collide->itemHolding!=null)
 		    {

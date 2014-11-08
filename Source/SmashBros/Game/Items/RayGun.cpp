@@ -14,7 +14,7 @@ namespace SmashBros
 		ammo = 16;
 		active = false;
 		activeTime = 0;
-		attackDir = 0;
+		attackType = 0;
 		
 		Animation*anim;
 		
@@ -58,10 +58,10 @@ namespace SmashBros
 		dir = discarder->getPlayerDir();
 	}
 	
-	boolean RayGun::use(byte attackDir)
+	boolean RayGun::use(byte attackType)
 	{
-		this->attackDir = attackDir;
-		if(attackDir==Player::ATTACK_A)
+		this->attackType = attackType;
+		if(attackType==Player::ATTACK_A)
 		{
 			if(!active)
 			{
@@ -75,7 +75,7 @@ namespace SmashBros
 			}
 			return true;
 		}
-		else if(attackDir==Player::ATTACK_SIDEA)
+		else if(attackType==Player::ATTACK_SIDEA)
 		{
 			if(!active)
 			{
@@ -94,7 +94,7 @@ namespace SmashBros
 	
 	boolean RayGun::holderCanDo()
 	{
-		if(active && attackDir==Player::ATTACK_A)
+		if(active && attackType==Player::ATTACK_A)
 		{
 			return false;
 		}

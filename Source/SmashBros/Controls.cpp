@@ -36,60 +36,60 @@ namespace SmashBros
 	} ControlData;
 	
 	Controls::ControlHUD::ControlHUD()
-    {
-        button_a = new Actor(820, 450);
-        button_a->addAnimation(new Animation("normal", 1, "Images/Game/Controls/button_a.png"));
-        button_a->changeAnimation("normal", FORWARD);
-        button_a->setRelativeToView(false);
+	{
+		button_a = new Actor(820, 450);
+		button_a->addAnimation(new Animation("normal", 1, "Images/Game/Controls/button_a.png"));
+		button_a->changeAnimation("normal", FORWARD);
+		button_a->setRelativeToView(false);
 		button_a->Scale = 2;
 		button_a->setAlpha(0.2f);
 		
-        button_b = new Actor(707.5f, 525);
-        button_b->addAnimation(new Animation("normal", 1, "Images/Game/Controls/button_b.png"));
-        button_b->changeAnimation("normal", FORWARD);
-        button_b->setRelativeToView(false);
+		button_b = new Actor(707.5f, 525);
+		button_b->addAnimation(new Animation("normal", 1, "Images/Game/Controls/button_b.png"));
+		button_b->changeAnimation("normal", FORWARD);
+		button_b->setRelativeToView(false);
 		button_b->Scale = 2;
 		button_b->setAlpha(0.2f);
 		
-        button_x = new Actor(820, 337.5f);
-        button_x->addAnimation(new Animation("normal", 1, "Images/Game/Controls/button_xy.png"));
-        button_x->changeAnimation("normal", FORWARD);
-        button_x->setRelativeToView(false);
+		button_x = new Actor(820, 337.5f);
+		button_x->addAnimation(new Animation("normal", 1, "Images/Game/Controls/button_xy.png"));
+		button_x->changeAnimation("normal", FORWARD);
+		button_x->setRelativeToView(false);
 		button_x->Scale = 2;
 		button_x->setAlpha(0.2f);
 		
 		button_z = new Actor(790, 60);
-        button_z->addAnimation(new Animation("normal", 1, "Images/Game/Controls/button_z.png"));
-        button_z->changeAnimation("normal", FORWARD);
-        button_z->setRelativeToView(false);
+		button_z->addAnimation(new Animation("normal", 1, "Images/Game/Controls/button_z.png"));
+		button_z->changeAnimation("normal", FORWARD);
+		button_z->setRelativeToView(false);
 		button_z->Scale = 2;
 		button_z->setAlpha(0.2f);
 		
-        arrow_up = new Actor(150, 375);
-        arrow_up->addAnimation(new Animation("normal", 1, "Images/Game/Controls/arrow_up.png"));
-        arrow_up->changeAnimation("normal", FORWARD);
-        arrow_up->setRelativeToView(false);
+		arrow_up = new Actor(150, 375);
+		arrow_up->addAnimation(new Animation("normal", 1, "Images/Game/Controls/arrow_up.png"));
+		arrow_up->changeAnimation("normal", FORWARD);
+		arrow_up->setRelativeToView(false);
 		arrow_up->Scale = 2;
 		arrow_up->setAlpha(0.5f);
 		
-        arrow_down = new Actor(150, 525);
-        arrow_down->addAnimation(new Animation("normal", 1, "Images/Game/Controls/arrow_down.png"));
-        arrow_down->changeAnimation("normal", FORWARD);
-        arrow_down->setRelativeToView(false);
+		arrow_down = new Actor(150, 525);
+		arrow_down->addAnimation(new Animation("normal", 1, "Images/Game/Controls/arrow_down.png"));
+		arrow_down->changeAnimation("normal", FORWARD);
+		arrow_down->setRelativeToView(false);
 		arrow_down->Scale = 2;
 		arrow_down->setAlpha(0.5f);
 		
-        arrow_left = new Actor(75, 450);
-        arrow_left->addAnimation(new Animation("normal", 1, "Images/Game/Controls/arrow_left.png"));
-        arrow_left->changeAnimation("normal", FORWARD);
-        arrow_left->setRelativeToView(false);
+		arrow_left = new Actor(75, 450);
+		arrow_left->addAnimation(new Animation("normal", 1, "Images/Game/Controls/arrow_left.png"));
+		arrow_left->changeAnimation("normal", FORWARD);
+		arrow_left->setRelativeToView(false);
 		arrow_left->Scale = 2;
 		arrow_left->setAlpha(0.5f);
 		
-        arrow_right = new Actor(225, 450);
-        arrow_right->addAnimation(new Animation("normal", 1, "Images/Game/Controls/arrow_right.png"));
-        arrow_right->changeAnimation("normal", FORWARD);
-        arrow_right->setRelativeToView(false);
+		arrow_right = new Actor(225, 450);
+		arrow_right->addAnimation(new Animation("normal", 1, "Images/Game/Controls/arrow_right.png"));
+		arrow_right->changeAnimation("normal", FORWARD);
+		arrow_right->setRelativeToView(false);
 		arrow_right->Scale = 2;
 		arrow_right->setAlpha(0.5f);
 		
@@ -132,18 +132,18 @@ namespace SmashBros
 			justPulled[i] = false;
 			lastCenterTime[i] = 0;
 		}
-    }
+	}
 	
-    Controls::ControlHUD::~ControlHUD()
-    {
-        delete button_a;
-        delete button_b;
-        delete button_x;
+	Controls::ControlHUD::~ControlHUD()
+	{
+		delete button_a;
+		delete button_b;
+		delete button_x;
 		delete button_z;
-        delete arrow_up;
-        delete arrow_down;
-        delete arrow_left;
-        delete arrow_right;
+		delete arrow_up;
+		delete arrow_down;
+		delete arrow_left;
+		delete arrow_right;
 		delete joystickArea;
 		delete joystick;
 		delete[] joystickDir;
@@ -151,7 +151,7 @@ namespace SmashBros
 		delete[] joystickDown;
 		delete[] justPulled;
 		delete[] lastCenterTime;
-    }
+	}
 	
 	void Controls::ControlHUD::Update(long gameTime)
 	{
@@ -890,7 +890,7 @@ namespace SmashBros
 					
 					case BUTTON_GRAB:
 					{
-						Global::characters[playrNo]->discardItem();
+						buttonZ(playrNo, type);
 					}
 					break;
 				}
@@ -1051,7 +1051,7 @@ namespace SmashBros
 		playr->checkAttacks();
 		playr->smashTime=0;
 		playr->runTime=0;
-		playr->buttondir=0;
+		playr->buttondir=BUTTONDIR_CENTER;
 		playr->down=false;
 		playr->up=false;
 		playr->upKey=false;
@@ -1076,7 +1076,7 @@ namespace SmashBros
 				break;
 			}
 		}
-		else if((playr->isOnGround())&&(playr->canDo)) //TODO add grabbing support
+		else if(playr->isOnGround() && playr->canDo && !playr->holdingPlayer)
 		{
 			playr->changeTwoSidedAnimation("stand", NO_CHANGE);
 		}
@@ -1120,7 +1120,7 @@ namespace SmashBros
 		if(playr->attacksPriority!=-1)
 		{
 			playr->checkAttacks();
-			playr->buttondir=0;
+			playr->buttondir=BUTTONDIR_CENTER;
 			playr->smashTime=0;
 			playr->runTime=0;
 			playr->down=false;
@@ -1130,7 +1130,7 @@ namespace SmashBros
 			playr->moveRight=0;
 			if(playr->canDo)
 			{
-				if(playr->isOnGround()) //TODO add grabbing support
+				if(playr->isOnGround() && playr->canDo && !playr->holdingPlayer)
 				{
 					playr->changeTwoSidedAnimation("stand", NO_CHANGE);
 				}
@@ -1158,28 +1158,22 @@ namespace SmashBros
 			{
 				playr->smashTime = 0;
 			}
-			playr->buttondir=1;
+			playr->buttondir=BUTTONDIR_UP;
 			playr->moveLeft=0;
 			playr->moveRight=0;
 			playr->down=false;
 			playr->upKey=true;
 			playr->checkAttacks();
-			if(playr->canDo) //TODO add grabbing support
+			if(playr->canDo)
 			{
 				if(playr->hanging)
 				{
 					playr->hanging=false;
 					playr->climbUp();
-					/*switch(playr->playerdir)
-					{
-						case 1:
-						playr->x-=30;
-						break;
-						
-						case 2:
-						playr->x+=30;
-						break;
-					}*/
+				}
+				else if(playr->holdingPlayer)
+				{
+					//playr->grabAttackUp(); //TODO enable grabbing if needed here
 				}
 			}
 		}
@@ -1205,7 +1199,7 @@ namespace SmashBros
 			{
 				playr->smashTime = 0;
 			}
-			playr->buttondir=1;
+			playr->buttondir=BUTTONDIR_UP;
 			if((joystickDir[pNum] == PrimitiveActor::DIR_UPLEFT)||(joystickDir[pNum] == PrimitiveActor::DIR_UPRIGHT))
 			{
 				playr->moveLeft=0;
@@ -1221,15 +1215,24 @@ namespace SmashBros
 				playr->down=false;
 				playr->upKey=true;
 				playr->checkAttacks();
-				if(justPulled[pNum] && playr->canDo) // TODO add grabbing support
+				if(justPulled[pNum] && playr->canDo)
 				{
 					if(playr->hanging)
 					{
 						playr->y-=playr->hitbox->height;
 						playr->hanging=false;
+						playr->destroyCharge();
+						playr->jump();
 					}
-					playr->destroyCharge();
-					playr->jump();
+					else if(playr->holdingPlayer)
+					{
+						playr->grabAttackUp();
+					}
+					else
+					{
+						playr->destroyCharge();
+						playr->jump();
+					}
 				}
 			}
 		}
@@ -1253,25 +1256,32 @@ namespace SmashBros
 			byte dir = PrimitiveActor::getDir2(joystick->x, joystick->y, (float)mousex, (float)mousey);
 			if(dir == PrimitiveActor::DIR_UP)
 			{
-				playr->buttondir=1;
+				playr->buttondir=BUTTONDIR_UP;
 			}
 			else if(dir == PrimitiveActor::DIR_LEFT)
 			{
-				playr->buttondir=4;
+				playr->buttondir=BUTTONDIR_LEFT;
 			}
 			playr->up=true;
 			playr->upKey=false;
 			playr->down=false;
-			if(playr->hanging && !((joystickDir[pNum]==PrimitiveActor::DIR_UPLEFT || joystickDir[pNum]==PrimitiveActor::DIR_LEFT) && joystickFar[pNum]))
+			if(!((joystickDir[pNum]==PrimitiveActor::DIR_UPLEFT || joystickDir[pNum]==PrimitiveActor::DIR_LEFT) && joystickFar[pNum]))
 			{
-				if(playr->playerdir == Player::LEFT)
+				if(playr->hanging)
 				{
-					playr->hanging=false;
-					playr->climbUp();
-					playr->x-=4;
+					if(playr->playerdir == Player::LEFT)
+					{
+						playr->hanging=false;
+						playr->climbUp();
+						playr->x-=4;
+					}
+				}
+				else if(playr->holdingPlayer)
+				{
+					//playr->grabAttackUp(); //TODO enable grabbing if needed here
 				}
 			}
-			else
+			else if(!playr->hanging)
 			{
 				playr->moveLeft = 1;
 				playr->moveRight = 0;
@@ -1298,11 +1308,11 @@ namespace SmashBros
 			byte dir = PrimitiveActor::getDir2(joystick->x, joystick->y, (float)mousex, (float)mousey);
 			if(dir == PrimitiveActor::DIR_UP)
 			{
-				playr->buttondir=1;
+				playr->buttondir=BUTTONDIR_UP;
 			}
 			else if(dir == PrimitiveActor::DIR_LEFT)
 			{
-				playr->buttondir=4;
+				playr->buttondir=BUTTONDIR_LEFT;
 			}
 			if(joystickDir[pNum]==PrimitiveActor::DIR_UP && joystickFar[pNum])
 			{
@@ -1319,15 +1329,24 @@ namespace SmashBros
 				playr->down=false;
 				playr->upKey=true;
 				playr->checkAttacks();
-				if(justPulled[pNum] && playr->canDo) //TODO add grabbing support
+				if(justPulled[pNum] && playr->canDo)
 				{
 					if(playr->hanging)
 					{
 						playr->climbUp();
 						playr->hanging=false;
+						playr->destroyCharge();
+						playr->jump();
 					}
-					playr->destroyCharge();
-					playr->jump();
+					else if(playr->holdingPlayer)
+					{
+						playr->grabAttackUp();
+					}
+					else
+					{
+						playr->destroyCharge();
+						playr->jump();
+					}
 				}
 			}
 		}
@@ -1351,25 +1370,32 @@ namespace SmashBros
 			byte dir = PrimitiveActor::getDir2(joystick->x, joystick->y, (float)mousex, (float)mousey);
 			if(dir == PrimitiveActor::DIR_UP)
 			{
-				playr->buttondir=1;
+				playr->buttondir=BUTTONDIR_UP;
 			}
 			else if(dir == PrimitiveActor::DIR_RIGHT)
 			{
-				playr->buttondir=2;
+				playr->buttondir=BUTTONDIR_RIGHT;
 			}
 			playr->up=true;
 			playr->upKey=false;
 			playr->down=false;
-			if(playr->hanging && !((joystickDir[pNum]==PrimitiveActor::DIR_UPRIGHT || joystickDir[pNum]==PrimitiveActor::DIR_RIGHT) && joystickFar[pNum]))
+			if(!((joystickDir[pNum]==PrimitiveActor::DIR_UPRIGHT || joystickDir[pNum]==PrimitiveActor::DIR_RIGHT) && joystickFar[pNum]))
 			{
-				if(playr->playerdir == Player::RIGHT)
+				if(playr->hanging)
 				{
-					playr->hanging=false;
-					playr->climbUp();
-					playr->x+=4;
+					if(playr->playerdir == Player::RIGHT)
+					{
+						playr->hanging=false;
+						playr->climbUp();
+						playr->x+=4;
+					}
+				}
+				else if(playr->holdingPlayer)
+				{
+					//playr->grabAttackUp(); //TODO enable grabbing if needed here
 				}
 			}
-			else
+			else if(!playr->hanging)
 			{
 				playr->moveLeft = 0;
 				playr->moveRight = 1;
@@ -1396,11 +1422,11 @@ namespace SmashBros
 			byte dir = PrimitiveActor::getDir2(joystick->x, joystick->y, (float)mousex, (float)mousey);
 			if(dir == PrimitiveActor::DIR_UP)
 			{
-				playr->buttondir=1;
+				playr->buttondir=BUTTONDIR_UP;
 			}
 			else if(dir == PrimitiveActor::DIR_RIGHT)
 			{
-				playr->buttondir=2;
+				playr->buttondir=BUTTONDIR_RIGHT;
 			}
 			if(joystickDir[pNum] == PrimitiveActor::DIR_UP && joystickFar[pNum])
 			{
@@ -1417,15 +1443,24 @@ namespace SmashBros
 				playr->down=false;
 				playr->upKey=true;
 				playr->checkAttacks();
-				if(justPulled[pNum] && playr->canDo) //TODO add grabbing support
+				if(justPulled[pNum] && playr->canDo)
 				{
 					if(playr->hanging)
 					{
 						playr->climbUp();
 						playr->hanging=false;
+						playr->destroyCharge();
+						playr->jump();
 					}
-					playr->destroyCharge();
-					playr->jump();
+					else if(playr->holdingPlayer)
+					{
+						playr->grabAttackUp();
+					}
+					else
+					{
+						playr->destroyCharge();
+						playr->jump();
+					}
 				}
 			}
 		}
@@ -1443,7 +1478,7 @@ namespace SmashBros
 		Player*playr=Global::getPlayerActor(pNum);
 		if(playr->attacksPriority!=-1)
 		{
-			playr->buttondir=4;
+			playr->buttondir=BUTTONDIR_LEFT;
 			playr->up=false;
 			playr->upKey=false;
 			playr->down=false;
@@ -1453,21 +1488,37 @@ namespace SmashBros
 			{
 				playr->runTime = Global::worldTime+200;
 			}
-			if(playr->hanging && !((joystickDir[pNum]==PrimitiveActor::DIR_LEFT || joystickDir[pNum]==PrimitiveActor::DIR_DOWNLEFT) && joystickFar[pNum])
+			if(!((joystickDir[pNum]==PrimitiveActor::DIR_LEFT || joystickDir[pNum]==PrimitiveActor::DIR_DOWNLEFT) && joystickFar[pNum])
 			   && joystickDir[pNum]!=PrimitiveActor::DIR_UPLEFT)
 			{
-				playr->hanging=false;
-				switch(playr->playerdir)
+				if(playr->hanging)
 				{
-					case Player::LEFT:
-					playr->climbUp();
-					playr->x-=4;
-					break;
+					playr->hanging=false;
+					switch(playr->playerdir)
+					{
+						case Player::LEFT:
+						playr->climbUp();
+						playr->x-=4;
+						break;
+							
+						case Player::RIGHT:
+						playr->changeAnimation("fall_right", NO_CHANGE);
+						playr->y+=6;
+						break;
+					}
+				}
+				else if(playr->holdingPlayer)
+				{
+					switch(playr->getPlayerDir())
+					{
+						case Player::LEFT:
+						playr->grabAttackSide();
+						break;
 						
-					case Player::RIGHT:
-					playr->changeAnimation("fall_right", NO_CHANGE);
-					playr->y+=6;
-					break;
+						case Player::RIGHT:
+						playr->grabAttackSwing();
+						break;
+					}
 				}
 			}
 		}
@@ -1485,7 +1536,7 @@ namespace SmashBros
 		Player*playr=Global::getPlayerActor(pNum);
 		if(playr->attacksPriority!=-1)
 		{
-			playr->buttondir=4;
+			playr->buttondir=BUTTONDIR_LEFT;
 			playr->up=false;
 			playr->upKey=false;
 			playr->down=false;
@@ -1499,21 +1550,37 @@ namespace SmashBros
 			{
 				playr->moveLeft=1;
 			}
-			if(playr->hanging && !(joystickDir[pNum]==PrimitiveActor::DIR_DOWNLEFT && joystickFar[pNum])
+			if(!(joystickDir[pNum]==PrimitiveActor::DIR_DOWNLEFT && joystickFar[pNum])
 			   && joystickDir[pNum]!=PrimitiveActor::DIR_UPLEFT)
 			{
-				playr->hanging=false;
-				switch(playr->playerdir)
+				if(playr->hanging)
 				{
-					case Player::LEFT:
-					playr->climbUp();
-					playr->x-=4;
-					break;
+					playr->hanging=false;
+					switch(playr->playerdir)
+					{
+						case Player::LEFT:
+						playr->climbUp();
+						playr->x-=4;
+						break;
+							
+						case Player::RIGHT:
+						playr->changeAnimation("fall_right", NO_CHANGE);
+						playr->y+=6;
+						break;
+					}
+				}
+				else if(playr->holdingPlayer)
+				{
+					switch(playr->getPlayerDir())
+					{
+						case Player::LEFT:
+						playr->grabAttackSide();
+						break;
 						
-					case Player::RIGHT:
-					playr->changeAnimation("fall_right", NO_CHANGE);
-					playr->y+=6;
-					break;
+						case Player::RIGHT:
+						playr->grabAttackSwing();
+						break;
+					}
 				}
 			}
 		}
@@ -1531,7 +1598,7 @@ namespace SmashBros
 		Player*playr=Global::getPlayerActor(pNum);
 		if(playr->attacksPriority!=-1)
 		{
-			playr->buttondir=4;
+			playr->buttondir=BUTTONDIR_LEFT;
 			playr->up=false;
 			playr->upKey=false;
 			playr->down=false;
@@ -1541,21 +1608,37 @@ namespace SmashBros
 			{
 				playr->runTime = Global::worldTime+100;
 			}
-			if(playr->hanging && !((joystickDir[pNum]==PrimitiveActor::DIR_RIGHT || joystickDir[pNum]==PrimitiveActor::DIR_DOWNRIGHT) && joystickFar[pNum])
+			if(!((joystickDir[pNum]==PrimitiveActor::DIR_RIGHT || joystickDir[pNum]==PrimitiveActor::DIR_DOWNRIGHT) && joystickFar[pNum])
 			   && joystickDir[pNum]!=PrimitiveActor::DIR_UPRIGHT)
 			{
-				playr->hanging=false;
-				switch(playr->playerdir)
+				if(playr->hanging)
 				{
-					case Player::LEFT:
-					playr->changeAnimation("fall_left", NO_CHANGE);
-					playr->y+=6;
-					break;
+					playr->hanging=false;
+					switch(playr->playerdir)
+					{
+						case Player::LEFT:
+						playr->changeAnimation("fall_left", NO_CHANGE);
+						playr->y+=6;
+						break;
+							
+						case Player::RIGHT:
+						playr->climbUp();
+						playr->x+=4;
+						break;
+					}
+				}
+				else if(playr->holdingPlayer)
+				{
+					switch(playr->getPlayerDir())
+					{
+						case Player::LEFT:
+						playr->grabAttackSwing();
+						break;
 						
-					case Player::RIGHT:
-					playr->climbUp();
-					playr->x+=4;
-					break;
+						case Player::RIGHT:
+						playr->grabAttackSide();
+						break;
+					}
 				}
 			}
 		}
@@ -1573,7 +1656,7 @@ namespace SmashBros
 		Player*playr=Global::getPlayerActor(pNum);
 		if(playr->attacksPriority!=-1)
 		{
-			playr->buttondir=4;
+			playr->buttondir=BUTTONDIR_LEFT;
 			playr->up=false;
 			playr->upKey=false;
 			playr->down=false;
@@ -1588,21 +1671,37 @@ namespace SmashBros
 				playr->moveRight=1;
 			}
 
-			if(playr->hanging && !(joystickDir[pNum]==PrimitiveActor::DIR_DOWNRIGHT && joystickFar[pNum])
+			if(!(joystickDir[pNum]==PrimitiveActor::DIR_DOWNRIGHT && joystickFar[pNum])
 			   && joystickDir[pNum]!=PrimitiveActor::DIR_UPRIGHT)
 			{
-				playr->hanging=false;
-				switch(playr->playerdir)
+				if(playr->hanging)
 				{
-					case Player::LEFT:
-					playr->changeAnimation("fall_left", NO_CHANGE);
-					playr->y+=6;
-					break;
+					playr->hanging=false;
+					switch(playr->playerdir)
+					{
+						case Player::LEFT:
+						playr->changeAnimation("fall_left", NO_CHANGE);
+						playr->y+=6;
+						break;
+							
+						case Player::RIGHT:
+						playr->climbUp();
+						playr->x+=4;
+						break;
+					}
+				}
+				else if(playr->holdingPlayer)
+				{
+					switch(playr->getPlayerDir())
+					{
+						case Player::LEFT:
+						playr->grabAttackSwing();
+						break;
 						
-					case Player::RIGHT:
-					playr->climbUp();
-					playr->x+=4;
-					break;
+						case Player::RIGHT:
+						playr->grabAttackSide();
+						break;
+					}
 				}
 			}
 		}
@@ -1620,7 +1719,7 @@ namespace SmashBros
 		Player*playr=Global::getPlayerActor(pNum);
 		if(playr->attacksPriority!=-1)
 		{
-			playr->buttondir=3;
+			playr->buttondir=BUTTONDIR_DOWN;
 			playr->up=false;
 			playr->upKey=false;
 			playr->down = true;
@@ -1633,7 +1732,7 @@ namespace SmashBros
 			{
 				playr->smashTime = 0;
 			}
-			if((playr->isOnGround())&&playr->canDo) //TODO add grabbing support
+			if(playr->isOnGround() && playr->canDo && !playr->holdingPlayer)
 			{
 				playr->changeTwoSidedAnimation("crouch", NO_CHANGE);
 			}
@@ -1652,7 +1751,7 @@ namespace SmashBros
 		Player*playr=Global::getPlayerActor(pNum);
 		if(playr->attacksPriority!=-1)
 		{
-			playr->buttondir=3;
+			playr->buttondir=BUTTONDIR_DOWN;
 			playr->checkAttacks();
 			if(!joystickDown[pNum] || justPulled[pNum])
 			{
@@ -1664,7 +1763,7 @@ namespace SmashBros
 			}
 			if(justPulled[pNum] && playr->canDo)
 			{
-				playr->moveDown();
+				playr->moveDown(); //< grabbing attack is implemented in here
 			}
 		}
 		joystickDir[pNum] = PrimitiveActor::DIR_DOWN;
@@ -1681,7 +1780,7 @@ namespace SmashBros
 		Player*playr=Global::getPlayerActor(pNum);
 		if(playr->attacksPriority!=-1)
 		{
-			playr->buttondir=4;
+			playr->buttondir=BUTTONDIR_LEFT;
 			playr->up=false;
 			playr->upKey=false;
 			playr->down=false;
@@ -1714,7 +1813,7 @@ namespace SmashBros
 		Player*playr=Global::getPlayerActor(pNum);
 		if(playr->attacksPriority!=-1)
 		{
-			playr->buttondir=4;
+			playr->buttondir=BUTTONDIR_LEFT;
 			if(joystickDir[pNum] == PrimitiveActor::DIR_DOWN && joystickFar[pNum])
 			{
 				playr->up=false;
@@ -1760,7 +1859,7 @@ namespace SmashBros
 		Player*playr=Global::getPlayerActor(pNum);
 		if(playr->attacksPriority!=-1)
 		{
-			playr->buttondir=2;
+			playr->buttondir=BUTTONDIR_RIGHT;
 			playr->up=false;
 			playr->upKey=false;
 			playr->down=false;
@@ -1793,7 +1892,7 @@ namespace SmashBros
 		Player*playr=Global::getPlayerActor(pNum);
 		if(playr->attacksPriority!=-1)
 		{
-			playr->buttondir=2;
+			playr->buttondir=BUTTONDIR_RIGHT;
 			if(joystickDir[pNum]==PrimitiveActor::DIR_DOWN && joystickFar[pNum])
 			{
 				playr->up=false;
@@ -1923,41 +2022,41 @@ namespace SmashBros
 	{
 		controls[0][BUTTON_PAUSE]=Keys::ENTER;
 		
-	    controls[1][BUTTON_UP]=Keys::UPARROW;
-	    controls[1][BUTTON_DOWN]=Keys::DOWNARROW;
-	    controls[1][BUTTON_LEFT]=Keys::LEFTARROW;
-	    controls[1][BUTTON_RIGHT]=Keys::RIGHTARROW;
-	    controls[1][BUTTON_JUMP]=Keys::P;
-	    controls[1][BUTTON_STANDARD]=Keys::I;
-	    controls[1][BUTTON_SPECIAL]=Keys::O;
-	    controls[1][BUTTON_GRAB]=Keys::U;
+		controls[1][BUTTON_UP]=Keys::UPARROW;
+		controls[1][BUTTON_DOWN]=Keys::DOWNARROW;
+		controls[1][BUTTON_LEFT]=Keys::LEFTARROW;
+		controls[1][BUTTON_RIGHT]=Keys::RIGHTARROW;
+		controls[1][BUTTON_JUMP]=Keys::P;
+		controls[1][BUTTON_STANDARD]=Keys::I;
+		controls[1][BUTTON_SPECIAL]=Keys::O;
+		controls[1][BUTTON_GRAB]=Keys::U;
 		
-	    controls[2][BUTTON_UP]=Keys::W;
-	    controls[2][BUTTON_DOWN]=Keys::S;
-	    controls[2][BUTTON_LEFT]=Keys::A;
-	    controls[2][BUTTON_RIGHT]=Keys::D;
-	    controls[2][BUTTON_JUMP]=Keys::SHIFT_LEFT;
-	    controls[2][BUTTON_STANDARD]=Keys::X;
-	    controls[2][BUTTON_SPECIAL]=Keys::C;
-	    controls[2][BUTTON_GRAB]=Keys::Z;
+		controls[2][BUTTON_UP]=Keys::W;
+		controls[2][BUTTON_DOWN]=Keys::S;
+		controls[2][BUTTON_LEFT]=Keys::A;
+		controls[2][BUTTON_RIGHT]=Keys::D;
+		controls[2][BUTTON_JUMP]=Keys::SHIFT_LEFT;
+		controls[2][BUTTON_STANDARD]=Keys::X;
+		controls[2][BUTTON_SPECIAL]=Keys::C;
+		controls[2][BUTTON_GRAB]=Keys::Z;
 		
-	    controls[3][BUTTON_UP]=Keys::NUMPAD_8;
-	    controls[3][BUTTON_DOWN]=Keys::NUMPAD_5;
-	    controls[3][BUTTON_LEFT]=Keys::NUMPAD_4;
-	    controls[3][BUTTON_RIGHT]=Keys::NUMPAD_6;
-	    controls[3][BUTTON_JUMP]=Keys::NUMPAD_0;
-	    controls[3][BUTTON_STANDARD]=Keys::NUMPAD_2;
-	    controls[3][BUTTON_SPECIAL]=Keys::NUMPAD_3;
-	    controls[3][BUTTON_GRAB]=Keys::NUMPAD_1;
+		controls[3][BUTTON_UP]=Keys::NUMPAD_8;
+		controls[3][BUTTON_DOWN]=Keys::NUMPAD_5;
+		controls[3][BUTTON_LEFT]=Keys::NUMPAD_4;
+		controls[3][BUTTON_RIGHT]=Keys::NUMPAD_6;
+		controls[3][BUTTON_JUMP]=Keys::NUMPAD_0;
+		controls[3][BUTTON_STANDARD]=Keys::NUMPAD_2;
+		controls[3][BUTTON_SPECIAL]=Keys::NUMPAD_3;
+		controls[3][BUTTON_GRAB]=Keys::NUMPAD_1;
 		
-	    controls[4][BUTTON_UP]=Keys::T;
-	    controls[4][BUTTON_DOWN]=Keys::G;
-	    controls[4][BUTTON_LEFT]=Keys::F;
-	    controls[4][BUTTON_RIGHT]=Keys::H;
-	    controls[4][BUTTON_JUMP]=Keys::M;
-	    controls[4][BUTTON_STANDARD]=Keys::B;
-	    controls[4][BUTTON_SPECIAL]=Keys::N;
-	    controls[4][BUTTON_GRAB]=Keys::V;
+		controls[4][BUTTON_UP]=Keys::T;
+		controls[4][BUTTON_DOWN]=Keys::G;
+		controls[4][BUTTON_LEFT]=Keys::F;
+		controls[4][BUTTON_RIGHT]=Keys::H;
+		controls[4][BUTTON_JUMP]=Keys::M;
+		controls[4][BUTTON_STANDARD]=Keys::B;
+		controls[4][BUTTON_SPECIAL]=Keys::N;
+		controls[4][BUTTON_GRAB]=Keys::V;
 	}
 	
 	bool Controls::controlsDown()
@@ -2010,45 +2109,45 @@ namespace SmashBros
 		{
 			if(Global::characters[i]!=null && !Global::characters[i]->isCPU() && Global::characters[i]->isAlive())
 			{
-			    if(Game::KeyPressed(controls[i][BUTTON_UP]) && !Game::PrevKeyPressed(controls[i][BUTTON_UP]))
-			    {
-			        buttonUp(i,DOWN);
-			    }
+				if(Game::KeyPressed(controls[i][BUTTON_UP]) && !Game::PrevKeyPressed(controls[i][BUTTON_UP]))
+				{
+					buttonUp(i,DOWN);
+				}
 
-			    if(Game::KeyPressed(controls[i][BUTTON_DOWN]) && !Game::PrevKeyPressed(controls[i][BUTTON_DOWN]))
-			    {
-			        buttonDown(i,DOWN);
-			    }
+				if(Game::KeyPressed(controls[i][BUTTON_DOWN]) && !Game::PrevKeyPressed(controls[i][BUTTON_DOWN]))
+				{
+					buttonDown(i,DOWN);
+				}
 				
-			    if(Game::KeyPressed(controls[i][BUTTON_LEFT]) && !Game::PrevKeyPressed(controls[i][BUTTON_LEFT]))
-			    {
-			        buttonLeft(i,DOWN);
-			    }
+				if(Game::KeyPressed(controls[i][BUTTON_LEFT]) && !Game::PrevKeyPressed(controls[i][BUTTON_LEFT]))
+				{
+					buttonLeft(i,DOWN);
+				}
 				
-			    if(Game::KeyPressed(controls[i][BUTTON_RIGHT]) && !Game::PrevKeyPressed(controls[i][BUTTON_RIGHT]))
-			    {
-			        buttonRight(i,DOWN);
-			    }
+				if(Game::KeyPressed(controls[i][BUTTON_RIGHT]) && !Game::PrevKeyPressed(controls[i][BUTTON_RIGHT]))
+				{
+					buttonRight(i,DOWN);
+				}
 				
-			    if(Game::KeyPressed(controls[i][BUTTON_JUMP]) && !Game::PrevKeyPressed(controls[i][BUTTON_JUMP]))
-			    {
-			        buttonX(i,DOWN);
-			    }
+				if(Game::KeyPressed(controls[i][BUTTON_JUMP]) && !Game::PrevKeyPressed(controls[i][BUTTON_JUMP]))
+				{
+					buttonX(i,DOWN);
+				}
 				
-			    if(Game::KeyPressed(controls[i][BUTTON_STANDARD]) && !Game::PrevKeyPressed(controls[i][BUTTON_STANDARD]))
-			    {
-			        buttonA(i,DOWN);
-			    }
+				if(Game::KeyPressed(controls[i][BUTTON_STANDARD]) && !Game::PrevKeyPressed(controls[i][BUTTON_STANDARD]))
+				{
+					buttonA(i,DOWN);
+				}
 				
-			    if(Game::KeyPressed(controls[i][BUTTON_SPECIAL]) && !Game::PrevKeyPressed(controls[i][BUTTON_SPECIAL]))
-			    {
-			        buttonB(i,DOWN);
-			    }
+				if(Game::KeyPressed(controls[i][BUTTON_SPECIAL]) && !Game::PrevKeyPressed(controls[i][BUTTON_SPECIAL]))
+				{
+					buttonB(i,DOWN);
+				}
 				
-			    if(Game::KeyPressed(controls[i][BUTTON_GRAB]) && !Game::PrevKeyPressed(controls[i][BUTTON_GRAB]))
-			    {
-			        Global::characters[i]->discardItem();
-			    }
+				if(Game::KeyPressed(controls[i][BUTTON_GRAB]) && !Game::PrevKeyPressed(controls[i][BUTTON_GRAB]))
+				{
+					buttonZ(i,DOWN);
+				}
 			}
 		}
 	}
@@ -2059,93 +2158,93 @@ namespace SmashBros
 		{
 			if(Global::characters[i]!=null && !Global::characters[i]->isCPU() && Global::characters[i]->isAlive())
 			{
-			    if(!Game::KeyPressed(controls[i][BUTTON_UP]) && Game::PrevKeyPressed(controls[i][BUTTON_UP]))
-			    {
-			        buttonUp(i,UP);
-			        if(Game::KeyPressed(controls[i][BUTTON_LEFT]))
-			        {
-			        	Global::characters[i]->buttondir=4;
-			        }
-			        else if(Game::KeyPressed(controls[i][BUTTON_RIGHT]))
-			        {
-			        	Global::characters[i]->buttondir=2;
-			        }
-			        else if(Game::KeyPressed(controls[i][BUTTON_DOWN]))
-			        {
-			        	Global::characters[i]->buttondir=3;
-			        }
-			    }
+				if(!Game::KeyPressed(controls[i][BUTTON_UP]) && Game::PrevKeyPressed(controls[i][BUTTON_UP]))
+				{
+					buttonUp(i,UP);
+					if(Game::KeyPressed(controls[i][BUTTON_LEFT]))
+					{
+						Global::characters[i]->buttondir=BUTTONDIR_LEFT;
+					}
+					else if(Game::KeyPressed(controls[i][BUTTON_RIGHT]))
+					{
+						Global::characters[i]->buttondir=BUTTONDIR_RIGHT;
+					}
+					else if(Game::KeyPressed(controls[i][BUTTON_DOWN]))
+					{
+						Global::characters[i]->buttondir=BUTTONDIR_DOWN;
+					}
+				}
 			 
-			    if(!Game::KeyPressed(controls[i][BUTTON_DOWN]) && Game::PrevKeyPressed(controls[i][BUTTON_DOWN]))
-			    {
-			        buttonDown(i,UP);
-			        if(Game::KeyPressed(controls[i][BUTTON_LEFT]))
-			        {
-			        	Global::characters[i]->buttondir=4;
-			        }
-			        else if(Game::KeyPressed(controls[i][BUTTON_RIGHT]))
-			        {
-			        	Global::characters[i]->buttondir=2;
-			        }
-			        else if(Game::KeyPressed(controls[i][BUTTON_UP]))
-			        {
-			        	Global::characters[i]->buttondir=1;
-			        }
-			    }
+				if(!Game::KeyPressed(controls[i][BUTTON_DOWN]) && Game::PrevKeyPressed(controls[i][BUTTON_DOWN]))
+				{
+					buttonDown(i,UP);
+					if(Game::KeyPressed(controls[i][BUTTON_LEFT]))
+					{
+						Global::characters[i]->buttondir=BUTTONDIR_LEFT;
+					}
+					else if(Game::KeyPressed(controls[i][BUTTON_RIGHT]))
+					{
+						Global::characters[i]->buttondir=BUTTONDIR_RIGHT;
+					}
+					else if(Game::KeyPressed(controls[i][BUTTON_UP]))
+					{
+						Global::characters[i]->buttondir=BUTTONDIR_UP;
+					}
+				}
 			 
-			    if(!Game::KeyPressed(controls[i][BUTTON_LEFT]) && Game::PrevKeyPressed(controls[i][BUTTON_LEFT]))
-			    {
-			        buttonLeft(i,UP);
-			        if(Game::KeyPressed(controls[i][BUTTON_RIGHT]))
-			        {
-			        	Global::characters[i]->buttondir=2;
-			        }
-			        else if(Game::KeyPressed(controls[i][BUTTON_UP]))
-			        {
-			        	Global::characters[i]->buttondir=1;
-			        }
-			        else if(Game::KeyPressed(controls[i][BUTTON_DOWN]))
-			        {
-			        	Global::characters[i]->buttondir=3;
-			        }
-			    }
+				if(!Game::KeyPressed(controls[i][BUTTON_LEFT]) && Game::PrevKeyPressed(controls[i][BUTTON_LEFT]))
+				{
+					buttonLeft(i,UP);
+					if(Game::KeyPressed(controls[i][BUTTON_RIGHT]))
+					{
+						Global::characters[i]->buttondir=BUTTONDIR_RIGHT;
+					}
+					else if(Game::KeyPressed(controls[i][BUTTON_UP]))
+					{
+						Global::characters[i]->buttondir=BUTTONDIR_UP;
+					}
+					else if(Game::KeyPressed(controls[i][BUTTON_DOWN]))
+					{
+						Global::characters[i]->buttondir=BUTTONDIR_DOWN;
+					}
+				}
 			 
-			    if(!Game::KeyPressed(controls[i][BUTTON_RIGHT]) && Game::PrevKeyPressed(controls[i][BUTTON_RIGHT]))
-			    {
-			        buttonRight(i,UP);
-			        if(Game::KeyPressed(controls[i][BUTTON_LEFT]))
-			        {
-			        	Global::characters[i]->buttondir=4;
-			        }
-			        else if(Game::KeyPressed(controls[i][BUTTON_UP]))
-			        {
-			        	Global::characters[i]->buttondir=1;
-			        }
-			        else if(Game::KeyPressed(controls[i][BUTTON_DOWN]))
-			        {
-			        	Global::characters[i]->buttondir=3;
-			        }
-			    }
+				if(!Game::KeyPressed(controls[i][BUTTON_RIGHT]) && Game::PrevKeyPressed(controls[i][BUTTON_RIGHT]))
+				{
+					buttonRight(i,UP);
+					if(Game::KeyPressed(controls[i][BUTTON_LEFT]))
+					{
+						Global::characters[i]->buttondir=BUTTONDIR_LEFT;
+					}
+					else if(Game::KeyPressed(controls[i][BUTTON_UP]))
+					{
+						Global::characters[i]->buttondir=BUTTONDIR_UP;
+					}
+					else if(Game::KeyPressed(controls[i][BUTTON_DOWN]))
+					{
+						Global::characters[i]->buttondir=BUTTONDIR_DOWN;
+					}
+				}
 				
-			    if(!Game::KeyPressed(controls[i][BUTTON_JUMP]) && Game::PrevKeyPressed(controls[i][BUTTON_JUMP]))
-			    {
-			        buttonX(i,UP);
-			    }
+				if(!Game::KeyPressed(controls[i][BUTTON_JUMP]) && Game::PrevKeyPressed(controls[i][BUTTON_JUMP]))
+				{
+					buttonX(i,UP);
+				}
 			 
-			    if(!Game::KeyPressed(controls[i][BUTTON_STANDARD]) && Game::PrevKeyPressed(controls[i][BUTTON_STANDARD]))
-			    {
-			        buttonA(i,UP);
-			    }
+				if(!Game::KeyPressed(controls[i][BUTTON_STANDARD]) && Game::PrevKeyPressed(controls[i][BUTTON_STANDARD]))
+				{
+					buttonA(i,UP);
+				}
 			 
-			    if(!Game::KeyPressed(controls[i][BUTTON_SPECIAL]) && Game::PrevKeyPressed(controls[i][BUTTON_SPECIAL]))
-			    {
-			        buttonB(i,UP);
-			    }
+				if(!Game::KeyPressed(controls[i][BUTTON_SPECIAL]) && Game::PrevKeyPressed(controls[i][BUTTON_SPECIAL]))
+				{
+					buttonB(i,UP);
+				}
 			 
-			    /*if(!Game::KeyPressed(controls[i][BUTTON_GRAB]) && Game::PrevKeyPressed(controls[i][BUTTON_GRAB]))
-			    {
-			        discardItem(player1.clonename);
-			    }*/
+				if(!Game::KeyPressed(controls[i][BUTTON_GRAB]) && Game::PrevKeyPressed(controls[i][BUTTON_GRAB]))
+				{
+					buttonZ(i,UP);
+				}
 			}
 		}
 	}
@@ -2165,271 +2264,304 @@ namespace SmashBros
 	void Controls::buttonUp(byte pNum, byte type)
 	{
 		Player*playr=Global::getPlayerActor(pNum);
-	    switch(type)
-	    {
-	        case DOWN:
-	        playr->smashTime=Global::worldTime+100;
-	        playr->buttondir=1;
-	        playr->checkAttacks();
-	        playr->upKey=true;
-	        if(playr->hanging)
-	        {
-	            playr->hanging=false;
-	            playr->climbUp();
-	        }
-	        else if(playr->canDo) //TODO add grabbing support
-	        {
-	            playr->jump();
-	            //ActorEndDownB();
-	        }
-	        break;
+		switch(type)
+		{
+			case DOWN:
+			playr->smashTime=Global::worldTime+100;
+			playr->buttondir=BUTTONDIR_UP;
+			playr->checkAttacks();
+			playr->upKey=true;
+			if(playr->hanging)
+			{
+				playr->hanging=false;
+				playr->climbUp();
+			}
+			else if(playr->canDo)
+			{
+				if(playr->holdingPlayer)
+				{
+					playr->grabAttackUp();
+				}
+				else
+				{
+					playr->jump();
+				}
+				//ActorEndDownB();
+			}
+			break;
 	 
-	        case UP:
-	        playr->smashTime=0;
-	        if(playr->buttondir==1)
-	        {
-	            playr->buttondir=0;
-	        }
-	        playr->up=false;
-	        playr->upKey=false;
-	        if(playr->chargeSmash>0)
-	        {
-	        	int chargeSmash = playr->chargeSmash;
-	        	playr->destroyCharge();
-	            switch(chargeSmash)
-	            {
-	                case 1:
-	                playr->attackSideSmash(Player::STEP_GO);
-	                break;
+			case UP:
+			playr->smashTime=0;
+			if(playr->buttondir==BUTTONDIR_UP)
+			{
+				playr->buttondir=BUTTONDIR_CENTER;
+			}
+			playr->up=false;
+			playr->upKey=false;
+			if(playr->chargeSmash>0)
+			{
+				int chargeSmash = playr->chargeSmash;
+				playr->destroyCharge();
+				switch(chargeSmash)
+				{
+					case AttackTemplates::SMASH_SIDE:
+					playr->attackSideSmash(Player::STEP_GO);
+					break;
 					
-	                case 2:
-	                playr->attackUpSmash(Player::STEP_GO);
-	                break;
+					case AttackTemplates::SMASH_UP:
+					playr->attackUpSmash(Player::STEP_GO);
+					break;
 					
-	                case 3:
-	                playr->attackDownSmash(Player::STEP_GO);
-	                break;
-	            }
-	        }
-	        if(playr->chargingAttack)
-	        {
-	        	playr->doChargingAttack(BUTTON_UP);
-	        }
-	        break;
-	    }
+					case AttackTemplates::SMASH_DOWN:
+					playr->attackDownSmash(Player::STEP_GO);
+					break;
+				}
+			}
+			if(playr->chargingAttack)
+			{
+				playr->doChargingAttack(BUTTON_UP);
+			}
+			break;
+		}
 	}
 	
 	void Controls::buttonDown(byte pNum, byte type)
 	{
 		Player*playr=Global::getPlayerActor(pNum);
-	    switch(type)
-	    {
-	        case DOWN:
-	        playr->buttondir=3;
-	        playr->checkAttacks();
-	        playr->smashTime=Global::worldTime+100;
-	        playr->moveDown();
-	        break;
+		switch(type)
+		{
+			case DOWN:
+			playr->buttondir=BUTTONDIR_DOWN;
+			playr->checkAttacks();
+			playr->smashTime=Global::worldTime+100;
+			playr->moveDown(); //< grabbing attack is implemented in here
+			break;
+			
+			case UP:
+			playr->checkAttacks();
+			playr->smashTime=0;
+			if(playr->buttondir==BUTTONDIR_DOWN)
+			{
+				playr->buttondir=BUTTONDIR_CENTER;
+			}
+			playr->down=false;
+			if(playr->chargeSmash>0)
+			{
+				int chargeSmash = playr->chargeSmash;
+				playr->destroyCharge();
+				switch(chargeSmash)
+				{
+					case AttackTemplates::SMASH_SIDE:
+					playr->attackSideSmash(Player::STEP_GO);
+					break;
 	 
-	        case UP:
-	        playr->checkAttacks();
-	        playr->smashTime=0;
-	        if(playr->buttondir==3)
-	        {
-	            playr->buttondir=0;
-	        }
-	        playr->down=false;
-	        if(playr->chargeSmash>0)
-	        {
-	        	int chargeSmash = playr->chargeSmash;
-	        	playr->destroyCharge();
-	            switch(chargeSmash)
-	            {
-	                case 1:
-	                playr->attackSideSmash(Player::STEP_GO);
-	                break;
+					case AttackTemplates::SMASH_UP:
+					playr->attackUpSmash(Player::STEP_GO);
+					break;
 	 
-	                case 2:
-	                playr->attackUpSmash(Player::STEP_GO);
-	                break;
-	 
-	                case 3:
-	                playr->attackDownSmash(Player::STEP_GO);
-	                break;
-	            }
-	        }
-	        else if(playr->isOnGround() && playr->canDo && !playr->chargingAttack) //TODO add grabbing support
-	        {
-	            playr->changeTwoSidedAnimation("stand", NO_CHANGE);
-	        }
-	        if(playr->chargingAttack)
-	        {
-	        	playr->doChargingAttack(BUTTON_DOWN);
-	        }
-	        break;
-	    }
+					case AttackTemplates::SMASH_DOWN:
+					playr->attackDownSmash(Player::STEP_GO);
+					break;
+				}
+			}
+			else if(playr->isOnGround() && playr->canDo && !playr->chargingAttack && !playr->holdingPlayer)
+			{
+				playr->changeTwoSidedAnimation("stand", NO_CHANGE);
+			}
+			if(playr->chargingAttack)
+			{
+				playr->doChargingAttack(BUTTON_DOWN);
+			}
+			break;
+		}
 	}
 	
 	void Controls::buttonLeft(byte pNum, byte type)
 	{
 		Player*playr = Global::getPlayerActor(pNum);
-	    switch(type)
-	    {
-	        case DOWN:
-	        playr->buttondir=4;
-	        playr->smashTime=Global::worldTime+100;
-	        if((Global::worldTime<=playr->runTime && playr->isOnGround())||(playr->moveRight==2))
-	        {
-	            playr->moveLeft=2;
-	        }
-	        else
-	        {
-	            playr->moveLeft=1;
-	            if(playr->isOnGround())
-	            {
-	                playr->runTime=Global::worldTime+200;
-	            }
-	        }
-	        if(playr->hanging)
-	        {
-	            playr->hanging=false;
-	            switch(playr->playerdir)
-	            {
-	                case Player::LEFT:
-	                playr->climbUp();
-	                playr->x-=4;
-	                break;
+		switch(type)
+		{
+			case DOWN:
+			playr->buttondir=BUTTONDIR_LEFT;
+			playr->smashTime=Global::worldTime+100;
+			if((Global::worldTime<=playr->runTime && playr->isOnGround())||(playr->moveRight==2))
+			{
+				playr->moveLeft=2;
+			}
+			else
+			{
+				playr->moveLeft=1;
+				if(playr->isOnGround())
+				{
+					playr->runTime=Global::worldTime+200;
+				}
+			}
+			if(playr->hanging)
+			{
+				playr->hanging=false;
+				switch(playr->playerdir)
+				{
+					case Player::LEFT:
+					playr->climbUp();
+					playr->x-=4;
+					break;
 					
-	                case Player::RIGHT:
-	                playr->changeAnimation("fall_right", NO_CHANGE);
-	                playr->y+=6;
-	                break;
-	            }
-	        }
-	        break;
+					case Player::RIGHT:
+					playr->changeAnimation("fall_right", NO_CHANGE);
+					playr->y+=6;
+					break;
+				}
+			}
+			else if(playr->holdingPlayer)
+			{
+				switch(playr->getPlayerDir())
+				{
+					case Player::LEFT:
+					playr->grabAttackSide();
+					break;
+					
+					case Player::RIGHT:
+					playr->grabAttackSwing();
+					break;
+				}
+			}
+			break;
 	 
-	        case UP:
-	        playr->checkAttacks();
-	        playr->smashTime=0;
-	        if(playr->buttondir==4)
-	        {
-	            playr->buttondir=0;
-	        }
-	        if(playr->moveLeft==2 && playr->isOnGround())
-	        {
-	            playr->runTime=Global::worldTime+100;
-	        }
-	        playr->moveLeft=0;
-	        if(playr->chargeSmash>0)
-	        {
-	        	int chargeSmash = playr->chargeSmash;
-	        	playr->destroyCharge();
-	            switch(chargeSmash)
-	            {
-	                case 1:
-	                playr->attackSideSmash(Player::STEP_GO);
-	                break;
-	 
-	                case 2:
-	                playr->attackUpSmash(Player::STEP_GO);
-	                break;
-	 
-	                case 3:
-	                playr->attackDownSmash(Player::STEP_GO);
-	                break;
-	            }
-	        }
-	        else if(playr->isOnGround() && playr->canDo && !playr->chargingAttack) //TODO add grabbing support
-	        {
-	            playr->changeTwoSidedAnimation("stand", NO_CHANGE);
-	        }
-	        if(playr->chargingAttack)
-	        {
-	        	playr->doChargingAttack(BUTTON_LEFT);
-	        }
-	        break;
-	    }
+			case UP:
+			playr->checkAttacks();
+			playr->smashTime=0;
+			if(playr->buttondir==BUTTONDIR_LEFT)
+			{
+				playr->buttondir=BUTTONDIR_CENTER;
+			}
+			if(playr->moveLeft==2 && playr->isOnGround())
+			{
+				playr->runTime=Global::worldTime+100;
+			}
+			playr->moveLeft=0;
+			if(playr->chargeSmash>0)
+			{
+				int chargeSmash = playr->chargeSmash;
+				playr->destroyCharge();
+				switch(chargeSmash)
+				{
+					case AttackTemplates::SMASH_SIDE:
+					playr->attackSideSmash(Player::STEP_GO);
+					break;
+					
+					case AttackTemplates::SMASH_UP:
+					playr->attackUpSmash(Player::STEP_GO);
+					break;
+					
+					case AttackTemplates::SMASH_DOWN:
+					playr->attackDownSmash(Player::STEP_GO);
+					break;
+				}
+			}
+			else if(playr->isOnGround() && playr->canDo && !playr->chargingAttack && !playr->holdingPlayer)
+			{
+				playr->changeTwoSidedAnimation("stand", NO_CHANGE);
+			}
+			if(playr->chargingAttack)
+			{
+				playr->doChargingAttack(BUTTON_LEFT);
+			}
+			break;
+		}
 	}
 	
 	void Controls::buttonRight(byte pNum, byte type)
 	{
 		Player*playr = Global::getPlayerActor(pNum);
-	    switch(type)
-	    {
-	        case DOWN:
-	        playr->buttondir=2;
-	        playr->smashTime=Global::worldTime+100;
-	        if((Global::worldTime<=playr->runTime && playr->isOnGround())||(playr->moveLeft==2))
-	        {
-	            playr->moveRight=2;
-	        }
-	        else
-	        {
-	            playr->moveRight=1;
-	            if(playr->isOnGround())
-	            {
-	                playr->runTime=Global::worldTime+100;
-	            }
-	        }
-	        if(playr->hanging)
-	        {
-	            playr->hanging=false;
-	            switch(playr->playerdir)
-	            {
-	            	case Player::LEFT:
-	                playr->changeAnimation("fall_left", NO_CHANGE);
-	                playr->y+=6;
-	                break;
-	                
-	                case Player::RIGHT:
-	                playr->climbUp();
-	                playr->x+=4;
-	                break;
-	            }
-	        }
-	        break;
+		switch(type)
+		{
+			case DOWN:
+			playr->buttondir=BUTTONDIR_RIGHT;
+			playr->smashTime=Global::worldTime+100;
+			if((Global::worldTime<=playr->runTime && playr->isOnGround())||(playr->moveLeft==2))
+			{
+				playr->moveRight=2;
+			}
+			else
+			{
+				playr->moveRight=1;
+				if(playr->isOnGround())
+				{
+					playr->runTime=Global::worldTime+100;
+				}
+			}
+			if(playr->hanging)
+			{
+				playr->hanging=false;
+				switch(playr->playerdir)
+				{
+					case Player::LEFT:
+					playr->changeAnimation("fall_left", NO_CHANGE);
+					playr->y+=6;
+					break;
+					
+					case Player::RIGHT:
+					playr->climbUp();
+					playr->x+=4;
+					break;
+				}
+			}
+			else if(playr->holdingPlayer)
+			{
+				switch(playr->getPlayerDir())
+				{
+					case Player::LEFT:
+					playr->grabAttackSwing();
+					break;
+					
+					case Player::RIGHT:
+					playr->grabAttackSide();
+					break;
+				}
+			}
+			break;
 	 
-	        case UP:
-	        playr->checkAttacks();
-	        playr->smashTime=0;
-	        if(playr->buttondir==2)
-	        {
-	            playr->buttondir=0;
-	        }
-	        if(playr->moveRight==2 && playr->isOnGround())
-	        {
-	            playr->runTime=Global::worldTime+100;
-	        }
-	        playr->moveRight=0;
-	        if(playr->chargeSmash>0)
-	        {
-	        	int chargeSmash = playr->chargeSmash;
-	        	playr->destroyCharge();
-	            switch(chargeSmash)
-	            {
-	                case 1:
-	                playr->attackSideSmash(Player::STEP_GO);
-	                break;
+			case UP:
+			playr->checkAttacks();
+			playr->smashTime=0;
+			if(playr->buttondir==BUTTONDIR_RIGHT)
+			{
+				playr->buttondir=BUTTONDIR_CENTER;
+			}
+			if(playr->moveRight==2 && playr->isOnGround())
+			{
+				playr->runTime=Global::worldTime+100;
+			}
+			playr->moveRight=0;
+			if(playr->chargeSmash>0)
+			{
+				int chargeSmash = playr->chargeSmash;
+				playr->destroyCharge();
+				switch(chargeSmash)
+				{
+					case AttackTemplates::SMASH_SIDE:
+					playr->attackSideSmash(Player::STEP_GO);
+					break;
 	 
-	                case 2:
-	                playr->attackUpSmash(Player::STEP_GO);
-	                break;
+					case AttackTemplates::SMASH_UP:
+					playr->attackUpSmash(Player::STEP_GO);
+					break;
 	 
-	                case 3:
-	                playr->attackDownSmash(Player::STEP_GO);
-	                break;
-	            }
-	        }
-	        else if(playr->isOnGround() && playr->canDo && !playr->chargingAttack) //TODO add grabbing support
-	        {
-	            playr->changeTwoSidedAnimation("stand", NO_CHANGE);
-	        }
-	        if(playr->chargingAttack)
-	        {
-	        	playr->doChargingAttack(BUTTON_RIGHT);
-	        }
-	        break;
-	    }
+					case AttackTemplates::SMASH_DOWN:
+					playr->attackDownSmash(Player::STEP_GO);
+					break;
+				}
+			}
+			else if(playr->isOnGround() && playr->canDo && !playr->chargingAttack && !playr->holdingPlayer)
+			{
+				playr->changeTwoSidedAnimation("stand", NO_CHANGE);
+			}
+			if(playr->chargingAttack)
+			{
+				playr->doChargingAttack(BUTTON_RIGHT);
+			}
+			break;
+		}
 	}
 	
 	void Controls::buttonX(byte pNum, byte type)
@@ -2441,7 +2573,7 @@ namespace SmashBros
 			playr->checkAttacks();
 			playr->hanging=false;
 			playr->upKey=true;
-			if(playr->canDo) //TODO add grabbing support
+			if(playr->canDo && !playr->holdingPlayer)
 			{
 				playr->destroyCharge();
 				playr->jump();
@@ -2457,81 +2589,109 @@ namespace SmashBros
 	void Controls::buttonA(byte pNum, byte type)
 	{
 		Player*playr = Global::getPlayerActor(pNum);
-	    switch(type)
-	    {
-	        case DOWN:
-	        playr->checkAttacks();
-	        if(playr->canDo && !playr->hanging) //TODO add grabbing support
-	        {
-	            //ActorEndDownB(pNum);
-	            switch(playr->buttondir)
-	            {
-	                case 0:
-	                playr->attackA();
-	                break;
-					
-	                case 1:
-	                if(Global::worldTime<=playr->smashTime)
-	                {
-	                    playr->attackUpSmash(Player::STEP_CHARGE);
-	                    if(playr->jumping)
-	                    {
-	                        playr->jumping=false;
-	                        playr->yvelocity=0;
-	                    }
-	                }
-	                else
-	                {
-	                    playr->attackUpA();
-	                }
-	                break;
+		switch(type)
+		{
+			case DOWN:
+			playr->checkAttacks();
+			if(playr->canDo && !playr->chargingAttack && !playr->hanging)
+			{
+				//grab attacks
+				if(playr->holdingPlayer)
+				{
+					switch(playr->buttondir)
+					{
+						case BUTTONDIR_CENTER:
+						playr->grabAttack();
+						break;
+						
+						case BUTTONDIR_UP:
+						playr->grabAttackUp();
+						break;
+						
+						case BUTTONDIR_RIGHT:
+						playr->grabAttackSide();
+						break;
+						
+						case BUTTONDIR_DOWN:
+						playr->grabAttackDown();
+						break;
+						
+						case BUTTONDIR_LEFT:
+						playr->grabAttackSide();
+						break;
+					}
+				}
+				else //regular attacks
+				{
+					switch(playr->buttondir)
+					{
+						case BUTTONDIR_CENTER:
+						playr->attackA();
+						break;
+						
+						case BUTTONDIR_UP:
+						if(Global::worldTime<=playr->smashTime)
+						{
+							playr->attackUpSmash(Player::STEP_CHARGE);
+							if(playr->jumping)
+							{
+								playr->jumping=false;
+								playr->yvelocity=0;
+							}
+						}
+						else
+						{
+							playr->attackUpA();
+						}
+						break;
+
+						case BUTTONDIR_RIGHT:
+						if(Global::worldTime<=playr->smashTime)
+						{
+							playr->attackSideSmash(Player::STEP_CHARGE);
+						}
+						else
+						{
+							playr->attackSideA();
+						}
+						break;
+
+						case BUTTONDIR_DOWN:
+						if(Global::worldTime<=playr->smashTime)
+						{
+							playr->attackDownSmash(Player::STEP_CHARGE);
+							playr->canDropThrough=false;
+							playr->dropping=false;
+							playr->dropTime=0;
+						}
+						else
+						{
+							playr->attackDownA();
+						}
+						break;
+
+						case BUTTONDIR_LEFT:
+						if(Global::worldTime<=playr->smashTime)
+						{
+							playr->attackSideSmash(Player::STEP_CHARGE);
+						}
+						else
+						{
+							playr->attackSideA();
+						}
+						break;
+					}
+				}
+				playr->smashTime=0;
+				playr->checkAttacks();
+			}
+			else if(playr->hanging)
+			{
+				playr->climbUpAttack();
+			}
+			break;
 	 
-	                case 2:
-	                if(Global::worldTime<=playr->smashTime)
-	                {
-	                    playr->attackSideSmash(Player::STEP_CHARGE);
-	                }
-	                else
-	                {
-	                    playr->attackSideA();
-	                }
-	                break;
-	 
-	                case 3:
-	                if(Global::worldTime<=playr->smashTime)
-	                {
-	                    playr->attackDownSmash(Player::STEP_CHARGE);
-	                    playr->canDropThrough=false;
-	                    playr->dropping=false;
-	                    playr->dropTime=0;
-	                }
-	                else
-	                {
-	                    playr->attackDownA();
-	                }
-	                break;
-	 
-	                case 4:
-	                if(Global::worldTime<=playr->smashTime)
-	                {
-	                    playr->attackSideSmash(Player::STEP_CHARGE);
-	                }
-	                else
-	                {
-	                    playr->attackSideA();
-	                }
-	                break;
-	            }
-	            playr->smashTime=0;
-	            playr->canDo=false;
-	        }
-	        else if(playr->hanging)
-	        {
-	        	playr->climbUpAttack();
-	        }
-	        break;
-	 
-	        case UP:
+			case UP:
 			{
 				playr->checkAttacks();
 				playr->smashTime=0;
@@ -2551,55 +2711,137 @@ namespace SmashBros
 					playr->attackDownSmash(Player::STEP_GO);
 					break;
 				}
-	        }
-	        break;
-	    }
+			}
+			break;
+		}
 	}
 	
 	void Controls::buttonB(byte pNum, byte type)
 	{
 		Player*playr=Global::getPlayerActor(pNum);
-	    switch(type)
-	    {
-	        case DOWN:
-	        playr->checkAttacks();
-	        playr->smashTime=0;
-	        if(playr->canDo) //TODO add grabbing support
-	        {
-	            switch(playr->buttondir)
-	            {
-	                case 0:
-	                playr->attackB();
-	                break;
+		switch(type)
+		{
+			case DOWN:
+			playr->checkAttacks();
+			playr->smashTime=0;
+			if(playr->canDo)
+			{
+				//grab attacks
+				if(playr->holdingPlayer)
+				{
+					switch(playr->buttondir)
+					{
+						case BUTTONDIR_CENTER:
+						playr->grabAttack();
+						break;
+						
+						case BUTTONDIR_UP:
+						playr->grabAttackUp();
+						break;
+						
+						case BUTTONDIR_RIGHT:
+						playr->grabAttackSide();
+						break;
+						
+						case BUTTONDIR_DOWN:
+						playr->grabAttackDown();
+						break;
+						
+						case BUTTONDIR_LEFT:
+						playr->grabAttackSide();
+						break;
+					}
+				}
+				else //special attacks
+				{
+					switch(playr->buttondir)
+					{
+						case BUTTONDIR_CENTER:
+						playr->attackB();
+						break;
+
+						case BUTTONDIR_UP:
+						playr->attackUpB();
+						break;
+
+						case BUTTONDIR_RIGHT:
+						playr->attackSideB();
+						break;
+
+						case BUTTONDIR_DOWN:
+						playr->attackDownB();
+						break;
+
+						case BUTTONDIR_LEFT:
+						playr->attackSideB();
+						break;
+					}
+				}
+				playr->hanging=false;
+				playr->checkAttacks();
+			}
+			break;
 	 
-	                case 1:
-	                playr->attackUpB();
-	                break;
-	 
-	                case 2:
-	                playr->attackSideB();
-	                break;
-	 
-	                case 3:
-	                playr->attackDownB();
-	                break;
-	 
-	                case 4:
-	                playr->attackSideB();
-	                break;
-	            }
-	            playr->canDo=false;
-	            playr->hanging=false;
-	        }
-	        break;
-	 
-	        case UP:
-	        if(playr->chargingAttack)
-	        {
-	        	playr->doChargingAttack(BUTTON_SPECIAL);
-	        }
-	        break;
-	    }
+			case UP:
+			if(playr->chargingAttack)
+			{
+				playr->doChargingAttack(BUTTON_SPECIAL);
+			}
+			break;
+		}
+	}
+	
+	void Controls::buttonZ(byte pNum, byte type)
+	{
+		Player*playr = Global::getPlayerActor(pNum);
+		switch(type)
+		{
+			case DOWN:
+			playr->checkAttacks();
+			if(playr->canDo)
+			{
+				if(playr->itemHolding == null)
+				{
+					if(playr->holdingPlayer)
+					{
+						playr->grabAttack();
+					}
+					else
+					{
+						playr->grab();
+					}
+				}
+				else
+				{
+					switch(playr->buttondir)
+					{
+						case BUTTONDIR_CENTER:
+						playr->discardItem();
+						break;
+						
+						case BUTTONDIR_UP:
+						playr->tossItem(Player::ATTACK_UPA);
+						break;
+						
+						case BUTTONDIR_RIGHT:
+						playr->tossItem(Player::ATTACK_SIDEA);
+						break;
+						
+						case BUTTONDIR_DOWN:
+						playr->tossItem(Player::ATTACK_DOWNA);
+						break;
+						
+						case BUTTONDIR_LEFT:
+						playr->tossItem(Player::ATTACK_SIDEA);
+						break;
+					}
+				}
+			}
+			break;
+			
+			case UP:
+			break;
+		}
 	}
 	
 	void Controls::iCadeStateChangedHandler(iCadeState state)
