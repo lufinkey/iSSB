@@ -19,6 +19,7 @@
 		A01FB2581A0D7CBB00A9099D /* animation checklist.txt in Resources */ = {isa = PBXBuildFile; fileRef = A01FB2571A0D7CBB00A9099D /* animation checklist.txt */; };
 		A03DB9C71A0DADFA0039B196 /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A01FB2591A0DAC3700A9099D /* Game.cpp */; };
 		A03DB9C81A0DADFD0039B196 /* Program.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A01FB25B1A0DAC3800A9099D /* Program.cpp */; };
+		A03DB9F61A0DAEAB0039B196 /* chaiscript_prelude.chai in Resources */ = {isa = PBXBuildFile; fileRef = A03DB9ED1A0DAEAB0039B196 /* chaiscript_prelude.chai */; };
 		A05C8D72180780B600A30C28 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A05C8D71180780B600A30C28 /* GameKit.framework */; };
 		A071A7CE197B11C0003DB16F /* Pikachu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A071A7CC197B11C0003DB16F /* Pikachu.cpp */; };
 		A071A7D3197B136F003DB16F /* Loader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A071A7D2197B136F003DB16F /* Loader.cpp */; };
@@ -163,6 +164,40 @@
 		A01FB2591A0DAC3700A9099D /* Game.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Game.cpp; sourceTree = "<group>"; };
 		A01FB25A1A0DAC3700A9099D /* Game.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
 		A01FB25B1A0DAC3800A9099D /* Program.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Program.cpp; sourceTree = "<group>"; };
+		A03DB9CC1A0DAEAB0039B196 /* chaiscript.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = chaiscript.hpp; sourceTree = "<group>"; };
+		A03DB9CD1A0DAEAB0039B196 /* chaiscript_defines.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = chaiscript_defines.hpp; sourceTree = "<group>"; };
+		A03DB9CE1A0DAEAB0039B196 /* chaiscript_stdlib.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = chaiscript_stdlib.hpp; sourceTree = "<group>"; };
+		A03DB9CF1A0DAEAB0039B196 /* chaiscript_threading.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = chaiscript_threading.hpp; sourceTree = "<group>"; };
+		A03DB9D11A0DAEAB0039B196 /* any.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = any.hpp; sourceTree = "<group>"; };
+		A03DB9D21A0DAEAB0039B196 /* bad_boxed_cast.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = bad_boxed_cast.hpp; sourceTree = "<group>"; };
+		A03DB9D31A0DAEAB0039B196 /* bind_first.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = bind_first.hpp; sourceTree = "<group>"; };
+		A03DB9D41A0DAEAB0039B196 /* bootstrap.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = bootstrap.hpp; sourceTree = "<group>"; };
+		A03DB9D51A0DAEAB0039B196 /* bootstrap_stl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = bootstrap_stl.hpp; sourceTree = "<group>"; };
+		A03DB9D61A0DAEAB0039B196 /* boxed_cast.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = boxed_cast.hpp; sourceTree = "<group>"; };
+		A03DB9D71A0DAEAB0039B196 /* boxed_cast_helper.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = boxed_cast_helper.hpp; sourceTree = "<group>"; };
+		A03DB9D81A0DAEAB0039B196 /* boxed_number.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = boxed_number.hpp; sourceTree = "<group>"; };
+		A03DB9D91A0DAEAB0039B196 /* boxed_value.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = boxed_value.hpp; sourceTree = "<group>"; };
+		A03DB9DA1A0DAEAB0039B196 /* dispatchkit.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = dispatchkit.hpp; sourceTree = "<group>"; };
+		A03DB9DB1A0DAEAB0039B196 /* dynamic_object.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = dynamic_object.hpp; sourceTree = "<group>"; };
+		A03DB9DC1A0DAEAB0039B196 /* exception_specification.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = exception_specification.hpp; sourceTree = "<group>"; };
+		A03DB9DD1A0DAEAB0039B196 /* function_call.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = function_call.hpp; sourceTree = "<group>"; };
+		A03DB9DE1A0DAEAB0039B196 /* function_call_detail.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = function_call_detail.hpp; sourceTree = "<group>"; };
+		A03DB9DF1A0DAEAB0039B196 /* handle_return.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = handle_return.hpp; sourceTree = "<group>"; };
+		A03DB9E01A0DAEAB0039B196 /* operators.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = operators.hpp; sourceTree = "<group>"; };
+		A03DB9E11A0DAEAB0039B196 /* proxy_constructors.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = proxy_constructors.hpp; sourceTree = "<group>"; };
+		A03DB9E21A0DAEAB0039B196 /* proxy_functions.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = proxy_functions.hpp; sourceTree = "<group>"; };
+		A03DB9E31A0DAEAB0039B196 /* proxy_functions_detail.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = proxy_functions_detail.hpp; sourceTree = "<group>"; };
+		A03DB9E41A0DAEAB0039B196 /* register_function.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = register_function.hpp; sourceTree = "<group>"; };
+		A03DB9E51A0DAEAB0039B196 /* type_conversions.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = type_conversions.hpp; sourceTree = "<group>"; };
+		A03DB9E61A0DAEAB0039B196 /* type_info.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = type_info.hpp; sourceTree = "<group>"; };
+		A03DB9E81A0DAEAB0039B196 /* chaiscript_algebraic.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = chaiscript_algebraic.hpp; sourceTree = "<group>"; };
+		A03DB9E91A0DAEAB0039B196 /* chaiscript_common.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = chaiscript_common.hpp; sourceTree = "<group>"; };
+		A03DB9EA1A0DAEAB0039B196 /* chaiscript_engine.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = chaiscript_engine.hpp; sourceTree = "<group>"; };
+		A03DB9EB1A0DAEAB0039B196 /* chaiscript_eval.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = chaiscript_eval.hpp; sourceTree = "<group>"; };
+		A03DB9EC1A0DAEAB0039B196 /* chaiscript_parser.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = chaiscript_parser.hpp; sourceTree = "<group>"; };
+		A03DB9ED1A0DAEAB0039B196 /* chaiscript_prelude.chai */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = chaiscript_prelude.chai; sourceTree = "<group>"; };
+		A03DB9EE1A0DAEAB0039B196 /* chaiscript_prelude_docs.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = chaiscript_prelude_docs.hpp; sourceTree = "<group>"; };
+		A03DB9F01A0DAEAB0039B196 /* utility.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = utility.hpp; sourceTree = "<group>"; };
 		A05C8D71180780B600A30C28 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		A071A7CC197B11C0003DB16F /* Pikachu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Pikachu.cpp; sourceTree = "<group>"; };
 		A071A7CD197B11C0003DB16F /* Pikachu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pikachu.h; sourceTree = "<group>"; };
@@ -524,6 +559,7 @@
 			children = (
 				A0A7FC97195A2FDF003924CD /* Source */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
+				A03DB9C91A0DAEAB0039B196 /* ChaiScript */,
 				A0FFD15F19F841AC0009D011 /* SDL */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
@@ -584,6 +620,87 @@
 				A003DB2019F89EC000CA7E21 /* iCadeState.h */,
 			);
 			path = iCade;
+			sourceTree = "<group>";
+		};
+		A03DB9C91A0DAEAB0039B196 /* ChaiScript */ = {
+			isa = PBXGroup;
+			children = (
+				A03DB9CA1A0DAEAB0039B196 /* include */,
+			);
+			path = ChaiScript;
+			sourceTree = "<group>";
+		};
+		A03DB9CA1A0DAEAB0039B196 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				A03DB9CB1A0DAEAB0039B196 /* chaiscript */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		A03DB9CB1A0DAEAB0039B196 /* chaiscript */ = {
+			isa = PBXGroup;
+			children = (
+				A03DB9CC1A0DAEAB0039B196 /* chaiscript.hpp */,
+				A03DB9CD1A0DAEAB0039B196 /* chaiscript_defines.hpp */,
+				A03DB9CE1A0DAEAB0039B196 /* chaiscript_stdlib.hpp */,
+				A03DB9CF1A0DAEAB0039B196 /* chaiscript_threading.hpp */,
+				A03DB9D01A0DAEAB0039B196 /* dispatchkit */,
+				A03DB9E71A0DAEAB0039B196 /* language */,
+				A03DB9EF1A0DAEAB0039B196 /* utility */,
+			);
+			path = chaiscript;
+			sourceTree = "<group>";
+		};
+		A03DB9D01A0DAEAB0039B196 /* dispatchkit */ = {
+			isa = PBXGroup;
+			children = (
+				A03DB9D11A0DAEAB0039B196 /* any.hpp */,
+				A03DB9D21A0DAEAB0039B196 /* bad_boxed_cast.hpp */,
+				A03DB9D31A0DAEAB0039B196 /* bind_first.hpp */,
+				A03DB9D41A0DAEAB0039B196 /* bootstrap.hpp */,
+				A03DB9D51A0DAEAB0039B196 /* bootstrap_stl.hpp */,
+				A03DB9D61A0DAEAB0039B196 /* boxed_cast.hpp */,
+				A03DB9D71A0DAEAB0039B196 /* boxed_cast_helper.hpp */,
+				A03DB9D81A0DAEAB0039B196 /* boxed_number.hpp */,
+				A03DB9D91A0DAEAB0039B196 /* boxed_value.hpp */,
+				A03DB9DA1A0DAEAB0039B196 /* dispatchkit.hpp */,
+				A03DB9DB1A0DAEAB0039B196 /* dynamic_object.hpp */,
+				A03DB9DC1A0DAEAB0039B196 /* exception_specification.hpp */,
+				A03DB9DD1A0DAEAB0039B196 /* function_call.hpp */,
+				A03DB9DE1A0DAEAB0039B196 /* function_call_detail.hpp */,
+				A03DB9DF1A0DAEAB0039B196 /* handle_return.hpp */,
+				A03DB9E01A0DAEAB0039B196 /* operators.hpp */,
+				A03DB9E11A0DAEAB0039B196 /* proxy_constructors.hpp */,
+				A03DB9E21A0DAEAB0039B196 /* proxy_functions.hpp */,
+				A03DB9E31A0DAEAB0039B196 /* proxy_functions_detail.hpp */,
+				A03DB9E41A0DAEAB0039B196 /* register_function.hpp */,
+				A03DB9E51A0DAEAB0039B196 /* type_conversions.hpp */,
+				A03DB9E61A0DAEAB0039B196 /* type_info.hpp */,
+			);
+			path = dispatchkit;
+			sourceTree = "<group>";
+		};
+		A03DB9E71A0DAEAB0039B196 /* language */ = {
+			isa = PBXGroup;
+			children = (
+				A03DB9E81A0DAEAB0039B196 /* chaiscript_algebraic.hpp */,
+				A03DB9E91A0DAEAB0039B196 /* chaiscript_common.hpp */,
+				A03DB9EA1A0DAEAB0039B196 /* chaiscript_engine.hpp */,
+				A03DB9EB1A0DAEAB0039B196 /* chaiscript_eval.hpp */,
+				A03DB9EC1A0DAEAB0039B196 /* chaiscript_parser.hpp */,
+				A03DB9ED1A0DAEAB0039B196 /* chaiscript_prelude.chai */,
+				A03DB9EE1A0DAEAB0039B196 /* chaiscript_prelude_docs.hpp */,
+			);
+			path = language;
+			sourceTree = "<group>";
+		};
+		A03DB9EF1A0DAEAB0039B196 /* utility */ = {
+			isa = PBXGroup;
+			children = (
+				A03DB9F01A0DAEAB0039B196 /* utility.hpp */,
+			);
+			path = utility;
 			sourceTree = "<group>";
 		};
 		A0A7FC97195A2FDF003924CD /* Source */ = {
@@ -1131,6 +1248,7 @@
 				A0FFD1D819F842EB0009D011 /* Icon-72@2x.png in Resources */,
 				A0FFD1DA19F8431E0009D011 /* Icon-72.png in Resources */,
 				A01FB2581A0D7CBB00A9099D /* animation checklist.txt in Resources */,
+				A03DB9F61A0DAEAB0039B196 /* chaiscript_prelude.chai in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1249,18 +1367,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_OBJC_RETAIN_COUNT = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "";
-				HEADER_SEARCH_PATHS = "\"\"$(SRCROOT)/SDL/include\"";
 				INFOPLIST_FILE = Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/SDL/lib\"",
-				);
 				PRODUCT_NAME = SmashBros;
 				SDKROOT = iphoneos5.0;
 			};
@@ -1270,16 +1384,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_OBJC_RETAIN_COUNT = YES;
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "";
-				HEADER_SEARCH_PATHS = "\"\"$(SRCROOT)/SDL/include\"";
 				INFOPLIST_FILE = Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/SDL/lib\"",
-				);
 				PRODUCT_NAME = SmashBros;
 				SDKROOT = iphoneos5.0;
 			};
@@ -1296,7 +1406,12 @@
 				GCC_PREPROCESSOR_DEFINITIONS = SMASHBROS_SCRIPT_DISABLE;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/SDL/include",
+					"$(SRCROOT)/ChaiScript/include",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/SDL/lib";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "";
 				SDKROOT = iphoneos5.0;
@@ -1316,7 +1431,12 @@
 				GCC_PREPROCESSOR_DEFINITIONS = SMASHBROS_SCRIPT_DISABLE;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/SDL/include",
+					"$(SRCROOT)/ChaiScript/include",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/SDL/lib";
 				OTHER_CFLAGS = "";
 				SDKROOT = iphoneos5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
