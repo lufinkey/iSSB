@@ -1,7 +1,7 @@
 
 #include "Controls.h"
 #include "Global.h"
-#include "Game.h"
+#include "../Game.h"
 #include "AttackTemplates.h"
 #include "P2PDataManager.h"
 

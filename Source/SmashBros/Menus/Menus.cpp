@@ -3,7 +3,7 @@
 #include "../Preferences.h"
 #include "../Game/WinnerScreen.h"
 #include "MenuClasses.h"
-#include "../Game.h"
+#include "../../Game.h"
 #include "../MusicManager.h"
 #include "../P2PDataManager.h"
 

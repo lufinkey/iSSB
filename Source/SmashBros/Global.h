@@ -1,5 +1,5 @@
 
-#include "Game.h"
+#include "../Game.h"
 #include "SmashForwards.h"
 #include "Player.h"
 #include "Stage.h"

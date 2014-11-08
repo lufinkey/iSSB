@@ -1,9 +1,9 @@
 
 #include "Game.h"
-#include "Preferences.h"
-#include "Controls.h"
-#include "Menus/Menus.h"
-#include "Game/GameScreen.h"
+#include "SmashBros/Preferences.h"
+#include "SmashBros/Controls.h"
+#include "SmashBros/Menus/Menus.h"
+#include "SmashBros/Game/GameScreen.h"
 
 namespace SmashBros
 {

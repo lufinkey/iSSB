@@ -1,5 +1,5 @@
 
-#include "../GameEngine/GameEngine.h"
+#include "GameEngine/GameEngine.h"
 
 #pragma once
 

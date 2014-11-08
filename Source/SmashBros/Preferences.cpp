@@ -1,6 +1,6 @@
 
 #include "Preferences.h"
-#include "Game.h"
+#include "../Game.h"
 #include "Controls.h"
 
 namespace SmashBros

@@ -17,6 +17,8 @@
 		A006580317F8C09D00B54DF7 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A006580217F8C09C00B54DF7 /* MessageUI.framework */; };
 		A0136BB419F1E7190041FDA3 /* Images in Resources */ = {isa = PBXBuildFile; fileRef = A0136BB319F1E7190041FDA3 /* Images */; };
 		A01FB2581A0D7CBB00A9099D /* animation checklist.txt in Resources */ = {isa = PBXBuildFile; fileRef = A01FB2571A0D7CBB00A9099D /* animation checklist.txt */; };
+		A03DB9C71A0DADFA0039B196 /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A01FB2591A0DAC3700A9099D /* Game.cpp */; };
+		A03DB9C81A0DADFD0039B196 /* Program.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A01FB25B1A0DAC3800A9099D /* Program.cpp */; };
 		A05C8D72180780B600A30C28 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A05C8D71180780B600A30C28 /* GameKit.framework */; };
 		A071A7CE197B11C0003DB16F /* Pikachu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A071A7CC197B11C0003DB16F /* Pikachu.cpp */; };
 		A071A7D3197B136F003DB16F /* Loader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A071A7D2197B136F003DB16F /* Loader.cpp */; };
@@ -84,7 +86,6 @@
 		A0A7FD9C195A2FDF003924CD /* OffScreenExplode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0A7FD1F195A2FDF003924CD /* OffScreenExplode.cpp */; };
 		A0A7FD9D195A2FDF003924CD /* Platform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0A7FD21195A2FDF003924CD /* Platform.cpp */; };
 		A0A7FD9E195A2FDF003924CD /* WinnerScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0A7FD23195A2FDF003924CD /* WinnerScreen.cpp */; };
-		A0A7FD9F195A2FDF003924CD /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0A7FD25195A2FDF003924CD /* Game.cpp */; };
 		A0A7FDA0195A2FDF003924CD /* GameElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0A7FD27195A2FDF003924CD /* GameElement.cpp */; };
 		A0A7FDA1195A2FDF003924CD /* Global.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0A7FD29195A2FDF003924CD /* Global.cpp */; };
 		A0A7FDA2195A2FDF003924CD /* HitBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0A7FD2B195A2FDF003924CD /* HitBox.cpp */; };
@@ -109,7 +110,6 @@
 		A0A7FDB5195A2FDF003924CD /* P2PDataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0A7FD53195A2FDF003924CD /* P2PDataManager.cpp */; };
 		A0A7FDB6195A2FDF003924CD /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0A7FD55195A2FDF003924CD /* Player.cpp */; };
 		A0A7FDB7195A2FDF003924CD /* Preferences.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0A7FD57195A2FDF003924CD /* Preferences.cpp */; };
-		A0A7FDB8195A2FDF003924CD /* Program.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0A7FD59195A2FDF003924CD /* Program.cpp */; };
 		A0A7FDB9195A2FDF003924CD /* Projectile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0A7FD5A195A2FDF003924CD /* Projectile.cpp */; };
 		A0A7FDBA195A2FDF003924CD /* ProjectileManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0A7FD5C195A2FDF003924CD /* ProjectileManager.cpp */; };
 		A0A7FDBB195A2FDF003924CD /* SoundManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0A7FD5F195A2FDF003924CD /* SoundManager.cpp */; };
@@ -160,6 +160,9 @@
 		A006580217F8C09C00B54DF7 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		A0136BB319F1E7190041FDA3 /* Images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Images; sourceTree = "<group>"; };
 		A01FB2571A0D7CBB00A9099D /* animation checklist.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "animation checklist.txt"; sourceTree = "<group>"; };
+		A01FB2591A0DAC3700A9099D /* Game.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Game.cpp; sourceTree = "<group>"; };
+		A01FB25A1A0DAC3700A9099D /* Game.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
+		A01FB25B1A0DAC3800A9099D /* Program.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Program.cpp; sourceTree = "<group>"; };
 		A05C8D71180780B600A30C28 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		A071A7CC197B11C0003DB16F /* Pikachu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Pikachu.cpp; sourceTree = "<group>"; };
 		A071A7CD197B11C0003DB16F /* Pikachu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pikachu.h; sourceTree = "<group>"; };
@@ -296,8 +299,6 @@
 		A0A7FD22195A2FDF003924CD /* Platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Platform.h; sourceTree = "<group>"; };
 		A0A7FD23195A2FDF003924CD /* WinnerScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WinnerScreen.cpp; sourceTree = "<group>"; };
 		A0A7FD24195A2FDF003924CD /* WinnerScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WinnerScreen.h; sourceTree = "<group>"; };
-		A0A7FD25195A2FDF003924CD /* Game.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Game.cpp; sourceTree = "<group>"; };
-		A0A7FD26195A2FDF003924CD /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
 		A0A7FD27195A2FDF003924CD /* GameElement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameElement.cpp; sourceTree = "<group>"; };
 		A0A7FD28195A2FDF003924CD /* GameElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameElement.h; sourceTree = "<group>"; };
 		A0A7FD29195A2FDF003924CD /* Global.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Global.cpp; sourceTree = "<group>"; };
@@ -346,7 +347,6 @@
 		A0A7FD56195A2FDF003924CD /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
 		A0A7FD57195A2FDF003924CD /* Preferences.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Preferences.cpp; sourceTree = "<group>"; };
 		A0A7FD58195A2FDF003924CD /* Preferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Preferences.h; sourceTree = "<group>"; };
-		A0A7FD59195A2FDF003924CD /* Program.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Program.cpp; sourceTree = "<group>"; };
 		A0A7FD5A195A2FDF003924CD /* Projectile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Projectile.cpp; sourceTree = "<group>"; };
 		A0A7FD5B195A2FDF003924CD /* Projectile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Projectile.h; sourceTree = "<group>"; };
 		A0A7FD5C195A2FDF003924CD /* ProjectileManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProjectileManager.cpp; sourceTree = "<group>"; };
@@ -591,6 +591,9 @@
 			children = (
 				A0A7FC98195A2FDF003924CD /* GameEngine */,
 				A0A7FCE9195A2FDF003924CD /* SmashBros */,
+				A01FB25A1A0DAC3700A9099D /* Game.h */,
+				A01FB2591A0DAC3700A9099D /* Game.cpp */,
+				A01FB25B1A0DAC3800A9099D /* Program.cpp */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -748,9 +751,6 @@
 			isa = PBXGroup;
 			children = (
 				A0A7FD5E195A2FDF003924CD /* SmashForwards.h */,
-				A0A7FD59195A2FDF003924CD /* Program.cpp */,
-				A0A7FD26195A2FDF003924CD /* Game.h */,
-				A0A7FD25195A2FDF003924CD /* Game.cpp */,
 				A0A7FCF8195A2FDF003924CD /* Game */,
 				A0A7FD33195A2FDF003924CD /* Menus */,
 				A0A7FCEB195A2FDF003924CD /* AttackManager.h */,
@@ -1200,7 +1200,6 @@
 				A0A7FD9C195A2FDF003924CD /* OffScreenExplode.cpp in Sources */,
 				A0A7FD9D195A2FDF003924CD /* Platform.cpp in Sources */,
 				A0A7FD9E195A2FDF003924CD /* WinnerScreen.cpp in Sources */,
-				A0A7FD9F195A2FDF003924CD /* Game.cpp in Sources */,
 				A0A7FDA0195A2FDF003924CD /* GameElement.cpp in Sources */,
 				A0A7FDA1195A2FDF003924CD /* Global.cpp in Sources */,
 				A0A7FDA2195A2FDF003924CD /* HitBox.cpp in Sources */,
@@ -1225,7 +1224,6 @@
 				A0A7FDB5195A2FDF003924CD /* P2PDataManager.cpp in Sources */,
 				A0A7FDB6195A2FDF003924CD /* Player.cpp in Sources */,
 				A0A7FDB7195A2FDF003924CD /* Preferences.cpp in Sources */,
-				A0A7FDB8195A2FDF003924CD /* Program.cpp in Sources */,
 				A0A7FDB9195A2FDF003924CD /* Projectile.cpp in Sources */,
 				A0A7FDBA195A2FDF003924CD /* ProjectileManager.cpp in Sources */,
 				A0A7FDBB195A2FDF003924CD /* SoundManager.cpp in Sources */,
@@ -1239,6 +1237,8 @@
 				A003DB1C19F873BF00CA7E21 /* iCadeControllerReceiver.mm in Sources */,
 				A003DB2119F89EC000CA7E21 /* iCadeReaderView.m in Sources */,
 				A003DB2319F9646000CA7E21 /* GameEngine.cpp in Sources */,
+				A03DB9C71A0DADFA0039B196 /* Game.cpp in Sources */,
+				A03DB9C81A0DADFD0039B196 /* Program.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
