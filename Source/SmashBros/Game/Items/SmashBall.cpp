@@ -13,6 +13,10 @@ namespace SmashBros
 		unHittableTime = 0;
 		health = 10;
 		
+		createdReadyFire = false;
+		readyFireX = 0;
+		readyFireY = 0;
+		
 		active = true;
 		
 		itemNo = Global::ITEM_SMASHBALL;
@@ -41,6 +45,42 @@ namespace SmashBros
 	SmashBall::~SmashBall()
 	{
 		//
+	}
+	
+	void SmashBall::addP2PData(DataVoid&data)
+	{
+		data.add(&createdReadyFire, sizeof(createdReadyFire));
+		if(createdReadyFire)
+		{
+			data.add(&readyFirePno, sizeof(readyFirePno));
+			data.add(&readyFireX, sizeof(readyFireX));
+			data.add(&readyFireY, sizeof(readyFireY));
+		}
+	}
+	
+	void SmashBall::setP2PData(byte*&data)
+	{
+		bool createdFire = data[0];
+		data+=sizeof(bool);
+		
+		if(createdFire)
+		{
+			byte pNo = data[0];
+			data += sizeof(byte);
+			
+			float x1 = DataVoid::toFloat(data);
+			data += sizeof(float);
+			
+			float y1 = DataVoid::toFloat(data);
+			data += sizeof(float);
+			
+			Projectile*fire = new Projectile(pNo, x1,y1);
+			fire->addAnimation(new Animation("normal",1,"Images/Game/Items/SmashBall/finalsmash_fire.png"));
+			fire->changeAnimation("normal", FORWARD);
+			fire->setAlpha(0.278f);
+			fire->setLayer(Projectile::LAYER_MIDDLEUPPER);
+			createProjectile(fire);
+		}
 	}
 
 	void SmashBall::onAnimationFinish(const String&n)
@@ -146,6 +186,11 @@ namespace SmashBros
 		        readyFire->setLayer(Projectile::LAYER_MIDDLEUPPER);
 		        createProjectile(readyFire);
 		        collide->pickUpItem(this);
+				
+				createdReadyFire = true;
+				readyFirePno = collide->getPlayerNo();
+				readyFireX = collide->x;
+				readyFireY = collide->y;
 		    }
 		}
 	}

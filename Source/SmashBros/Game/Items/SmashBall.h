@@ -15,6 +15,11 @@ namespace SmashBros
 		long unHittableTime;
 		boolean active;
 		int health;
+		
+		boolean createdReadyFire;
+		byte readyFirePno;
+		float readyFireX;
+		float readyFireY;
 
 		void hitSmashBall(Player*collide, byte dir);
 		void setDirection(byte dir, float speed);
@@ -23,6 +28,9 @@ namespace SmashBros
 	public:
 		SmashBall(float x1, float y1);
 		virtual ~SmashBall();
+		
+		virtual void addP2PData(DataVoid&data);
+		virtual void setP2PData(byte*&data);
 
 		virtual void Update(long gameTime);
 		virtual void Draw(Graphics2D&g, long gameTime);
