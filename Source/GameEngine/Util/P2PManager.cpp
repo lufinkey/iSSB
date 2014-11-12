@@ -498,7 +498,6 @@ namespace GameEngine
 
 	bool DataVoid::toBool(void*data)
 	{
-		unsigned int size = sizeof(bool);
 		bool*buffer = (bool*)data;
 		return buffer[0];
 	}
