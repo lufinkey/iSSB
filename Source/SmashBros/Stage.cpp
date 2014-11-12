@@ -131,7 +131,7 @@ namespace SmashBros
 		itemBounds.height = y2 - y1;
 	}
 
-	Rectangle Stage::getItemBoundaries()
+	RectangleF Stage::getItemBoundaries()
 	{
 		return itemBounds;
 	}
@@ -697,15 +697,15 @@ namespace SmashBros
 		return pnt;
 	}
 	
-	Rect Stage::getBorders()
+	RectF Stage::getBorders()
 	{
-		Rect borders = {leftBorder,topBorder,rightBorder,bottomBorder};
+		RectF borders = {leftBorder,topBorder,rightBorder,bottomBorder};
 		return borders;
 	}
 	
-	Rect Stage::getViewBorders()
+	RectF Stage::getViewBorders()
 	{
-		Rect borders = {leftViewBorder,topViewBorder,rightViewBorder,bottomViewBorder};
+		RectF borders = {leftViewBorder,topViewBorder,rightViewBorder,bottomViewBorder};
 		return borders;
 	}
 	

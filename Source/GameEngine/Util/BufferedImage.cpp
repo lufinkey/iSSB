@@ -2,7 +2,7 @@
 #include "BufferedImage.h"
 #include "Image.h"
 #include "../Output/Console.h"
-#include "SDL_image.h"
+#include <SDL_image.h>
 #include "../Application.h"
 
 namespace GameEngine

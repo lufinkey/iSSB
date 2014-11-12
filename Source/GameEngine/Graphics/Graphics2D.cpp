@@ -222,7 +222,7 @@ namespace GameEngine
 		}
 		else
 		{
-			float radians = degtorad(Rotation);
+			float radians = (float)degtorad((float)Rotation);
 			sinRad = sin(radians);
 			cosRad = cos(radians);
 		}
@@ -238,7 +238,7 @@ namespace GameEngine
 		}
 		else
 		{
-			float radians = degtorad(Rotation);
+			float radians = (float)degtorad((float)Rotation);
 			sinRad = sin(radians);
 			cosRad = cos(radians);
 		}
@@ -259,7 +259,7 @@ namespace GameEngine
 		}
 		else
 		{
-			float radians = degtorad(Rotation);
+			float radians = (float)degtorad((float)Rotation);
 			sinRad = sin(radians);
 			cosRad = cos(radians);
 		}
@@ -277,7 +277,7 @@ namespace GameEngine
 		}
 		else
 		{
-			float radians = degtorad(Rotation);
+			float radians = (float)degtorad((float)Rotation);
 			sinRad = sin(radians);
 			cosRad = cos(radians);
 		}

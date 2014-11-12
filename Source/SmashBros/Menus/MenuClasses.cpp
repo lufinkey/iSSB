@@ -441,7 +441,7 @@ namespace SmashBros
 		rules_bar_text = new TextActor(560,60,"",AssetManager::getFont("Fonts/arial.ttf", Font::BOLD, 26),Color::BLACK);
 		rules_bar_text->setAlignment(TextActor::ALIGN_BOTTOMLEFT);
 		
-		readyToFight = new ReadyToFightBar(View::ScaleWidth()/2, 380);
+		readyToFight = new ReadyToFightBar((float)View::ScaleWidth()/2, 380);
 		readyToFight->addAnimation(new Animation("normal",1,"Images/Menus/Buttons/Generic/readytofight.png"));
 		readyToFight->addAnimation(new Animation("hover",1,"Images/Menus/Buttons/Generic/readytofight_selected.png"));
 		readyToFight->changeAnimation("normal", FORWARD);
@@ -2068,7 +2068,7 @@ namespace SmashBros
 		
 		peerCard = new PeerCard("", "");
 		
-		brawl = new Actor(View::ScaleWidth()/2, 540);
+		brawl = new Actor((float)View::ScaleWidth()/2, 540);
 		brawl->setScale(0.5f);
 		brawl->addAnimation(new Animation("disabled", 1, "Images/Menus/Buttons/Bluetooth/Brawl_disabled.png"));
 		brawl->addAnimation(new Animation("enabled", 1, "Images/Menus/Buttons/Bluetooth/Brawl.png"));

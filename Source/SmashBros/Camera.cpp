@@ -161,7 +161,7 @@ namespace SmashBros
 		float camX;
 		float camY;
 		
-		Rect borders = Global::currentStage->getViewBorders();
+		RectF borders = Global::currentStage->getViewBorders();
 		
 		switch(mode)
 		{

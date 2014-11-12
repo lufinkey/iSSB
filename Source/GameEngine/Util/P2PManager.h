@@ -45,6 +45,7 @@ namespace GameEngine
 		Byte getByte(unsigned int byteIndex);
 		
 		static int toInt(void*data);
+		static bool toBool(void*data);
 		static long toLong(void*data);
 		static float toFloat(void*data);
 		static double toDouble(void*data);

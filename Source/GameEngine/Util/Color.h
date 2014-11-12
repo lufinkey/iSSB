@@ -3,6 +3,10 @@
 #include "BufferedImage.h"
 #include "SDL_pixels.h"
 
+#ifdef TRANSPARENT
+#undef TRANSPARENT
+#endif
+
 #pragma once
 
 namespace GameEngine

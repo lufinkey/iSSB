@@ -11,6 +11,9 @@ namespace GameEngine
 	float View::y = 0;
 	
 	float View::Zoom = 1.0;
+
+	int View::oldWidth = 480;
+	int View::oldHeight = 320;
 	
 	int View::windowWidth = 480;
 	int View::windowHeight = 320;
@@ -21,6 +24,16 @@ namespace GameEngine
 	float View::multScale = 1;
 	float View::letterBoxW = 0;
 	float View::letterBoxH = 0;
+
+	void View::setSize(int w, int h)
+	{
+		windowWidth = 480;
+		windowHeight = 320;
+		if(Application::window != NULL)
+		{
+			SDL_SetWindowSize(Application::window, w, h);
+		}
+	}
 	
 	void View::setScaleSize(int w, int h)
 	{

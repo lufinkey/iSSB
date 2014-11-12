@@ -770,14 +770,14 @@ namespace GameEngine
 	{
 		//Open for implementation
 	}
-		
+	
 	bool TextActor::mouseOver()
 	{
 		if(mouseover)
 		{
 			if(Application::checkTouchActive(currentTouchId))
 			{
-				if(checkHover(Application::TouchX(currentTouchId), Application::TouchY(currentTouchId)))
+				if(checkHover((float)Application::TouchX(currentTouchId), (float)Application::TouchY(currentTouchId)))
 				{
 					return true;
 				}

@@ -60,7 +60,7 @@ namespace SmashBros
 	
 	void SmashBall::setP2PData(byte*&data)
 	{
-		bool createdFire = data[0];
+		bool createdFire = DataVoid::toBool(data);
 		data+=sizeof(bool);
 		
 		if(createdFire)
@@ -217,7 +217,7 @@ namespace SmashBros
 			    moveTime = Global::getWorldTime() + 1000;
 			}
 			
-			Rectangle borders = Global::currentStage->getItemBoundaries();
+			RectangleF borders = Global::currentStage->getItemBoundaries();
 			
 			if(x < borders.x)
 			{

@@ -640,11 +640,11 @@ namespace SmashBros
 		{
 			destroy();
 		}
-		Rect borders = Global::currentStage->getBorders();
-		int left = Global::currentStage->x + borders.left;
-		int top = Global::currentStage->y + borders.top;
-		int right = Global::currentStage->x + borders.right;
-		int bottom = Global::currentStage->y + borders.bottom;
+		RectF borders = Global::currentStage->getBorders();
+		float left = Global::currentStage->x + borders.left;
+		float top = Global::currentStage->y + borders.top;
+		float right = Global::currentStage->x + borders.right;
+		float bottom = Global::currentStage->y + borders.bottom;
 		if((x+width/2)<left || (x-width/2)>right || (y+height/2)<top || (y-height/2)>bottom)
 		{
 			destroy();

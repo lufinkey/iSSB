@@ -1109,7 +1109,7 @@ namespace SmashBros
 		resumeButton->setAlpha(0.2f);
 		resumeButton->setScale(1.6f);
 		
-		finishButton = new Actor(View::ScaleWidth()/2, View::ScaleHeight()/2);
+		finishButton = new Actor((float)View::ScaleWidth()/2, (float)View::ScaleHeight()/2);
 		finishButton->addAnimation(new Animation("normal", 1, "Images/Game/HUD/FinishButton.png"));
 		finishButton->changeAnimation("normal", FORWARD);
 		finishButton->setRelativeToView(false);

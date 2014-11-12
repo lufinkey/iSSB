@@ -1,13 +1,20 @@
 
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "PrefManager.h"
 #include "../GlobalDefs.h"
 #include "SDL_rwops.h"
 #include "../Output/Console.h"
 
+#if defined(__APPLE__)
+	#include "TargetConditionals.h"
+#endif
+
 namespace GameEngine
 {
 	PrefManager::PrefManager()
 	{
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR) || defined (__ANDROID__)
 		char*path = getenv("HOME");
 		if(path==NULL)
 		{
@@ -17,8 +24,11 @@ namespace GameEngine
 		{
 			prefPath = path;
 			prefPath += "/Library/Preferences/";
+			//TODO change prefpath for android
 		}
-
+#else
+		prefPath = "";
+#endif
 	}
 	
 	PrefManager::~PrefManager()
@@ -39,7 +49,7 @@ namespace GameEngine
 		else
 		{
 			SDL_RWseek(file,0,RW_SEEK_END);
-			int total = SDL_RWtell(file);
+			int total = (int)SDL_RWtell(file);
 			SDL_RWseek(file,0,RW_SEEK_SET);
 			char*fileText = new char[total+1];
 			fileText[total] = '\0';
@@ -142,7 +152,7 @@ namespace GameEngine
 		{
 			Pref&pref = prefs.get(i);
 			String buf = pref.name + '=' + pref.value + '\n';
-			if(SDL_RWwrite(file,(char*)buf,1,buf.length())<buf.length())
+			if(SDL_RWwrite(file,(char*)buf,1,buf.length())<(unsigned int)buf.length())
 			{
 				Console::WriteLine(SDL_GetError());
 			}

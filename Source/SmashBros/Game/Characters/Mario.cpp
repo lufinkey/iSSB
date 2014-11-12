@@ -174,7 +174,7 @@ namespace SmashBros
 	
 	void Mario::setP2PData(byte*&data)
 	{
-		bool avail = data[0];
+		bool avail = DataVoid::toBool(data);
 		data += sizeof(bool);
 		
 		if(avail)

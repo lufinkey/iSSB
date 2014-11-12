@@ -5453,7 +5453,7 @@ namespace SmashBros
 	        	canFinalsmash = false;
 	        	Global::smashBallOnField = false;
 	        }
-	        Rect borders = Global::currentStage->getViewBorders();
+	        RectF borders = Global::currentStage->getViewBorders();
 	        switch(barrierNo)
 	        {
 	        	case DIR_LEFT:

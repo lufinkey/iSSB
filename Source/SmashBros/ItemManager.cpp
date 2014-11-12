@@ -174,7 +174,7 @@ namespace SmashBros
 	
 	void ItemManager::handleSetP2PData(byte*&data)
 	{
-		bool avail = data[0];
+		bool avail = DataVoid::toBool(data);
 		data += sizeof(bool);
 		
 		if(avail)
@@ -208,7 +208,7 @@ namespace SmashBros
 			}
 		}
 		
-		avail = data[0];
+		avail = DataVoid::toBool(data);
 		data += sizeof(bool);
 		
 		if(avail)
@@ -257,7 +257,7 @@ namespace SmashBros
 			}
 		}
 		
-		avail = data[0];
+		avail = DataVoid::toBool(data);
 		data += sizeof(bool);
 		
 		if(avail)
@@ -547,7 +547,7 @@ namespace SmashBros
 	
 	void ItemManager::SpawnItem(int itemNo)
 	{
-		GameEngine::Rectangle bounds = Global::currentStage->itemBounds;
+		GameEngine::RectangleF bounds = Global::currentStage->itemBounds;
 		float x1 = (float)((GameEngine::random()*bounds.width)+bounds.x);
 		float y1 = (float)((GameEngine::random()*bounds.height)+bounds.y);
 		

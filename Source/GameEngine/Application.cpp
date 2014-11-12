@@ -3,14 +3,19 @@
 #include "AssetManager.h"
 #include "Output/Console.h"
 #include "View.h"
-#include <time.h>
-#include "SDL_image.h"
-#include "SDL_ttf.h"
-#include "SDL_mixer.h"
+#include <ctime>
+#include <SDL_image.h>
+#include <SDL_ttf.h>
+#include <SDL_mixer.h>
 #include "Input/Keys.h"
+#include "Input/Mouse.h"
 #include "Sound/Sound.h"
 #include "Sound/Music.h"
-#include "ObjCBridge/ObjCBridge.h"
+#include "CodeBridge/ObjCBridge.h"
+
+#if defined(__APPLE__)
+	#include "TargetConditionals.h"
+#endif
 
 namespace GameEngine
 {
@@ -101,6 +106,7 @@ namespace GameEngine
 	bool Application::gameRunning = false;
 	bool Application::borderless = false;
 	bool Application::scalescreen = false;
+	bool Application::fullscreen = false;
 	unsigned char Application::orientation = Application::ORIENTATION_LANDSCAPE;
 	bool Application::updating = false;
 	
@@ -117,12 +123,21 @@ namespace GameEngine
 	
 	int Application::lastKey = -1;
 	int Application::currentLastKey = -1;
-	ArrayList<TouchPoint> Application::touchPoints = ArrayList<TouchPoint>();
-	ArrayList<TouchPoint> Application::currentTouchPoints = ArrayList<TouchPoint>();
-	ArrayList<TouchPoint> Application::prevTouchPoints = ArrayList<TouchPoint>();
 	bool Application::KeyState[526];
 	bool Application::currentKeyState[526];
 	bool Application::prevKeyState[526];
+	int Application::mouseX = 0;
+	int Application::mouseY = 0;
+	int Application::currentMouseX = 0;
+	int Application::currentMouseY = 0;
+	int Application::prevMouseX = 0;
+	int Application::prevMouseY = 0;
+	bool Application::mouseState[4];
+	bool Application::currentMouseState[4];
+	bool Application::prevMouseState[4];
+	ArrayList<TouchPoint> Application::touchPoints = ArrayList<TouchPoint>();
+	ArrayList<TouchPoint> Application::currentTouchPoints = ArrayList<TouchPoint>();
+	ArrayList<TouchPoint> Application::prevTouchPoints = ArrayList<TouchPoint>();
 	
 	bool Application::minimizing = false;
 	bool Application::readyToMinimize = false;
@@ -184,8 +199,9 @@ namespace GameEngine
 			GameEngine_init();
 			
 			{
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR) || defined (__ANDROID__)
 				SDL_Rect displayRect;
-				
+
 				SDL_GetDisplayBounds(0, &displayRect);
 				
 				unsigned int bigger;
@@ -226,15 +242,24 @@ namespace GameEngine
 				{
 					borderless = true;
 				}
-			}
-			
-			if(borderless)
-			{
-				window = SDL_CreateWindow(NULL, 0, 0, View::windowWidth, View::windowHeight, SDL_WINDOW_OPENGL | SDL_WINDOW_BORDERLESS | SDL_WINDOW_SHOWN);
-			}
-			else
-			{
-				window = SDL_CreateWindow(NULL, 0, 0, View::windowWidth, View::windowHeight, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+#endif
+
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR) || defined (__ANDROID__)
+				int windowX = 0;
+				int windowY = 0;
+#else
+				int windowX = 100;
+				int windowY = 100;
+#endif
+				
+				if(borderless)
+				{
+					window = SDL_CreateWindow(NULL, windowX, windowY, View::windowWidth, View::windowHeight, SDL_WINDOW_OPENGL | SDL_WINDOW_BORDERLESS | SDL_WINDOW_SHOWN);
+				}
+				else
+				{
+					window = SDL_CreateWindow(NULL, windowX, windowY, View::windowWidth, View::windowHeight, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+				}
 			}
 			
 			if(window == NULL)
@@ -294,6 +319,7 @@ namespace GameEngine
 					if(!closing)
 					{
 						updateKeys(currentKeyState, KeyState);
+						updateMouse(currentMouseState, mouseState);
 						updateTouchPoints(currentTouchPoints, touchPoints);
 						currentLastKey = lastKey;
 						lastKey = -1;
@@ -307,9 +333,13 @@ namespace GameEngine
 									if(i!=0)
 									{
 										updateKeys(prevKeyState,currentKeyState);
+										updateMouse(prevMouseState, currentMouseState);
 										updateTouchPoints(prevTouchPoints, currentTouchPoints);
 										
+										currentMouseX = mouseX;
+										currentMouseY = mouseY;
 										updateKeys(currentKeyState, KeyState);
+										updateMouse(currentMouseState, mouseState);
 										updateTouchPoints(currentTouchPoints, touchPoints);
 										currentLastKey = lastKey;
 										lastKey = -1;
@@ -458,6 +488,7 @@ namespace GameEngine
 		{
 			switch(event.type)
 			{
+				case SDL_WINDOWEVENT_CLOSE:
 				case SDL_QUIT:
 				this->UnloadContent();
 				graphics->renderer = NULL;
@@ -475,6 +506,10 @@ namespace GameEngine
 				case SDL_APP_DIDENTERFOREGROUND:
 				Mix_ResumeMusic();
 				break;
+
+				case SDL_WINDOWEVENT_RESIZED:
+				windowResized(event.window.data1, event.window.data2);
+				break;
 				
 				case SDL_KEYDOWN:
 				keyPressed(Keys::SDLK_to_KeyCode(event.key.keysym.sym));
@@ -483,17 +518,29 @@ namespace GameEngine
 				case SDL_KEYUP:
 				keyReleased(Keys::SDLK_to_KeyCode(event.key.keysym.sym));
 				break;
+
+				case SDL_MOUSEBUTTONDOWN:
+				mousePressed(Mouse::SDL_BUTTON_to_MouseState(event.button.button));
+				break;
+
+				case SDL_MOUSEBUTTONUP:
+				mouseReleased(Mouse::SDL_BUTTON_to_MouseState(event.button.button));
+				break;
+
+				case SDL_MOUSEMOTION:
+				mouseMoved(event.motion.x, event.motion.y);
+				break;
 				
 				case SDL_FINGERDOWN:
-				addTouchPoint(event.tfinger.fingerId, (event.tfinger.x*View::windowWidth), (event.tfinger.y*View::windowHeight));
+				addTouchPoint((long)event.tfinger.fingerId, (event.tfinger.x*View::windowWidth), (event.tfinger.y*View::windowHeight));
 				break;
 				
 				case SDL_FINGERMOTION:
-				updateTouchPoint(event.tfinger.fingerId, (event.tfinger.x*View::windowWidth), (event.tfinger.y*View::windowHeight));
+				updateTouchPoint((long)event.tfinger.fingerId, (event.tfinger.x*View::windowWidth), (event.tfinger.y*View::windowHeight));
 				break;
 				
 				case SDL_FINGERUP:
-				removeTouchPoint(event.tfinger.fingerId, (event.tfinger.x*View::windowWidth), (event.tfinger.y*View::windowHeight));
+				removeTouchPoint((long)event.tfinger.fingerId, (event.tfinger.x*View::windowWidth), (event.tfinger.y*View::windowHeight));
 				break;
 			}
         }
@@ -555,6 +602,64 @@ namespace GameEngine
 	{
 		return prevKeyState[key];
 	}
+
+	bool Application::MouseState(int state)
+	{
+		return currentMouseState[state];
+	}
+	
+	bool Application::PrevMouseState(int state)
+	{
+		return prevMouseState[state];
+	}
+	
+	int Application::MouseX()
+	{
+		if(scalescreen)
+		{
+			return (int)((currentMouseX/View::multScale) - View::letterBoxW*(1/View::multScale));
+		}
+		else
+		{
+			return currentMouseX;
+		}
+	}
+	
+	int Application::PrevMouseX()
+	{
+		if(scalescreen)
+		{
+			return (int)((prevMouseX/View::multScale) - View::letterBoxW*(1/View::multScale));
+		}
+		else
+		{
+			return prevMouseX;
+		}
+	}
+	
+	int Application::MouseY()
+	{
+		if(scalescreen)
+		{
+			return (int)((currentMouseY/View::multScale) - View::letterBoxH*(1/View::multScale));
+		}
+		else
+		{
+			return currentMouseY;
+		}
+	}
+	
+	int Application::PrevMouseY()
+	{
+		if(scalescreen)
+		{
+			return (int)((prevMouseY/View::multScale) - View::letterBoxH*(1/View::multScale));
+		}
+		else
+		{
+			return prevMouseY;
+		}
+	}
 	
 	int Application::TouchX(long touchID)
 	{
@@ -569,7 +674,7 @@ namespace GameEngine
 		}
 		else
 		{
-			return point->x;
+			return (int)point->x;
 		}
 	}
 	
@@ -586,7 +691,7 @@ namespace GameEngine
 		}
 		else
 		{
-			return point->x;
+			return (int)point->x;
 		}
 	}
 	
@@ -603,7 +708,7 @@ namespace GameEngine
 		}
 		else
 		{
-			return point->y;
+			return (int)point->y;
 		}
 	}
 	
@@ -620,7 +725,7 @@ namespace GameEngine
 		}
 		else
 		{
-			return point->y;
+			return (int)point->y;
 		}
 	}
 	
@@ -824,12 +929,58 @@ namespace GameEngine
 		}
 		return NULL;
 	}
+
+	void Application::mousePressed(int eventcode)
+	{
+		if(eventcode<3)
+		{
+			mouseState[eventcode] = true;
+		}
+	}
+
+	void Application::mouseReleased(int eventcode)
+	{
+		if(eventcode<3)
+		{
+			mouseState[eventcode] = false;
+		}
+	}
+
+	void Application::mouseMoved(int x1, int y1)
+	{
+		if(x1<0 || y1<0 || x1>View::windowWidth || y1>View::windowHeight)
+		{
+			mouseState[Mouse::ONSCREEN] = false;
+		}
+		else
+		{
+			mouseState[Mouse::ONSCREEN] = true;
+		}
+		mouseX = x1;
+		mouseY = y1;
+	}
+
+	void Application::windowResized(int width, int height)
+	{
+		View::oldWidth = View::windowWidth;
+		View::oldHeight = View::windowHeight;
+		View::windowWidth = width;
+		View::windowHeight = height;
+	}
 	
 	void Application::updateKeys(bool*keys1, bool*keys2)
 	{
 		for(int i=0; i<totalKeys; i++)
 		{
 			keys1[i]=keys2[i];
+		}
+	}
+
+	void Application::updateMouse(bool*mouse1, bool*mouse2)
+	{
+		for(int i=0; i<totalMousestates; i++)
+		{
+			mouse1[i]=mouse2[i];
 		}
 	}
 	
@@ -983,5 +1134,24 @@ namespace GameEngine
 	void Application::setBackgroundColor(Color color)
 	{
 		bgColor = color;
+	}
+
+	void Application::setWindowTitle(const String& title)
+	{
+		SDL_SetWindowTitle(window, title);
+	}
+
+	void Application::setFullScreen(bool toggle)
+	{
+		if(fullscreen)
+		{
+			fullscreen = false;
+			SDL_SetWindowFullscreen(window, 0);
+		}
+		else
+		{
+			fullscreen = true;
+			SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+		}
 	}
 }

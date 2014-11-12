@@ -688,7 +688,7 @@ namespace GameEngine
 		{
 			if(Application::checkTouchActive(currentTouchId))
 			{
-				if(checkHover(Application::TouchX(currentTouchId), Application::TouchY(currentTouchId)))
+				if(checkHover((float)Application::TouchX(currentTouchId), (float)Application::TouchY(currentTouchId)))
 				{
 					return true;
 				}
@@ -855,12 +855,12 @@ namespace GameEngine
 	{
 		if(anim!=NULL)
 		{
-			for(unsigned int i=0; i<animMgr->animations.size(); i++)
+			for(int i=0; i<animMgr->animations.size(); i++)
 			{
 				Animation*cmp = animMgr->animations.get(i);
 				if(anim == cmp)
 				{
-					return i;
+					return (unsigned int)i;
 				}
 			}
 		}

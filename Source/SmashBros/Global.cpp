@@ -352,7 +352,7 @@ namespace SmashBros
 		
 		Magnifier::load();
 	    
-	    currentStage = StageLoader::createStage(View::ScaleWidth()/2, View::ScaleHeight()/2, selectedStage);
+	    currentStage = StageLoader::createStage((float)View::ScaleWidth()/2, (float)View::ScaleHeight()/2, selectedStage);
 	    
 	    createPlayers();
 	    

@@ -1,6 +1,6 @@
 
 #include "P2PDataManager.h"
-#include "../GameEngine/ObjCBridge/CPPBridge.h"
+#include "../GameEngine/CodeBridge/CPPBridge.h"
 #include "Global.h"
 #include "Camera.h"
 #include "ItemManager.h"
@@ -276,7 +276,7 @@ namespace SmashBros
 						
 						for(int i=0; i<Global::totalItems; i++)
 						{
-							boolean item = (boolean)dataBytes[0];
+							boolean item = DataVoid::toBool(dataBytes);
 							dataBytes += sizeof(byte);
 							Global::itemsOn[i] = item;
 						}
@@ -321,7 +321,7 @@ namespace SmashBros
 								dataBytes += sizeof(byte);
 								int index = DataVoid::toInt(dataBytes);
 								dataBytes += sizeof(int);
-								bool toggle = (bool)dataBytes[0];
+								bool toggle = DataVoid::toBool(dataBytes);
 								dataBytes += sizeof(bool);
 								
 								Global::itemsOn[index] = toggle;

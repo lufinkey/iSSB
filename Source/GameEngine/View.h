@@ -8,8 +8,10 @@ namespace GameEngine
 {
 	class View
 	{
-	private:
 		friend class Application;
+	private:
+		static int oldWidth;
+		static int oldHeight;
 		
 		static int windowWidth;
 		static int windowHeight;
@@ -27,6 +29,7 @@ namespace GameEngine
 		
 		static float Zoom;
 		
+		static void setSize(int w, int h);
 		static void setScaleSize(int w, int h);
 		
 		static int Width();

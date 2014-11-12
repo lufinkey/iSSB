@@ -21,7 +21,7 @@ namespace SmashBros
 		Animation*background;
 		double bgScale;
 		
-		GameEngine::Rectangle itemBounds;
+		GameEngine::RectangleF itemBounds;
 		boolean showItemBounds;
 		boolean showWires;
 		
@@ -107,7 +107,7 @@ namespace SmashBros
 		void Unload();
 		void setBackground(const String& imgName);
 		void setBackgroundType(byte type);
-		GameEngine::Rectangle getItemBoundaries();
+		GameEngine::RectangleF getItemBoundaries();
 		
 		void showWireframes(boolean toggle);
 		void setWireframeColor(const Color&color);
@@ -127,8 +127,8 @@ namespace SmashBros
 		
 		void setSpawnPoint(int spawnNo, float x1, float y1);
 		Vector2f getSpawnPoint(int spawnNo);
-		Rect getBorders();
-		Rect getViewBorders();
+		RectF getBorders();
+		RectF getViewBorders();
 		boolean checkSafeArea(Player*playr);
 	};
 }

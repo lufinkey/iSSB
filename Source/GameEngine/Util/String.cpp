@@ -890,6 +890,15 @@ namespace GameEngine
 		characters = NULL;
 	}
 
+	std::wstring String::wstring() const
+	{
+		wchar_t*str = new wchar_t[total+1];
+		mbstowcs(str,characters,total+1);
+		std::wstring newStr(str);
+		delete[] str;
+		return newStr;
+	}
+
 	String::operator char*()
 	{
 		return characters;
@@ -1891,7 +1900,7 @@ namespace GameEngine
 				int counterNew = 0;
 				int counterOld = 0;
 				int lastIndex = 0;
-				for(int i=0; i<indexes.size(); i++)
+				for(unsigned int i=0; i<indexes.size(); i++)
 				{
 					int offset = indexes[i] - lastIndex;
 					lastIndex = indexes[i] + find.total;
@@ -1920,7 +1929,7 @@ namespace GameEngine
 			}
 			
 			int difCounter = 0;
-			for(int i=0; i<indexes.size(); i++)
+			for(unsigned int i=0; i<indexes.size(); i++)
 			{
 				int offset = indexes[i] + difCounter;
 				for(int j=0; j<rep.total; j++)

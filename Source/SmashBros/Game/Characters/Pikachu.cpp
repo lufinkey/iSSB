@@ -290,7 +290,7 @@ namespace SmashBros
 	
 	void Pikachu::setP2PData(byte*&data)
 	{
-		bool avail = data[0];
+		bool avail = DataVoid::toBool(data);
 		data += sizeof(bool);
 		
 		if(avail)
@@ -335,14 +335,14 @@ namespace SmashBros
 					
 					case 3:
 					{
-						byte frameOn = data[0];
-						data += sizeof(byte);
+						boolean frameOn = DataVoid::toBool(data);
+						data += sizeof(bool);
 						int ownerID = DataVoid::toInt(data);
 						data += sizeof(int);
 						Projectile* projOwner = ProjectileManager::GetProjectile(ownerID);
 						
 						Projectile::setNextID(projID);
-						createProjectile(new Lightning::LightningBody((Lightning*)projOwner, getPlayerNo(), x1, y1, (boolean)frameOn));
+						createProjectile(new Lightning::LightningBody((Lightning*)projOwner, getPlayerNo(), x1, y1, frameOn));
 					}
 					break;
 					
@@ -2214,7 +2214,7 @@ namespace SmashBros
 		
 		detectAllPlatformsSolid(true);
 		
-		Rect borders = Global::currentStage->getBorders();
+		RectF borders = Global::currentStage->getBorders();
 		float top = (float)Global::currentStage->y + (float)borders.top;
 		
 		y = top + (height/2);
@@ -2254,7 +2254,7 @@ namespace SmashBros
 				}
 			}
 			
-			Rect borders = Global::currentStage->getBorders();
+			RectF borders = Global::currentStage->getBorders();
 			float bottom = (float)Global::currentStage->y + (float)borders.bottom;
 			if(y>=bottom)
 			{

@@ -454,11 +454,11 @@ namespace SmashBros
 		float csH = (a->y + (a->height/2)) - charSelectArea->y;
 		if(csW>charSelectArea->width)
 		{
-			charSelectArea->width = csW;
+			charSelectArea->width = (int)csW;
 		}
 		if(csH>charSelectArea->height)
 		{
-			charSelectArea->height = csH;
+			charSelectArea->height = (int)csH;
 		}
 		WireframeActor*a2 = new WireframeActor(a->x-20,a->y-20,40,40);
 		charIconPoints.add(a2);

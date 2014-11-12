@@ -546,7 +546,7 @@ namespace GameEngine
 		{
 			if(Application::checkTouchActive(currentTouchId))
 			{
-				if(checkHover(Application::TouchX(currentTouchId), Application::TouchY(currentTouchId)))
+				if(checkHover((float)Application::TouchX(currentTouchId), (float)Application::TouchY(currentTouchId)))
 				{
 					return true;
 				}

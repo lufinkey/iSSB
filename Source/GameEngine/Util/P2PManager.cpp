@@ -1,7 +1,7 @@
 
 #include "P2PManager.h"
 #include "../Application.h"
-#include "../ObjCBridge/CPPBridge.h"
+#include "../CodeBridge/CPPBridge.h"
 #include "../Output/Console.h"
 
 namespace GameEngine
@@ -487,7 +487,7 @@ namespace GameEngine
 		unsigned int size = sizeof(int);
 		unsigned char*buffer = new unsigned char[size];
 		unsigned char*copy = (unsigned char*)data;
-		for(int i=0; i<size; i++)
+		for(unsigned int i=0; i<size; i++)
 		{
 			buffer[i] = copy[i];
 		}
@@ -495,13 +495,20 @@ namespace GameEngine
 		delete[] buffer;
 		return r;
 	}
+
+	bool DataVoid::toBool(void*data)
+	{
+		unsigned int size = sizeof(bool);
+		bool*buffer = (bool*)data;
+		return buffer[0];
+	}
 	
 	long DataVoid::toLong(void*data)
 	{
 		unsigned int size = sizeof(long);
 		unsigned char*buffer = new unsigned char[size];
 		unsigned char*copy = (unsigned char*)data;
-		for(int i=0; i<size; i++)
+		for(unsigned int i=0; i<size; i++)
 		{
 			buffer[i] = copy[i];
 		}
@@ -515,7 +522,7 @@ namespace GameEngine
 		unsigned int size = sizeof(float);
 		unsigned char*buffer = new unsigned char[size];
 		unsigned char*copy = (unsigned char*)data;
-		for(int i=0; i<size; i++)
+		for(unsigned int i=0; i<size; i++)
 		{
 			buffer[i] = copy[i];
 		}
@@ -529,7 +536,7 @@ namespace GameEngine
 		unsigned int size = sizeof(double);
 		unsigned char*buffer = new unsigned char[size];
 		unsigned char*copy = (unsigned char*)data;
-		for(int i=0; i<size; i++)
+		for(unsigned int i=0; i<size; i++)
 		{
 			buffer[i] = copy[i];
 		}
@@ -547,12 +554,15 @@ namespace GameEngine
 	
 	int P2P_SendDataHandler(void*data)
 	{
+#if defined(SMASHBROS_P2P_DISABLE)
+		return -1;
+#else
 		GameEngine_DataPacket*packet = (GameEngine_DataPacket*)data;
 		
 		if(packet->peers.size()>0) //specific peers
 		{
 			char**peerList = new char*[packet->peers.size()];
-			for(unsigned int i=0; i<packet->peers.size(); i++)
+			for(int i=0; i<packet->peers.size(); i++)
 			{
 				peerList[i] = (char*)packet->peers.get(i);
 			}
@@ -580,10 +590,12 @@ namespace GameEngine
 		}
 		delete packet;
 		return 0;
+#endif
 	}
 	
 	void P2P_EventHandler(SDL_P2P_Event*event)
 	{
+#ifndef SMASHBROS_P2P_DISABLE
 		if(P2PManager::eventListener != NULL)
 		{
 			switch(event->type)
@@ -645,6 +657,7 @@ namespace GameEngine
 				break;
 			}
 		}
+#endif
 	}
 	
 	P2PRequest::P2PRequest(const String&peerID)
@@ -666,6 +679,9 @@ namespace GameEngine
 	
 	bool P2PRequest::accept()
 	{
+#if defined(SMASHBROS_P2P_DISABLE)
+		return false;
+#else
 		if(!handled)
 		{
 			SDL_bool success = SDL_P2P_acceptConnectionRequest(Application::getWindow(), peerID);
@@ -679,16 +695,19 @@ namespace GameEngine
 			return false;
 		}
 		return connected;
+#endif
 	}
 	
 	void P2PRequest::deny()
 	{
+#ifndef SMASHBROS_P2P_DISABLE
 		if(!handled)
 		{
 			SDL_P2P_denyConnectionRequest(Application::getWindow(), peerID);
 			handled = true;
 			connected = false;
 		}
+#endif
 	}
 	
 	P2PEventListener::P2PEventListener()
@@ -737,10 +756,12 @@ namespace GameEngine
 	
 	void P2PManager::Update(long gameTime)
 	{
+#ifndef SMASHBROS_P2P_DISABLE
 		if(SDL_P2P_isConnected(Application::getWindow()))
 		{
 			updateAppEvents();
 		}
+#endif
 	}
 	
 	void P2PManager::Draw(Graphics2D&g, long gameTime)
@@ -760,6 +781,9 @@ namespace GameEngine
 	
 	bool P2PManager::searchForPeers()
 	{
+#if defined(SMASHBROS_P2P_DISABLE)
+		return false;
+#else
 		SDL_P2P_setEventHandler(P2P_EventHandler);
 		if(!SDL_P2P_isConnected(Application::getWindow()) && !pickerIsOpen)
 		{
@@ -776,37 +800,50 @@ namespace GameEngine
 			}
 		}
 		return false;
+#endif
 	}
 	
 	bool P2PManager::isConnected()
 	{
+#if defined(SMASHBROS_P2P_DISABLE)
+		return false;
+#else
 		if(SDL_P2P_isConnected(Application::getWindow()))
 		{
 			return true;
 		}
 		return false;
+#endif
 	}
 	
 	bool P2PManager::isConnectedToPeer(const String&peerID)
 	{
+#if defined(SMASHBROS_P2P_DISABLE)
+		return false;
+#else
 		if(SDL_P2P_isConnectedToPeer(Application::getWindow(), peerID))
 		{
 			return true;
 		}
 		return false;
+#endif
 	}
 	
 	void P2PManager::disconnectPeer(const String&peerID)
 	{
+#ifndef SMASHBROS_P2P_DISABLE
 		if(SDL_P2P_isConnectedToPeer(Application::getWindow(), peerID))
 		{
 			SDL_P2P_disconnectPeer(Application::getWindow(), peerID);
 		}
+#endif
 	}
 	
 	void P2PManager::endSession()
 	{
+#ifndef SMASHBROS_P2P_DISABLE
 		SDL_P2P_endSession(Application::getWindow());
+#endif
 	}
 	
 	ArrayList<String> P2PManager::getPeers()
@@ -834,9 +871,12 @@ namespace GameEngine
 	
 	String P2PManager::getPeerDisplayName(const String&peerID)
 	{
+#if defined(SMASHBROS_P2P_DISABLE)
+		return "Unknown";
+#else
 		while(lockPeerList);
 		lockPeerList = true;
-		for(unsigned int i=0; i<peers.size(); i++)
+		for(int i=0; i<peers.size(); i++)
 		{
 			Peer&peer = peers.get(i);
 			if(peer.id.equals(peerID))
@@ -851,6 +891,7 @@ namespace GameEngine
 		SDL_P2P_getPeerDisplayName(Application::getWindow(), (char*)peerID, buffer);
 		String displayName = buffer;
 		return displayName;
+#endif
 	}
 	
 	void P2PManager::setEventListener(P2PEventListener*listener)
@@ -860,6 +901,7 @@ namespace GameEngine
 	
 	void P2PManager::sendData(void*data, unsigned int size, Byte sendDataMode)
 	{
+#ifndef SMASHBROS_P2P_DISABLE
 		/*if(sendDataMode == SENDDATA_RELIABLE)
 		{
 			SDL_P2P_sendData(Application::getWindow(), data, size, SDL_P2P_SENDDATA_RELIABLE);
@@ -881,10 +923,12 @@ namespace GameEngine
 			
 			SDL_CreateThread(&P2P_SendDataHandler, "SendData", (void*)packet);
 		}
+#endif
 	}
 	
 	void P2PManager::sendDataToPeers(const ArrayList<String>&peers, void*data, unsigned int size, Byte sendDataMode)
 	{
+#ifndef SMASHBROS_P2P_DISABLE
 		/*char** peerList = new char*[peers.size()];
 		for(unsigned int i=0; i<peers.size(); i++)
 		{
@@ -903,7 +947,7 @@ namespace GameEngine
 		if(sendDataMode == SENDDATA_RELIABLE)
 		{
 			char** peerList = new char*[peers.size()];
-			for(unsigned int i=0; i<peers.size(); i++)
+			for(int i=0; i<peers.size(); i++)
 			{
 				peerList[i] = (char*)peers.get(i);
 			}
@@ -918,5 +962,6 @@ namespace GameEngine
 			
 			SDL_CreateThread(&P2P_SendDataHandler, "SendData", (void*)(packet));
 		}
+#endif
 	}
 }

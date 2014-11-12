@@ -94,7 +94,7 @@ namespace SmashBros
 	
 	void Fox::setP2PData(byte*&data)
 	{
-		bool avail = data[0];
+		bool avail = DataVoid::toBool(data);
 		data += sizeof(bool);
 		
 		if(avail)
@@ -849,7 +849,7 @@ namespace SmashBros
 	        }
 	        else
 	        {
-	            int x1 = 25 * getPlayerDirMult();
+	            float x1 = 25 * getPlayerDirMult();
 				changeTwoSidedAnimation("special_attack",FORWARD);
 	            if(!finalSmashing)
 	            {

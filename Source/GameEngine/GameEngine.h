@@ -16,7 +16,7 @@
 #include "Input/Keys.h"
 #include "Input/TouchPoint.h"
 
-#include "ObjCBridge/ObjCBridge.h"
+#include "CodeBridge/ObjCBridge.h"
 
 #include "Output/Console.h"
 
@@ -51,7 +51,9 @@ namespace GameEngine
 using namespace GameEngine;
 
 typedef unsigned char byte;
+#ifndef boolean
 typedef bool boolean;
+#endif
 
 #ifdef TRANSPARENT
 #undef TRANSPARENT

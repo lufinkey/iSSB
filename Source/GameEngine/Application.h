@@ -1,6 +1,6 @@
 
 #include "forwards.h"
-#include "SDL.h"
+#include <SDL.h>
 #include "Graphics/Graphics2D.h"
 #include "Util/ArrayList.h"
 #include "Util/String.h"
@@ -38,6 +38,7 @@ namespace GameEngine
 		static bool closing;
 		static bool borderless;
 		static bool scalescreen;
+		static bool fullscreen;
 		static unsigned char orientation;
 		static bool updating;
 		
@@ -65,6 +66,18 @@ namespace GameEngine
 		static bool prevKeyState[526];
 		static int currentLastKey;
 		static int lastKey;
+
+		static const int totalMousestates = 4;
+		static bool prevMouseState[4];
+		static bool currentMouseState[4];
+		static bool mouseState[4];
+		static int mouseX;
+		static int mouseY;
+		static int currentMouseX;
+		static int currentMouseY;
+		static int prevMouseX;
+		static int prevMouseY;
+
 		static ArrayList<TouchPoint> currentTouchPoints;
 		static ArrayList<TouchPoint> touchPoints;
 		static ArrayList<TouchPoint> prevTouchPoints;
@@ -80,13 +93,16 @@ namespace GameEngine
 		static void keyReleased(int keycode);
 		static void mousePressed(int eventcode);
 		static void mouseReleased(int eventcode);
+		static void mouseMoved(int x, int y);
 		static void addTouchPoint(long givenID, float x, float y);
 		static void updateTouchPoint(long givenID, float x, float y);
 		static void removeTouchPoint(long givenID, float x, float y);
 		static TouchPoint*getTouchPoint(long ID);
 		static TouchPoint*getPrevTouchPoint(long ID);
+		static void windowResized(int width, int height);
 		
 		static void updateKeys(bool*keys1, bool*keys2);
+		void updateMouse(bool*mouse1, bool*mouse2);
 		static void updateTouchPoints(ArrayList<TouchPoint>&points1, ArrayList<TouchPoint>&points2);
 		
 	public:
@@ -117,6 +133,12 @@ namespace GameEngine
 		static bool KeyPressed(int key);
 		static bool PrevKeyPressed(int key);
 		
+		static bool MouseState(int state);
+		static bool PrevMouseState(int state);
+		static int MouseX();
+		static int MouseY();
+		static int PrevMouseX();
+		static int PrevMouseY();
 		static int TouchX(long touchID);
 		static int PrevTouchX(long touchID);
 		static int TouchY(long touchID);
@@ -154,6 +176,7 @@ namespace GameEngine
 		static void setBackgroundImage(const String&imgName);
 		static void setBackgroundColor(Color color);
 		
+		static void setWindowTitle(const String& title);
 		static void setFullScreen(bool toggle);
 	};
 }

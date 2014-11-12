@@ -1,5 +1,5 @@
 
-#include "SDL_ttf.h"
+#include <SDL_ttf.h>
 #include "ArrayList.h"
 #include "String.h"
 

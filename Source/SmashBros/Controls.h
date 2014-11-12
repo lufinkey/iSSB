@@ -1,7 +1,7 @@
 
 #include "Global.h"
 #include "../GameEngine/GameEngine.h"
-#include "../GameEngine/ObjCBridge/iCade/iCadeState.h"
+#include "../GameEngine/CodeBridge/iCade/iCadeState.h"
 
 #pragma once
 

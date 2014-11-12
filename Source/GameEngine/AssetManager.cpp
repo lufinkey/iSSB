@@ -1,4 +1,6 @@
 
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "AssetManager.h"
 #include "Output/Console.h"
 #include <cstdio>

@@ -67,7 +67,7 @@ namespace SmashBros
 	
 	void ProjectileManager::handleSetP2PData(byte*&data)
 	{
-		bool avail = data[0];
+		bool avail = DataVoid::toBool(data);
 		data += sizeof(bool);
 		
 		if(avail)
@@ -113,7 +113,7 @@ namespace SmashBros
 			}
 		}
 		
-		avail = data[0];
+		avail = DataVoid::toBool(data);
 		data += sizeof(bool);
 		
 		if(avail)

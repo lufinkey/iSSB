@@ -794,17 +794,17 @@ namespace SmashBros
 		touchControls->lastCenterTime[playrNo] = DataVoid::toLong(data);
 		data += sizeof(long);
 		
-		touchControls->joystickDir[playrNo] = data[0];
-		data += sizeof(byte);
+		touchControls->joystickDir[playrNo] = DataVoid::toBool(data);
+		data += sizeof(bool);
 		
-		touchControls->joystickFar[playrNo] = (bool)data[0];
-		data += sizeof(byte);
+		touchControls->joystickFar[playrNo] = DataVoid::toBool(data);
+		data += sizeof(bool);
 		
-		touchControls->joystickDown[playrNo] = (bool)data[0];
-		data += sizeof(byte);
+		touchControls->joystickDown[playrNo] = DataVoid::toBool(data);
+		data += sizeof(bool);
 		
-		touchControls->justPulled[playrNo] = (bool)data[0];
-		data += sizeof(byte);
+		touchControls->justPulled[playrNo] = DataVoid::toBool(data);
+		data += sizeof(bool);
 		
 		ArrayList<ControlData> buttonsPressed;
 		
@@ -814,13 +814,13 @@ namespace SmashBros
 		{
 			ControlData ctrlData;
 			
-			ctrlData.lift = (bool)data[0];
+			ctrlData.lift = DataVoid::toBool(data);
 			data += sizeof(byte);
 			
 			ctrlData.dir = data[0];
 			data += sizeof(byte);
 			
-			ctrlData.far = (bool)data[0];
+			ctrlData.far = DataVoid::toBool(data);
 			data += sizeof(byte);
 			
 			ctrlData.button = data[0];
@@ -2061,19 +2061,6 @@ namespace SmashBros
 	
 	bool Controls::controlsDown()
 	{
-		if(touchControls->button_a->isClicked())
-		{
-			return true;
-		}
-		else if(touchControls->button_b->isClicked())
-		{
-			return true;
-		}
-		else if(touchControls->button_x->isClicked())
-		{
-			return true;
-		}
-		
 		if(joystickEnabled)
 		{
 			if(touchControls->joystickDown[touchPlayer])
@@ -2100,6 +2087,20 @@ namespace SmashBros
 				return true;
 			}
 		}
+
+		if(touchControls->button_a->isClicked())
+		{
+			return true;
+		}
+		else if(touchControls->button_b->isClicked())
+		{
+			return true;
+		}
+		else if(touchControls->button_x->isClicked())
+		{
+			return true;
+		}
+
 		return false;
 	}
 	
@@ -2191,7 +2192,7 @@ namespace SmashBros
 						Global::characters[i]->buttondir=BUTTONDIR_UP;
 					}
 				}
-			 
+
 				if(!Game::KeyPressed(controls[i][BUTTON_LEFT]) && Game::PrevKeyPressed(controls[i][BUTTON_LEFT]))
 				{
 					buttonLeft(i,UP);
@@ -2487,7 +2488,7 @@ namespace SmashBros
 				playr->moveRight=1;
 				if(playr->isOnGround())
 				{
-					playr->runTime=Global::worldTime+100;
+					playr->runTime=Global::worldTime+200;
 				}
 			}
 			if(playr->hanging)
@@ -2899,15 +2900,15 @@ namespace SmashBros
 	
 	void Controls::iCadeStateChangedHandler(iCadeState state)
 	{
-		ControllerButtonStates[BUTTON_UP] = (state&iCadeJoystickUp);
-		ControllerButtonStates[BUTTON_DOWN] = (state&iCadeJoystickDown);
-		ControllerButtonStates[BUTTON_LEFT] = (state&iCadeJoystickLeft);
-		ControllerButtonStates[BUTTON_RIGHT] = (state&iCadeJoystickRight);
+		ControllerButtonStates[BUTTON_UP] = (state&iCadeJoystickUp)!=0;
+		ControllerButtonStates[BUTTON_DOWN] = (state&iCadeJoystickDown)!=0;
+		ControllerButtonStates[BUTTON_LEFT] = (state&iCadeJoystickLeft)!=0;
+		ControllerButtonStates[BUTTON_RIGHT] = (state&iCadeJoystickRight)!=0;
 		
-		//ControllerButtonStates[BUTTON_SELECT] = (state&iCadeButtonA); // Select
-		//ControllerButtonStates[BUTTON_SHEILD] = (state&iCadeButtonB); // Left Shoulder
-		ControllerButtonStates[BUTTON_PAUSE] = (state&iCadeButtonC);
-		ControllerButtonStates[BUTTON_GRAB] = (state&iCadeButtonD);
+		//ControllerButtonStates[BUTTON_SELECT] = (state&iCadeButtonA)!=0; // Select
+		//ControllerButtonStates[BUTTON_SHEILD] = (state&iCadeButtonB)!=0; // Left Shoulder
+		ControllerButtonStates[BUTTON_PAUSE] = (state&iCadeButtonC)!=0;
+		ControllerButtonStates[BUTTON_GRAB] = (state&iCadeButtonD)!=0;
 		if((state&iCadeButtonE) || (state&iCadeButtonH))
 		{
 			ControllerButtonStates[BUTTON_JUMP] = true;
@@ -2916,8 +2917,8 @@ namespace SmashBros
 		{
 			ControllerButtonStates[BUTTON_JUMP] = false;
 		}
-		ControllerButtonStates[BUTTON_STANDARD] = (state&iCadeButtonF);
-		ControllerButtonStates[BUTTON_SPECIAL] = (state&iCadeButtonG);
+		ControllerButtonStates[BUTTON_STANDARD] = (state&iCadeButtonF)!=0;
+		ControllerButtonStates[BUTTON_SPECIAL] = (state&iCadeButtonG)!=0;
 	}
 	
 	void Controls::iCadeButtonDownHandler(iCadeState button)
