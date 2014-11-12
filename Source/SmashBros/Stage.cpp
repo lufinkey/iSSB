@@ -775,28 +775,28 @@ namespace SmashBros
 						case PrimitiveActor::DIR_UP:
 						if(p->yvelocity>=0)
 						{
-							p->y = (collide->getBox()->y - (float)((float)(p->hitboxPoint.height + p->hitboxPoint.y)*p->Scale) + 1);
+							p->y = (collide->getBox()->y - (float)((float)(p->hitboxPoint.height + p->hitboxPoint.y)*p->getScale()) + 1);
 						}
 						break;
 						
 						case PrimitiveActor::DIR_DOWN:
 						if(collide->getType()!=Platform::TYPE_GOTHROUGH)
 						{
-							p->y=(collide->getBox()->y+collide->getBox()->height - (float)((float)p->hitboxPoint.y*p->Scale));
+							p->y=(collide->getBox()->y+collide->getBox()->height - (float)((float)p->hitboxPoint.y*p->getScale()));
 						}
 						break;
 						
 						case PrimitiveActor::DIR_LEFT:
 						if(collide->getType()!=Platform::TYPE_GOTHROUGH)
 						{
-							p->x = (collide->getBox()->x - (float)(((float)p->hitboxPoint.width*p->Scale)/2));
+							p->x = (collide->getBox()->x - (float)(((float)p->hitboxPoint.width*p->getScale())/2));
 						}
 						break;
 						
 						case PrimitiveActor::DIR_RIGHT:
 						if(collide->getType()!=Platform::TYPE_GOTHROUGH)
 						{
-							p->x = (collide->getBox()->x + collide->getBox()->width + (float)(((float)p->hitboxPoint.width*p->Scale)/2));
+							p->x = (collide->getBox()->x + collide->getBox()->width + (float)(((float)p->hitboxPoint.width*p->getScale())/2));
 						}
 						break;
 					}
@@ -993,7 +993,7 @@ namespace SmashBros
 	
 	boolean Stage::wireframeCollision(Player*playr, WireframeActor*collide)
 	{
-		if(playr->Scale==0 || collide->width==0 || collide->height==0)
+		if(playr->getScale()==0 || collide->width==0 || collide->height==0)
 		{
 			return false;
 		}
@@ -1009,9 +1009,9 @@ namespace SmashBros
 			int startY = overlap.y;
 			int endY = overlap.y + overlap.height;
 			
-			float x1 = ((float)startX/playr->Scale);
-			float y1 = ((float)startY/playr->Scale);
-			float incr1 = (float)(1/playr->Scale);
+			float x1 = ((float)startX/playr->getScale());
+			float y1 = ((float)startY/playr->getScale());
+			float incr1 = (float)(1/playr->getScale());
 			
 			float pntX1 = x1;
 			float pntY1 = y1;

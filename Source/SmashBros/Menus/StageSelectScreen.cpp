@@ -56,8 +56,8 @@ namespace SmashBros
 		loadScreen->addAnimation(new Animation("normal",1,"Images/loading.png"));
 		loadScreen->changeAnimation("normal", FORWARD);
 		loadScreen->setAlpha(0.5f);
-		loadScreen->Scale = 1.876f;
-
+		loadScreen->setScale(1.876f);
+		
 		queueLoad = 0;
 		drawnOnce = false;
 	}

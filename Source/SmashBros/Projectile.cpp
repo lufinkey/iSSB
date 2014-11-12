@@ -70,6 +70,7 @@ namespace SmashBros
 	{
 		int frame = getAnimation()->getCurrentFrame();
 		int animIndex = getAnimIndex();
+		float scale = getScale();
 		Bitset bools;
 		//visible
 		if(isVisible())
@@ -86,7 +87,7 @@ namespace SmashBros
 		data.add(&y, sizeof(y));
 		data.add(&animIndex, sizeof(animIndex));
 		data.add(&frame, sizeof(frame));
-		data.add(&Scale, sizeof(Scale));
+		data.add(&scale, sizeof(scale));
 		data.add(&boolsByte, sizeof(boolsByte));
 		data.add(&layer, sizeof(layer));
 		data.add(&playerNo, sizeof(playerNo));
@@ -117,7 +118,8 @@ namespace SmashBros
 		getAnimation()->setCurrentFrame(frame);
 		data += sizeof(int);
 		
-		Scale = DataVoid::toFloat(data);
+		float scale = DataVoid::toFloat(data);
+		setScale(scale);
 		data += sizeof(float);
 		
 		//bools
@@ -533,7 +535,7 @@ namespace SmashBros
 
 	byte Projectile::isPlatformColliding(Platform*collide)
 	{
-		if(Scale==0 || collide->Scale==0)
+		if(getScale()==0 || collide->getScale()==0)
 		{
 			return 0;
 		}
@@ -556,9 +558,9 @@ namespace SmashBros
 			int bottom=0;
 			boolean colliding = false;
 			
-			float x2 = ((float)collideOverlap.x/collide->Scale);
-			float y2 = ((float)collideOverlap.y/collide->Scale);
-			float incr2 = (1/collide->Scale);
+			float x2 = ((float)collideOverlap.x/collide->getScale());
+			float y2 = ((float)collideOverlap.y/collide->getScale());
+			float incr2 = (1/collide->getScale());
 			
 			PixelIterator colPxlIter(collide);
 			colPxlIter.reset(x2,y2,incr2,incr2,(int)collideOverlap.width,(int)collideOverlap.height);
@@ -637,7 +639,7 @@ namespace SmashBros
 
 	byte Projectile::solidPlatformCollision(Platform*collide)
 	{
-		if(Scale==0 || collide->Scale==0)
+		if(getScale()==0 || collide->getScale()==0)
 		{
 			return 0;
 		}
@@ -703,13 +705,13 @@ namespace SmashBros
 				int startY1Orig = overlap.y;
 				int endY1Orig = overlap.y + overlap.height;
 				
-				float x1 = ((float)startX1/Scale);//pixel checker starter for this
-				float y1 = ((float)startY1/Scale);
-				float incr1 = (float)(1/Scale);
+				float x1 = ((float)startX1/getScale());//pixel checker starter for this
+				float y1 = ((float)startY1/getScale());
+				float incr1 = (float)(1/getScale());
 				
-				float x2 = ((float)startX2/collide->Scale);//pixel checker starter for collide
-				float y2 = ((float)startY2/collide->Scale);
-				float incr2 = (float)(1/collide->Scale);
+				float x2 = ((float)startX2/collide->getScale());//pixel checker starter for collide
+				float y2 = ((float)startY2/collide->getScale());
+				float incr2 = (float)(1/collide->getScale());
 				
 				boolean itemCol = false;
 				boolean colliding = false;
@@ -1082,9 +1084,9 @@ namespace SmashBros
 				int endX = overlap.x + overlap.width;
 				int endY = overlap.y + overlap.height;
 				
-				float x1 = ((float)startX/Scale);//pixel checker starter for this
-				float y1 = ((float)startY/Scale);
-				float incr1 = (float)(1/Scale);
+				float x1 = ((float)startX/getScale());//pixel checker starter for this
+				float y1 = ((float)startY/getScale());
+				float incr1 = (float)(1/getScale());
 				
 				boolean itemCol = false;
 
@@ -1169,11 +1171,11 @@ namespace SmashBros
 		}
 		return 0;
 	}
-
+	
 	byte Projectile::solidPlayerCollision(Player*collide)
 	{
 		collide->updateHitbox();
-		if(Scale==0 || collide->Scale==0)
+		if(getScale()==0 || collide->getScale()==0)
 		{
 			return 0;
 		}
@@ -1189,9 +1191,9 @@ namespace SmashBros
 			int startY = collideOverlap.y;
 			int endY = collideOverlap.y + collideOverlap.height;
 			
-			float x2 = ((float)startX/Scale);
-			float y2 = ((float)startY/Scale);
-			float incr = (float)(1/Scale);
+			float x2 = ((float)startX/getScale());
+			float y2 = ((float)startY/getScale());
+			float incr = (float)(1/getScale());
 			
 			int left=0;
 			int right=0;
@@ -1255,12 +1257,12 @@ namespace SmashBros
 				switch(dir)
 				{
 					case DIR_DOWN:
-					collide->y = (collideOverlap2.y + (y - height/2)) - (float)((float)(collide->hitbox->height + ((float)collide->hitboxPoint.y*collide->Scale))) + 1;
+					collide->y = (collideOverlap2.y + (y - height/2)) - (float)((float)(collide->hitbox->height + ((float)collide->hitboxPoint.y*collide->getScale()))) + 1;
 					collide->updateHitbox();
 					break;
 					
 					case DIR_UP:
-					collide->y = ((y - height/2) + (collideOverlap2.y + collideOverlap2.height)) + collide->height/2 - ((float)((float)collide->hitboxPoint.y*collide->Scale) + collide->height/2) + 1;
+					collide->y = ((y - height/2) + (collideOverlap2.y + collideOverlap2.height)) + collide->height/2 - ((float)((float)collide->hitboxPoint.y*collide->getScale()) + collide->height/2) + 1;
 					collide->updateHitbox();
 					break;
 					

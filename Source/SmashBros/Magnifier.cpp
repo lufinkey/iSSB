@@ -13,7 +13,7 @@ namespace SmashBros
 		if(magnifier==NULL)
 		{
 			magnifier = new Actor(0,0);
-			magnifier->Scale = 0.8f;
+			magnifier->setScale(0.8f);
 			magnifier->addAnimation(new Animation("normal", 1, "Images/Game/Misc/magnifier.png"));
 			magnifier->changeAnimation("normal", FORWARD);
 			magnifier->setRelativeToView(false);
@@ -78,7 +78,7 @@ namespace SmashBros
 				float scale = 1;
 				if(width>height)
 				{
-					float newWidth = 120*magnifier->Scale;
+					float newWidth = 120*magnifier->getScale();
 					scale = newWidth/width;
 
 					width = newWidth;
@@ -86,7 +86,7 @@ namespace SmashBros
 				}
 				else
 				{
-					float newHeight = 120*magnifier->Scale;
+					float newHeight = 120*magnifier->getScale();
 					scale = newHeight/height;
 
 					height = newHeight;

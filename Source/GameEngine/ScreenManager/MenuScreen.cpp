@@ -506,7 +506,7 @@ namespace GameEngine
 			break;
 			
 			case IMAGE:
-			imageItem->Scale = scale;
+			imageItem->setScale(scale);
 			break;
 		}
 	}

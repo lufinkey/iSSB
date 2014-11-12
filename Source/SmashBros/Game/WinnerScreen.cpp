@@ -11,7 +11,7 @@ namespace SmashBros
 	{
 		//
 	}
-
+	
 	WinnerScreen::FinishButton::~FinishButton()
 	{
 		//
@@ -269,8 +269,8 @@ namespace SmashBros
 		cNum = Global::selectedChar[pNum-1];
 		playr = new CharStatPlayer(x,y);
 		
-		playr->Scale = 3.0f;
-			
+		playr->setScale(3.0f);
+		
 		boolean success;
 		
 		String charFolderPath = CharacterLoader::getFolder(cNum);

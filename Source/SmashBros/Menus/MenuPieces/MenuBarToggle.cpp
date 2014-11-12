@@ -38,9 +38,9 @@ namespace SmashBros
 	void MenuBarToggle::Draw(Graphics2D&g, long gameTime)
 	{
 		MenuBar::Draw(g, gameTime);
-		toggleButton->x = (x + 94 * Scale);
-		toggleButton->y = (y + 0 * Scale);
-		toggleButton->Scale = Scale;
+		toggleButton->x = (x + 94 * getScale());
+		toggleButton->y = (y + 0 * getScale());
+		toggleButton->setScale(getScale());
 		toggleButton->Draw(g, gameTime);
 	}
 

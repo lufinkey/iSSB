@@ -62,7 +62,7 @@ namespace SmashBros
 		{
 			ReadyGo->changeAnimation("ready", FORWARD);
 		}
-		ReadyGo->Scale = 0.7f;
+		ReadyGo->setScale(0.7f);
 		
 		FinishGame = new Actor(View::ScaleWidth() * 0.5f,View::ScaleHeight() * 0.5f);
 		FinishGame->setRelativeToView(false);
@@ -379,7 +379,7 @@ namespace SmashBros
 				stockIcon->addAnimation(new Animation("normal", 1, image));
 				stockIcon->changeAnimation("normal", FORWARD);
 			}
-			stockIcon->Scale = 1.6f;
+			stockIcon->setScale(1.6f);
 			
 			stockText = new TextActor("", AssetManager::getFont("Fonts/arial.ttf", Font::BOLD, 18),Color::WHITE);
 			/*{
@@ -428,7 +428,7 @@ namespace SmashBros
 		percentText->addAnimation(new Animation("8",1,"Images/Game/HUD/PercentText/8.png"));
 		percentText->addAnimation(new Animation("9",1,"Images/Game/HUD/PercentText/9.png"));
 		percentText->addAnimation(new Animation("%",1,"Images/Game/HUD/PercentText/percent.png"));
-		percentText->Scale = 0.28f;
+		percentText->setScale(0.28f);
 		
 		int exists = AssetManager::loadImage(path + "symbol.png");
 		
@@ -650,7 +650,7 @@ namespace SmashBros
 	HUD::TrainingMenu::TrainingMenu(HUD*hud)
 	{
 		bg = new Actor(0,0);
-		bg->Scale = 1.9f;
+		bg->setScale(1.9f);
 		bg->addAnimation(new Animation("normal",1,"Images/Game/HUD/Training/bg.png"));
 		bg->changeAnimation("normal", FORWARD);
 		bg->setVisible(false);
@@ -673,14 +673,14 @@ namespace SmashBros
 		apply->changeAnimation("normal", FORWARD);
 		apply->setRelativeToView(false);
 		apply->setVisible(false);
-		apply->Scale = 1.2f;
+		apply->setScale(1.2f);
 		
 		finish = new Actor(100,500);
 		finish->addAnimation(new Animation("normal",1,"Images/Game/HUD/Training/button_finish.png"));
 		finish->changeAnimation("normal", FORWARD);
 		finish->setRelativeToView(false);
 		finish->setVisible(false);
-		finish->Scale = 1.2f;
+		finish->setScale(1.2f);
 		
 		//options = new ArrayList<OptionPanel*>();
 		
@@ -688,21 +688,21 @@ namespace SmashBros
 		optionPanel->setMin(0);
 		optionPanel->setMax(Global::totalItems);
 		optionPanel->setValue(0);
-		optionPanel->Scale = 1.4f;
+		optionPanel->setScale(1.4f);
 		options.add(optionPanel);
 		
 		optionPanel = new OptionPanel(100,180,"Images/Game/HUD/Training/panel_cpu.png");
 		optionPanel->setMin(1);
 		optionPanel->setMax(6);
 		optionPanel->setValue(1);
-		optionPanel->Scale = 1.4f;
+		optionPanel->setScale(1.4f);
 		options.add(optionPanel);
 		
 		optionPanel = new OptionPanel(100,260,"Images/Game/HUD/Training/panel_camera.png");
 		optionPanel->setMin(0);
 		optionPanel->setMax(2);
 		optionPanel->setValue(2);
-		optionPanel->Scale = 1.4f;
+		optionPanel->setScale(1.4f);
 		options.add(optionPanel);
 		
 		opened = false;
@@ -1009,23 +1009,23 @@ namespace SmashBros
 			delete label;
 		}
 	}
-		
+	
 	void HUD::OptionPanel::Update(long gameTime)
 	{
 		Actor::Update(gameTime);
-		left->Scale = Scale;
-		left->x = x-((float)arrowXOffset*Scale);
+		left->setScale(getScale());
+		left->x = x-((float)arrowXOffset*getScale());
 		left->y = y;
-		right->Scale = Scale;
-		right->x = x+((float)arrowXOffset*Scale);
+		right->setScale(getScale());
+		right->x = x+((float)arrowXOffset*getScale());
 		right->y = y;
 		left->Update(gameTime);
 		right->Update(gameTime);
-		label->setSize((unsigned int)((float)textSize*Scale));
+		label->setSize((unsigned int)((float)textSize*getScale()));
 		label->x = x;
-		label->y = y + ((float)labelYOffset*Scale);
+		label->y = y + ((float)labelYOffset*getScale());
 		label->Update(gameTime);
-			
+		
 		if(left->wasClicked() && !left->isClicked())
 		{
 			value--;
@@ -1100,28 +1100,28 @@ namespace SmashBros
 		pauseButton->changeAnimation("normal", FORWARD);
 		pauseButton->setRelativeToView(false);
 		pauseButton->setAlpha(0.2f);
-		pauseButton->Scale = 2.0f;
+		pauseButton->setScale(2.0f);
 		
 		resumeButton = new Actor(220,160);
 		resumeButton->addAnimation(new Animation("normal", 1, "Images/Game/HUD/ResumeButton.png"));
 		resumeButton->changeAnimation("normal", FORWARD);
 		resumeButton->setRelativeToView(false);
 		resumeButton->setAlpha(0.2f);
-		resumeButton->Scale = 1.6f;
+		resumeButton->setScale(1.6f);
 		
 		finishButton = new Actor(View::ScaleWidth()/2, View::ScaleHeight()/2);
 		finishButton->addAnimation(new Animation("normal", 1, "Images/Game/HUD/FinishButton.png"));
 		finishButton->changeAnimation("normal", FORWARD);
 		finishButton->setRelativeToView(false);
 		finishButton->setAlpha(0.2f);
-		finishButton->Scale = 1.6f;
+		finishButton->setScale(1.6f);
 		
 		exitButton = new Actor(680, 440);
 		exitButton->addAnimation(new Animation("normal", 1, "Images/Game/HUD/ExitButton.png"));
 		exitButton->changeAnimation("normal", FORWARD);
 		exitButton->setRelativeToView(false);
 		exitButton->setAlpha(0.2f);
-		exitButton->Scale = 1.6f;
+		exitButton->setScale(1.6f);
 	}
 	
 	HUD::PauseMenu::~PauseMenu()

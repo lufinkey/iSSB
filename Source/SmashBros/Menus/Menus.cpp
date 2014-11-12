@@ -324,7 +324,7 @@ namespace SmashBros
 		anim->addFrame("Images/Menus/Buttons/Generic/back_selected.png");
 		button_back->addAnimation(anim);
 		button_back->changeAnimation("normal", FORWARD);
-		button_back->Scale = 1.875f;
+		button_back->setScale(1.875f);
 		
 		ScreenManager::Add(new WinnerScreen("Winners"));
 		

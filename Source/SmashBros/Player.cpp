@@ -426,6 +426,7 @@ namespace SmashBros
 	{
 		int frame = getAnimation()->getCurrentFrame();
 		int animIndex = getAnimIndex();
+		float scale = getScale();
 		Bitset bools;
 		//hurt color
 		if(hurtFrame>0)
@@ -470,7 +471,7 @@ namespace SmashBros
 		data.add(&animIndex, sizeof(animIndex));
 		data.add(&frame, sizeof(frame));
 		data.add(&percent, sizeof(percent));
-		data.add(&Scale, sizeof(Scale));
+		data.add(&scale, sizeof(scale));
 		data.add(&boolsByte, sizeof(boolsByte));
 		
 		addP2PData(data);
@@ -500,7 +501,8 @@ namespace SmashBros
 		percent = DataVoid::toInt(data);
 		data += sizeof(int);
 		
-		Scale = DataVoid::toFloat(data);
+		float scale = DataVoid::toFloat(data);
+		setScale(scale);
 		data += sizeof(float);
 		
 		//bools
@@ -668,6 +670,11 @@ namespace SmashBros
 		return attacksPriority;
 	}
 	
+	byte Player::getComboNo()
+	{
+		return standardCombo;
+	}
+	
 	boolean Player::isOnGround()
 	{
 		return onGround;
@@ -764,7 +771,7 @@ namespace SmashBros
 			if(holdingPlayer)
 			{
 				grabbedPlayer->setPlayerDir(getOppPlayerDir());
-				grabbedPlayer->setPoint(x+(((itemOffsetX*Scale)+grabbedPlayer->hitbox->width)*getPlayerDirMult()), y+(itemOffsetY*Scale));
+				grabbedPlayer->setPoint(x+(((itemOffsetX*getScale())+grabbedPlayer->hitbox->width)*getPlayerDirMult()), y+(itemOffsetY*getScale()));
 				grabbedPlayer->changeTwoSidedAnimation("grabbed", NO_CHANGE);
 			}
 		}
@@ -952,7 +959,7 @@ namespace SmashBros
 	void Player::setPoint(float x, float y)
 	{
 		this->x = x;
-		this->y = y - (((hitboxPoint.height*Scale)/2)+(hitboxPoint.y*Scale));
+		this->y = y - (((hitboxPoint.height*getScale())/2)+(hitboxPoint.y*getScale()));
 	}
 	
 	Player* Player::getGrabbedPlayer()
@@ -991,10 +998,10 @@ namespace SmashBros
 	
 	void Player::updateHitbox()
 	{
-		hitbox->x = x + (float)((float)hitboxPoint.x*this->Scale);
-		hitbox->y = y + (float)((float)hitboxPoint.y*this->Scale);
-		hitbox->width = (int)((float)hitboxPoint.width*this->Scale);
-		hitbox->height = (int)((float)hitboxPoint.height*this->Scale);
+		hitbox->x = x + (float)((float)hitboxPoint.x*this->getScale());
+		hitbox->y = y + (float)((float)hitboxPoint.y*this->getScale());
+		hitbox->width = (int)((float)hitboxPoint.width*this->getScale());
+		hitbox->height = (int)((float)hitboxPoint.height*this->getScale());
 	}
 	
 	void Player::setIndicatorOffset(float x1, float y1)
@@ -3977,7 +3984,7 @@ namespace SmashBros
 			}
 			else
 			{
-				grabbedPlayer->setPoint(x+(((itemOffsetX*Scale)+grabbedPlayer->hitbox->width)*getPlayerDirMult()), y+(itemOffsetY*Scale));
+				grabbedPlayer->setPoint(x+(((itemOffsetX*getScale())+grabbedPlayer->hitbox->width)*getPlayerDirMult()), y+(itemOffsetY*getScale()));
 				grabbedPlayer->xvelocity = 0;
 				grabbedPlayer->yvelocity = 0;
 				grabbedPlayer->xVel = 0;
@@ -4410,14 +4417,14 @@ namespace SmashBros
 				switch(playerdir)
 				{
 					case LEFT:
-					indicator->x = (float)(this->x*Camera::Zoom) - (float)(indicX*Scale*Camera::Zoom);
+					indicator->x = (float)(this->x*Camera::Zoom) - (float)(indicX*getScale()*Camera::Zoom);
 					break;
 					
 					case RIGHT:
-					indicator->x = (float)(this->x*Camera::Zoom) + (float)(indicX*Scale*Camera::Zoom);
+					indicator->x = (float)(this->x*Camera::Zoom) + (float)(indicX*getScale()*Camera::Zoom);
 					break;
 				}
-				indicator->y = (float)(this->y*Camera::Zoom) + (int)(indicY*Scale*Camera::Zoom) - (int)((indicator->height)/2);
+				indicator->y = (float)(this->y*Camera::Zoom) + (int)(indicY*getScale()*Camera::Zoom) - (int)((indicator->height)/2);
 			}
 			else
 			{
@@ -4430,7 +4437,7 @@ namespace SmashBros
 			
 			if(holdingPlayer)
 			{
-				grabbedPlayer->setPoint(x+(((itemOffsetX*Scale)+grabbedPlayer->hitbox->width)*getPlayerDirMult()), y+(itemOffsetY*Scale));
+				grabbedPlayer->setPoint(x+(((itemOffsetX*getScale())+grabbedPlayer->hitbox->width)*getPlayerDirMult()), y+(itemOffsetY*getScale()));
 				grabbedPlayer->xvelocity = 0;
 				grabbedPlayer->yvelocity = 0;
 				grabbedPlayer->xVel = 0;
@@ -4879,7 +4886,7 @@ namespace SmashBros
 	
 	byte Player::isPlayerColliding(Player*collide)
 	{
-		if(Scale==0 || collide->Scale==0)
+		if(getScale()==0 || collide->getScale()==0)
 		{
 			return 0;
 		}
@@ -4892,13 +4899,13 @@ namespace SmashBros
 			int w = (int)(overlap.right - overlap.left);
 			int h = (int)(overlap.bottom - overlap.top);
 			
-			float x1 = ((float)overlap.left/Scale);
-			float y1 = ((float)overlap.top/Scale);
-			float x2 = ((float)overlap2.left/collide->Scale);
-			float y2 = ((float)overlap2.top/collide->Scale);
+			float x1 = ((float)overlap.left/getScale());
+			float y1 = ((float)overlap.top/getScale());
+			float x2 = ((float)overlap2.left/collide->getScale());
+			float y2 = ((float)overlap2.top/collide->getScale());
 			
-			float incr1 = (float)(1/Scale);
-			float incr2 = (float)(1/collide->Scale);
+			float incr1 = (float)(1/getScale());
+			float incr2 = (float)(1/collide->getScale());
 			
 			boolean colliding = false;
 			
@@ -5007,7 +5014,7 @@ namespace SmashBros
 	byte Player::solidPlatformCollision(Platform*collide)
 	{
 		updateHitbox();
-		if(Scale==0 || collide->Scale==0)
+		if(getScale()==0 || collide->getScale()==0)
 		{
 			return 0;
 		}
@@ -5023,9 +5030,9 @@ namespace SmashBros
 			int startY = (int)collideOverlap.y;
 			int endY = (int)(collideOverlap.y + collideOverlap.height);
 			
-			float x2 = ((float)startX/collide->Scale);
-			float y2 = ((float)startY/collide->Scale);
-			float incr = (float)(1/collide->Scale);
+			float x2 = ((float)startX/collide->getScale());
+			float y2 = ((float)startY/collide->getScale());
+			float incr = (float)(1/collide->getScale());
 			
 			float pntX2 = x2;
 			float pntY2 = y2;
@@ -5098,12 +5105,12 @@ namespace SmashBros
 					switch(dir)
 					{
 						case DIR_DOWN:
-						this->y = (collideOverlap2.y + (collide->y - collide->height/2)) - (float)((float)(hitbox->height + ((float)hitboxPoint.y*Scale))) + 1;
+						this->y = (collideOverlap2.y + (collide->y - collide->height/2)) - (float)((float)(hitbox->height + ((float)hitboxPoint.y*getScale()))) + 1;
 						updateHitbox();
 						return DIR_UP;
 						
 						case DIR_UP:
-						this->y = ((collide->y - collide->height/2) + (collideOverlap2.y + collideOverlap2.height)) + this->height/2 - ((float)((float)hitboxPoint.y*Scale) + this->height/2) + 1;
+						this->y = ((collide->y - collide->height/2) + (collideOverlap2.y + collideOverlap2.height)) + this->height/2 - ((float)((float)hitboxPoint.y*getScale()) + this->height/2) + 1;
 						updateHitbox();
 						return DIR_DOWN;
 						
@@ -5132,16 +5139,16 @@ namespace SmashBros
         
         Player*playr = Global::getPlayerActor(collide->playerNo);
         RectangleF collidePoint = playr->hitboxPoint;
-
-        left1 = (float)(x + (hitboxPoint.x*Scale));
-        left2 = (float)(playr->x + (collidePoint.x*Scale));
-        right1 = (float)(left1+(hitboxPoint.width*Scale));
-        right2 = (float)(left2+(collidePoint.width*Scale));
-        top1 = (float)(y + (hitboxPoint.y*Scale));
-        top2 = (float)(playr->y + (collidePoint.y*Scale));
-        bottom1 = (float)(top1+(hitboxPoint.height*Scale));
-        bottom2 = (float)(top2+(collidePoint.height*Scale));
-
+		
+        left1 = (float)(x + (hitboxPoint.x*getScale()));
+        left2 = (float)(playr->x + (collidePoint.x*getScale()));
+        right1 = (float)(left1+(hitboxPoint.width*getScale()));
+        right2 = (float)(left2+(collidePoint.width*getScale()));
+        top1 = (float)(y + (hitboxPoint.y*getScale()));
+        top2 = (float)(playr->y + (collidePoint.y*getScale()));
+        bottom1 = (float)(top1+(hitboxPoint.height*getScale()));
+        bottom2 = (float)(top2+(collidePoint.height*getScale()));
+		
         if (bottom1 < top2)
         {
         	return false;
@@ -5150,7 +5157,7 @@ namespace SmashBros
         {
         	return false;
         }
-
+		
         if (right1 < left2)
         {
         	return false;
@@ -5170,13 +5177,13 @@ namespace SmashBros
         int top1, top2;
         int bottom1, bottom2;
         
-        left1 = (int)(x + (hitboxPoint.x*Scale));
+        left1 = (int)(x + (hitboxPoint.x*getScale()));
         left2 = (int)collide->x;
-        right1 = (int)(left1+(hitboxPoint.width*Scale));
+        right1 = (int)(left1+(hitboxPoint.width*getScale()));
         right2 = (int)collide->x + collide->width;
-        top1 = (int)(y + (hitboxPoint.y*Scale));
+        top1 = (int)(y + (hitboxPoint.y*getScale()));
         top2 = (int)collide->y;
-        bottom1 = (int)(top1+(hitboxPoint.height*Scale));
+        bottom1 = (int)(top1+(hitboxPoint.height*getScale()));
         bottom2 = (int)collide->y + collide->height;
         
         if (bottom1 < top2)
@@ -5206,16 +5213,16 @@ namespace SmashBros
         int right1, right2;
         int top1, top2;
         int bottom1, bottom2;
-
-        left1 = (int)(x + (hitboxPoint.x*Scale));
+		
+        left1 = (int)(x + (hitboxPoint.x*getScale()));
         left2 = (int)collide->x-(collide->width/2);
-        right1 = (int)(left1+(hitboxPoint.width*Scale));
+        right1 = (int)(left1+(hitboxPoint.width*getScale()));
         right2 = (int)collide->x+(collide->width/2);
-        top1 = (int)(y + (hitboxPoint.y*Scale));
+        top1 = (int)(y + (hitboxPoint.y*getScale()));
         top2 = (int)collide->y-(collide->height/2);
-        bottom1 = (int)(top1+(hitboxPoint.height*Scale));
+        bottom1 = (int)(top1+(hitboxPoint.height*getScale()));
         bottom2 = (int)collide->y+(collide->height/2);
-
+		
         if (bottom1 < top2)
         {
         	return false;
@@ -5224,7 +5231,7 @@ namespace SmashBros
         {
         	return false;
         }
-
+		
         if (right1 < left2)
         {
         	return false;
@@ -6333,14 +6340,19 @@ namespace SmashBros
 		//Open for implementation
 	}
 	
+	void Player::onQueueAttack(byte attackType)
+	{
+		//Open for implementation
+	}
+	
 	void Player::onFinishCharge()
 	{
-		//
+		//Open for implementation
 	}
 	
 	void Player::doChargingAttack(byte button)
 	{
-		//
+		//Open for implementation
 	}
 	
 	void Player::grabAttack()
@@ -6374,7 +6386,7 @@ namespace SmashBros
 	void Player::grabAttackDown()
 	{
 		Player* grabbedPlayer = this->grabbedPlayer;
-		grabbedPlayer->setPoint(x + (10 * Scale), y - (10*Scale));
+		grabbedPlayer->setPoint(x + (10 * getScale()), y - (10*getScale()));
 		tossPlayer(Player::ATTACK_DOWNA, 0.4f, 6.2f+((2.1f*grabbedPlayer->getPercent())/75));
 	}
 	

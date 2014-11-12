@@ -146,33 +146,33 @@ namespace SmashBros
 		MenuBar::Draw(g, gameTime);
 		if(numLabel)
 		{
-			label2->x = (x + 106 * Scale);
-			label2->y = (y - 1.5f * Scale);
-			if(((int)(label2Size*Scale))!=label2->getSize())
+			label2->x = (x + 106 * getScale());
+			label2->y = (y - 1.5f * getScale());
+			if(((int)(label2Size*getScale()))!=label2->getSize())
 			{
-				label2->setSize((int)(label2Size*Scale));
+				label2->setSize((int)(label2Size*getScale()));
 			}
-			valueActor->x = (x + 64 * Scale);
-			valueActor->y = (y + 6 * Scale);
+			valueActor->x = (x + 64 * getScale());
+			valueActor->y = (y + 6 * getScale());
 			label2->Draw(g, gameTime);
 		}
 		else
 		{
-			valueActor->x = (x + 83 * Scale);
-			valueActor->y = (y + 6 * Scale);
+			valueActor->x = (x + 83 * getScale());
+			valueActor->y = (y + 6 * getScale());
 		}
 		
-		leftArrow->x = (x + 50 * Scale);
+		leftArrow->x = (x + 50 * getScale());
 		leftArrow->y = (y);
-		leftArrow->Scale = Scale;
+		leftArrow->setScale(getScale());
 		
-		rightArrow->x = (x + 136 * Scale);
+		rightArrow->x = (x + 136 * getScale());
 		rightArrow->y = (y);
-		rightArrow->Scale = Scale;
+		rightArrow->setScale(getScale());
 		
-		if(((int)(valueActorSize*Scale))!=valueActor->getSize())
+		if(((int)(valueActorSize*getScale()))!=valueActor->getSize())
 		{
-			valueActor->setSize((int)(valueActorSize*Scale));
+			valueActor->setSize((int)(valueActorSize*getScale()));
 		}
 		
 		valueActor->Draw(g, gameTime);

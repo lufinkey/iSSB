@@ -59,9 +59,9 @@ namespace SmashBros
 		anim->addFrame("Images/Menus/titlescreen.png");
 		titleScreen->addAnimation(anim);
 		titleScreen->changeAnimation("title", FORWARD);
-		titleScreen->Scale = 1.876f;
+		titleScreen->setScale(1.876f);
 	}
-
+	
 	void TitleScreen::Update(long gameTime)
 	{
 		titleScreen->Update(gameTime);
@@ -73,7 +73,7 @@ namespace SmashBros
 			changing = false;
 		}
 	}
-
+	
 	void TitleScreen::Draw(Graphics2D&g, long gameTime)
 	{
 		if(changing)
@@ -435,7 +435,7 @@ namespace SmashBros
 		rules_bar->addAnimation(normal);
 		rules_bar->addAnimation(hover);
 		rules_bar->changeAnimation("normal", FORWARD);
-		rules_bar->Scale = 1.8f;
+		rules_bar->setScale(1.8f);
 		rules_bar_value = new TextActor(510,60,"02",AssetManager::getFont("Fonts/arial.ttf", Font::BOLD, 30),Color::BLACK);
 		rules_bar_value->setAlignment(TextActor::ALIGN_BOTTOMLEFT);
 		rules_bar_text = new TextActor(560,60,"",AssetManager::getFont("Fonts/arial.ttf", Font::BOLD, 26),Color::BLACK);
@@ -445,7 +445,7 @@ namespace SmashBros
 		readyToFight->addAnimation(new Animation("normal",1,"Images/Menus/Buttons/Generic/readytofight.png"));
 		readyToFight->addAnimation(new Animation("hover",1,"Images/Menus/Buttons/Generic/readytofight_selected.png"));
 		readyToFight->changeAnimation("normal", FORWARD);
-		readyToFight->Scale = 1.845f;
+		readyToFight->setScale(1.845f);
 		readyToFight->mouseOverUsesPixel(true);
 		
 		rules_arrows = new Arrows(530,22,530,72);
@@ -464,7 +464,7 @@ namespace SmashBros
 		rules_arrows->setScale(1.5f);
 		
 		teams_button = new TeamsButton(260,35);
-		teams_button->Scale = 1.7f;
+		teams_button->setScale(1.7f);
 		
 		teams_button->addAnimation(new Animation("normal",1,"Images/Menus/Buttons/Group/freeforall.png"));
 		teams_button->addAnimation(new Animation("hover",1,"Images/Menus/Buttons/Group/freeforall_selected.png"));
@@ -794,9 +794,9 @@ namespace SmashBros
 	ControlOptions::ControlOptions(const String&name) : Screen(name)
 	{
 		joystickLabel = new MenuBarSmall(200,140,"Joystick");
-		joystickLabel->Scale = 2;
+		joystickLabel->setScale(2);
 		dpadLabel = new MenuBarSmall(600,140,"D-Pad");
-		dpadLabel->Scale = 2;
+		dpadLabel->setScale(2);
 		toggles = new ToggleButtons(390,140, 790,140);
 		toggles->setScale(1.6f);
 		
@@ -804,49 +804,49 @@ namespace SmashBros
         button_a->addAnimation(new Animation("normal", 1, "Images/Game/Controls/button_a.png"));
         button_a->changeAnimation("normal", FORWARD);
         button_a->setRelativeToView(false);
-		button_a->Scale = 2;
+		button_a->setScale(2);
 		button_a->setAlpha(0.2f);
 		
         button_b = new Actor(707.5f, 525);
         button_b->addAnimation(new Animation("normal", 1, "Images/Game/Controls/button_b.png"));
         button_b->changeAnimation("normal", FORWARD);
         button_b->setRelativeToView(false);
-		button_b->Scale = 2;
+		button_b->setScale(2);
 		button_b->setAlpha(0.2f);
 		
         button_x = new Actor(820, 337.5f);
         button_x->addAnimation(new Animation("normal", 1, "Images/Game/Controls/button_xy.png"));
         button_x->changeAnimation("normal", FORWARD);
         button_x->setRelativeToView(false);
-		button_x->Scale = 2;
+		button_x->setScale(2);
 		button_x->setAlpha(0.2f);
 		
         arrow_up = new Actor(150, 375);
         arrow_up->addAnimation(new Animation("normal", 1, "Images/Game/Controls/arrow_up.png"));
         arrow_up->changeAnimation("normal", FORWARD);
         arrow_up->setRelativeToView(false);
-		arrow_up->Scale = 2;
+		arrow_up->setScale(2);
 		arrow_up->setAlpha(0.5f);
 		
         arrow_down = new Actor(150, 525);
         arrow_down->addAnimation(new Animation("normal", 1, "Images/Game/Controls/arrow_down.png"));
         arrow_down->changeAnimation("normal", FORWARD);
         arrow_down->setRelativeToView(false);
-		arrow_down->Scale = 2;
+		arrow_down->setScale(2);
 		arrow_down->setAlpha(0.5f);
 		
         arrow_left = new Actor(75, 450);
         arrow_left->addAnimation(new Animation("normal", 1, "Images/Game/Controls/arrow_left.png"));
         arrow_left->changeAnimation("normal", FORWARD);
         arrow_left->setRelativeToView(false);
-		arrow_left->Scale = 2;
+		arrow_left->setScale(2);
 		arrow_left->setAlpha(0.5f);
 		
         arrow_right = new Actor(225, 450);
         arrow_right->addAnimation(new Animation("normal", 1, "Images/Game/Controls/arrow_right.png"));
         arrow_right->changeAnimation("normal", FORWARD);
         arrow_right->setRelativeToView(false);
-		arrow_right->Scale = 2;
+		arrow_right->setScale(2);
 		arrow_right->setAlpha(0.5f);
 		
 		joystickArea = new WireframeActor(0,0,View::ScaleWidth()/2, View::ScaleHeight());
@@ -872,7 +872,7 @@ namespace SmashBros
 		joystick->addAnimation(new Animation("down_right2", 1, "Images/Game/Controls/joystick_down_right2.png"));
 		joystick->changeAnimation("center", FORWARD);
 		joystick->setRelativeToView(false);
-		joystick->Scale = 2;
+		joystick->setScale(2);
 		joystick->setAlpha(0.5f);
 		
 		joystickDir = 0;
@@ -880,7 +880,7 @@ namespace SmashBros
 		joystickDown = false;
 		joystickEnabled = true;
 	}
-
+	
 	ControlOptions::~ControlOptions()
 	{
 		delete button_a;
@@ -1207,14 +1207,14 @@ namespace SmashBros
 		prevIngamemusic = Preferences::ingameMusicOn();
 
 		menumusic = new MenuBarToggle(300,130,"Menu Music",prevMenumusic);
-		menumusic->Scale = 1.6f;
-
+		menumusic->setScale(1.6f);
+		
 		menusoundfx = new MenuBarToggle(300,200,"Menu SoundFX",prevMenusoundfx);
-		menusoundfx->Scale = 1.6f;
+		menusoundfx->setScale(1.6f);
 		menusoundfx->setTextOffsetX(18);
 		
 		ingamemusic = new MenuBarToggle(300,270,"In-Game Music",prevIngamemusic);
-		ingamemusic->Scale = 1.6f;
+		ingamemusic->setScale(1.6f);
 		ingamemusic->setTextOffsetX(20);
 	}
 	
@@ -1288,7 +1288,7 @@ namespace SmashBros
 			//Game::setFullScreen(toggle);
 		}
 	}
-
+	
 	void DisplayOptions::Initialize()
 	{
 		/*fullScreen = new MenuBarToggle(300,130,"Full Screen");
@@ -1305,9 +1305,9 @@ namespace SmashBros
 			fps->setValue(30);
 		}
 		fps->setProperties(30, 60, 30);
-		fps->Scale = 1.6f;
+		fps->setScale(1.6f);
 	}
-
+	
 	void DisplayOptions::LoadContent()
 	{
 		Menus::menuNo = MENU_DISPLAYOPTIONS;
@@ -1426,26 +1426,26 @@ namespace SmashBros
 	void OtherOptions::Initialize()
 	{
 		facebook = new FacebookButton(200,140, "Our Facebook");
-		facebook->Scale = 2.0f;
+		facebook->setScale(2.0f);
 		facebook->setLabelSize(14);
 		
 		twitter = new TwitterButton(200,200, "Follow on Twitter");
-		twitter->Scale = 2.0f;
+		twitter->setScale(2.0f);
 		twitter->setLabelSize(14);
 		twitter->setTextOffsetX(10);
 		
 		contactDev = new ContactDeveloperButton(200,260, "Email Developer");
-		contactDev->Scale = 2.0f;
+		contactDev->setScale(2.0f);
 		contactDev->setLabelSize(14);
 		contactDev->setTextOffsetX(8);
 		
 		donate = new DonateButton(200,320, "Donate");
-		donate->Scale = 2.0f;
+		donate->setScale(2.0f);
 		donate->setLabelSize(14);
 		donate->setTextOffsetX(-26);
 		
 		donateBitcoin = new DonateBitcoinButton(200,380, "Donate Bitcoin");
-		donateBitcoin->Scale = 2.0f;
+		donateBitcoin->setScale(2.0f);
 		donateBitcoin->setLabelSize(14);
 	}
 	
@@ -1528,13 +1528,13 @@ namespace SmashBros
 		trainingBanner = new Actor(260,35);
 		trainingBanner->addAnimation(new Animation("normal",1,"Images/Menus/Buttons/Solo/training_mode.png"));
 		trainingBanner->changeAnimation("normal",FORWARD);
-		trainingBanner->Scale = 1.8f;
-				
+		trainingBanner->setScale(1.8f);
+		
 		readyToFight = new ReadyToFightBar(450, 380);
 		readyToFight->addAnimation(new Animation("normal",1,"Images/Menus/Buttons/Generic/readytofight.png"));
 		readyToFight->addAnimation(new Animation("hover",1,"Images/Menus/Buttons/Generic/readytofight_selected.png"));
 		readyToFight->changeAnimation("normal", FORWARD);
-		readyToFight->Scale = 1.845f;
+		readyToFight->setScale(1.845f);
 	}
 	
 	void TrainingCharSelect::LoadContent()
@@ -1627,7 +1627,7 @@ namespace SmashBros
 			delete gameMode;
 		}
 	}
-
+	
 	void RulesMenu::Initialize()
 	{
 		gameMode = new ToggleButtons(615,131,645,201);
@@ -1636,15 +1636,15 @@ namespace SmashBros
 		time = new MenuBarValue(300,130,"Time Limit","min");
 		time->setProperties(Global::minTime, Global::maxTime, 1);
 		time->setValue(Global::timeLimit);
-		time->Scale = 1.6f;
+		time->setScale(1.6f);
 				
 		stocks = new MenuBarValue(330,200,"Stock");
 		stocks->setProperties(Global::minLives, Global::maxLives, 1);
 		stocks->setValue(Global::stockAmount);
-		stocks->Scale = 1.6f;
+		stocks->setScale(1.6f);
 				
 		button_items = new MenuBarSmallButton(660,500,"Item Switch","ItemsMenu");
-		button_items->Scale = 1.8f;
+		button_items->setScale(1.8f);
 	}
 	
 	void RulesMenu::LoadContent()
@@ -1910,7 +1910,7 @@ namespace SmashBros
 		peerID = id;
 		device = "";
 		card = new Actor(x,y);
-		card->Scale = 0.5f;
+		card->setScale(0.5f);
 		card->addAnimation(new Animation("empty", 1, "Images/Menus/Buttons/Bluetooth/no_peer.png"));
 		card->addAnimation(new Animation("iPod Touch", 1, "Images/Menus/Buttons/Bluetooth/iPod_Touch.png"));
 		card->addAnimation(new Animation("iPhone", 1, "Images/Menus/Buttons/Bluetooth/iPhone.png"));
@@ -2069,7 +2069,7 @@ namespace SmashBros
 		peerCard = new PeerCard("", "");
 		
 		brawl = new Actor(View::ScaleWidth()/2, 540);
-		brawl->Scale = 0.5f;
+		brawl->setScale(0.5f);
 		brawl->addAnimation(new Animation("disabled", 1, "Images/Menus/Buttons/Bluetooth/Brawl_disabled.png"));
 		brawl->addAnimation(new Animation("enabled", 1, "Images/Menus/Buttons/Bluetooth/Brawl.png"));
 		brawl->addAnimation(new Animation("selected", 1, "Images/Menus/Buttons/Bluetooth/Brawl_selected.png"));

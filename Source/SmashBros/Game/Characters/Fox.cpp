@@ -27,6 +27,7 @@ namespace SmashBros
 		lastKickFrame = 0;
 		lastBUpChargeDir = 0;
 		lastDir = 0;
+		queueStandardCombo = false;
 		landmaster = null;
 		
 		walkSpeed = 4.5f;
@@ -44,9 +45,9 @@ namespace SmashBros
 		//setWireframeColor(Color.red);
 		//showWireframe(true);
 		
-		setHangPoint(15, 8);
+		setHangPoint(9, 8);
 		
-		oldScale = Scale;
+		oldScale = getScale();
 		
 		Console::WriteLine((String)"finished creating player " + playerNo);
 	}
@@ -148,6 +149,11 @@ namespace SmashBros
 		}
 	}
 	
+	void Fox::setToDefaultValues()
+	{
+		queueStandardCombo = false;
+	}
+	
 	void Fox::Load()
 	{
 		setFolderPath("Images/Game/Characters/Fox/");
@@ -189,7 +195,7 @@ namespace SmashBros
 		//addTwoSidedAnimation("dash_attack", "dash_attack.png", 12, 6, 1);
 		addTwoSidedAnimation("standard_attack", "standard_attack.png", 14, 4, 1);
 		addTwoSidedAnimation("standard_attack2", "standard_attack2.png", 14, 4, 1);
-		addTwoSidedAnimation("standard_attack3", "standard_attack3.png", 10, 6, 1);
+		addTwoSidedAnimation("standard_attack3", "standard_attack3.png", 14, 6, 1);
 		addTwoSidedAnimation("standard_attack_side", "standard_attack_side.png", 16, 4, 1);
 		addTwoSidedAnimation("standard_attack_up", "standard_attack_up.png", 21, 7, 1);
 		addTwoSidedAnimation("standard_attack_down", "standard_attack_down.png", 10, 4, 1);
@@ -240,7 +246,7 @@ namespace SmashBros
 		{
 			finalSmashing = false;
 			finalsmashFinishing = false;
-			Scale = oldScale;
+			setScale(oldScale);
 			setVisible(true);
 		}
 		if(landmaster!=null)
@@ -252,7 +258,22 @@ namespace SmashBros
 	
 	void Fox::onAnimationFinish(const String&n)
 	{
-		if(n.equals("special_prep_side_left") || n.equals("special_prep_side_right"))
+		if(n.equals("standard_attack3_left") || n.equals("standard_attack3_right"))
+		{
+			if(queueStandardCombo)
+			{
+				if(attacksPriority > 0.8)
+				{
+					attacksPriority -= 0.3;
+				}
+			}
+			else
+			{
+				Player::onAnimationFinish(n);
+			}
+			queueStandardCombo = false;
+		}
+		else if(n.equals("special_prep_side_left") || n.equals("special_prep_side_right"))
 		{
 			landing=false;
 	        yvelocity=0;
@@ -360,7 +381,7 @@ namespace SmashBros
 	{
 		if(attacksHolder==2)
 		{
-			Animation*anim = getLastAnimation();
+			Animation*anim = getAnimation();
 			if((anim->getCurrentFrame()==1 || anim->getCurrentFrame()==3 || anim->getCurrentFrame()==5)
 				&& lastKickFrame!=anim->getCurrentFrame())
 			{
@@ -409,7 +430,7 @@ namespace SmashBros
 	            attacksPriority=7;
 	            setAlpha(0);
 	            setVisible(false);
-	            Scale = 0;
+	            setScale(0);
 	            finalSmashing=true;
 	            finalsmashFinishing=false;
 	            finalsmashTime = Global::getWorldTime() + 18000;
@@ -448,7 +469,7 @@ namespace SmashBros
 					landmaster = null;
 					AttackTemplates::finishFinalSmash(this);
 					finalSmashing = false;
-					Scale = oldScale;
+					setScale(oldScale);
 					setVisible(true);
 					float y1 = y - 200;
 					if(y1<((float)Global::currentStage->getItemBoundaries().y))
@@ -526,8 +547,8 @@ namespace SmashBros
 					case 2:
 					//A3
 					causeDamage(collide, 2);
-					collide->y -= 5;
-					collide->x += 3 * getPlayerDirMult();
+					collide->y -= 6;
+					collide->x += 0.5f * getPlayerDirMult();
 					causeHurt(collide, getOppPlayerDir(), 100);
 					break;
 					
@@ -691,14 +712,12 @@ namespace SmashBros
 		return false;
 	}
 	
-	void Fox::onFinishCharge()
+	void Fox::onQueueAttack(byte attackType)
 	{
-		//
-	}
-	
-	void Fox::doChargingAttack(byte button)
-	{
-		//
+		if(attackType == ATTACK_A)
+		{
+			queueStandardCombo = true;
+		}
 	}
 	
 	void Fox::attackA()
@@ -710,8 +729,11 @@ namespace SmashBros
 	    {
 	        if(isOnGround())
 	        {
-	            x += 5 * getPlayerDirMult();
-	            AttackTemplates::combo3A(this, 500, 0,1.98, 1,2.21, 2,3.04);
+	            if(getComboNo()!=2)
+				{
+					x += getPlayerDirMult()*5;
+				}
+	            AttackTemplates::combo3A(this, 500, 0,1.98, 1,2.21, 2,2.64, true);
 	        }
 	        else
 	        {
@@ -1101,7 +1123,7 @@ namespace SmashBros
 			break;
 		}
 		x = owner->x;
-		y = owner->y + (30*Scale);
+		y = owner->y + (30*getScale());
 	}
 	
 	void Fox::LandmasterHoverBlast::onAnimationFinish(const String&name)
@@ -1142,7 +1164,7 @@ namespace SmashBros
 		anim->addFrame("Images/Game/Characters/Fox/landmaster_shoot.png");
 		anim->mirror(true);
 		addAnimation(anim);
-			
+		
 		anim = new Animation("boost_left",8,4,1);
 		anim->addFrame("Images/Game/Characters/Fox/landmaster_boost.png");
 		addAnimation(anim);
@@ -1150,19 +1172,19 @@ namespace SmashBros
 		anim->addFrame("Images/Game/Characters/Fox/landmaster_boost.png");
 		anim->mirror(true);
 		addAnimation(anim);
-			
-		Scale = 0.8f;
-			
+		
+		setScale(0.7f);
+		
 		setSolid(true);
 		setOwnerSolid(false);
 		
 		weight = 0.1f;
-			
+		
 		attack = -1;
-			
+		
 		idle();
 	}
-
+	
 	Fox::Landmaster::~Landmaster()
 	{
 		Fox*fox = (Fox*)Global::getPlayerActor(getPlayerNo());
@@ -1183,20 +1205,20 @@ namespace SmashBros
 				case 0:
 				{
 					owner->setPlayerDir(LEFT);
-					LandmasterShot*shot = new LandmasterShot(getPlayerNo(),x - (120*Scale), y - (24*Scale));
+					LandmasterShot*shot = new LandmasterShot(getPlayerNo(),x - (120*getScale()), y - (24*getScale()));
 					createProjectile(shot);
 					
-					fox->addProjectileInfo(2, shot->getID(), x - (120*Scale), y - (24*Scale));
+					fox->addProjectileInfo(2, shot->getID(), x - (120*getScale()), y - (24*getScale()));
 				}
 				break;
 					
 				case 1:
 				{
 					owner->setPlayerDir(RIGHT);
-					LandmasterShot*shot = new LandmasterShot(getPlayerNo(),x + (120*Scale), y - (24*Scale));
+					LandmasterShot*shot = new LandmasterShot(getPlayerNo(),x + (120*getScale()), y - (24*getScale()));
 					createProjectile(shot);
 					
-					fox->addProjectileInfo(2, shot->getID(), x + (120*Scale), y - (24*Scale));
+					fox->addProjectileInfo(2, shot->getID(), x + (120*getScale()), y - (24*getScale()));
 				}
 				break;
 			}
@@ -1227,10 +1249,10 @@ namespace SmashBros
 					break;
 				}
 				yvelocity -=5;
-				LandmasterHoverBlast* hoverBlast = new LandmasterHoverBlast(getPlayerNo(), x, y+(30*Scale));
-				hoverBlast->Scale = Scale;
+				LandmasterHoverBlast* hoverBlast = new LandmasterHoverBlast(getPlayerNo(), x, y+(30*getScale()));
+				hoverBlast->setScale(getScale());
 				createProjectile(hoverBlast);
-				fox->addProjectileInfo(4, hoverBlast->getID(), x, y+(30*Scale));
+				fox->addProjectileInfo(4, hoverBlast->getID(), x, y+(30*getScale()));
 			}
 			if(owner->getMoveLeft()>0)
 			{

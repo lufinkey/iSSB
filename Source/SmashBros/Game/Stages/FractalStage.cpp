@@ -194,26 +194,26 @@ namespace SmashBros
 			anim->addFrame("Images/Game/Stages/TestStage/roflsaurus.png");
 			break;
 		}
-			
+		
 		addAnimation(anim);
 		changeAnimation("normal",FORWARD);
-			
-		Scale = (float)(GameEngine::random()*1.5 + 0.2);
-			
-		newScale = GameEngine::random()*1.5 + 0.2;
-			
+		
+		setScale((float)(GameEngine::random()*1.5f + 0.2f));
+		
+		newScale = GameEngine::random()*1.5f + 0.2f;
+		
 		float moveX = (float)(GameEngine::random()*900);
 		float moveY = (float)(GameEngine::random()*600);
 		float speed = 2;
-			
+		
 		double dist = distance(x,y,moveX,moveY);
-			
+		
 		int frames = (int)((double)dist/(float)speed);
-			
-		scaleIncr = (double)(newScale - Scale)/(double)frames;
-			
+		
+		scaleIncr = (double)(newScale - getScale())/(double)frames;
+		
 		moveTo(moveX, moveY, speed);
-			
+		
 		setColor(Color((unsigned char)(GameEngine::random()*255),(unsigned char)(GameEngine::random()*255), (unsigned char)(GameEngine::random()*255), 255));
 	}
 		
@@ -223,9 +223,9 @@ namespace SmashBros
 		scaleIncr = 1;
 		isDead = false;
 		
-		Scale = (float)(GameEngine::random()*1.5 + 0.2); 
+		setScale((float)(GameEngine::random()*1.5f + 0.2f));
 			
-		newScale = GameEngine::random()*1.5 + 0.2;
+		newScale = GameEngine::random()*1.5f + 0.2f;
 			
 		float moveX = (float)(GameEngine::random()*900);
 		float moveY = (float)(GameEngine::random()*600);
@@ -235,7 +235,7 @@ namespace SmashBros
 			
 		int frames = (int)((double)dist/(float)speed);
 			
-		scaleIncr = (double)(newScale - Scale)/(double)frames;
+		scaleIncr = (double)(newScale - getScale())/(double)frames;
 			
 		moveTo(moveX, moveY, speed);
 		
@@ -250,7 +250,7 @@ namespace SmashBros
 	void FractalStage::RandomThing::Update(long gameTime)
 	{
 		GameElement::Update(gameTime);
-		Scale += (float)scaleIncr;
+		setScale(getScale() + (float)scaleIncr);
 	}
 	
 	void FractalStage::RandomThing::onMoveFinish()
@@ -268,7 +268,7 @@ namespace SmashBros
 		anim->addFrame("Images/Game/Stages/TestStage/swirl.png");
 		swirl->addAnimation(anim);
 		swirl->changeAnimation("normal", FORWARD);
-		swirl->Scale = Scale*0.8f;
+		swirl->setScale(getScale()*0.8f);
 		
 		addAnimation(new Animation("normal",1,"Images/Game/Stages/TestStage/nic_cage.png"));
 		changeAnimation("normal",FORWARD);
@@ -292,7 +292,7 @@ namespace SmashBros
 	void FractalStage::NicCage::Draw(Graphics2D&g, long gameTime)
 	{
 		float oldRotation = g.getRotation();
-
+		
 		if(getRotation()!=0)
 		{
 			g.rotate(getRotation(),(float)(x*Camera::Zoom),(float)(y*Camera::Zoom));
@@ -305,26 +305,26 @@ namespace SmashBros
 		if(!isrotating)
 		{
 				
-			swirl->Scale = Scale*0.1f;
+			swirl->setScale(getScale()*0.1f);
 				
-			swirl->x = x - (float)(46*Scale);
-			swirl->y = y - (float)(3*Scale);
+			swirl->x = x - (float)(46*getScale());
+			swirl->y = y - (float)(3*getScale());
 			swirl->Draw(g, gameTime);
 				
-			swirl->x = x + (float)(34*Scale);
-			swirl->y = y - (float)(2*Scale);
+			swirl->x = x + (float)(34*getScale());
+			swirl->y = y - (float)(2*getScale());
 			swirl->Draw(g, gameTime);
 		}
-
+		
 		g.setRotation(oldRotation);
 	}
-
+	
 	FractalStage::Fractal::Fractal()
 	{
 		c = ComplexNumber(-0.223, 0.745);
-
+		
 		values = null;
-
+		
 		minX = -1.5;
 		maxX = 1.5;
 		minY = -1.5;
@@ -333,18 +333,18 @@ namespace SmashBros
 		Scale = 1;
 	    
 		image = null;
-
+		
 		threshold = 1;
-
+		
 		iterations = 50;
 		
 		img.create(WIDTH,HEIGHT,Color::WHITE);
-
+		
 		color1 = Color(0,0,0,255);
 	    color2 = Color(255,255,255,0);
 	    
 	    getValues();
-
+		
 	    for(unsigned int i=0;i<WIDTH;i++)
 	    {
 	        for(unsigned int j=0;j<HEIGHT;j++)
@@ -365,23 +365,23 @@ namespace SmashBros
 			delete[] values[i];
 		}
 		delete[] values;
-
+		
 		values = null;
-
+		
 		image = new BufferedImage(img);
 	}
-
+	
 	FractalStage::Fractal::~Fractal()
 	{
 		delete image;
 	}
-	    
+	
 	void FractalStage::Fractal::Draw(Graphics2D&g, long gameTime)
 	{
 	    //redrawFractal();
 		
 		Scale = GameEngine::random()*4 + 1;
-
+		
 	    float w = (float)((float)900*Scale);
 	    float h = (float)((float)600*Scale);
 	    float x1 = (float)((float)900 - w/2);

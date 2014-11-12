@@ -1,6 +1,7 @@
 
 #include "PixelIterator.h"
 #include "../Actor/Actor.h"
+#include <cmath>
 
 namespace GameEngine
 {
@@ -25,17 +26,17 @@ namespace GameEngine
 	
 	void PixelIterator::reset(float x1, float y1, float incrX, float incrY, int w, int h)
 	{
-		Animation*lastAnim = actor->getLastAnimation();
-		img = lastAnim->getCurrentImage();
+		Animation*anim = actor->getAnimation();
+		img = anim->getCurrentImage();
 		
 		bool mirror = false;
 		bool mirrorVertical = false;
 		
-		if((lastAnim->isMirrored() && !actor->mirrored) || (!lastAnim->isMirrored() && actor->mirrored))
+		if((anim->isMirrored() && !actor->mirrored) || (!anim->isMirrored() && actor->mirrored))
 		{
 			mirror = true;
 		}
-		if((lastAnim->isMirroredVertical() && !actor->mirroredVertical) || (!lastAnim->isMirroredVertical() && actor->mirroredVertical))
+		if((anim->isMirroredVertical() && !actor->mirroredVertical) || (!anim->isMirroredVertical() && actor->mirroredVertical))
 		{
 			mirrorVertical = true;
 		}
@@ -65,7 +66,7 @@ namespace GameEngine
 			y1 = actor->currentImageY + y1;
 		}
 		
-		currentPoint = (img->getWidth()*floor(y1))+x1;
+		currentPoint = (img->getWidth()*std::floor(y1))+x1;
 		lastRowStart = currentPoint;
 		xIncr = incrX;
 		yIncr = incrY;

@@ -38,13 +38,13 @@ namespace SmashBros
 		{
 			if(collide->pickUpItem(this))
 			{
-				scale = collide->Scale;
+				scale = collide->getScale();
 				
 				int oldHeight = collide->height;
 				
-				collide->Scale*=0.5;
+				collide->setScale(collide->getScale()*0.5f);
 				
-				int newHeight = (int)(collide->height*0.5);
+				int newHeight = (int)(collide->height*0.5f);
 				
 				int dif = newHeight - oldHeight;
 				collide->y-=dif/2;
@@ -83,7 +83,7 @@ namespace SmashBros
 		if(active)
 		{
 			Player*playr = Global::getPlayerActor(getItemHolder());
-			playr->Scale = scale;
+			playr->setScale(scale);
 		}
 	}
 	

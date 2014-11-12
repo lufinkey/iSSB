@@ -242,7 +242,7 @@ namespace GameEngine
 
     bool WireframeActor::isColliding(Actor*collide)
 	{
-		if(collide->Scale==0 || width==0 || height==0)
+		if(collide->getScale()==0 || width==0 || height==0)
 		{
 			return false;
 		}
@@ -255,10 +255,10 @@ namespace GameEngine
 			int w = collideOverlap.right - collideOverlap.left;
 			int h = collideOverlap.bottom - collideOverlap.top;
 			
-			float x1 = ((float)collideOverlap.left/collide->Scale);
-			float y1 = ((float)collideOverlap.top/collide->Scale);
+			float x1 = ((float)collideOverlap.left/collide->getScale());
+			float y1 = ((float)collideOverlap.top/collide->getScale());
 			
-			float incr1 = (float)(1/collide->Scale);
+			float incr1 = (float)(1/collide->getScale());
 			
 			float pntX1 = x1;
 			float pntY1 = y1;

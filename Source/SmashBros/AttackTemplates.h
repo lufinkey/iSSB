@@ -20,8 +20,8 @@ namespace SmashBros
 		static const byte SMASH_DOWN = 3;
 		
 		static void normalA(Player*playr, int aNo, double aP);
-		static void combo2A(Player*playr, long comTime, int aNo,double aP,int aNo2,double aP2);
-		static void combo3A(Player*playr, long comTime, int aNo,double aP,int aNo2,double aP2,int aNo3, double aP3);
+		static void combo2A(Player*playr, long comTime, int aNo,double aP,int aNo2,double aP2, boolean loopLast=false);
+		static void combo3A(Player*playr, long comTime, int aNo,double aP,int aNo2,double aP2,int aNo3, double aP3, boolean loopLast=false);
 		static void normalAirA(Player*playr, int aNo, double aP);
 		static void normalSideA(Player*playr, int aNo, double aP);
 		static void normalDashA(Player*playr, int aNo, double aP, float speed);
@@ -33,10 +33,12 @@ namespace SmashBros
 		static void normalAirDownA(Player*playr, int aNo, double aP);
 		static void singleAirDownA(Player*playr, int aNo, double aP);
 		static void dropAirDownA(Player*playr, int type, int aNo, double aP, float speedY, float speedX);
+		static void normalB(Player*playr, int aNo, double aP);
 		static void chargeB(Player*playr, float spMin, float spMax, long totalTime);
 		static void homingB(Player*playr, int aNo, double aP, float speed);
 		static void singleProjectile(Player*playr, int aNo, double aP, Projectile*projectile);
-		static void normalSideB(Player*playr, int aNo, double aP, float xDist);
+		static void normalSideB(Player*playr, int aNo, double aP);
+		static void moveSideB(Player*playr, int aNo, double aP, float xDist);
 		static void dashSideB(Player*playr, int aNo, double aP, float speed);
 		static void rollAttack(Player*playr, int aNo, double aP, float speed, long time);
 		static void launchUpB(Player*playr, int aNo, double aP, float yVeloc, float yVeloc2);

@@ -13,7 +13,7 @@ namespace SmashBros
 			newCharIcon(i, CharacterLoader::getIconPath(i));
 		}
 	}
-
+	
 	void CharSelectScreen::loadCharPreviews(int num)
 	{
 		Actor*a = charPreviews.get(num-1);
@@ -22,10 +22,10 @@ namespace SmashBros
 			a->addAnimation(new Animation(CharacterLoader::getName(i),1, CharacterLoader::getPreviewPath(i)));
 		}
 		a->changeAnimation(CharacterLoader::getName(Global::CHAR_MARIO),FORWARD);
-		a->Scale = 2.0f;
+		a->setScale(2.0f);
 		a->setAlpha(1);
 	}
-
+	
 	CharSelectScreen::CharSelectScreen(const String&name) : Screen(name)
 	{
 		canGrabCoin = false;
@@ -409,7 +409,7 @@ namespace SmashBros
 			cardAvailable[i-1]=false;
 			cardTypes[i-1] = (byte)type.get(i-1);
 			Actor*a = setUpCard(i,type.get(i-1));
-			a->Scale = 1.65f;
+			a->setScale(1.65f);
 			Actor*a2 = new Actor(0,0);
 			TextActor*a3 = new TextActor(" ", AssetManager::getFont("Fonts/arial.ttf", Font::BOLD, 12), Color::WHITE);
 			a3->setAlignment(TextActor::ALIGN_CENTER);
@@ -436,7 +436,7 @@ namespace SmashBros
 			addToGrid(a,25+(space/10),500,num,1,space,0,i);
 			coinPoints[i-1].x=(int)a->x;
 			coinPoints[i-1].y=(int)a->y;
-			a->Scale = 1.4f;
+			a->setScale(1.4f);
 			charCoins.add(a);
 		}
 	}
@@ -643,7 +643,7 @@ namespace SmashBros
 		}
 		return false;
 	}
-
+	
 	void CharSelectScreen::setCardAnimation(int num)
 	{
 		if(!cardAvailable[num-1])
@@ -725,19 +725,19 @@ namespace SmashBros
 			default:
 			anim = new Animation("normal",1,"Images/Menus/CharacterSelect/coins/coin.png");
 			break;
-				
+			
 			case 1:
 			anim = new Animation("normal",1,"Images/Menus/CharacterSelect/coins/coin1.png");
 			break;
-				
+			
 			case 2:
 			anim = new Animation("normal",1,"Images/Menus/CharacterSelect/coins/coin2.png");
 			break;
-				
+			
 			case 3:
 			anim = new Animation("normal",1,"Images/Menus/CharacterSelect/coins/coin3.png");
 			break;
-					
+			
 			case 4:
 			anim = new Animation("normal",1,"Images/Menus/CharacterSelect/coins/coin4.png");
 			break;
@@ -745,12 +745,12 @@ namespace SmashBros
 		addAnimation(anim);
 		changeAnimation("normal",FORWARD);
 	}
-
+	
 	CharSelectScreen::CharCoin::~CharCoin()
 	{
 		//
 	}
-
+	
 	void CharSelectScreen::CharCoin::onClick()
 	{
 		if(screen->canGrabCoin)
@@ -759,12 +759,12 @@ namespace SmashBros
 			dragId = getTouchId();
 		}
 	}
-
+	
 	void CharSelectScreen::CharCoin::onRelease()
 	{
 		drag = false;
 	}
-
+	
 	void CharSelectScreen::CharCoin::Update(long gameTime)
 	{
 		Actor::Update(gameTime);
@@ -778,30 +778,30 @@ namespace SmashBros
 			drag = false;
 		}
 	}
-
+	
 	CharSelectScreen::CharIcon::CharIcon(int num, float x1, float y1, Animation*anim) : Actor(x1,y1)
 	{
-		Scale = 1.8f;
+		setScale(1.8f);
 		addAnimation(anim);
 		changeAnimation(anim->name, FORWARD);
 		this->num = num;
 	}
-
+	
 	CharSelectScreen::CharIcon::~CharIcon()
 	{
 		//
 	}
-
+	
 	CharSelectScreen::CharCard::TeamFlag::TeamFlag(float x1, float y1, int num) : Actor(x1,y1)
 	{
 		this->num = num;
 	}
-
+	
 	CharSelectScreen::CharCard::TeamFlag::~TeamFlag()
 	{
 		//
 	}
-
+	
 	void CharSelectScreen::CharCard::TeamFlag::onRelease()
 	{
 		if(Global::currentTeams[num]==Global::TEAM_RED)
@@ -830,20 +830,20 @@ namespace SmashBros
 		Global::currentTeams[num] = Global::TEAM_RED;
 		
 		teamFlag = new TeamFlag(0,0, num);
-
+		
 		teamFlag->addAnimation(new Animation("red",1, "Images/Menus/CharacterSelect/flags/red.png"));
 		teamFlag->addAnimation(new Animation("blue",1, "Images/Menus/CharacterSelect/flags/blue.png"));
 		teamFlag->addAnimation(new Animation("green",1, "Images/Menus/CharacterSelect/flags/green.png"));
 		teamFlag->changeAnimation("red", FORWARD);
-			
-		teamFlag->Scale = 1.4f;
+		
+		teamFlag->setScale(1.4f);
 	}
-
+	
 	CharSelectScreen::CharCard::~CharCard()
 	{
 		delete teamFlag;
 	}
-
+	
 	void CharSelectScreen::CharCard::onRelease()
 	{
 		if(!screen->cardChangeDisabled(num-1) && !screen->coinsClicked() && !teamFlag->mouseOver() && !teamFlag->isClicked() && !teamFlag->wasClicked())

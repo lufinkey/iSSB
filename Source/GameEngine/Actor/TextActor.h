@@ -17,6 +17,7 @@ namespace GameEngine
 		
 		double Rotation;
 		float Alpha;
+		float Scale;
 		
 		Color color;
 		Font*font;
@@ -66,8 +67,6 @@ namespace GameEngine
 		static const unsigned char ALIGN_CENTER = 2;
 		static const unsigned char ALIGN_TOPLEFT = 3;
 		static const unsigned char ALIGN_TOPRIGHT = 4;
-		
-		float Scale;
 		
 		TextActor(const String& s, Font*f, const Color&c);
 		TextActor(float x1, float y1, const String& s, Font*f, const Color&c);
@@ -128,5 +127,8 @@ namespace GameEngine
 		
 		void setAlpha(float alpha);
 		float getAlpha();
+		
+		void setScale(float scale);
+		float getScale();
 	};
 }

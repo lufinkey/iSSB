@@ -22,7 +22,7 @@ namespace SmashBros
 	
 	void GameElement::Draw(Graphics2D&g, long gameTime)
 	{
-		drawActor(g, gameTime,(float)(x*Camera::Zoom), (float)(y*Camera::Zoom), Scale*Camera::Zoom);
+		drawActor(g, gameTime,(float)(x*Camera::Zoom), (float)(y*Camera::Zoom), getScale()*Camera::Zoom);
 	}
 
 	bool GameElement::isOnScreen()
@@ -34,9 +34,9 @@ namespace SmashBros
         
         Animation*anim = getAnimation();
         
-        float w = (float)anim->getWidth()*Scale*Camera::Zoom;
-        float h = (float)anim->getHeight()*Scale*Camera::Zoom;
-
+        float w = (float)anim->getWidth()*getScale()*Camera::Zoom;
+        float h = (float)anim->getHeight()*getScale()*Camera::Zoom;
+		
         left1 = ((x*Camera::Zoom)-(((float)w/2)*Camera::Zoom));
         left2 = View::x;
         right1 = ((x*Camera::Zoom)+(((float)w/2)*Camera::Zoom));
@@ -45,7 +45,7 @@ namespace SmashBros
         top2 = View::y;
         bottom1 = ((y*Camera::Zoom)+(((float)h/2)*Camera::Zoom));
         bottom2 = (View::y+(View::ScaleHeight()));
-
+		
         if (bottom1 < top2)
         {
         	return false;
@@ -69,7 +69,7 @@ namespace SmashBros
 
 	byte GameElement::isColliding2(GameElement*collide)
 	{
-		if(Scale==0 || collide->Scale==0)
+		if(getScale()==0 || collide->getScale()==0)
 		{
 			return 0;
 		}
@@ -81,13 +81,13 @@ namespace SmashBros
 			int w = (int)(overlap.right - overlap.left);
 			int h = (int)(overlap.bottom - overlap.top);
 			
-			float x1 = ((float)overlap.left/Scale);
-			float y1 = ((float)overlap.top/Scale);
-			float x2 = ((float)overlap2.left/collide->Scale);
-			float y2 = ((float)overlap2.top/collide->Scale);
+			float x1 = ((float)overlap.left/getScale());
+			float y1 = ((float)overlap.top/getScale());
+			float x2 = ((float)overlap2.left/collide->getScale());
+			float y2 = ((float)overlap2.top/collide->getScale());
 			
-			float incr1 = (float)(1/Scale);
-			float incr2 = (float)(1/collide->Scale);
+			float incr1 = (float)(1/getScale());
+			float incr2 = (float)(1/collide->getScale());
 			
 			boolean colliding = false;
 			
@@ -431,10 +431,10 @@ namespace SmashBros
 		}
 		return Rectangle(overlap.x,overlap.y, overlap.width - overlap.x, overlap.height - overlap.y);
 	}
-
+	
 	byte GameElement::solidElementCollision(GameElement*collide)
 	{
-		if(Scale==0 || collide->Scale==0)
+		if(getScale()==0 || collide->getScale()==0)
 		{
 			return 0;
 		}
@@ -451,9 +451,9 @@ namespace SmashBros
 			int startY = collideOverlap.y;
 			int endY = collideOverlap.y + collideOverlap.height;
 			
-			float x1 = ((float)startX/collide->Scale);
-			float y1 = ((float)startY/collide->Scale);
-			float incr = (float)(1/collide->Scale);
+			float x1 = ((float)startX/collide->getScale());
+			float y1 = ((float)startY/collide->getScale());
+			float incr = (float)(1/collide->getScale());
 			
 			int left=0;
 			int right=0;

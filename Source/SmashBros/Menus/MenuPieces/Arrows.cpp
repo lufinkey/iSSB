@@ -112,8 +112,8 @@ namespace SmashBros
 	
 	void Arrows::setScale(float scale)
 	{
-		up->Scale = scale;
-		down->Scale = scale;
+		up->setScale(scale);
+		down->setScale(scale);
 		Scale = scale;
 	}
 	

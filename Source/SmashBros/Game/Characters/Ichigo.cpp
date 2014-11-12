@@ -32,7 +32,7 @@ namespace SmashBros
 		
 		name = "Ichigo";
 		
-		Scale = 0.95f;
+		setScale(0.95f);
 		
 		setHitbox(-14, 0, 28, 45);
 		setHitboxColor(Color::GREEN);
@@ -120,7 +120,7 @@ namespace SmashBros
 					{
 						Projectile::setNextID(projID);
 						Blast*blast = new Blast(getPlayerNo(), x1, y1);
-						blast->Scale = (float)oldSmashPower/100;
+						blast->setScale((float)oldSmashPower/100);
 						createProjectile(blast);
 					}
 					break;
@@ -535,7 +535,7 @@ namespace SmashBros
 		{
 			destroyCharge();
 			Blast*blast = new Blast(getPlayerNo(), x, y);
-			blast->Scale = (float)smashPower/100;
+			blast->setScale((float)smashPower/100);
 			oldSmashPower = smashPower;
 			createProjectile(blast);
 			
@@ -689,10 +689,10 @@ namespace SmashBros
 	    if(!bUp)
 	    {
 	        AttackTemplates::rehitUpB2(this, 12, 4, 2, 0);
-			SpinningBlade*blade = new SpinningBlade(getPlayerNo(),x, y-((float)4*Scale));
+			SpinningBlade*blade = new SpinningBlade(getPlayerNo(),x, y-((float)4*getScale()));
 	        createProjectile(blade);
 			
-			addProjectileInfo(2, blade->getID(), x, y-((float)4*Scale));
+			addProjectileInfo(2, blade->getID(), x, y-((float)4*getScale()));
 			
 	        yvelocity=0;
 	        xvelocity=0;
@@ -885,7 +885,7 @@ namespace SmashBros
 			break;
 		}
 		
-		Scale = Global::getPlayerActor(playerNo)->Scale;
+		setScale(Global::getPlayerActor(playerNo)->getScale());
 		
 		setLayer(LAYER_MIDDLELOWER);
 		
@@ -902,7 +902,7 @@ namespace SmashBros
 		Player*owner = Global::getPlayerActor(getPlayerNo());
 		
 		x = owner->x;
-		y = owner->y - ((float)4*owner->Scale);
+		y = owner->y - ((float)4*owner->getScale());
 		
 		String ownerAnim = owner->getAnimName();
 		if(owner->isHurt() || owner->isHanging() || (!ownerAnim.equals("special_attack_up_left") && !ownerAnim.equals("special_attack_up_right")))
@@ -918,7 +918,7 @@ namespace SmashBros
 		Player*owner = Global::getPlayerActor(getPlayerNo());
 			
 		x = owner->x;
-		y = owner->y - ((float)4*owner->Scale);
+		y = owner->y - ((float)4*owner->getScale());
 			
 		Projectile::Draw(g, gameTime);
 	}
@@ -1056,8 +1056,8 @@ namespace SmashBros
 	
 	Ichigo::FinalSmashBlast::FinalSmashBlast(byte playerNo, float x1, float y1) : Projectile(playerNo, x1,y1)
 	{
-		Scale = 1.6f;
-			
+		setScale(1.6f);
+		
 		addAnimation(new Animation("left",1,"Images/Game/Characters/Ichigo/finalsmash_blast.png"));
 		Animation*anim = new Animation("right",1,"Images/Game/Characters/Ichigo/finalsmash_blast.png");
 		anim->mirror(true);

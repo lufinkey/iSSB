@@ -10,7 +10,7 @@ namespace GameEngine
 {
 	double random()
 	{
-		return (double)rand()/RAND_MAX;
+		return (double)std::rand()/RAND_MAX;
 	}
 	
 	bool isOnPlatform(const char*platform)

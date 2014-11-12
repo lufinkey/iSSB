@@ -32,7 +32,7 @@ namespace SmashBros
 		fallWalk = 2;
 		fallRun = 2;
 		
-		Scale = 0.8f;
+		setScale(0.8f);
 		
 		prepping = false;
 		finishing = false;
@@ -374,17 +374,17 @@ namespace SmashBros
 			for(int i=0; i<finalsmashVictims.size(); i++)
 			{
 				Player* collide = finalsmashVictims.get(i);
-				collide->x = x + (finalsmashOffsetX*getPlayerDirMult()*Scale);
-				collide->y = y + (finalsmashOffsetY*Scale);
+				collide->x = x + (finalsmashOffsetX*getPlayerDirMult()*getScale());
+				collide->y = y + (finalsmashOffsetY*getScale());
 			}
-
+			
 			attacksHolder = 14;
-
+			
 			int finalsmashSeq[] = LINK_FINALSMASH_SEQUENCE;
 			//int finalsmashSeqTotal = sizeof(finalsmashSeq)/sizeof(int);
 			int finalsmashHitSeq[] = LINK_FINALSMASH_SEQUENCE_HITFRAMES;
 			int finalsmashHitSeqTotal = sizeof(finalsmashHitSeq)/sizeof(int);
-
+			
 			int currentFrame = getCurrentFrame();
 			if(currentFrame != lastFinalsmashFrame)
 			{
@@ -398,7 +398,7 @@ namespace SmashBros
 						i = finalsmashHitSeqTotal;
 					}
 				}
-
+				
 				if(hitting)
 				{
 					for(int i=0; i<finalsmashVictims.size(); i++)
@@ -467,7 +467,7 @@ namespace SmashBros
 		else if(n.equals("special_prep_side_left") || n.equals("special_prep_side_right"))
 		{
 			float x1 = x;
-			x1 = x+(getPlayerDirMult()*5*Scale);
+			x1 = x+(getPlayerDirMult()*5*getScale());
 			changeTwoSidedAnimation("special_attack_side", FORWARD);
 			
 			Boomerang*boomerang = new Boomerang(getPlayerNo(), x1, y);
@@ -479,7 +479,7 @@ namespace SmashBros
 			Player::onAnimationFinish(n);
 			Bomb* bomb = new Bomb(x, y);
 			addProjectileInfo(1, bomb->getID(), x, y);
-			bomb->Scale = Scale;
+			bomb->setScale(getScale());
 			pickUpItem(bomb);
 		}
 		else if(n.equals("special_attack_up_left") || n.equals("special_attack_up_right"))
@@ -672,7 +672,7 @@ namespace SmashBros
 					case 1:
 					case 2:
 					causeDamage(collide, 2);
-					collide->y = y - ((height/2) + (12*Scale));
+					collide->y = y - ((height/2) + (12*getScale()));
 					collide->yvelocity -= 2;
 					hitAmount += 1;
 					causeHurt(collide, collide->getRelPlayerDir(this), 100);
@@ -774,9 +774,9 @@ namespace SmashBros
 		{
 			destroyCharge();
 			float amount = (float)smashPower/100;
-			Arrow*arrow = new Arrow(getPlayerNo(), x, y + (8*Scale), amount);
+			Arrow*arrow = new Arrow(getPlayerNo(), x, y + (8*getScale()), amount);
 			createProjectile(arrow);
-			addProjectileInfo(1, arrow->getID(), x, y + (8*Scale));
+			addProjectileInfo(1, arrow->getID(), x, y + (8*getScale()));
 			
 			changeTwoSidedAnimation("special_release", FORWARD);
 		}

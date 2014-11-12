@@ -58,24 +58,24 @@ namespace SmashBros
 		anim->addFrame("Images/Game/Stages/FinalDestinationBrawl/mainstage.png");
 		bg->addAnimation(anim);
 		bg->changeAnimation("normal", FORWARD);
-		bg->Scale = 1.4f;
+		bg->setScale(1.4f);
 		addElement(bg);
 		
-		fglx = (-180*bg->Scale);
-		fgly = (float)(-23.5*bg->Scale) + y1;
+		fglx = (-180*bg->getScale());
+		fgly = (float)(-23.5f*bg->getScale()) + y1;
 		
 		fg_left = new GameElement(x + fglx, y + fgly);
 		fg_left->addAnimation(new Animation("normal",1,"Images/Game/Stages/FinalDestinationBrawl/foreground_left.png"));
 		fg_left->changeAnimation("normal", FORWARD);
-		fg_left->Scale = bg->Scale;
+		fg_left->setScale(bg->getScale());
 		
-		fgrx = (178*bg->Scale);
-		fgry = (-30.5f*bg->Scale) + y1;
+		fgrx = (178*bg->getScale());
+		fgry = (-30.5f*bg->getScale()) + y1;
 		
 		fg_right = new GameElement(x + fgrx, y + fgry);
 		fg_right->addAnimation(new Animation("normal",1,"Images/Game/Stages/FinalDestinationBrawl/foreground_right.png"));
 		fg_right->changeAnimation("normal", FORWARD);
-		fg_right->Scale = bg->Scale;
+		fg_right->setScale(bg->getScale());
 	}
 	
 	void FinalDestinationBrawl::loadPlatforms()

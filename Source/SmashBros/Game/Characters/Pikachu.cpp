@@ -30,7 +30,7 @@ namespace SmashBros
 		runSpeed = 4.6f;
 		fallWalk = 1.7f;
 		fallRun = 3;
-
+		
 		finishSideB = 0;
 		finishFinalsmash = 0;
 		finalsmashTransition = 0;
@@ -44,9 +44,9 @@ namespace SmashBros
 		weight = 0.12;
 		
 		name = "Pikachu";
-
-		Scale = 1.0f;
-
+		
+		setScale(1.0f);
+		
 		xprevious = x;
 		yprevious = y;
 		
@@ -62,12 +62,12 @@ namespace SmashBros
 		
 		Console::WriteLine((String)"finished creating player " + playerNo);
 	}
-
+	
 	Pikachu::~Pikachu()
 	{
 		//
 	}
-
+	
 	void Pikachu::setToDefaultValues()
 	{
 		chargingSideB = false;
@@ -78,12 +78,12 @@ namespace SmashBros
 		preppingDownB = false;
 		winding = false;
 	}
-
+	
 	void Pikachu::onDestroy()
 	{
 		finalsmash = false;
 	}
-
+	
 	boolean Pikachu::checkIfAble()
 	{
 		if(transUpB || chargingSideB || preppingDownB || winding)
@@ -92,7 +92,7 @@ namespace SmashBros
 		}
 		return true;
 	}
-
+	
 	void Pikachu::Load()
 	{
 		setFolderPath("Images/Game/Characters/Pikachu/");
@@ -161,72 +161,72 @@ namespace SmashBros
 		addTwoSidedAnimation("smash_finish_down", "smash_finish_down.png", 14, 3, 1);
 		addSingleAnimation("finalsmash", "volt_tackle.png", 8, 4, 1);
 		addTwoSidedAnimation("finalsmash_begin", "volt_tackle_transition.png", 12, 6, 1);
-
+		
 		Animation*anim;
-
+		
 		ArrayList<int> seq;
 		for(int i=5; i>=0; i--)
 		{
 			seq.add(i);
 		}
-
+		
 		anim = new Animation("finalsmash_end_left", 12, 6, 1, seq);
 		anim->addFrame(getFolderPath() + "volt_tackle_transition.png");
 		addAnimation(anim);
-
+		
 		anim = new Animation("finalsmash_end_right", 12, 6, 1, seq);
 		anim->addFrame(getFolderPath() + "volt_tackle_transition.png");
 		anim->mirror(true);
 		addAnimation(anim);
-
+		
 		anim = new Animation("special_attack_up_side_left", 14);
 		anim->addFrame(getFolderPath() + "special_attack_up_side.png");
 		addAnimation(anim);
-
+		
 		anim = new Animation("special_attack_up_side_right", 14);
 		anim->addFrame(getFolderPath() + "special_attack_up_side.png");
 		anim->mirror(true);
 		addAnimation(anim);
-
+		
 		anim = new Animation("special_attack_up_up_left", 14);
 		anim->addFrame(getFolderPath() + "special_attack_up_up.png");
 		addAnimation(anim);
-
+		
 		anim = new Animation("special_attack_up_up_right", 14);
 		anim->addFrame(getFolderPath() + "special_attack_up_up.png");
 		anim->mirror(true);
 		addAnimation(anim);
-
+		
 		anim = new Animation("special_attack_up_down_left", 14);
 		anim->addFrame(getFolderPath() + "special_attack_up_up.png");
 		anim->mirror(true);
 		anim->mirrorVertical(true);
 		addAnimation(anim);
-
+		
 		anim = new Animation("special_attack_up_down_right", 14);
 		anim->addFrame(getFolderPath() + "special_attack_up_up.png");
 		anim->mirrorVertical(true);
 		addAnimation(anim);
-
+		
 		anim = new Animation("special_attack_up_upside_left", 14);
 		anim->addFrame(getFolderPath() + "special_attack_up_upside.png");
 		addAnimation(anim);
-
+		
 		anim = new Animation("special_attack_up_upside_right", 14);
 		anim->addFrame(getFolderPath() + "special_attack_up_upside.png");
 		anim->mirror(true);
 		addAnimation(anim);
-
+		
 		anim = new Animation("special_attack_up_downside_left", 14);
 		anim->addFrame(getFolderPath() + "special_attack_up_downside.png");
 		addAnimation(anim);
-
+		
 		anim = new Animation("special_attack_up_downside_right", 14);
 		anim->addFrame(getFolderPath() + "special_attack_up_downside.png");
 		anim->mirror(true);
 		addAnimation(anim);
 	}
-
+	
 	void Pikachu::LoadAttackTypes()
 	{
 		addAIAttackType(ATTACK_A,		   ATTACKTYPE_MELEE, 5);
@@ -782,8 +782,8 @@ namespace SmashBros
 				{
 					causeDamage(collide,smashPower/4);
 					collide->yvelocity = -1;
-					collide->y -= (5*Scale*collide->Scale);
-					collide->x = x - (5*Scale * getPlayerDirMult());
+					collide->y -= (5*getScale()*collide->getScale());
+					collide->x = x - (5*getScale() * getPlayerDirMult());
 					causeHurt(collide, getOppPlayerDir(), 200);
 				}
 				else if(frameNo == 7)
@@ -1412,7 +1412,7 @@ namespace SmashBros
 		waitFrames = 0;
 		destroyTime = Global::getWorldTime() + 1000;
 		
-		Scale = 0.6f;
+		setScale(0.6f);
 		
 		setDeflectable(true);
 		detectAllPlatformsSolid(true);
@@ -1429,7 +1429,7 @@ namespace SmashBros
 		anim->addFrame("Images/Game/Characters/Pikachu/thunderbolt.png");
 		anim->mirror(true);
 		addAnimation(anim);
-
+		
 		if(itemdir==LEFT)
 		{
 			xvelocity = -vel;
@@ -1961,7 +1961,7 @@ namespace SmashBros
 	
 	Pikachu::Thunderbolt::ThunderboltGhost::ThunderboltGhost(Thunderbolt*bolt, byte playerNo, byte dir, bool drift, float x1, float y1) : ThunderboltType(playerNo, x1, y1)
 	{
-		Scale = 0.6f;
+		setScale(0.6f);
 		waitFrames = 8;
 		this->drift = drift;
 		leader = bolt;

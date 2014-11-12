@@ -28,12 +28,12 @@ namespace SmashBros
 	{
 		Actor::Draw(g,gameTime);
 		
-		label->x = (x - 10 * Scale);
-		label->y = (y - 2 * Scale);
-		label->x += xOffset*Scale;
-		if(((int)(labelSize*Scale)) != label->getSize())
+		label->x = (x - 10 * getScale());
+		label->y = (y - 2 * getScale());
+		label->x += xOffset*getScale();
+		if(((int)(labelSize*getScale())) != label->getSize())
 		{
-			label->setSize((int)(labelSize*Scale));
+			label->setSize((int)(labelSize*getScale()));
 		}
 		
 		label->Draw(g, gameTime);

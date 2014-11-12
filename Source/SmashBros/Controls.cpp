@@ -41,56 +41,56 @@ namespace SmashBros
 		button_a->addAnimation(new Animation("normal", 1, "Images/Game/Controls/button_a.png"));
 		button_a->changeAnimation("normal", FORWARD);
 		button_a->setRelativeToView(false);
-		button_a->Scale = 2;
+		button_a->setScale(2);
 		button_a->setAlpha(0.2f);
 		
 		button_b = new Actor(707.5f, 525);
 		button_b->addAnimation(new Animation("normal", 1, "Images/Game/Controls/button_b.png"));
 		button_b->changeAnimation("normal", FORWARD);
 		button_b->setRelativeToView(false);
-		button_b->Scale = 2;
+		button_b->setScale(2);
 		button_b->setAlpha(0.2f);
 		
 		button_x = new Actor(820, 337.5f);
 		button_x->addAnimation(new Animation("normal", 1, "Images/Game/Controls/button_xy.png"));
 		button_x->changeAnimation("normal", FORWARD);
 		button_x->setRelativeToView(false);
-		button_x->Scale = 2;
+		button_x->setScale(2);
 		button_x->setAlpha(0.2f);
 		
 		button_z = new Actor(790, 60);
 		button_z->addAnimation(new Animation("normal", 1, "Images/Game/Controls/button_z.png"));
 		button_z->changeAnimation("normal", FORWARD);
 		button_z->setRelativeToView(false);
-		button_z->Scale = 2;
+		button_z->setScale(2);
 		button_z->setAlpha(0.2f);
 		
 		arrow_up = new Actor(150, 375);
 		arrow_up->addAnimation(new Animation("normal", 1, "Images/Game/Controls/arrow_up.png"));
 		arrow_up->changeAnimation("normal", FORWARD);
 		arrow_up->setRelativeToView(false);
-		arrow_up->Scale = 2;
+		arrow_up->setScale(2);
 		arrow_up->setAlpha(0.5f);
 		
 		arrow_down = new Actor(150, 525);
 		arrow_down->addAnimation(new Animation("normal", 1, "Images/Game/Controls/arrow_down.png"));
 		arrow_down->changeAnimation("normal", FORWARD);
 		arrow_down->setRelativeToView(false);
-		arrow_down->Scale = 2;
+		arrow_down->setScale(2);
 		arrow_down->setAlpha(0.5f);
 		
 		arrow_left = new Actor(75, 450);
 		arrow_left->addAnimation(new Animation("normal", 1, "Images/Game/Controls/arrow_left.png"));
 		arrow_left->changeAnimation("normal", FORWARD);
 		arrow_left->setRelativeToView(false);
-		arrow_left->Scale = 2;
+		arrow_left->setScale(2);
 		arrow_left->setAlpha(0.5f);
 		
 		arrow_right = new Actor(225, 450);
 		arrow_right->addAnimation(new Animation("normal", 1, "Images/Game/Controls/arrow_right.png"));
 		arrow_right->changeAnimation("normal", FORWARD);
 		arrow_right->setRelativeToView(false);
-		arrow_right->Scale = 2;
+		arrow_right->setScale(2);
 		arrow_right->setAlpha(0.5f);
 		
 		joystickArea = new WireframeActor(0,0,View::ScaleWidth()/2, View::ScaleHeight());
@@ -116,7 +116,7 @@ namespace SmashBros
 		joystick->addAnimation(new Animation("down_right2", 1, "Images/Game/Controls/joystick_down_right2.png"));
 		joystick->changeAnimation("center", FORWARD);
 		joystick->setRelativeToView(false);
-		joystick->Scale = 2;
+		joystick->setScale(2);
 		joystick->setAlpha(0.5f);
 		
 		joystickDir = new byte[Global::possPlayers+1];
@@ -2685,9 +2685,37 @@ namespace SmashBros
 				playr->smashTime=0;
 				playr->checkAttacks();
 			}
-			else if(playr->hanging)
+			else if(!playr->canDo)
 			{
-				playr->climbUpAttack();
+				if(playr->hanging)
+				{
+					playr->climbUpAttack();
+				}
+				else if(!playr->chargingAttack)
+				{
+					switch(playr->buttondir)
+					{
+						case BUTTONDIR_CENTER:
+						playr->onQueueAttack(Player::ATTACK_A);
+						break;
+						
+						case BUTTONDIR_UP:
+						playr->onQueueAttack(Player::ATTACK_UPA);
+						break;
+						
+						case BUTTONDIR_RIGHT:
+						playr->onQueueAttack(Player::ATTACK_SIDEA);
+						break;
+						
+						case BUTTONDIR_DOWN:
+						playr->onQueueAttack(Player::ATTACK_DOWNA);
+						break;
+						
+						case BUTTONDIR_LEFT:
+						playr->onQueueAttack(Player::ATTACK_SIDEA);
+						break;
+					}
+				}
 			}
 			break;
 	 
@@ -2780,8 +2808,33 @@ namespace SmashBros
 				playr->hanging=false;
 				playr->checkAttacks();
 			}
+			else
+			{
+				switch(playr->buttondir)
+				{
+					case BUTTONDIR_CENTER:
+					playr->onQueueAttack(Player::ATTACK_B);
+					break;
+					
+					case BUTTONDIR_UP:
+					playr->onQueueAttack(Player::ATTACK_UPB);
+					break;
+					
+					case BUTTONDIR_RIGHT:
+					playr->onQueueAttack(Player::ATTACK_SIDEB);
+					break;
+					
+					case BUTTONDIR_DOWN:
+					playr->onQueueAttack(Player::ATTACK_DOWNB);
+					break;
+					
+					case BUTTONDIR_LEFT:
+					playr->onQueueAttack(Player::ATTACK_SIDEB);
+					break;
+				}
+			}
 			break;
-	 
+			
 			case UP:
 			if(playr->chargingAttack)
 			{

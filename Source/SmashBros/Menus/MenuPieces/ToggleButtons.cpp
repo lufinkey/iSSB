@@ -108,8 +108,8 @@ namespace SmashBros
 	void ToggleButtons::setScale(float scale)
 	{
 		Scale = scale;
-		t1->Scale = Scale;
-		t2->Scale = Scale;
+		t1->setScale(Scale);
+		t2->setScale(Scale);
 	}
 	
 	bool ToggleButtons::isClicked()

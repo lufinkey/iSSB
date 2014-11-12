@@ -69,7 +69,7 @@ namespace GameEngine
 		
 		lines.clear();
 	}
-
+	
 	void TextActor::updateSize()
 	{
 		int tempheight = fontSize;
@@ -83,11 +83,11 @@ namespace GameEngine
 			    lines++;
 			}
 		}
-			
+		
 		charHeight = tempheight;
-			
+		
 		height = (tempheight*lines) + (lineSpace*(lines-1)); //got the height!
-
+		
 		ArrayList<int> length = ArrayList<int>();
 		ArrayList<String> line = ArrayList<String>();
 		line.add("");
@@ -127,9 +127,14 @@ namespace GameEngine
 		
 		int w = 0;
 		int h = 0;
+		
+		unsigned int originalSize = this->font->getSize();
+		int originalStyle = this->font->getStyle();
 		this->font->setSize(fontSize);
 		this->font->setStyle(fontStyle);
 		TTF_SizeText(this->font->getTTF(), line.get(longest), &w, &h);
+		this->font->setSize(originalSize);
+		this->font->setStyle(originalStyle);
 		
 		width = w;
 		if(line.size()>0 && line.get(longest).length()>0)
@@ -140,10 +145,12 @@ namespace GameEngine
 		{
 			charWidth = 0;
 		}
-
 		
 		line.clear();
 		length.clear();
+		
+		width = (int)(width*Scale);
+		height = (int)(height*Scale);
 	}
 	
 	bool TextActor::checkHover(float x1, float y1)
@@ -168,28 +175,28 @@ namespace GameEngine
 				return true;
 			}
 			break;
-	    		
+			
 			case ALIGN_BOTTOMRIGHT:
 			if (mousex<(x-width) && mousex>x && mousey<y && mousey>(y-height))
 			{
 				return true;
 			}
 			break;
-	    		
+			
 			case ALIGN_CENTER:
 			if (mousex<(x+(width/2)) && mousex>(x-(width/2)) && mousey<(y+(height/2)) && mousey>(y-(height/2)))
 			{
 				return true;
 			}
 			break;
-	    		
+			
 			case ALIGN_TOPLEFT:
 			if (mousex<(x+width) && mousex>x && mousey<y && mousey>(y+height))
 			{
 				return true;
 			}
 			break;
-				
+			
 			case ALIGN_TOPRIGHT:
 			if (mousex<(x-width) && mousex>x && mousey<y && mousey>(y+height))
 			{
@@ -199,7 +206,7 @@ namespace GameEngine
 		}
 	    return false;
 	}
-
+	
 	float TextActor::getCenterX()
 	{
 		switch(alignment)
@@ -251,25 +258,31 @@ namespace GameEngine
 
 	void TextActor::drawActor(Graphics2D& graphics, long gameTime, bool relativeToScreen)
 	{
+		if(Scale==0)
+		{
+			updateSize();
+			return;
+		}
+		
 		Graphics2D g(graphics);
 		unsigned int originalSize = font->getSize();
 		int originalStyle = font->getStyle();
 		this->font->setSize(fontSize);
 		this->font->setStyle(fontStyle);
-
+		
 		//g.setComposite((AlphaComposite.getInstance(AlphaComposite.SRC_OVER, Alpha)));
-			
+		
 		if(antialiasing)
 		{
 			//graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		}
-			
+		
 		updateSize();
-			
+		
 		g.setColor(color);
 		g.setAlpha((unsigned char)(255 - (Alpha*g.getAlpha())));
 		g.setFont(this->font);
-			
+		
 		float x1;
 		float y1;
 		if(relativeToScreen)
@@ -285,9 +298,12 @@ namespace GameEngine
 		
 		bool onscreen = isOnScreen();
 		
-		float width = (this->width*Scale);
-		float height = (this->height*Scale);
-			
+		float width = (float)(this->width);
+		float height = (float)(this->height);
+		
+		this->width = (int)(this->width/Scale);
+		this->height = (int)(this->height/Scale);
+		
 		if((onscreen && relativeToScreen)||(!relativeToScreen))
 		{
 			switch(alignment)
@@ -321,7 +337,7 @@ namespace GameEngine
 				break;
 			}
 		}
-			
+		
 		if(showwire && ((onscreen && relativeToScreen)||(!relativeToScreen)))
 		{
 			g.setColor(wireframeColor);
@@ -351,7 +367,7 @@ namespace GameEngine
 				break;
 			}
 		}
-
+		
 		font->setSize(originalSize);
 		font->setStyle(originalStyle);
 		
@@ -367,18 +383,17 @@ namespace GameEngine
 		color = c;
 		x=0;
 		y=0;
-		Scale=1;
 		
 		fontSize = font->getSize();
 		fontStyle = font->getStyle();
 		
-		updateSize();
 		originalText = text;
 		actorType = 3;
-
+		
 		wireframeColor = Color::GREEN;
 		Rotation = 0;
 		Alpha = 0;
+		Scale=1;
 		touchId = 0;
 		currentTouchId = 0;
 		charWidth = 0;
@@ -390,6 +405,8 @@ namespace GameEngine
 		clicked = false;
 		antialiasing = false;
 		relative = true;
+		
+		updateSize();
 	}
 	
 	TextActor::TextActor(float x1, float y1, const String& s, Font*f, const Color&c)
@@ -400,18 +417,17 @@ namespace GameEngine
 		color = c;
 		x=x1;
 		y=y1;
-		Scale=1;
-
+		
 		fontSize = font->getSize();
 		fontStyle = font->getStyle();
 		
-		updateSize();
 		originalText = text;
 		actorType = 3;
-
+		
 		wireframeColor = Color::GREEN;
 		Rotation = 0;
 		Alpha = 0;
+		Scale=1;
 		charWidth = 0;
 		charHeight = 0;
 		lineSpace = 0;
@@ -423,6 +439,8 @@ namespace GameEngine
 		clicked = false;
 		antialiasing = false;
 		relative = true;
+		
+		updateSize();
 	}
 
 	TextActor::~TextActor()
@@ -527,9 +545,6 @@ namespace GameEngine
 		
 		text = newText;
 		updateSize();
-		
-		this->width = (int)(this->width*Scale);
-		this->height = (int)(this->height*Scale);
 	}
 		
 	void TextActor::Update(long gameTime)
@@ -593,21 +608,21 @@ namespace GameEngine
 			onRelease();
 		}
 	}
-		
+	
 	void TextActor::Draw(Graphics2D& g, long gameTime)
 	{
 		drawActor(g,gameTime,relative);
 	}
-		
+	
 	bool TextActor::isOnScreen()
 	{
 		int left1, left2;
 	    int right1, right2;
 	    int top1, top2;
 	    int bottom1, bottom2;
-	        
+		
 	    Rectangle rect = getRect();
-	
+		
 	    left1 = (int)rect.x;
 	    left2 = (int)View::x;
 	    right1 = (int)rect.x+rect.width;
@@ -647,27 +662,23 @@ namespace GameEngine
 	{
 		wireframeColor = c;
 	}
-		
+	
 	void TextActor::setText(const String& s)
 	{
 		text = s;
 		originalText = text;
 		updateSize();
-		this->width = (int)((float)width*Scale);
-		this->height = (int)((float)height*Scale);
 	}
-		
+	
 	const String& TextActor::getText()
 	{
 		return text;
 	}
-		
+	
 	void TextActor::setFont(Font*f)
 	{
 		font = f;
 		updateSize();
-		this->width = (int)((float)width*Scale);
-		this->height = (int)((float)height*Scale);
 	}
 		
 	Font*TextActor::getFont()
@@ -679,8 +690,6 @@ namespace GameEngine
 	{
 		fontSize = size;
 		updateSize();
-		this->width = (int)((float)width*Scale);
-		this->height = (int)((float)height*Scale);
 	}
 		
 	int TextActor::getSize()
@@ -691,6 +700,7 @@ namespace GameEngine
 	void TextActor::setStyle(int style)
 	{
 		fontStyle = style;
+		updateSize();
 	}
 	
 	int TextActor::getStyle()
@@ -729,8 +739,6 @@ namespace GameEngine
 	{
 		lineSpace = space;
 		updateSize();
-		this->width = (int)((float)width*Scale);
-		this->height = (int)((float)height*Scale);
 	}
 	
 	void TextActor::setRelativeToView(bool toggle)
@@ -834,5 +842,16 @@ namespace GameEngine
 	float TextActor::getAlpha()
 	{
 	    return Alpha;
+	}
+	
+	void TextActor::setScale(float scale)
+	{
+		Scale = scale;
+		updateSize();
+	}
+	
+	float TextActor::getScale()
+	{
+		return Scale;
 	}
 }
