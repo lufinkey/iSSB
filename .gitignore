@@ -5,6 +5,9 @@ SmashBros.xcodeproj/project.xcworkspace/xcuserdata/
 SmashBros.xcodeproj/luis.mode1v3
 SmashBros.xcodeproj/luis.pbxuser
 
+# iSSB generated files
+com.brokenphysics.iSSB.prefs
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
