@@ -4,6 +4,7 @@
 #include "Output/Console.h"
 #include "View.h"
 #include <ctime>
+#include <cstdlib>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
@@ -162,12 +163,12 @@ namespace GameEngine
 			
 			std::srand((unsigned int)std::time(NULL));
 			
-			if(!SDL_WasInit(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER | SDL_INIT_JOYSTICK | SDL_INIT_EVENTS | SDL_INIT_GAMECONTROLLER))
+			if(!SDL_WasInit(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER | SDL_INIT_JOYSTICK | SDL_INIT_EVENTS))
 			{
-				if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER | SDL_INIT_JOYSTICK | SDL_INIT_EVENTS | SDL_INIT_GAMECONTROLLER) < 0)
+				if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER | SDL_INIT_JOYSTICK | SDL_INIT_EVENTS)!=0)
 				//if(SDL_Init(SDL_INIT_EVERYTHING) < 0)
 				{
-					Console::WriteLine("failed to initialize SDL");
+					Console::WriteLine((String)"failed to initialize SDL with error: " + SDL_GetError());
 					gameRunning = false;
 					return false;
 				}

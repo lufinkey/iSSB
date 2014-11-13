@@ -1,6 +1,7 @@
 
 #include "GameEngine.h"
 #include "Util/String.h"
+#include <cstdlib>
 
 #if defined(__APPLE__)
 #include "TargetConditionals.h"

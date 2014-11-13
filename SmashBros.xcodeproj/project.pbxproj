@@ -63,6 +63,7 @@
 		A0914EF5197AFDB100E543CD /* Magnifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0914EF3197AFDB100E543CD /* Magnifier.cpp */; };
 		A0955C1717C3BA27000C9F4E /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0955C1617C3BA27000C9F4E /* MobileCoreServices.framework */; };
 		A0955C1D17C3BAC7000C9F4E /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0955C1C17C3BAC7000C9F4E /* ImageIO.framework */; };
+		A0A6ED021A15160000E8E7E1 /* libSDL_p2p.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A0A6ED011A15160000E8E7E1 /* libSDL_p2p.a */; };
 		A0A7FD63195A2FDF003924CD /* Actor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0A7FC9A195A2FDF003924CD /* Actor.cpp */; };
 		A0A7FD64195A2FDF003924CD /* Animation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0A7FC9C195A2FDF003924CD /* Animation.cpp */; };
 		A0A7FD65195A2FDF003924CD /* AnimationManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0A7FC9E195A2FDF003924CD /* AnimationManager.cpp */; };
@@ -388,6 +389,7 @@
 		A0914EF4197AFDB100E543CD /* Magnifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Magnifier.h; sourceTree = "<group>"; };
 		A0955C1617C3BA27000C9F4E /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		A0955C1C17C3BAC7000C9F4E /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		A0A6ED011A15160000E8E7E1 /* libSDL_p2p.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libSDL_p2p.a; sourceTree = "<group>"; };
 		A0A7FC9A195A2FDF003924CD /* Actor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Actor.cpp; sourceTree = "<group>"; };
 		A0A7FC9B195A2FDF003924CD /* Actor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Actor.h; sourceTree = "<group>"; };
 		A0A7FC9C195A2FDF003924CD /* Animation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Animation.cpp; sourceTree = "<group>"; };
@@ -604,6 +606,7 @@
 				A0435C231A13C19A004EF945 /* libSDL_image.a in Frameworks */,
 				A0435C241A13C19A004EF945 /* libSDL_mixer.a in Frameworks */,
 				A0435C251A13C19A004EF945 /* libSDL_ttf.a in Frameworks */,
+				A0A6ED021A15160000E8E7E1 /* libSDL_p2p.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -622,8 +625,8 @@
 			isa = PBXGroup;
 			children = (
 				A0A7FC97195A2FDF003924CD /* Source */,
-				A04359FA1A13C199004EF945 /* External */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
+				A04359FA1A13C199004EF945 /* External */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
@@ -1003,6 +1006,7 @@
 				A0435C051A13C19A004EF945 /* libSDL.a */,
 				A0435C061A13C19A004EF945 /* libSDL_image.a */,
 				A0435C071A13C19A004EF945 /* libSDL_mixer.a */,
+				A0A6ED011A15160000E8E7E1 /* libSDL_p2p.a */,
 				A0435C081A13C19A004EF945 /* libSDL_ttf.a */,
 			);
 			path = lib;
@@ -1558,7 +1562,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/External/PlistCpp/Linux/lib\"",
@@ -1580,7 +1584,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/External/SDL/lib\"",
@@ -1594,6 +1598,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = NO;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -1619,6 +1625,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = NO;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;

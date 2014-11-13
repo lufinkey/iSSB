@@ -551,7 +551,7 @@ namespace GameEngine
 		Byte mode;
 	} GameEngine_DataPacket;
 	
-	int P2P_SendDataHandler(void*data)
+	int P2PManager_SendDataHandler(void*data)
 	{
 #if defined(SMASHBROS_P2P_DISABLE)
 		return -1;
@@ -567,11 +567,11 @@ namespace GameEngine
 			}
 			if(packet->mode == P2PManager::SENDDATA_RELIABLE)
 			{
-				SDL_P2P_sendDataToPeers(Application::getWindow(), peerList, packet->peers.size(), packet->data.getData(), packet->data.length(), SDL_P2P_SENDDATA_RELIABLE);
+				P2P_sendDataToPeers(P2PManager::session, peerList, packet->peers.size(), packet->data.getData(), packet->data.length(), P2P_SENDDATA_RELIABLE);
 			}
 			else if(packet->mode == P2PManager::SENDDATA_UNRELIABLE)
 			{
-				SDL_P2P_sendDataToPeers(Application::getWindow(), peerList, packet->peers.size(), packet->data.getData(), packet->data.length(), SDL_P2P_SENDDATA_UNRELIABLE);
+				P2P_sendDataToPeers(P2PManager::session, peerList, packet->peers.size(), packet->data.getData(), packet->data.length(), P2P_SENDDATA_UNRELIABLE);
 			}
 			delete[] peerList;
 		}
@@ -579,11 +579,11 @@ namespace GameEngine
 		{
 			if(packet->mode == P2PManager::SENDDATA_RELIABLE)
 			{
-				SDL_P2P_sendData(Application::getWindow(), packet->data.getData(), packet->data.length(), SDL_P2P_SENDDATA_RELIABLE);
+				P2P_sendData(P2PManager::session, packet->data.getData(), packet->data.length(), P2P_SENDDATA_RELIABLE);
 			}
 			else if(packet->mode == P2PManager::SENDDATA_UNRELIABLE)
 			{
-				SDL_P2P_sendData(Application::getWindow(), packet->data.getData(), packet->data.length(), SDL_P2P_SENDDATA_UNRELIABLE);
+				P2P_sendData(P2PManager::session, packet->data.getData(), packet->data.length(), P2P_SENDDATA_UNRELIABLE);
 			}
 			P2PManager::sendingData = false;
 		}
@@ -592,35 +592,33 @@ namespace GameEngine
 #endif
 	}
 	
-	void P2P_EventHandler(SDL_P2P_Event*event)
+	void P2PManager_EventHandler(P2P_Event*event)
 	{
 #ifndef SMASHBROS_P2P_DISABLE
 		if(P2PManager::eventListener != NULL)
 		{
 			switch(event->type)
 			{
-				case SDL_P2P_PEERCONNECTED:
+				case P2P_PEERCONNECTED:
 				{
 					char buffer[40];
-					SDL_P2P_getSelfID(Application::getWindow(), buffer);
+					P2P_getSelfID(P2PManager::session, buffer);
 					P2PManager::selfInfo.id = buffer;
-					SDL_P2P_getSelfDisplayName(Application::getWindow(), buffer);
+					P2P_getSelfDisplayName(P2PManager::session, buffer);
 					P2PManager::selfInfo.name = buffer;
 					P2PManager::Peer peer = {event->peer.peerID, event->peer.peerDisplayName};
-					while(P2PManager::lockPeerList);
-					P2PManager::lockPeerList = true;
+					P2PManager::peers_mutex.lock();
 					P2PManager::peers.add(peer);
-					P2PManager::lockPeerList = false;
+					P2PManager::peers_mutex.unlock();
 					P2PManager::eventListener->peerDidConnect(event->peer.peerID);
 					P2PManager::pickerIsOpen = false;
 				}
 				break;
 				
-				case SDL_P2P_PEERDISCONNECTED:
+				case P2P_PEERDISCONNECTED:
 				{
 					String peerID = event->peer.peerID;
-					while(P2PManager::lockPeerList);
-					P2PManager::lockPeerList = true;
+					P2PManager::peers_mutex.lock();
 					for(int i=0; i<P2PManager::peers.size(); i++)
 					{
 						if(P2PManager::peers.get(i).id.equals(peerID))
@@ -629,12 +627,12 @@ namespace GameEngine
 							i = P2PManager::peers.size();
 						}
 					}
-					P2PManager::lockPeerList = false;
+					P2PManager::peers_mutex.unlock();
 					P2PManager::eventListener->peerDidDisconnect(peerID);
 				}
 				break;
 				
-				case SDL_P2P_PEERREQUESTEDCONNECTION:
+				case P2P_PEERREQUESTEDCONNECTION:
 				{
 					P2PRequest*request = new P2PRequest(event->peer.peerID);
 					P2PManager::eventListener->peerDidRequestConnection(request);
@@ -642,14 +640,14 @@ namespace GameEngine
 				}
 				break;
 				
-				case SDL_P2P_PICKERDIDCANCEL:
+				case P2P_PICKERDIDCANCEL:
 				{
 					P2PManager::eventListener->pickerDidCancel();
 					P2PManager::pickerIsOpen = false;
 				}
 				break;
 				
-				case SDL_P2P_RECIEVEDDATA:
+				case P2P_RECIEVEDDATA:
 				{
 					P2PManager::eventListener->didRecieveData(event->peer.peerID, event->data.data, event->data.size);
 				}
@@ -683,7 +681,7 @@ namespace GameEngine
 #else
 		if(!handled)
 		{
-			SDL_bool success = SDL_P2P_acceptConnectionRequest(Application::getWindow(), peerID);
+			SDL_bool success = P2P_acceptConnectionRequest(P2PManager::session, peerID);
 			if(success)
 			{
 				handled = true;
@@ -702,7 +700,7 @@ namespace GameEngine
 #ifndef SMASHBROS_P2P_DISABLE
 		if(!handled)
 		{
-			SDL_P2P_denyConnectionRequest(Application::getWindow(), peerID);
+			P2P_denyConnectionRequest(P2PManager::session, peerID);
 			handled = true;
 			connected = false;
 		}
@@ -744,11 +742,12 @@ namespace GameEngine
 		//Open for implementation
 	}
 	
-	bool P2PManager::lockPeerList = false;
 	P2PManager::Peer P2PManager::selfInfo = {"",""};
 	ArrayList<P2PManager::Peer> P2PManager::peers = ArrayList<P2PManager::Peer>();
+	std::mutex P2PManager::peers_mutex;
 	P2PEventListener*P2PManager::eventListener = NULL;
 	String P2PManager::sessionID = "com.yourcompany.gameengine";
+	P2P_Session* P2PManager::session = NULL;
 	bool P2PManager::pickerIsOpen = false;
 	bool P2PManager::copyingPacket = false;
 	bool P2PManager::sendingData = false;
@@ -756,7 +755,7 @@ namespace GameEngine
 	void P2PManager::Update(long gameTime)
 	{
 #ifndef SMASHBROS_P2P_DISABLE
-		if(SDL_P2P_isConnected(Application::getWindow()))
+		if(session!=NULL && P2P_isConnected(session))
 		{
 			updateAppEvents();
 		}
@@ -783,17 +782,18 @@ namespace GameEngine
 #if defined(SMASHBROS_P2P_DISABLE)
 		return false;
 #else
-		SDL_P2P_setEventHandler(P2P_EventHandler);
-		if(!SDL_P2P_isConnected(Application::getWindow()) && !pickerIsOpen)
+		if(session==NULL)
 		{
+			session = P2P_createSession();
+			P2P_setEventHandler(session, P2PManager_EventHandler);
 			pickerIsOpen = true;
-			SDL_P2P_searchForPeersBluetooth(Application::getWindow(), sessionID);
+			P2P_searchForPeers(session, sessionID);
 			while(pickerIsOpen)
 			{
 				SDL_Delay(30);
 				updateAppEvents();
 			}
-			if(SDL_P2P_isConnected(Application::getWindow()))
+			if(P2P_isConnected(session))
 			{
 				return true;
 			}
@@ -807,7 +807,7 @@ namespace GameEngine
 #if defined(SMASHBROS_P2P_DISABLE)
 		return false;
 #else
-		if(SDL_P2P_isConnected(Application::getWindow()))
+		if(session!=NULL && P2P_isConnected(session))
 		{
 			return true;
 		}
@@ -820,7 +820,7 @@ namespace GameEngine
 #if defined(SMASHBROS_P2P_DISABLE)
 		return false;
 #else
-		if(SDL_P2P_isConnectedToPeer(Application::getWindow(), peerID))
+		if(session!=NULL && P2P_isConnectedToPeer(session, peerID))
 		{
 			return true;
 		}
@@ -831,9 +831,9 @@ namespace GameEngine
 	void P2PManager::disconnectPeer(const String&peerID)
 	{
 #ifndef SMASHBROS_P2P_DISABLE
-		if(SDL_P2P_isConnectedToPeer(Application::getWindow(), peerID))
+		if(session!=NULL && P2P_isConnectedToPeer(session, peerID))
 		{
-			SDL_P2P_disconnectPeer(Application::getWindow(), peerID);
+			P2P_disconnectPeer(session, peerID);
 		}
 #endif
 	}
@@ -841,20 +841,24 @@ namespace GameEngine
 	void P2PManager::endSession()
 	{
 #ifndef SMASHBROS_P2P_DISABLE
-		SDL_P2P_endSession(Application::getWindow());
+		if(session!=NULL)
+		{
+			P2P_endSession(session);
+			P2P_destroySession(session);
+			session = NULL;
+		}
 #endif
 	}
 	
 	ArrayList<String> P2PManager::getPeers()
 	{
-		while(lockPeerList);
-		lockPeerList = true;
+		peers_mutex.lock();
 		ArrayList<String> peerList;
 		for(int i=0; i<peers.size(); i++)
 		{
 			peerList.add(peers.get(i).id);
 		}
-		lockPeerList = false;
+		peers_mutex.unlock();
 		return peerList;
 	}
 	
@@ -873,21 +877,20 @@ namespace GameEngine
 #if defined(SMASHBROS_P2P_DISABLE)
 		return "Unknown";
 #else
-		while(lockPeerList);
-		lockPeerList = true;
+		peers_mutex.lock();
 		for(int i=0; i<peers.size(); i++)
 		{
 			Peer&peer = peers.get(i);
 			if(peer.id.equals(peerID))
 			{
 				String displayName = peer.name;
-				lockPeerList = false;
+				peers_mutex.unlock();
 				return displayName;
 			}
 		}
-		lockPeerList = false;
+		peers_mutex.unlock();
 		char buffer[40];
-		SDL_P2P_getPeerDisplayName(Application::getWindow(), (char*)peerID, buffer);
+		P2P_getPeerDisplayName(session, (char*)peerID, buffer);
 		String displayName = buffer;
 		return displayName;
 #endif
@@ -912,7 +915,7 @@ namespace GameEngine
 		
 		if(sendDataMode == SENDDATA_RELIABLE)
 		{
-			SDL_P2P_sendData(Application::getWindow(), data, size, SDL_P2P_SENDDATA_RELIABLE);
+			P2P_sendData(session, data, size, P2P_SENDDATA_RELIABLE);
 		}
 		else if(sendDataMode == SENDDATA_UNRELIABLE)
 		{
@@ -920,7 +923,7 @@ namespace GameEngine
 			packet->data.setData(data,size);
 			packet->mode = sendDataMode;
 			
-			SDL_CreateThread(&P2P_SendDataHandler, "SendData", (void*)packet);
+			SDL_CreateThread(&P2PManager_SendDataHandler, "SendData", (void*)packet);
 		}
 #endif
 	}
@@ -950,7 +953,7 @@ namespace GameEngine
 			{
 				peerList[i] = (char*)peers.get(i);
 			}
-			SDL_P2P_sendDataToPeers(Application::getWindow(), peerList, peers.size(), data, size, SDL_P2P_SENDDATA_RELIABLE);
+			P2P_sendDataToPeers(session, peerList, peers.size(), data, size, P2P_SENDDATA_RELIABLE);
 		}
 		else if(sendDataMode == SENDDATA_UNRELIABLE)
 		{
@@ -959,7 +962,7 @@ namespace GameEngine
 			packet->peers = peers;
 			packet->mode = sendDataMode;
 			
-			SDL_CreateThread(&P2P_SendDataHandler, "SendData", (void*)(packet));
+			SDL_CreateThread(&P2PManager_SendDataHandler, "SendData", (void*)(packet));
 		}
 #endif
 	}
