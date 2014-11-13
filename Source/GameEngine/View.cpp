@@ -27,8 +27,8 @@ namespace GameEngine
 
 	void View::setSize(int w, int h)
 	{
-		windowWidth = 480;
-		windowHeight = 320;
+		windowWidth = w;
+		windowHeight = h;
 		if(Application::window != NULL)
 		{
 			SDL_SetWindowSize(Application::window, w, h);

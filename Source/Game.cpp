@@ -10,6 +10,7 @@ namespace SmashBros
 	Game::Game()
 	{
 		//Constructor
+		View::setSize(900,600);
 		firstUpdate = true;
 		drawnOnce = false;
 	}
@@ -23,14 +24,11 @@ namespace SmashBros
 	{
 		//Initialize things
 		scaleToWindow(true,900,600);
-		
-		Global::init();
-		Controls::loadControls();
-		Preferences::init();
-		Preferences::load();
-		
+
 		AssetManager::loadImage("Images/icon.png");
 		setLoadScreen("Images/loading.png");
+		
+		Global::init();
 		
 		showRealFPS(true);
 		if(Preferences::highFPS())
@@ -48,9 +46,11 @@ namespace SmashBros
 	
 	void Game::LoadContent()
 	{
-		bool thingy = true;
-		Console::WriteLine((byte)thingy);
 		//Load Things
+		Controls::loadControls();
+		Preferences::init();
+		Preferences::load();
+
 		Menus::loadAssets();
 		Menus::loadMenus();
 		ScreenManager::Add(new GameScreen("Game"));

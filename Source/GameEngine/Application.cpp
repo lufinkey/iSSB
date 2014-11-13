@@ -178,20 +178,23 @@ namespace GameEngine
 			{
 				if(TTF_Init() < 0)
 				{
-					Console::WriteLine("failed to initalize SDL_ttf library");
+					Console::WriteLine((String)"failed to initalize SDL_ttf library with error: " + TTF_GetError());
 					gameRunning = false;
 					return false;
 				}
 			}
 			
 			{
-				int flags = MIX_INIT_FLAC | MIX_INIT_MP3 | MIX_INIT_MOD | MIX_INIT_OGG;
-				Mix_Init(flags);
+				int flags = MIX_INIT_FLAC | MIX_INIT_MP3 | /*MIX_INIT_MOD | */MIX_INIT_OGG;
+				if(Mix_Init(flags) != flags)
+				{
+					Console::WriteLine((String)"failed to initialize SDL_mixer with error: " + Mix_GetError());
+				}
 			}
 			
 			if(Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 4096)<0)
 			{
-				Console::WriteLine("failed to open SDL_mixer Audio");
+				Console::WriteLine((String)"failed to open SDL_mixer audio with error: " + Mix_GetError());
 			}
 			
 			Sound::init();
@@ -249,8 +252,8 @@ namespace GameEngine
 				int windowX = 0;
 				int windowY = 0;
 #else
-				int windowX = 100;
-				int windowY = 100;
+				int windowX = SDL_WINDOWPOS_UNDEFINED;
+				int windowY = SDL_WINDOWPOS_UNDEFINED;
 #endif
 				
 				if(borderless)
