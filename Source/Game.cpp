@@ -77,7 +77,7 @@ namespace SmashBros
 			}
 			firstUpdate = false;
 		}
-		if(KeyPressed(Keys::ESCAPE) && !PrevKeyPressed(Keys::ESCAPE))
+		if(getKeyPressed(Keys::ESCAPE) && !getPrevKeyPressed(Keys::ESCAPE))
 		{
 			Exit();
 		}

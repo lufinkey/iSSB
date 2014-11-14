@@ -168,10 +168,10 @@ namespace SmashBros
 			default:
 			case MODE_FIXED:
 			{
-				View::x = (float)(x + (float)Global::currentStage->x - (float)View::ScaleWidth()/2);
-				View::y = (float)(y + (float)Global::currentStage->y - (float)View::ScaleHeight()/2);
-				float zoomH = (float)View::ScaleHeight()/(float)(Global::currentStage->bottomViewBorder - Global::currentStage->topViewBorder);
-				float zoomW = (float)View::ScaleWidth()/(float)(Global::currentStage->rightViewBorder - Global::currentStage->leftViewBorder);
+				View::x = (float)(x + (float)Global::currentStage->x - (float)View::getScalingWidth()/2);
+				View::y = (float)(y + (float)Global::currentStage->y - (float)View::getScalingHeight()/2);
+				float zoomH = (float)View::getScalingHeight()/(float)(Global::currentStage->bottomViewBorder - Global::currentStage->topViewBorder);
+				float zoomW = (float)View::getScalingWidth()/(float)(Global::currentStage->rightViewBorder - Global::currentStage->leftViewBorder);
 				if(zoomH>zoomW)
 				{
 					Zoom = zoomH;
@@ -183,29 +183,29 @@ namespace SmashBros
 				float centerX = (float)(x + Global::currentStage->x);
 				float centerY = (float)(y + Global::currentStage->y);
 				
-				float left = (float)(centerX - ((float)View::ScaleWidth()/((float)2*Zoom)));
-				float right = (float)(centerX +((float)View::ScaleWidth()/((float)2*Zoom)));
-				float top = (float)(centerY - ((float)View::ScaleHeight()/((float)2*Zoom)));
-				float bottom = (float)(centerY +((float)View::ScaleHeight()/((float)2*Zoom)));
+				float left = (float)(centerX - ((float)View::getScalingWidth()/((float)2*Zoom)));
+				float right = (float)(centerX +((float)View::getScalingWidth()/((float)2*Zoom)));
+				float top = (float)(centerY - ((float)View::getScalingHeight()/((float)2*Zoom)));
+				float bottom = (float)(centerY +((float)View::getScalingHeight()/((float)2*Zoom)));
 				
 				if(left<(Global::currentStage->x + Global::currentStage->leftViewBorder))
 				{
-					centerX = (float)((Global::currentStage->x + Global::currentStage->leftViewBorder) + View::ScaleWidth()/(Zoom*2));
+					centerX = (float)((Global::currentStage->x + Global::currentStage->leftViewBorder) + View::getScalingWidth()/(Zoom*2));
 				}
 				else if(right>(Global::currentStage->x + Global::currentStage->rightViewBorder))
 				{
-					centerX = (float)((Global::currentStage->x + Global::currentStage->rightViewBorder) - View::ScaleWidth()/(Zoom*2));
+					centerX = (float)((Global::currentStage->x + Global::currentStage->rightViewBorder) - View::getScalingWidth()/(Zoom*2));
 				}
 				if(top<(Global::currentStage->y + Global::currentStage->topViewBorder))
 				{
-					centerY = (float)((Global::currentStage->y + Global::currentStage->topViewBorder) + View::ScaleHeight()/(Zoom*2));
+					centerY = (float)((Global::currentStage->y + Global::currentStage->topViewBorder) + View::getScalingHeight()/(Zoom*2));
 				}
 				else if(bottom>(Global::currentStage->y + Global::currentStage->bottomViewBorder))
 				{
-					centerY = (float)((Global::currentStage->y + Global::currentStage->bottomViewBorder) - View::ScaleHeight()/(Zoom*2));
+					centerY = (float)((Global::currentStage->y + Global::currentStage->bottomViewBorder) - View::getScalingHeight()/(Zoom*2));
 				}
-				camX = (float)((centerX*Zoom) - ((float)View::ScaleWidth()/2));
-				camY = (float)((centerY*Zoom) - ((float)View::ScaleHeight()/2));
+				camX = (float)((centerX*Zoom) - ((float)View::getScalingWidth()/2));
+				camY = (float)((centerY*Zoom) - ((float)View::getScalingHeight()/2));
 				
 				View::x = camX;
 				View::y = camY;
@@ -214,8 +214,8 @@ namespace SmashBros
 			
 			case MODE_FOLLOW:
 			{
-				camX = (float)(((float)rect.x*Zoom) - (((float)View::ScaleWidth() - ((float)rect.width*Zoom))/2));
-				camY = (float)(((float)rect.y*Zoom) - (((float)View::ScaleHeight() - ((float)rect.height*Zoom))/2));
+				camX = (float)(((float)rect.x*Zoom) - (((float)View::getScalingWidth() - ((float)rect.width*Zoom))/2));
+				camY = (float)(((float)rect.y*Zoom) - (((float)View::getScalingHeight() - ((float)rect.height*Zoom))/2));
 				
 				float leftSide = (float)((Global::currentStage->x + borders.left)*Zoom);
 				float rightSide = (float)((Global::currentStage->x + borders.right)*Zoom);
@@ -226,17 +226,17 @@ namespace SmashBros
 				{
 					camX = leftSide;
 				}
-				else if((camX + View::ScaleWidth()) > rightSide)
+				else if((camX + View::getScalingWidth()) > rightSide)
 				{
-					camX = (rightSide - View::ScaleWidth());
+					camX = (rightSide - View::getScalingWidth());
 				}
 				if(camY < topSide)
 				{
 					camY = topSide;
 				}
-				else if((camY + View::ScaleHeight()) > bottomSide)
+				else if((camY + View::getScalingHeight()) > bottomSide)
 				{
-					camY = (bottomSide - View::ScaleHeight());
+					camY = (bottomSide - View::getScalingHeight());
 				}
 				
 				View::x = (float)((x*Zoom) + camX);
@@ -246,11 +246,11 @@ namespace SmashBros
 				
 			case MODE_ZOOM:
 			{
-				float zoomW = (float)View::ScaleWidth()/(float)rect.width;
-				float zoomH = (float)View::ScaleHeight()/(float)rect.height;
+				float zoomW = (float)View::getScalingWidth()/(float)rect.width;
+				float zoomH = (float)View::getScalingHeight()/(float)rect.height;
 				float expzoom;
 				
-				if((rect.width*zoomH) > View::ScaleWidth())
+				if((rect.width*zoomH) > View::getScalingWidth())
 				{
 					expzoom = zoomW;
 					//Zoom = zoomW;
@@ -261,8 +261,8 @@ namespace SmashBros
 					//Zoom = zoomH;
 				}
 				
-				float zoomx = (float)View::ScaleWidth()/(borders.right - borders.left);
-				float zoomy = (float)View::ScaleHeight()/(borders.bottom - borders.top);
+				float zoomx = (float)View::getScalingWidth()/(borders.right - borders.left);
+				float zoomy = (float)View::getScalingHeight()/(borders.bottom - borders.top);
 				float cmpzoom;
 				
 				float setZoom;
@@ -313,8 +313,8 @@ namespace SmashBros
 				//g.setColor(Color::BLUE);
 				//g.drawRect((int)(rect.x*Zoom), (int)(rect.y*Zoom), (int)(rect.width*Zoom), (int)(rect.height*Zoom));
 				
-				camX = (float)(((float)rect.x*Zoom) - (((float)View::ScaleWidth() - ((float)rect.width*Zoom))/2));
-				camY = (float)(((float)rect.y*Zoom) - (((float)View::ScaleHeight() - ((float)rect.height*Zoom))/2));
+				camX = (float)(((float)rect.x*Zoom) - (((float)View::getScalingWidth() - ((float)rect.width*Zoom))/2));
+				camY = (float)(((float)rect.y*Zoom) - (((float)View::getScalingHeight() - ((float)rect.height*Zoom))/2));
 				
 				float leftSide = (float)((Global::currentStage->x + borders.left)*Zoom);
 				float rightSide = (float)((Global::currentStage->x + borders.right)*Zoom);
@@ -325,28 +325,28 @@ namespace SmashBros
 				{
 					camX = leftSide;
 				}
-				else if((camX + View::ScaleWidth()) > rightSide)
+				else if((camX + View::getScalingWidth()) > rightSide)
 				{
-					camX = (rightSide - View::ScaleWidth());
+					camX = (rightSide - View::getScalingWidth());
 				}
 				if(camY < topSide)
 				{
 					camY = topSide;
 				}
-				else if((camY + View::ScaleHeight()) > bottomSide)
+				else if((camY + View::getScalingHeight()) > bottomSide)
 				{
-					camY = (bottomSide - View::ScaleHeight());
+					camY = (bottomSide - View::getScalingHeight());
 				}
 				
-				float centerX = (float)((camX + ((float)View::ScaleWidth()/2))/Zoom);
-				float centerY = (float)((camY + ((float)View::ScaleHeight()/2))/Zoom);
+				float centerX = (float)((camX + ((float)View::getScalingWidth()/2))/Zoom);
+				float centerY = (float)((camY + ((float)View::getScalingHeight()/2))/Zoom);
 				
 				if(firstUpdate)
 				{
 					centerX = (float)Global::currentStage->x;
 					centerY = (float)Global::currentStage->y;
-					float zoom1 = (float)View::ScaleWidth()/(float)(borders.right - borders.left);
-					float zoom2 = (float)View::ScaleHeight()/(float)(borders.bottom - borders.top);
+					float zoom1 = (float)View::getScalingWidth()/(float)(borders.right - borders.left);
+					float zoom2 = (float)View::getScalingHeight()/(float)(borders.bottom - borders.top);
 					if(zoom1 > zoom2)
 					{
 						Zoom = zoom1;
@@ -391,8 +391,8 @@ namespace SmashBros
 						}
 					}
 					
-					camX = (float)((centerX*Zoom) - ((float)View::ScaleWidth()/2));
-					camY = (float)((centerY*Zoom) - ((float)View::ScaleHeight()/2));
+					camX = (float)((centerX*Zoom) - ((float)View::getScalingWidth()/2));
+					camY = (float)((centerY*Zoom) - ((float)View::getScalingHeight()/2));
 					
 					firstFocus = false;
 				}
@@ -488,11 +488,11 @@ namespace SmashBros
 	
 	int Camera::Width()
 	{
-		return (int)((double)View::ScaleWidth()/Zoom);
+		return (int)((double)View::getScalingWidth()/Zoom);
 	}
 
 	int Camera::Height()
 	{
-		return (int)((double)View::ScaleHeight()/Zoom);
+		return (int)((double)View::getScalingHeight()/Zoom);
 	}
 }

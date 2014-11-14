@@ -463,7 +463,7 @@ namespace GameEngine
 			}
 			else
 			{
-				if(Application::MouseState(Mouse::LEFTCLICK) && !Application::PrevMouseState(Mouse::LEFTCLICK))
+				if(Application::getMouseState(Mouse::LEFTCLICK) && !Application::getPrevMouseState(Mouse::LEFTCLICK))
 				{
 					clicking = true;
 				}
@@ -497,7 +497,7 @@ namespace GameEngine
 		}
 		else
 		{
-			if(clicked && !Application::MouseState(Mouse::LEFTCLICK))
+			if(clicked && !Application::getMouseState(Mouse::LEFTCLICK))
 			{
 				releasing = true;
 			}
@@ -735,13 +735,13 @@ namespace GameEngine
 				float mousey = 0;
 				if(relative)
 				{
-					mousex = (float)Application::TouchX(currentTouchId) + View::x;
-					mousey = (float)Application::TouchY(currentTouchId) + View::y;
+					mousex = (float)Application::getTouchX(currentTouchId) + View::x;
+					mousey = (float)Application::getTouchY(currentTouchId) + View::y;
 				}
 				else
 				{
-					mousex = (float)Application::TouchX(currentTouchId);
-					mousey = (float)Application::TouchY(currentTouchId);
+					mousex = (float)Application::getTouchX(currentTouchId);
+					mousey = (float)Application::getTouchY(currentTouchId);
 				}
 
 				if(checkHover(mousex, mousey))
@@ -767,13 +767,13 @@ namespace GameEngine
 		float mousey = 0;
 		if(relative)
 		{
-			mousex = (float)Application::MouseX() + View::x;
-			mousey = (float)Application::MouseY() + View::y;
+			mousex = (float)Application::getMouseX() + View::x;
+			mousey = (float)Application::getMouseY() + View::y;
 		}
 		else
 		{
-			mousex = (float)Application::MouseX();
-			mousey = (float)Application::MouseY();
+			mousex = (float)Application::getMouseX();
+			mousey = (float)Application::getMouseY();
 		}
 
 		return checkHover(mousex, mousey);
@@ -1242,11 +1242,11 @@ namespace GameEngine
 	    left1 = (int)(x-(w/2));
 	    left2 = (int)View::x;
 	    right1 = (int)(x+(w/2));
-	    right2 = (int)(View::x+(View::ScaleWidth()));
+	    right2 = (int)(View::x+(View::getScalingWidth()));
 	    top1 = (int)(y-(h/2));
 	    top2 = (int)View::y;
 	    bottom1 = (int)(y+(h/2));
-	    bottom2 = (int)(View::y+(View::ScaleHeight()));
+	    bottom2 = (int)(View::y+(View::getScalingHeight()));
 	
 	    if (bottom1 < top2)
 	    {

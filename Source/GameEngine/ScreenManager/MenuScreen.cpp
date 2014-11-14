@@ -81,7 +81,7 @@ namespace GameEngine
 		}
 		else
 		{
-			if(Application::MouseState(Mouse::LEFTCLICK))
+			if(Application::getMouseState(Mouse::LEFTCLICK))
 			{
 				selecting = true;
 			}
@@ -115,7 +115,7 @@ namespace GameEngine
 				}
 			}
 		
-			if(selectedIndex>=0 && !Application::MouseState(Mouse::LEFTCLICK) && Application::PrevMouseState(Mouse::LEFTCLICK))
+			if(selectedIndex>=0 && !Application::getMouseState(Mouse::LEFTCLICK) && Application::getPrevMouseState(Mouse::LEFTCLICK))
 			{
 				Items.get(selectedIndex)->OnRelease();
 				Items.get(selectedIndex)->setSelected(false);

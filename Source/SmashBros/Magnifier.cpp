@@ -37,7 +37,7 @@ namespace SmashBros
 				{
 					dir = PrimitiveActor::DIR_UPLEFT;
 				}
-				else if((x+(w/2)) >= View::ScaleWidth())
+				else if((x+(w/2)) >= View::getScalingWidth())
 				{
 					dir = PrimitiveActor::DIR_UPRIGHT;
 				}
@@ -46,13 +46,13 @@ namespace SmashBros
 					dir = PrimitiveActor::DIR_UP;
 				}
 			}
-			else if((y+(h/2)) >= View::ScaleHeight())
+			else if((y+(h/2)) >= View::getScalingHeight())
 			{
 				if((x-(w/2)) <= 0)
 				{
 					dir = PrimitiveActor::DIR_DOWNLEFT;
 				}
-				else if((x+(w/2)) >= View::ScaleWidth())
+				else if((x+(w/2)) >= View::getScalingWidth())
 				{
 					dir = PrimitiveActor::DIR_DOWNRIGHT;
 				}
@@ -65,7 +65,7 @@ namespace SmashBros
 			{
 				dir = PrimitiveActor::DIR_LEFT;
 			}
-			else if((x+(w/2)) >= View::ScaleWidth())
+			else if((x+(w/2)) >= View::getScalingWidth())
 			{
 				dir = PrimitiveActor::DIR_RIGHT;
 			}
@@ -113,7 +113,7 @@ namespace SmashBros
 					
 					case PrimitiveActor::DIR_UPRIGHT:
 					{
-						magnifier->x = (float)View::ScaleWidth() - (float)(magnifier->width)/2;
+						magnifier->x = (float)View::getScalingWidth() - (float)(magnifier->width)/2;
 						magnifier->y = (float)(magnifier->height)/2;
 						magnifier->setRotation(45);
 					}
@@ -129,7 +129,7 @@ namespace SmashBros
 					
 					case PrimitiveActor::DIR_RIGHT:
 					{
-						magnifier->x = View::ScaleWidth() - (float)(magnifier->width)/2;
+						magnifier->x = View::getScalingWidth() - (float)(magnifier->width)/2;
 						magnifier->y = y;
 						magnifier->setRotation(90);
 					}
@@ -138,15 +138,15 @@ namespace SmashBros
 					case PrimitiveActor::DIR_DOWNLEFT:
 					{
 						magnifier->x = (float)(magnifier->width)/2;
-						magnifier->y = View::ScaleHeight() - (float)(magnifier->height)/2;
+						magnifier->y = View::getScalingHeight() - (float)(magnifier->height)/2;
 						magnifier->setRotation(-135);
 					}
 					break;
 					
 					case PrimitiveActor::DIR_DOWNRIGHT:
 					{
-						magnifier->x = View::ScaleWidth() - (float)(magnifier->width)/2;
-						magnifier->y = View::ScaleHeight() - (float)(magnifier->height)/2;
+						magnifier->x = View::getScalingWidth() - (float)(magnifier->width)/2;
+						magnifier->y = View::getScalingHeight() - (float)(magnifier->height)/2;
 						magnifier->setRotation(135);
 					}
 					break;
@@ -154,7 +154,7 @@ namespace SmashBros
 					case PrimitiveActor::DIR_DOWN:
 					{
 						magnifier->x = x;
-						magnifier->y = View::ScaleHeight() - (float)(magnifier->height)/2;
+						magnifier->y = View::getScalingHeight() - (float)(magnifier->height)/2;
 						magnifier->setRotation(180);
 					}
 					break;

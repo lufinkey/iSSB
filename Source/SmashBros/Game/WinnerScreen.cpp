@@ -180,7 +180,7 @@ namespace SmashBros
 		for(int i=0; i<stats.size(); i++)
 		{
 			CharStat*stat = stats.get(i);
-			stat->x = (float)((float)View::ScaleWidth() / (float)(Global::charAmount+1))*(float)(i+1);
+			stat->x = (float)((float)View::getScalingWidth() / (float)(Global::charAmount+1))*(float)(i+1);
 			stat->y = 250;
 		}
 

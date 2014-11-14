@@ -133,7 +133,7 @@ namespace SmashBros
 		}
 		if(Global::currentStage!=null)
 		{
-			if(Game::KeyPressed(Keys::ENTER) && !prevEnterPressed)
+			if(Game::getKeyPressed(Keys::ENTER) && !prevEnterPressed)
 			{
 				if(Game::Suspended())
 				{
@@ -147,7 +147,7 @@ namespace SmashBros
 				}
 				prevEnterPressed = true;
 			}
-			else if(!Game::KeyPressed(Keys::ENTER))
+			else if(!Game::getKeyPressed(Keys::ENTER))
 			{
 				prevEnterPressed = false;
 			}

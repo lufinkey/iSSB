@@ -546,7 +546,7 @@ namespace GameEngine
 		{
 			if(Application::checkTouchActive(currentTouchId))
 			{
-				if(checkHover((float)Application::TouchX(currentTouchId), (float)Application::TouchY(currentTouchId)))
+				if(checkHover((float)Application::getTouchX(currentTouchId), (float)Application::getTouchY(currentTouchId)))
 				{
 					return true;
 				}
@@ -595,11 +595,11 @@ namespace GameEngine
 	    left1 = (int)x;
 	    left2 = (int)View::x;
 	    right1 = (int)x+width;
-	    right2 = (int)View::x+(View::ScaleWidth());
+	    right2 = (int)View::x+(View::getScalingWidth());
 	    top1 = (int)y;
 	    top2 = (int)View::y;
 	    bottom1 = (int)y+height;
-	    bottom2 = (int)View::y+(View::ScaleHeight());
+	    bottom2 = (int)View::y+(View::getScalingHeight());
 	
 	    if (bottom1 < top2)
 	    {

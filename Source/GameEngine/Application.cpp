@@ -371,7 +371,7 @@ namespace GameEngine
 						if(bgVisible)
 						{
 							BufferedImage*img = AssetManager::getImage(bgName);
-							graphics->drawImage(img,0,0,(float)View::ScaleWidth(),(float)View::ScaleHeight(),0,0,img->getWidth(),img->getHeight());
+							graphics->drawImage(img,0,0,(float)View::getScalingWidth(),(float)View::getScalingHeight(),0,0,img->getWidth(),img->getHeight());
 						}
 						this->Draw(*graphics,worldTime);
 						if(!paused)
@@ -433,7 +433,7 @@ namespace GameEngine
 					{
 						SDL_SetRenderDrawColor(renderer, 0,0,0,255);
 						SDL_RenderClear(renderer);
-						graphics->drawImage(loadImage,0,0,(float)View::ScaleWidth(),(float)View::ScaleHeight(),0,0,loadImage->getWidth(),loadImage->getHeight());
+						graphics->drawImage(loadImage,0,0,(float)View::getScalingWidth(),(float)View::getScalingHeight(),0,0,loadImage->getWidth(),loadImage->getHeight());
 						graphics->setColor(loadbarColor);
 						graphics->fillRect(loadbarDim[0], loadbarDim[1], (float)((float)(loadCurrent/loadTotal)*loadbarDim[2]), loadbarDim[3]);
 						SDL_RenderPresent(renderer);
@@ -592,32 +592,32 @@ namespace GameEngine
 		return result;
 	}
 	
-	int Application::GetLastKey()
+	int Application::getLastKey()
 	{
 		return currentLastKey;
 	}
 	
-	bool Application::KeyPressed(int key) //check if a key is pressed
+	bool Application::getKeyPressed(int key) //check if a key is pressed
 	{
 		return currentKeyState[key];
 	}
 	
-	bool Application::PrevKeyPressed(int key) //check if a key was pressed in the last frame
+	bool Application::getPrevKeyPressed(int key) //check if a key was pressed in the last frame
 	{
 		return prevKeyState[key];
 	}
 
-	bool Application::MouseState(int state)
+	bool Application::getMouseState(int state)
 	{
 		return currentMouseState[state];
 	}
 	
-	bool Application::PrevMouseState(int state)
+	bool Application::getPrevMouseState(int state)
 	{
 		return prevMouseState[state];
 	}
 	
-	int Application::MouseX()
+	int Application::getMouseX()
 	{
 		if(scalescreen)
 		{
@@ -629,7 +629,7 @@ namespace GameEngine
 		}
 	}
 	
-	int Application::PrevMouseX()
+	int Application::getPrevMouseX()
 	{
 		if(scalescreen)
 		{
@@ -641,7 +641,7 @@ namespace GameEngine
 		}
 	}
 	
-	int Application::MouseY()
+	int Application::getMouseY()
 	{
 		if(scalescreen)
 		{
@@ -653,7 +653,7 @@ namespace GameEngine
 		}
 	}
 	
-	int Application::PrevMouseY()
+	int Application::getPrevMouseY()
 	{
 		if(scalescreen)
 		{
@@ -665,7 +665,7 @@ namespace GameEngine
 		}
 	}
 	
-	int Application::TouchX(long touchID)
+	int Application::getTouchX(long touchID)
 	{
 		TouchPoint*point = getTouchPoint(touchID);
 		if(point==NULL)
@@ -682,7 +682,7 @@ namespace GameEngine
 		}
 	}
 	
-	int Application::PrevTouchX(long touchID)
+	int Application::getPrevTouchX(long touchID)
 	{
 		TouchPoint*point = getPrevTouchPoint(touchID);
 		if(point==NULL)
@@ -699,7 +699,7 @@ namespace GameEngine
 		}
 	}
 	
-	int Application::TouchY(long touchID)
+	int Application::getTouchY(long touchID)
 	{
 		TouchPoint*point = getTouchPoint(touchID);
 		if(point==NULL)
@@ -716,7 +716,7 @@ namespace GameEngine
 		}
 	}
 	
-	int Application::PrevTouchY(long touchID)
+	int Application::getPrevTouchY(long touchID)
 	{
 		TouchPoint*point = getPrevTouchPoint(touchID);
 		if(point==NULL)
@@ -1127,7 +1127,7 @@ namespace GameEngine
 		if(showLoad)
 		{
 			BufferedImage*img = AssetManager::getImage(loadScreen);
-			graphics->drawImage(img,0,0,(float)View::ScaleWidth(),(float)View::ScaleHeight(),0,0,img->getWidth(),img->getHeight());
+			graphics->drawImage(img,0,0,(float)View::getScalingWidth(),(float)View::getScalingHeight(),0,0,img->getWidth(),img->getHeight());
 		}*/
 		graphics->setColor(loadbarColor);
 		graphics->fillRect(loadbarDim[0], loadbarDim[1], (float)((float)(loadCurrent/loadTotal)*loadbarDim[2]), loadbarDim[3]);

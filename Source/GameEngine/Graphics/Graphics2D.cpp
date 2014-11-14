@@ -22,8 +22,8 @@ namespace GameEngine
 		SDL_Rect rect;
 		rect.x = 0;
 		rect.y = 0;
-		rect.w = View::Width();
-		rect.h = View::Height();
+		rect.w = View::getWidth();
+		rect.h = View::getHeight();
 		SDL_RenderSetViewport(renderer, &rect);
 	}
 	
@@ -72,16 +72,16 @@ namespace GameEngine
 			srcrect.top += lev;
 			dstrect.top += (float)((lev/srcH)*dstH);
 		}
-		if(dstrect.right > View::Width())
+		if(dstrect.right > View::getWidth())
 		{
-			float dif = dstrect.right - View::Width();
+			float dif = dstrect.right - View::getWidth();
 			float lev = (float)((int)((dif/dstW)*srcW));
 			srcrect.right -= lev;
 			dstrect.right -= (float)((lev/srcW)*dstW);
 		}
-		if(dstrect.bottom > View::Height())
+		if(dstrect.bottom > View::getHeight())
 		{
-			float dif = dstrect.bottom - View::Height();
+			float dif = dstrect.bottom - View::getHeight();
 			float lev = (float)((int)((dif/dstH)*srcH));
 			srcrect.bottom -= lev;
 			dstrect.bottom -= (float)((lev/srcH)*dstH);

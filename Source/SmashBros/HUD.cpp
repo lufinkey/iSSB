@@ -48,7 +48,7 @@ namespace SmashBros
 			trainingMenu = null;
 		}
 		
-		ReadyGo = new ReadyGoActor(View::ScaleWidth() * 0.5f,View::ScaleHeight() * 0.5f, this);
+		ReadyGo = new ReadyGoActor(View::getScalingWidth() * 0.5f,View::getScalingHeight() * 0.5f, this);
 		ReadyGo->setRelativeToView(false);
 		
 		ReadyGo->addAnimation(new Animation("ready",1,"Images/Game/HUD/Ready.png"));
@@ -64,7 +64,7 @@ namespace SmashBros
 		}
 		ReadyGo->setScale(0.7f);
 		
-		FinishGame = new Actor(View::ScaleWidth() * 0.5f,View::ScaleHeight() * 0.5f);
+		FinishGame = new Actor(View::getScalingWidth() * 0.5f,View::getScalingHeight() * 0.5f);
 		FinishGame->setRelativeToView(false);
 		
 		FinishGame->addAnimation(new Animation("game", 1, "Images/Game/HUD/Game.png"));
@@ -79,14 +79,14 @@ namespace SmashBros
 				
 				CharacterPanel*panel = new CharacterPanel(this,i);
 				
-				panel->y = (View::ScaleHeight() * 0.8f);
+				panel->y = (View::getScalingHeight() * 0.8f);
 				if(Global::suddenDeath)
 				{
-					panel->x = ((float)View::ScaleWidth() / (Global::suddenDeathPlayers.size()+1))*counter;
+					panel->x = ((float)View::getScalingWidth() / (Global::suddenDeathPlayers.size()+1))*counter;
 				}
 				else
 				{
-					panel->x = ((float)View::ScaleWidth() / (Global::charAmount+1))*counter;
+					panel->x = ((float)View::getScalingWidth() / (Global::charAmount+1))*counter;
 				}
 				
 				charPanels.add(panel);
@@ -95,7 +95,7 @@ namespace SmashBros
 		
 		if(Global::gameMode == Global::MODE_TIME_LIMIT)
 		{
-			currentTime = new TextActor((float)View::ScaleWidth()/2, 40, "0:00", AssetManager::getFont("Fonts/arial.ttf", Font::BOLD, 48), Color::WHITE);
+			currentTime = new TextActor((float)View::getScalingWidth()/2, 40, "0:00", AssetManager::getFont("Fonts/arial.ttf", Font::BOLD, 48), Color::WHITE);
 			currentTime->setRelativeToView(false);
 			currentTime->setAlignment(TextActor::ALIGN_CENTER);
 		}
@@ -1109,7 +1109,7 @@ namespace SmashBros
 		resumeButton->setAlpha(0.2f);
 		resumeButton->setScale(1.6f);
 		
-		finishButton = new Actor((float)View::ScaleWidth()/2, (float)View::ScaleHeight()/2);
+		finishButton = new Actor((float)View::getScalingWidth()/2, (float)View::getScalingHeight()/2);
 		finishButton->addAnimation(new Animation("normal", 1, "Images/Game/HUD/FinishButton.png"));
 		finishButton->changeAnimation("normal", FORWARD);
 		finishButton->setRelativeToView(false);

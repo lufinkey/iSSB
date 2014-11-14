@@ -402,7 +402,7 @@ namespace SmashBros
 		coinPoints = new Vector2i[type.size()];
 		charSelectArea = new WireframeActor();
 		//CharSelectArea->setVisible(true);
-		int space = View::ScaleWidth()/(total);
+		int space = View::getScalingWidth()/(total);
 		for(int i=1; i<=total; i++)
 		{
 			Global::CPU[i-1]=false;
@@ -432,7 +432,7 @@ namespace SmashBros
 		for(int i=1; i<=num; i++)
 		{
 			CharCoin*a = new CharCoin(this,i);
-			int space = View::ScaleWidth()/(num);
+			int space = View::getScalingWidth()/(num);
 			addToGrid(a,25+(space/10),500,num,1,space,0,i);
 			coinPoints[i-1].x=(int)a->x;
 			coinPoints[i-1].y=(int)a->y;
@@ -775,8 +775,8 @@ namespace SmashBros
 		{
 			if(drag && Game::checkTouchActive(dragId))
 			{
-				x = (float)Game::TouchX(dragId);
-				y = (float)Game::TouchY(dragId);
+				x = (float)Game::getTouchX(dragId);
+				y = (float)Game::getTouchY(dragId);
 			}
 			else
 			{
@@ -787,8 +787,8 @@ namespace SmashBros
 		{
 			if(drag)
 			{
-				x = (float)Game::MouseX();
-				y = (float)Game::MouseY();
+				x = (float)Game::getMouseX();
+				y = (float)Game::getMouseY();
 			}
 		}
 	}

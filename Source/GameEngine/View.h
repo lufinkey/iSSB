@@ -32,10 +32,10 @@ namespace GameEngine
 		static void setSize(int w, int h);
 		static void setScaleSize(int w, int h);
 		
-		static int Width();
-		static int Height();
-		static int ScaleWidth();
-		static int ScaleHeight();
+		static int getWidth();
+		static int getHeight();
+		static int getScalingWidth();
+		static int getScalingHeight();
 		
 		static void Update(Graphics2D& g);
 		static void Draw(Graphics2D& g);

@@ -41,22 +41,22 @@ namespace GameEngine
 		scaleHeight=h;
 	}
 	
-	int View::Width()
+	int View::getWidth()
 	{
 		return windowWidth;
 	}
 	
-	int View::Height()
+	int View::getHeight()
 	{
 		return windowHeight;
 	}
 	
-	int View::ScaleWidth()
+	int View::getScalingWidth()
 	{
 		return scaleWidth;
 	}
 	
-	int View::ScaleHeight()
+	int View::getScalingHeight()
 	{
 		return scaleHeight;
 	}

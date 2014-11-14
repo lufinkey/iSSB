@@ -40,11 +40,11 @@ namespace SmashBros
         left1 = ((x*Camera::Zoom)-(((float)w/2)*Camera::Zoom));
         left2 = View::x;
         right1 = ((x*Camera::Zoom)+(((float)w/2)*Camera::Zoom));
-        right2 = (View::x+(View::ScaleWidth()));
+        right2 = (View::x+(View::getScalingWidth()));
         top1 = ((y*Camera::Zoom)-(((float)h/2)*Camera::Zoom));
         top2 = View::y;
         bottom1 = ((y*Camera::Zoom)+(((float)h/2)*Camera::Zoom));
-        bottom2 = (View::y+(View::ScaleHeight()));
+        bottom2 = (View::y+(View::getScalingHeight()));
 		
         if (bottom1 < top2)
         {

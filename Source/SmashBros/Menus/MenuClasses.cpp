@@ -45,7 +45,7 @@ namespace SmashBros
 	
 	void TitleScreen::Initialize()
 	{
-		titleScreen = new TitleScreenActor(this, (float)View::ScaleWidth()/2,(float)View::ScaleHeight()/2);
+		titleScreen = new TitleScreenActor(this, (float)View::getScalingWidth()/2,(float)View::getScalingHeight()/2);
 	}
 	
 	void TitleScreen::LoadContent()
@@ -79,7 +79,7 @@ namespace SmashBros
 		if(changing)
 		{
 			g.setColor(Color::WHITE);
-			g.fillRect(0, 0, (float)View::ScaleWidth(), (float)View::ScaleHeight());
+			g.fillRect(0, 0, (float)View::getScalingWidth(), (float)View::getScalingHeight());
 		}
 		else
 		{
@@ -441,7 +441,7 @@ namespace SmashBros
 		rules_bar_text = new TextActor(560,60,"",AssetManager::getFont("Fonts/arial.ttf", Font::BOLD, 26),Color::BLACK);
 		rules_bar_text->setAlignment(TextActor::ALIGN_BOTTOMLEFT);
 		
-		readyToFight = new ReadyToFightBar((float)View::ScaleWidth()/2, 380);
+		readyToFight = new ReadyToFightBar((float)View::getScalingWidth()/2, 380);
 		readyToFight->addAnimation(new Animation("normal",1,"Images/Menus/Buttons/Generic/readytofight.png"));
 		readyToFight->addAnimation(new Animation("hover",1,"Images/Menus/Buttons/Generic/readytofight_selected.png"));
 		readyToFight->changeAnimation("normal", FORWARD);
@@ -849,7 +849,7 @@ namespace SmashBros
 		arrow_right->setScale(2);
 		arrow_right->setAlpha(0.5f);
 		
-		joystickArea = new WireframeActor(0,0,View::ScaleWidth()/2, View::ScaleHeight());
+		joystickArea = new WireframeActor(0,0,View::getScalingWidth()/2, View::getScalingHeight());
 		joystickArea->relativeToView(false);
 		
 		joystick = new Actor(150, 450);
@@ -978,8 +978,8 @@ namespace SmashBros
 				if(joystickArea->isClicked())
 				{
 					long touchId = joystickArea->getTouchId();
-					int mousex = Game::TouchX(touchId);
-					int mousey = Game::TouchY(touchId);
+					int mousex = Game::getTouchX(touchId);
+					int mousey = Game::getTouchY(touchId);
 					byte dir = PrimitiveActor::getDir(joystick->x, joystick->y, (float)mousex, (float)mousey);
 					float dist = (float)PrimitiveActor::distanceUnSqr(joystick->x, joystick->y, (float)mousex, (float)mousey);
 					if(dist<=centerDist)
@@ -2068,7 +2068,7 @@ namespace SmashBros
 		
 		peerCard = new PeerCard("", "");
 		
-		brawl = new Actor((float)View::ScaleWidth()/2, 540);
+		brawl = new Actor((float)View::getScalingWidth()/2, 540);
 		brawl->setScale(0.5f);
 		brawl->addAnimation(new Animation("disabled", 1, "Images/Menus/Buttons/Bluetooth/Brawl_disabled.png"));
 		brawl->addAnimation(new Animation("enabled", 1, "Images/Menus/Buttons/Bluetooth/Brawl.png"));
@@ -2162,7 +2162,7 @@ namespace SmashBros
 	{
 		int totalPeers = 2;
 		
-		float width = ((float)View::ScaleWidth())/(totalPeers+1);
+		float width = ((float)View::getScalingWidth())/(totalPeers+1);
 		
 		Menus::button_back->Draw(g, gameTime);
 		

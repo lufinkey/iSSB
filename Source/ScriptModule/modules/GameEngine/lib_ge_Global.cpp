@@ -43,16 +43,16 @@ namespace GameEngine
 		chaiscript::Module* m_gameengine_global = new chaiscript::Module();
 
 		//Application
-		m_gameengine_global->add(chaiscript::fun(&GameEngine::Application::Exit), "Application_Exit");
-		m_gameengine_global->add(chaiscript::fun(&GameEngine::Application::GetLastKey), "Application_GetLastKey");
-		m_gameengine_global->add(chaiscript::fun(&GameEngine::Application::KeyPressed), "Application_KeyPressed");
-		m_gameengine_global->add(chaiscript::fun(&GameEngine::Application::PrevKeyPressed), "Application_PrevKeyPressed");
-		m_gameengine_global->add(chaiscript::fun(&GameEngine::Application::MouseState), "Application_MouseState");
-		m_gameengine_global->add(chaiscript::fun(&GameEngine::Application::PrevMouseState), "Application_PrevMouseState");
-		m_gameengine_global->add(chaiscript::fun(&GameEngine::Application::MouseX), "Application_MouseX");
-		m_gameengine_global->add(chaiscript::fun(&GameEngine::Application::MouseY), "Application_MouseY");
-		m_gameengine_global->add(chaiscript::fun(&GameEngine::Application::PrevMouseX), "Application_PrevMouseX");
-		m_gameengine_global->add(chaiscript::fun(&GameEngine::Application::PrevMouseY), "Application_PrevMouseY");
+		m_gameengine_global->add(chaiscript::fun(&GameEngine::Application::Exit), "Application_exit");
+		m_gameengine_global->add(chaiscript::fun(&GameEngine::Application::getLastKey), "Application_getLastKey");
+		m_gameengine_global->add(chaiscript::fun(&GameEngine::Application::getKeyPressed), "Application_getKeyPressed");
+		m_gameengine_global->add(chaiscript::fun(&GameEngine::Application::getPrevKeyPressed), "Application_getPrevKeyPressed");
+		m_gameengine_global->add(chaiscript::fun(&GameEngine::Application::getMouseState), "Application_getMouseState");
+		m_gameengine_global->add(chaiscript::fun(&GameEngine::Application::getPrevMouseState), "Application_getPrevMouseState");
+		m_gameengine_global->add(chaiscript::fun(&GameEngine::Application::getMouseX), "Application_getMouseX");
+		m_gameengine_global->add(chaiscript::fun(&GameEngine::Application::getMouseY), "Application_getMouseY");
+		m_gameengine_global->add(chaiscript::fun(&GameEngine::Application::getPrevMouseX), "Application_getPrevMouseX");
+		m_gameengine_global->add(chaiscript::fun(&GameEngine::Application::getPrevMouseY), "Application_getPrevMouseY");
 		m_gameengine_global->add(chaiscript::fun(&GameEngine::Application::setWindowTitle), "Application_setWindowTitle");
 		m_gameengine_global->add(chaiscript::fun(&GameEngine::Application::setUpdatesPerFrame), "Application_setUpdatesPerFrame");
 		m_gameengine_global->add(chaiscript::fun(&GameEngine::Application::getFrame), "Application_getFrame");
@@ -142,10 +142,10 @@ namespace GameEngine
 		m_gameengine_global->add(chaiscript::fun(&GameEngine::View_setY), "View_setY");
 		m_gameengine_global->add(chaiscript::fun(&GameEngine::View_setZoom), "View_setZoom");
 		m_gameengine_global->add(chaiscript::fun(&GameEngine::View::setSize), "View_setSize");
-		m_gameengine_global->add(chaiscript::fun(&GameEngine::View::Width), "View_getWidth");
-		m_gameengine_global->add(chaiscript::fun(&GameEngine::View::Height), "View_getHeight");
-		m_gameengine_global->add(chaiscript::fun(&GameEngine::View::ScaleWidth), "View_getScaleWidth");
-		m_gameengine_global->add(chaiscript::fun(&GameEngine::View::ScaleHeight), "View_getScaleHeight");
+		m_gameengine_global->add(chaiscript::fun(&GameEngine::View::getWidth), "View_getWidth");
+		m_gameengine_global->add(chaiscript::fun(&GameEngine::View::getHeight), "View_getHeight");
+		m_gameengine_global->add(chaiscript::fun(&GameEngine::View::getScalingWidth), "View_getScalingWidth");
+		m_gameengine_global->add(chaiscript::fun(&GameEngine::View::getScalingHeight), "View_getScalingHeight");
 
 		return chaiscript::ModulePtr(m_gameengine_global);
 	}

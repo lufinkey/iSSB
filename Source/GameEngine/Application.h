@@ -129,20 +129,20 @@ namespace GameEngine
 		static void showMessage(const String&title, const String&message);
 		static int showMessage(const String&title, const String&message, const ArrayList<String>&options);
 		
-		static int GetLastKey();
-		static bool KeyPressed(int key);
-		static bool PrevKeyPressed(int key);
+		static int getLastKey();
+		static bool getKeyPressed(int key);
+		static bool getPrevKeyPressed(int key);
 		
-		static bool MouseState(int state);
-		static bool PrevMouseState(int state);
-		static int MouseX();
-		static int MouseY();
-		static int PrevMouseX();
-		static int PrevMouseY();
-		static int TouchX(long touchID);
-		static int PrevTouchX(long touchID);
-		static int TouchY(long touchID);
-		static int PrevTouchY(long touchID);
+		static bool getMouseState(int state);
+		static bool getPrevMouseState(int state);
+		static int getMouseX();
+		static int getMouseY();
+		static int getPrevMouseX();
+		static int getPrevMouseY();
+		static int getTouchX(long touchID);
+		static int getPrevTouchX(long touchID);
+		static int getTouchY(long touchID);
+		static int getPrevTouchY(long touchID);
 		static bool checkTouchActive(long touchID);
 		static bool checkPrevTouchActive(long touchID);
 		static ArrayList<TouchPoint> getTouchPoints();
