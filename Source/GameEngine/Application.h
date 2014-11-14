@@ -14,12 +14,12 @@ namespace GameEngine
 {
 	class Application
 	{
-	private:
 		friend class View;
 		friend class BufferedImage;
+		friend class BatchLoader;
 		friend int ApplicationEventHandler(void*,SDL_Event*);
 		friend void private_updateAppEvents(void);
-		
+	private:
 		static SDL_Window*window;
 		static SDL_Renderer*renderer;
 		static Application*game;
@@ -147,6 +147,7 @@ namespace GameEngine
 		static bool checkPrevTouchActive(long touchID);
 		static ArrayList<TouchPoint> getTouchPoints();
 		static ArrayList<TouchPoint> getPrevTouchPoints();
+		static bool hasMultitouch();
 		
 		static void setUpdatesPerFrame(int total);
 		static long getFrame();

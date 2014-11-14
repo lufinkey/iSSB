@@ -2,6 +2,7 @@
 #include "MenuScreen.h"
 #include "../Application.h"
 #include "ScreenManager.h"
+#include "../Input/Mouse.h"
 
 namespace GameEngine
 {
@@ -24,54 +25,102 @@ namespace GameEngine
 	
 	void MenuScreen::Update(long gameTime)
 	{
-		long prevTouchId = -1;
-		if(selectedIndex>-1)
-		{
-			prevTouchId = Items.get(selectedIndex)->getTouchId();
-		}
 		Screen::Update(gameTime);
-		ArrayList<TouchPoint> touchPoints = Application::getTouchPoints();
-		ArrayList<TouchPoint> prevTouchPoints = Application::getPrevTouchPoints();
-		if(touchPoints.size()>0)
+
+		if(Application::hasMultitouch())
 		{
-			selecting = true;
-		}
-		else
-		{
-			selecting = false;
-		}
-		
-		bool canBeSelected = true;
-		int prevSelectedIndex = selectedIndex;
-		selectedIndex = -1;
-		for(int i=(Items.size()-1); i>=0; i--)
-		{
-			MenuItem*currentItem = Items.get(i);
-			currentItem->Update(gameTime);
-			if(canBeSelected)
+			long prevTouchId = -1;
+			if(selectedIndex>-1)
 			{
-				if(currentItem->MouseOver())
+				prevTouchId = Items.get(selectedIndex)->getTouchId();
+			}
+			Screen::Update(gameTime);
+			ArrayList<TouchPoint> touchPoints = Application::getTouchPoints();
+			ArrayList<TouchPoint> prevTouchPoints = Application::getPrevTouchPoints();
+			if(touchPoints.size()>0)
+			{
+				selecting = true;
+			}
+			else
+			{
+				selecting = false;
+			}
+		
+			bool canBeSelected = true;
+			int prevSelectedIndex = selectedIndex;
+			selectedIndex = -1;
+			for(int i=(Items.size()-1); i>=0; i--)
+			{
+				MenuItem*currentItem = Items.get(i);
+				currentItem->Update(gameTime);
+				if(canBeSelected)
 				{
-					currentItem->setSelected(true);
-					selectedIndex = i;
-					canBeSelected = false;
+					if(currentItem->MouseOver())
+					{
+						currentItem->setSelected(true);
+						selectedIndex = i;
+						canBeSelected = false;
+					}
+					else
+					{
+						currentItem->setSelected(false);
+					}
 				}
 				else
 				{
 					currentItem->setSelected(false);
 				}
 			}
-			else
+		
+			if(prevSelectedIndex>=0 && !Application::checkTouchActive(prevTouchId))
 			{
-				currentItem->setSelected(false);
+				Items.get(prevSelectedIndex)->OnRelease();
+				Items.get(prevSelectedIndex)->setSelected(false);
+				prevSelectedIndex = -1;
 			}
 		}
-		
-		if(prevSelectedIndex>=0 && !Application::checkTouchActive(prevTouchId))
+		else
 		{
-			Items.get(prevSelectedIndex)->OnRelease();
-			Items.get(prevSelectedIndex)->setSelected(false);
-			prevSelectedIndex = -1;
+			if(Application::MouseState(Mouse::LEFTCLICK))
+			{
+				selecting = true;
+			}
+			else
+			{
+				selecting = false;
+			}
+		
+			bool canBeSelected = true;
+			selectedIndex = -1;
+			for(int i=(Items.size()-1); i>=0; i--)
+			{
+				MenuItem*currentItem = Items.get(i);
+				currentItem->Update(gameTime);
+				if(canBeSelected)
+				{
+					if(currentItem->MouseOver())
+					{
+						currentItem->setSelected(true);
+						selectedIndex = i;
+						canBeSelected = false;
+					}
+					else
+					{
+						currentItem->setSelected(false);
+					}
+				}
+				else
+				{
+					currentItem->setSelected(false);
+				}
+			}
+		
+			if(selectedIndex>=0 && !Application::MouseState(Mouse::LEFTCLICK) && Application::PrevMouseState(Mouse::LEFTCLICK))
+			{
+				Items.get(selectedIndex)->OnRelease();
+				Items.get(selectedIndex)->setSelected(false);
+				selectedIndex = -1;
+			}
 		}
 	}
 	

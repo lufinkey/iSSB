@@ -400,7 +400,7 @@ namespace SmashBros
 				switch(attacksHolder)
 				{
 					case 5:
-					//A down left
+					//A down
 					causeDamage(collide,5);
 					if(collide->y<=y)
 					{

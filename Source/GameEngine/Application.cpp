@@ -799,6 +799,15 @@ namespace GameEngine
 			return prevTouchPoints;
 		}
 	}
+
+	bool Application::hasMultitouch()
+	{
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR) || defined(__ANDROID__)
+		return true;
+#else
+		return false;
+#endif
+	}
 	
 	void Application::keyPressed(int keycode)
 	{
@@ -1107,6 +1116,11 @@ namespace GameEngine
 	void Application::incrementLoad(float incr)
 	{
 		game->updateEvents();
+		if(closing)
+		{
+			return;
+		}
+
 		loadCurrent+=incr;
 		//graphics->reset();
 		/*window->clear();

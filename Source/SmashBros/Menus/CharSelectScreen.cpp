@@ -756,7 +756,10 @@ namespace SmashBros
 		if(screen->canGrabCoin)
 		{
 			drag = true;
-			dragId = getTouchId();
+			if(Game::hasMultitouch())
+			{
+				dragId = getTouchId();
+			}
 		}
 	}
 	
@@ -768,14 +771,25 @@ namespace SmashBros
 	void CharSelectScreen::CharCoin::Update(long gameTime)
 	{
 		Actor::Update(gameTime);
-		if(drag && Game::checkTouchActive(dragId))
+		if(Application::hasMultitouch())
 		{
-			x = (float)Game::TouchX(dragId);
-			y = (float)Game::TouchY(dragId);
+			if(drag && Game::checkTouchActive(dragId))
+			{
+				x = (float)Game::TouchX(dragId);
+				y = (float)Game::TouchY(dragId);
+			}
+			else
+			{
+				drag = false;
+			}
 		}
 		else
 		{
-			drag = false;
+			if(drag)
+			{
+				x = (float)Game::MouseX();
+				y = (float)Game::MouseY();
+			}
 		}
 	}
 	

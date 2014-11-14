@@ -29,11 +29,19 @@ namespace GameEngine
 		{
 			AssetManager::loadImage(Images.get(i));
 			Application::incrementLoad(1);
+			if(Application::closing)
+			{
+				return;
+			}
 		}
 		for(int i=0; i<Fonts.size(); i++)
 		{
         	AssetManager::loadFont(Fonts.get(i));
         	Application::incrementLoad(1);
+			if(Application::closing)
+			{
+				return;
+			}
 		}
 		Images.clear();
 		Fonts.clear();

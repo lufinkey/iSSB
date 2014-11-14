@@ -5,6 +5,11 @@
 #include "../Util/PixelIterator.h"
 #include "../View.h"
 #include "../Output/Console.h"
+#include "../Input/Mouse.h"
+
+#if defined(__APPLE__)
+	#include "TargetConditionals"
+#endif
 
 namespace GameEngine
 {
@@ -447,7 +452,24 @@ namespace GameEngine
 	    			onmouseenter = true;
 	    		}
 	    	}
-	    	if(!prevMouseOver && !Application::checkPrevTouchActive(touchId))
+
+			bool clicking = false;
+			if(Application::hasMultitouch())
+			{
+				if(!prevMouseOver && !Application::checkPrevTouchActive(touchId))
+				{
+					clicking = true;
+				}
+			}
+			else
+			{
+				if(Application::MouseState(Mouse::LEFTCLICK) && !Application::PrevMouseState(Mouse::LEFTCLICK))
+				{
+					clicking = true;
+				}
+			}
+
+			if(clicking)
 	    	{
 	    		clicked = true;
 	    		if(isEventEnabled(EVENT_MOUSECLICK))
@@ -464,7 +486,24 @@ namespace GameEngine
 	    		onmouseleave = true;
 			}
 	    }
-	    if(clicked && prevMouseover && !Application::checkTouchActive(prevTouchId))
+
+		bool releasing = false;
+		if(Application::hasMultitouch())
+		{
+			if(clicked && prevMouseover && !Application::checkTouchActive(prevTouchId))
+			{
+				releasing = true;
+			}
+		}
+		else
+		{
+			if(clicked && !Application::MouseState(Mouse::LEFTCLICK))
+			{
+				releasing = true;
+			}
+		}
+
+		if(releasing)
 	    {
 	    	clicked = false;
 	    	if(isEventEnabled(EVENT_MOUSERELEASE))
@@ -473,9 +512,12 @@ namespace GameEngine
 			}
 	    }
 		
-		if(clicked && !Application::checkTouchActive(touchId))
+		if(Application::hasMultitouch())
 		{
-			clicked = false;
+			if(clicked && !Application::checkTouchActive(touchId))
+			{
+				clicked = false;
+			}
 		}
 		
 		currentTouchId = touchId;
@@ -684,16 +726,31 @@ namespace GameEngine
 
 	bool Actor::mouseOver()
 	{
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR) || defined(__ANDROID__)
 		if(mouseover)
 		{
 			if(Application::checkTouchActive(currentTouchId))
 			{
-				if(checkHover((float)Application::TouchX(currentTouchId), (float)Application::TouchY(currentTouchId)))
+				float mousex = 0;
+				float mousey = 0;
+				if(relative)
+				{
+					mousex = (float)Application::TouchX(currentTouchId) + View::x;
+					mousey = (float)Application::TouchY(currentTouchId) + View::y;
+				}
+				else
+				{
+					mousex = (float)Application::TouchX(currentTouchId);
+					mousey = (float)Application::TouchY(currentTouchId);
+				}
+
+				if(checkHover(mousex, mousey))
 				{
 					return true;
 				}
 			}
 		}
+
 		ArrayList<TouchPoint> points = Application::getTouchPoints();
 		for(int i=0; i<points.size(); i++)
 		{
@@ -705,6 +762,22 @@ namespace GameEngine
 			}
 		}
 		return false;
+#else
+		float mousex = 0;
+		float mousey = 0;
+		if(relative)
+		{
+			mousex = (float)Application::MouseX() + View::x;
+			mousey = (float)Application::MouseY() + View::y;
+		}
+		else
+		{
+			mousex = (float)Application::MouseX();
+			mousey = (float)Application::MouseY();
+		}
+
+		return checkHover(mousex, mousey);
+#endif
 	}
 	
 	void Actor::onMouseEnter() //When mouse enters Actor
