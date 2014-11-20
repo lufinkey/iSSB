@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>F12BFDA1-054D-442E-B21C-1B1C2B0142B1</string>
+	<key>IDESourceControlProjectName</key>
+	<string>SmashBros</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>4CB10584A146DDA75984A2657077018595CACDFF</key>
+		<string>https://github.com/Kfeavel/iSSB.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>SmashBros.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>4CB10584A146DDA75984A2657077018595CACDFF</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/Kfeavel/iSSB.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>4CB10584A146DDA75984A2657077018595CACDFF</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>4CB10584A146DDA75984A2657077018595CACDFF</string>
+			<key>IDESourceControlWCCName</key>
+			<string>iSSB</string>
+		</dict>
+	</array>
+</dict>
+</plist>
