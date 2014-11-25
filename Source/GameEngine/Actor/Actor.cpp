@@ -8,7 +8,7 @@
 #include "../Input/Mouse.h"
 
 #if defined(__APPLE__)
-	#include "TargetConditionals"
+	#include "TargetConditionals.h"
 #endif
 
 namespace GameEngine

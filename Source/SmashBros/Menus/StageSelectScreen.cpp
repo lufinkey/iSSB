@@ -71,7 +71,8 @@ namespace SmashBros
 	void StageSelectScreen::onLoad()
 	{
 		//Open for implementation
-		Global::LoadGame();
+		Menus::playSound("titlescreen click");
+        Global::LoadGame();
 	}
 	
 	void StageSelectScreen::onSelect(int stageNo)
@@ -126,6 +127,7 @@ namespace SmashBros
 		Screen::LoadContent();
 		queueLoad = 0;
 		drawnOnce = false;
+        Menus::playSound("titlescreen click");
 #ifndef SMASHBROS_SCRIPT_DISABLE
 		reloadScriptedStages();
 #endif //SMASHBROS_SCRIPT_DISABLE
