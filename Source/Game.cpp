@@ -22,6 +22,32 @@ namespace SmashBros
 	
 	void Game::Initialize()
 	{
+		/*Font* font = new Font("Fonts/arial.ttf",Font::PLAIN,16);
+		SDL_Color color;
+		color.r = 255;
+		color.g = 255;
+		color.b = 255;
+		color.a = 255;
+
+		SDL_Color bgcolor;
+		bgcolor.r = 0;
+		bgcolor.g = 0;
+		bgcolor.b = 0;
+		bgcolor.a = 0;
+
+		SDL_Surface* surface = TTF_RenderGlyph_Shaded(font->getTTF(), 'H', color, bgcolor);
+		Console::WriteLine((String)"H: " + surface->w + ", " + surface->h);
+		SDL_FreeSurface(surface);
+		surface = TTF_RenderGlyph_Shaded(font->getTTF(), 'y', color, bgcolor);
+		Console::WriteLine((String)"y: " + surface->w + ", " + surface->h);
+		SDL_FreeSurface(surface);
+		surface = TTF_RenderGlyph_Shaded(font->getTTF(), 'r', color, bgcolor);
+		Console::WriteLine((String)"r: " + surface->w + ", " + surface->h);
+		SDL_FreeSurface(surface);
+		surface = TTF_RenderGlyph_Shaded(font->getTTF(), '.', color, bgcolor);
+		Console::WriteLine((String)".: " + surface->w + ", " + surface->h);
+		SDL_FreeSurface(surface);*/
+
 		//Initialize things
 		scaleToWindow(true,900,600);
 

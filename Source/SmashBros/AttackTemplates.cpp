@@ -6,6 +6,30 @@
 
 namespace SmashBros
 {
+	/*void AttackTemplates::causeKnockback(Player* playr, Player* collide, float damage, float knockbackUnits, float knockbackAngle, float knockbackScaling)
+	{
+		collide->updateHitbox();
+		playr->updateHitbox();
+		if(!collide->onDeflectPlayerKnockback(playr, damage, knockbackUnits, knockbackAngle, knockbackScaling))
+		{
+			if(collide->holdingPlayer)
+			{
+				collide->releasePlayer();
+			}
+
+			float totalKnockback = knockbackUnits+((knockbackScaling*collide->percent)/75);
+			float totalKnockbackX = std::cos(degtorad((double)knockbackAngle)) * totalKnockback;
+			float totalKnockbackY = -std::sin(degtorad((double)knockbackAngle)) * totalKnockback;
+			collide->percent += (int)damage;
+			if(collide->percent > 999)
+			{
+				collide->percent = 999;
+			}
+
+			
+		}
+	}*/
+
 	void AttackTemplates::causeDamage(Player*playr, Player*collide, int amount)
 	{
 		boolean canInflict = true;

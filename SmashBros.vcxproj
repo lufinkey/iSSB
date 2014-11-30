@@ -58,12 +58,17 @@
       <PreprocessorDefinitions>SMASHBROS_SCRIPT_DISABLE;SMASHBROS_P2P_DISABLE;WIN32;__STDC_LIMIT_MACROS;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>External\SDL\include;External\ChaiScript\include;External\PlistCpp\include;External\PlistCpp\Windows\include;External\PlistCpp\src;External\dirent\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>External\PlistCpp\Windows\lib;External\SDL\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;SDL2_p2p_debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2-d.lib;SDL2main-d.lib;SDL2_image-d.lib;SDL2_ttf-d.lib;SDL2_mixer-d.lib;SDL2_p2p-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -77,6 +82,7 @@
       <PreprocessorDefinitions>SMASHBROS_SCRIPT_DISABLE;SMASHBROS_P2P_DISABLE;WIN32;__STDC_LIMIT_MACROS;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>External\SDL\include;External\ChaiScript\include;External\PlistCpp\include;External\PlistCpp\Windows\include;External\PlistCpp\src;External\dirent\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

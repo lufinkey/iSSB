@@ -10,10 +10,11 @@ namespace SmashBros
 	{
 		friend class Player;
 	private:
+		//static void causeKnockback(Player*playr, Player* collide, float damage, float knockbackUnits, float knockbackAngle, float knockbackScaling, boolean fixed = false);
 		static void causeDamage(Player*playr, Player*collide, int amount);
 		static void causeHurtLaunch(Player*playr, Player*collide, int xDir, float xAmount, float xMult, int yDir, float yAmount, float yMult);
 		static void causeHurt(Player*playr, Player*collide, byte dir, int time);
-		
+
 	public:
 		static const byte SMASH_SIDE = 1;
 		static const byte SMASH_UP = 2;
