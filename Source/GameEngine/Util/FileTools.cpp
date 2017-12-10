@@ -468,7 +468,7 @@ namespace GameEngine
 
 	bool FileTools::deleteFromFilesystem(const String&path)
 	{
-		int result = system((String)"rm -rf \"" + path + "\"");
+		int result = remove(path);
 		if(result==0)
 		{
 			return true;

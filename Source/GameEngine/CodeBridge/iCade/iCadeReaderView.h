@@ -49,9 +49,7 @@
 
 @interface iCadeReaderView : UIView<UIKeyInput> {
     UIView                  *inputView;
-    iCadeState              _iCadeState;
-    id<iCadeEventDelegate>  _delegate;
-    
+	
     struct {
         bool stateChanged:1;
         bool buttonDown:1;

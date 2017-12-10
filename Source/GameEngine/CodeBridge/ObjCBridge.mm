@@ -18,7 +18,7 @@
 	#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 		#import <UIKit/UIKit.h>
 		#import "MailViewController.h"
-		#import "UIWebViewController.h"
+		#import "WebViewController.h"
 		#import "MessageBoxDelegate.h"
 		
 		//static NSDate*startDate = nil;
@@ -114,7 +114,7 @@ void openURL(const char*url, SDL_Window*window)
 	}
 	else
 	{
-		UIWebViewController* webview = [[UIWebViewController alloc] init];
+		WebViewController* webview = [[WebViewController alloc] init];
 		UIViewController*viewCtrl = getSDLViewController(window);
 		if(viewCtrl==nil)
 		{
@@ -127,7 +127,6 @@ void openURL(const char*url, SDL_Window*window)
 			updateAppEvents();
 			SDL_Delay(30);
 		}
-		[webview release];
 	}
 	
 #elif defined(__ANDROID__)
@@ -154,7 +153,6 @@ void writeEmail(SDL_Window*window, const char*recipient, const char*subject, con
 		updateAppEvents();
 		SDL_Delay(30);
 	}
-	[mailer release];
 	
 #elif defined(__ANDROID__)
 	GameEngine::String subj = subject;
@@ -218,7 +216,6 @@ void iCade_enable(bool toggle, SDL_Window*window)
 	else if(!toggle && iCade_receiver!=nil)
 	{
 		[iCade_receiver removeFromSuperview];
-		[iCade_receiver release];
 		iCade_receiver = nil;
 	}
 #endif
@@ -284,7 +281,6 @@ void SDL_ShowSimpleMessageBoxFixed(const char*title, const char*message)
 		updateAppEvents();
 		SDL_Delay(30);
 	}
-	[alert release];
 	
 #else
 	SDL_Window* window = GameEngine::Application::getWindow();
@@ -313,8 +309,6 @@ int SDL_ShowMessageBoxFixed(const char*title, const char*message, const char**op
 		SDL_Delay(30);
 	}
 	int result = [messageDelegate getResult];
-	[alert release];
-	[messageDelegate release];
 	return result;
 	
 #else

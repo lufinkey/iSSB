@@ -1,18 +1,24 @@
 [submodule "External/SDL/SDL"]
 	path = External/SDL/SDL
 	url = https://github.com/SDL-mirror/SDL
+	ignore = dirty
 [submodule "External/SDL/SDL_image"]
 	path = External/SDL/SDL_image
 	url = https://github.com/SDL-mirror/SDL_image
+	ignore = dirty
 [submodule "External/SDL/SDL_mixer"]
 	path = External/SDL/SDL_mixer
 	url = https://github.com/SDL-mirror/SDL_mixer
+	ignore = dirty
 [submodule "External/SDL/SDL_ttf"]
 	path = External/SDL/SDL_ttf
 	url = https://github.com/SDL-mirror/SDL_ttf
+	ignore = dirty
 [submodule "External/SDL/SDL_gfx"]
 	path = External/SDL/SDL_gfx
 	url = https://github.com/svn2github/sdl2_gfx
+	ignore = dirty
 [submodule "External/SDL/SDL_p2p"]
 	path = External/SDL/SDL_p2p
 	url = https://github.com/lufinkey/SDL_p2p
+	ignore = dirty

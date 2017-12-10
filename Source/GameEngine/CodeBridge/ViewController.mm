@@ -1,30 +1,24 @@
 
-#import "UIWebViewController.h"
+#import "WebViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface UIWebViewController ()
-@property (nonatomic, retain) NSString *currentPageName;
-@property (nonatomic, retain) NSString *currentPageDirectory;
-@property (nonatomic, assign) UIActivityIndicatorView* activityView;
-@property (nonatomic, assign) UIBarButtonItem* activityIndicator;
+@interface WebViewController ()
+{
+	BOOL _webviewOpened;
+	UIWebView* _webView;
+}
 @end
 
-@implementation UIWebViewController
-
-@synthesize currentPageName;
-@synthesize currentPageDirectory;
-@synthesize activityView;
-@synthesize activityIndicator;
+@implementation WebViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self)
+    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])
 	{
-		webviewOpened = NO;
-		activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-		[activityView setFrame:CGRectMake(0,0,20,20)];
-		activityIndicator = [[UIBarButtonItem alloc] initWithCustomView:activityView];
+		_webviewOpened = NO;
+		_activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+		[_activityView setFrame:CGRectMake(0,0,20,20)];
+		_activityIndicator = [[UIBarButtonItem alloc] initWithCustomView:_activityView];
 		
 		self.view.autoresizesSubviews = YES;
 		self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -32,31 +26,30 @@
 		UINavigationBar* navBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
 		UIBarButtonItem* doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissSelf)];
 		[self.navigationItem setLeftBarButtonItem:doneButton];
-		[doneButton release];
+		
 		[navBar pushNavigationItem:self.navigationItem animated:NO];
 		navBar.autoresizesSubviews = YES;
 		navBar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		[self.view addSubview:navBar];
-		[navBar release];
 		
-		webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 44, self.view.frame.size.width, self.view.frame.size.height-44)];
-		webView.delegate = self;
-		self.webView.autoresizesSubviews = YES;
-		self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		[self.view addSubview:webView];
+		
+		_webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 44, self.view.frame.size.width, self.view.frame.size.height-44)];
+		_webView.delegate = self;
+		_webView.autoresizesSubviews = YES;
+		_webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		[self.view addSubview:_webView];
     }
     return self;
 }
 
 - (id)init
 {
-	self = [super init];
-	if(self)
+	if(self = [super init])
 	{
-		webviewOpened = NO;
-		activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-		[activityView setFrame:CGRectMake(0,0,20,20)];
-		activityIndicator = [[UIBarButtonItem alloc] initWithCustomView:activityView];
+		_webviewOpened = NO;
+		_activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+		[_activityView setFrame:CGRectMake(0,0,20,20)];
+		_activityIndicator = [[UIBarButtonItem alloc] initWithCustomView:_activityView];
 		
 		self.view.autoresizesSubviews = YES;
 		self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -64,41 +57,21 @@
 		UINavigationBar* navBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
 		UIBarButtonItem* doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissSelf)];
 		[self.navigationItem setLeftBarButtonItem:doneButton];
-		[doneButton release];
+		
 		[navBar pushNavigationItem:self.navigationItem animated:NO];
 		navBar.autoresizesSubviews = YES;
 		navBar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		[self.view addSubview:navBar];
-		[navBar release];
 		
-		webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 44, self.view.frame.size.width, self.view.frame.size.height-44)];
-		webView.delegate = self;
-		self.webView.autoresizesSubviews = YES;
-		self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		[self.view addSubview:webView];
+		
+		_webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 44, self.view.frame.size.width, self.view.frame.size.height-44)];
+		_webView.delegate = self;
+		_webView.autoresizesSubviews = YES;
+		_webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		[self.view addSubview:_webView];
 	}
 	return self;
 }
-
-
-- (void)didReceiveMemoryWarning
-{
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
-}
-
-- (void)dealloc
-{
-	[currentPageName release];
-	[currentPageDirectory release];
-	[activityIndicator release];
-	[activityView release];
-	[webView release];
-	[super dealloc];
-}
-
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -108,27 +81,27 @@
 
 - (void)openSite:(NSString*)website inViewController:(UIViewController*)viewCtrl
 {
-	webviewOpened = YES;
+	_webviewOpened = YES;
 	[self loadExternalPage:website];
-	[viewCtrl presentModalViewController:self animated:YES];
+	[viewCtrl presentViewController:self animated:YES completion:nil];
 }
 
 - (void)dismissSelf
 {
-	[self dismissModalViewControllerAnimated:YES];
-	webviewOpened = NO;
+	[self dismissViewControllerAnimated:YES completion:nil];
+	_webviewOpened = NO;
 }
 
 - (BOOL)isOpened
 {
-	return webviewOpened;
+	return _webviewOpened;
 }
 
 #pragma mark -
 #pragma mark Get&Set
 - (UIWebView*)webView
 {
-    return webView;
+    return _webView;
 }
 
 #pragma mark -
@@ -165,9 +138,9 @@
 #ifdef DEBUG
 	NSLog(@"[UIWebViewController] Load failed: %@", error);
 #endif
-	if([activityView isAnimating])
+	if([_activityView isAnimating])
 	{
-		[activityView stopAnimating];
+		[_activityView stopAnimating];
 	}
 	[self.navigationItem setRightBarButtonItem:nil];
 }
@@ -211,20 +184,20 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)view
 {
-	if([activityView isAnimating])
+	if([_activityView isAnimating])
 	{
-		[activityView stopAnimating];
+		[_activityView stopAnimating];
 	}
 	[self.navigationItem setRightBarButtonItem:nil];
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView
 {
-	if(![activityView isAnimating])
+	if(![_activityView isAnimating])
 	{
-		[activityView startAnimating];
+		[_activityView startAnimating];
 	}
-	[self.navigationItem setRightBarButtonItem:activityIndicator];
+	[self.navigationItem setRightBarButtonItem:_activityIndicator];
 }
 
 @end

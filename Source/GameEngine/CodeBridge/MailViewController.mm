@@ -30,9 +30,8 @@
         NSArray *toRecipients = [[NSArray alloc] initWithObjects:person, nil];
         [self setToRecipients:toRecipients];
         [self setMessageBody:body isHTML:NO];
-		[viewCtrl presentModalViewController:self animated:YES];
+		[viewCtrl presentViewController:self animated:YES completion:nil];
 		mailOpened = YES;
-		[toRecipients release];
     }
     else
     {
@@ -43,7 +42,6 @@
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil];
         [alert show];
-        [alert release];
     }
 }
 
@@ -72,7 +70,7 @@
 		break;
     }
 	// Remove the mail view
-	[self dismissModalViewControllerAnimated:YES];
+	[self dismissViewControllerAnimated:YES completion:nil];
 	mailOpened = false;
 }
 

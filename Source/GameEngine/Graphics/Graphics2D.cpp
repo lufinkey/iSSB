@@ -586,86 +586,78 @@ namespace GameEngine
 	
 	void Graphics2D::drawImage(BufferedImage*img, float dx1, float dy1, float dx2, float dy2, int sx1, int sy1, int sx2, int sy2)
 	{
-		SDL_Texture*texture = img->getTexture();
+		SDL_Texture* texture = img->getTexture();
 		
-		/*if(Rotation == 0)
+		Vector2f topLeft = getRotationCoords((dx1+tx)*ScaleX, (dy1+ty)*ScaleY);
+		double realDx2 = topLeft.x + ((dx2-dx1)*ScaleX);
+		double realDy2 = topLeft.y + ((dy2-dy1)*ScaleY);
+		
+		dx1 = topLeft.x;
+		dy1 = topLeft.y;
+		dx2 = realDx2;
+		dy2 = realDy2;
+		
+		bool flipHort = false;
+		bool flipVert = false;
+		SDL_RendererFlip flip = SDL_FLIP_NONE;
+		if(dx2 < dx1)
 		{
-			RectF srcrectF;
-			srcrectF.left = (float)sx1;
-			srcrectF.top = (float)sy1;
-			srcrectF.right = (float)sx2;
-			srcrectF.bottom = (float)sy2;
-			
-			float w = ((dx2 - dx1)*ScaleX);
-			float h = ((dy2 - dy1)*ScaleY);
-			
-			dx1 = (dx1+tx)*ScaleX;
-			dy1 = (dy1+ty)*ScaleY;
-			
-			RectF dstrectF;
-			dstrectF.left = (float)dx1;
-			dstrectF.top = (float)dy1;
-			dstrectF.right = dx1 + (float)w;
-			dstrectF.bottom = dy1 + (float)h;
-			
-			setClippedDrawRect(srcrectF, dstrectF);
-			
-			SDL_Rect srcrect;
-			srcrect.x = (int)srcrectF.left;
-			srcrect.y = (int)srcrectF.top;
-			srcrect.w = (int)(srcrectF.right - srcrectF.left);
-			srcrect.h = (int)(srcrectF.bottom - srcrectF.top);
-			
-			SDL_Rect dstrect;
-			dstrect.x = (int)dstrectF.left;
-			dstrect.y = (int)dstrectF.top;
-			dstrect.w = (int)(dstrectF.right - dstrectF.left);
-			dstrect.h = (int)(dstrectF.bottom - dstrectF.top);
-			
-			SDL_Point center;
-			center.x = 0;
-			center.y = 0;
-			
-			SDL_SetTextureColorMod(texture, imageColor.r, imageColor.g, imageColor.b);
-			SDL_SetTextureAlphaMod(texture, alpha);
-			
-			if(renderer!=NULL)
-			{
-				SDL_RenderCopyEx(renderer, texture, &srcrect, &dstrect, (double)Rotation, &center, SDL_FLIP_NONE);
-			}
+			double tmp = dx1;
+			dx1 = dx2;
+			dx2 = tmp;
+			//really SDL...? I really have to force cast this bitwise operation?
+			flip = (SDL_RendererFlip)(flip | SDL_FLIP_HORIZONTAL);
+			flipHort = true;
+		}
+		if(dy2 < dy1)
+		{
+			double tmp = dy1;
+			dy1 = dy2;
+			dy2 = tmp;
+			//...absolutely brilliant
+			flip = (SDL_RendererFlip)(flip | SDL_FLIP_VERTICAL);
+			flipVert = true;
+		}
+		
+		SDL_Rect dstrect;
+		dstrect.x = (int)dx1;
+		dstrect.y = (int)dy1;
+		dstrect.w = (int)(dx2 - (double)dstrect.x);
+		dstrect.h = (int)(dy2 - (double)dstrect.y);
+
+		SDL_Point center;
+		float rotation = Rotation;
+		if(flipHort)
+		{
+			center.x = dstrect.w;
+			rotation = -rotation;
 		}
 		else
-		{*/
-			SDL_Rect srcrect;
-			srcrect.x = (int)sx1;
-			srcrect.y = (int)sy1;
-			srcrect.w = (int)(sx2 - sx1);
-			srcrect.h = (int)(sy2 - sy1);
-			
-			float w = ((dx2 - dx1)*ScaleX);
-			float h = ((dy2 - dy1)*ScaleY);
-			
-			Vector2f vect = getRotationCoords((dx1+tx)*ScaleX, (dy1+ty)*ScaleY);
-			dx1 = vect.x;
-			dy1 = vect.y;
-			
-			SDL_Rect dstrect;
-			dstrect.x = (int)dx1;
-			dstrect.y = (int)dy1;
-			dstrect.w = (int)w;
-			dstrect.h = (int)h;
-			
-			SDL_Point center;
+		{
 			center.x = 0;
+		}
+		if(flipVert)
+		{
+			center.y = dstrect.h;
+			rotation = -rotation;
+		}
+		else
+		{
 			center.y = 0;
-			
-			SDL_SetTextureColorMod(texture, imageColor.r, imageColor.g, imageColor.b);
-			SDL_SetTextureAlphaMod(texture, alpha);
-			
-			if(renderer!=NULL)
-			{
-				SDL_RenderCopyEx(renderer, texture, &srcrect, &dstrect, (double)Rotation, &center, SDL_FLIP_NONE);
-			}
-		//}
+		}
+		
+		SDL_Rect srcrect;
+		srcrect.x = (int)sx1;
+		srcrect.y = (int)sy1;
+		srcrect.w = (int)(sx2 - sx1);
+		srcrect.h = (int)(sy2 - sy1);
+		
+		SDL_SetTextureColorMod(texture, imageColor.r, imageColor.g, imageColor.b);
+		SDL_SetTextureAlphaMod(texture, alpha);
+		
+		if(renderer!=NULL)
+		{
+			SDL_RenderCopyEx(renderer, texture, &srcrect, &dstrect, (double)rotation, &center, flip);
+		}
 	}
 }

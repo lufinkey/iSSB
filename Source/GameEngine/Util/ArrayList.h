@@ -1,7 +1,7 @@
 
-#include <vector>
-
 #pragma once
+
+#include <vector>
 
 namespace GameEngine
 {

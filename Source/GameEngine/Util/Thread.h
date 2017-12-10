@@ -1,7 +1,7 @@
 
-#include "SDL_thread.h"
-
 #pragma once
+
+#include "SDL_thread.h"
 
 namespace GameEngine
 {
