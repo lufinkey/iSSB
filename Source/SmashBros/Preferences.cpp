@@ -9,7 +9,7 @@ namespace SmashBros
 	bool Preferences::menuSoundFx = true;
 	bool Preferences::ingameMusic = true;
 	
-	bool Preferences::highfps = false;
+	bool Preferences::highfps = true;
 	
 	const String Preferences::version = "2.21-2";
 	
