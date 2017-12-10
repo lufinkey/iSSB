@@ -11,7 +11,7 @@ namespace SmashBros
 	
 	bool Preferences::highfps = false;
 	
-	const String Preferences::version = "2.22";
+	const String Preferences::version = "2.21-2";
 	
 	bool Preferences::newVersion = false;
 	
