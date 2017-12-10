@@ -99,7 +99,7 @@ namespace SmashBros
 			if(Preferences::newVersion)
 			{
 				Preferences::newVersion = false;
-				Game::showMessage("Attention!", Preferences::versionMessage);
+				Game::showMessage((String)"iSSB "+Preferences::version, Preferences::versionMessage);
 			}
 			firstUpdate = false;
 		}
