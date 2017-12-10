@@ -264,8 +264,7 @@ namespace SmashBros
 		class FacebookButton : public MenuBarSmallButton
 		{
 		public:
-			FacebookButton(float x1, float y1, const String&label);
-			virtual ~FacebookButton();
+			using MenuBarSmallButton::MenuBarSmallButton;
 			
 			virtual void onRelease();
 		};
@@ -273,8 +272,7 @@ namespace SmashBros
 		class TwitterButton : public MenuBarSmallButton
 		{
 		public:
-			TwitterButton(float x1, float y1, const String&label);
-			virtual ~TwitterButton();
+			using MenuBarSmallButton::MenuBarSmallButton;
 			
 			virtual void onRelease();
 		};
@@ -282,8 +280,7 @@ namespace SmashBros
 		class ContactDeveloperButton : public MenuBarSmallButton
 		{
 		public:
-			ContactDeveloperButton(float x1, float y1, const String&label);
-			virtual ~ContactDeveloperButton();
+			using MenuBarSmallButton::MenuBarSmallButton;
 			
 			virtual void onRelease();
 		};
@@ -291,8 +288,7 @@ namespace SmashBros
 		class PatreonButton : public MenuBarSmallButton
 		{
 		public:
-			PatreonButton(float x1, float y1, const String&label);
-			virtual ~PatreonButton();
+			using MenuBarSmallButton::MenuBarSmallButton;
 			
 			virtual void onRelease();
 		};
@@ -300,8 +296,7 @@ namespace SmashBros
 		class VenmoButton : public MenuBarSmallButton
 		{
 		public:
-			VenmoButton(float x1, float y1, const String&label);
-			virtual ~VenmoButton();
+			using MenuBarSmallButton::MenuBarSmallButton;
 			
 			virtual void onRelease();
 		};

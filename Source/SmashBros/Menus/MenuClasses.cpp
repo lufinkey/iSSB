@@ -1355,36 +1355,26 @@ namespace SmashBros
 		Menus::button_back->Draw(g, gameTime);
 	}
 	
-	OtherOptions::FacebookButton::FacebookButton(float x1, float y1, const String&label) : MenuBarSmallButton(x1,y1,label) {}
-	OtherOptions::FacebookButton::~FacebookButton() {}
 	void OtherOptions::FacebookButton::onRelease()
 	{
 		openURL("https://www.facebook.com/BrokenPhysicsStudios/");
 	}
 	
-	OtherOptions::TwitterButton::TwitterButton(float x1, float y1, const String&label) : MenuBarSmallButton(x1,y1,label) {}
-	OtherOptions::TwitterButton::~TwitterButton() {}
 	void OtherOptions::TwitterButton::onRelease()
 	{
 		openURL("https://www.twitter.com/lufinkey/");
 	}
 	
-	OtherOptions::ContactDeveloperButton::ContactDeveloperButton(float x1, float y1, const String&label) : MenuBarSmallButton(x1,y1,label) {}
-	OtherOptions::ContactDeveloperButton::~ContactDeveloperButton() {}
 	void OtherOptions::ContactDeveloperButton::onRelease()
 	{
 		writeEmail(Game::getWindow(), "luisfinke@gmail.com", "iSSB", "");
 	}
 	
-	OtherOptions::PatreonButton::PatreonButton(float x1, float y1, const String&label) : MenuBarSmallButton(x1,y1,label) {}
-	OtherOptions::PatreonButton::~PatreonButton() {}
 	void OtherOptions::PatreonButton::onRelease()
 	{
 		openURL("https://www.patreon.com/lufinkey");
 	}
 	
-	OtherOptions::VenmoButton::VenmoButton(float x1, float y1, const String&label) : MenuBarSmallButton(x1,y1,label) {}
-	OtherOptions::VenmoButton::~VenmoButton() {}
 	void OtherOptions::VenmoButton::onRelease()
 	{
 		openURL("https://venmo.com/lufinkey");
