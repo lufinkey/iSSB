@@ -851,6 +851,8 @@
 		A059AD6C1FDCAF750041E164 /* SmashBros */ = {
 			isa = PBXGroup;
 			children = (
+				A059AD7B1FDCAF750041E164 /* Game */,
+				A059ADBC1FDCAF750041E164 /* Menus */,
 				A059AD6D1FDCAF750041E164 /* AttackManager.cpp */,
 				A059AD6E1FDCAF750041E164 /* AttackManager.h */,
 				A059AD6F1FDCAF750041E164 /* AttackRandomizer.cpp */,
@@ -865,7 +867,6 @@
 				A059AD781FDCAF750041E164 /* CollisionManager.h */,
 				A059AD791FDCAF750041E164 /* Controls.cpp */,
 				A059AD7A1FDCAF750041E164 /* Controls.h */,
-				A059AD7B1FDCAF750041E164 /* Game */,
 				A059ADAC1FDCAF750041E164 /* GameElement.cpp */,
 				A059ADAD1FDCAF750041E164 /* GameElement.h */,
 				A059ADAE1FDCAF750041E164 /* Global.cpp */,
@@ -882,7 +883,6 @@
 				A059ADB91FDCAF750041E164 /* Loader.h */,
 				A059ADBA1FDCAF750041E164 /* Magnifier.cpp */,
 				A059ADBB1FDCAF750041E164 /* Magnifier.h */,
-				A059ADBC1FDCAF750041E164 /* Menus */,
 				A059ADDA1FDCAF750041E164 /* MusicManager.cpp */,
 				A059ADDB1FDCAF750041E164 /* MusicManager.h */,
 				A059ADDC1FDCAF750041E164 /* P2PDataManager.cpp */,
@@ -908,10 +908,10 @@
 			isa = PBXGroup;
 			children = (
 				A059AD7C1FDCAF750041E164 /* Characters */,
-				A059AD891FDCAF750041E164 /* GameScreen.cpp */,
-				A059AD8A1FDCAF750041E164 /* GameScreen.h */,
 				A059AD8B1FDCAF750041E164 /* Items */,
 				A059AD981FDCAF750041E164 /* Stages */,
+				A059AD891FDCAF750041E164 /* GameScreen.cpp */,
+				A059AD8A1FDCAF750041E164 /* GameScreen.h */,
 				A059ADAA1FDCAF750041E164 /* WinnerScreen.cpp */,
 				A059ADAB1FDCAF750041E164 /* WinnerScreen.h */,
 			);
@@ -959,6 +959,7 @@
 		A059AD981FDCAF750041E164 /* Stages */ = {
 			isa = PBXGroup;
 			children = (
+				A059ADA31FDCAF750041E164 /* StagePieces */,
 				A059AD991FDCAF750041E164 /* BattlefieldBrawl.cpp */,
 				A059AD9A1FDCAF750041E164 /* BattlefieldBrawl.h */,
 				A059AD9B1FDCAF750041E164 /* FinalDestinationBrawl.cpp */,
@@ -969,7 +970,6 @@
 				A059ADA01FDCAF750041E164 /* HillsideBattleground.h */,
 				A059ADA11FDCAF750041E164 /* HyruleTemple.cpp */,
 				A059ADA21FDCAF750041E164 /* HyruleTemple.h */,
-				A059ADA31FDCAF750041E164 /* StagePieces */,
 			);
 			path = Stages;
 			sourceTree = "<group>";
@@ -990,11 +990,11 @@
 		A059ADBC1FDCAF750041E164 /* Menus */ = {
 			isa = PBXGroup;
 			children = (
+				A059ADC11FDCAF750041E164 /* MenuPieces */,
 				A059ADBD1FDCAF750041E164 /* CharSelectScreen.cpp */,
 				A059ADBE1FDCAF750041E164 /* CharSelectScreen.h */,
 				A059ADBF1FDCAF750041E164 /* MenuClasses.cpp */,
 				A059ADC01FDCAF750041E164 /* MenuClasses.h */,
-				A059ADC11FDCAF750041E164 /* MenuPieces */,
 				A059ADD61FDCAF750041E164 /* Menus.cpp */,
 				A059ADD71FDCAF750041E164 /* Menus.h */,
 				A059ADD81FDCAF750041E164 /* StageSelectScreen.cpp */,

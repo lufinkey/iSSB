@@ -288,29 +288,30 @@ namespace SmashBros
 			virtual void onRelease();
 		};
 		
-		class DonateButton : public MenuBarSmallButton
+		class PatreonButton : public MenuBarSmallButton
 		{
 		public:
-			DonateButton(float x1, float y1, const String&label);
-			virtual ~DonateButton();
+			PatreonButton(float x1, float y1, const String&label);
+			virtual ~PatreonButton();
 			
 			virtual void onRelease();
 		};
 		
-		class DonateBitcoinButton : public MenuBarSmallButton
+		class VenmoButton : public MenuBarSmallButton
 		{
 		public:
-			DonateBitcoinButton(float x1, float y1, const String&label);
-			virtual ~DonateBitcoinButton();
+			VenmoButton(float x1, float y1, const String&label);
+			virtual ~VenmoButton();
 			
 			virtual void onRelease();
 		};
 		
-		FacebookButton*facebook;
-		TwitterButton*twitter;
-		ContactDeveloperButton*contactDev;
-		DonateButton*donate;
-		DonateBitcoinButton*donateBitcoin;
+		FacebookButton* facebook;
+		TwitterButton* twitter;
+		ContactDeveloperButton* contactDev;
+		PatreonButton* patreon;
+		VenmoButton* venmo;
+		
 	public:
 		OtherOptions(const String&name);
 		virtual ~OtherOptions();

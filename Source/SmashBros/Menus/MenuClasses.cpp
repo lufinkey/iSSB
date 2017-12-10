@@ -1376,18 +1376,18 @@ namespace SmashBros
 		writeEmail(Game::getWindow(), "luisfinke@gmail.com", "iSSB", "");
 	}
 	
-	OtherOptions::DonateButton::DonateButton(float x1, float y1, const String&label) : MenuBarSmallButton(x1,y1,label) {}
-	OtherOptions::DonateButton::~DonateButton() {}
-	void OtherOptions::DonateButton::onRelease()
+	OtherOptions::PatreonButton::PatreonButton(float x1, float y1, const String&label) : MenuBarSmallButton(x1,y1,label) {}
+	OtherOptions::PatreonButton::~PatreonButton() {}
+	void OtherOptions::PatreonButton::onRelease()
 	{
-		openURL("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=M43B9W76GWWBS&lc=US&item_name=Broken%20Physics&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted", Game::getWindow());
+		openURL("https://www.patreon.com/lufinkey");
 	}
 	
-	OtherOptions::DonateBitcoinButton::DonateBitcoinButton(float x1, float y1, const String&label) : MenuBarSmallButton(x1,y1,label) {}
-	OtherOptions::DonateBitcoinButton::~DonateBitcoinButton() {}
-	void OtherOptions::DonateBitcoinButton::onRelease()
+	OtherOptions::VenmoButton::VenmoButton(float x1, float y1, const String&label) : MenuBarSmallButton(x1,y1,label) {}
+	OtherOptions::VenmoButton::~VenmoButton() {}
+	void OtherOptions::VenmoButton::onRelease()
 	{
-		openURL("https://coinbase.com/checkouts/a1672e1864707bc7467e9a3572987ab9", Game::getWindow());
+		openURL("https://venmo.com/lufinkey");
 	}
 	
 	OtherOptions::OtherOptions(const String&name) : Screen(name)
@@ -1395,8 +1395,8 @@ namespace SmashBros
 		facebook = NULL;
 		twitter = NULL;
 		contactDev = NULL;
-		donate = NULL;
-		donateBitcoin = NULL;
+		patreon = NULL;
+		venmo = NULL;
 	}
 	
 	OtherOptions::~OtherOptions()
@@ -1413,13 +1413,13 @@ namespace SmashBros
 		{
 			delete contactDev;
 		}
-		if(donate!=NULL)
+		if(patreon!=NULL)
 		{
-			delete donate;
+			delete patreon;
 		}
-		if(donateBitcoin!=NULL)
+		if(venmo!=NULL)
 		{
-			delete donateBitcoin;
+			delete venmo;
 		}
 	}
 	
@@ -1439,14 +1439,14 @@ namespace SmashBros
 		contactDev->setLabelSize(14);
 		contactDev->setTextOffsetX(8);
 		
-		donate = new DonateButton(200,320, "Donate");
-		donate->setScale(2.0f);
-		donate->setLabelSize(14);
-		donate->setTextOffsetX(-26);
+		patreon = new PatreonButton(200,320, "Patreon");
+		patreon->setScale(2.0f);
+		patreon->setLabelSize(14);
+		patreon->setTextOffsetX(-26);
 		
-		donateBitcoin = new DonateBitcoinButton(200,380, "Donate Bitcoin");
-		donateBitcoin->setScale(2.0f);
-		donateBitcoin->setLabelSize(14);
+		venmo = new VenmoButton(200,380, "Donate with Venmo");
+		venmo->setScale(2.0f);
+		venmo->setLabelSize(14);
 	}
 	
 	void OtherOptions::LoadContent()
@@ -1460,8 +1460,8 @@ namespace SmashBros
 		facebook->Update(gameTime);
 		twitter->Update(gameTime);
 		contactDev->Update(gameTime);
-		donate->Update(gameTime);
-		donateBitcoin->Update(gameTime);
+		patreon->Update(gameTime);
+		venmo->Update(gameTime);
 	}
 	
 	void OtherOptions::Draw(Graphics2D&g, long gameTime)
@@ -1470,8 +1470,8 @@ namespace SmashBros
 		facebook->Draw(g, gameTime);
 		twitter->Draw(g, gameTime);
 		contactDev->Draw(g, gameTime);
-		donate->Draw(g, gameTime);
-		donateBitcoin->Draw(g, gameTime);
+		patreon->Draw(g, gameTime);
+		venmo->Draw(g, gameTime);
 	}
 	
 	TrainingCharSelect::ReadyToFightBar::ReadyToFightBar(float x1, float y1) : Actor(x1,y1)
