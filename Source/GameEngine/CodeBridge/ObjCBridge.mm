@@ -294,6 +294,11 @@ void SDL_ShowSimpleMessageBoxFixed(const char*title, const char*message)
 	UIAlertController* alert = [UIAlertController alertControllerWithTitle:[NSString stringWithUTF8String:title]
 																   message:[NSString stringWithUTF8String:message]
 															preferredStyle:UIAlertControllerStyleAlert];
+	
+	[alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction* action) {
+		//
+	}]];
+	
 	SDL_Window* window = GameEngine::Application::getWindow();
 	UIViewController* rootVC = getSDLViewController(window);
 	UIViewController* topVC = GameEngine_getTopViewController(rootVC);
