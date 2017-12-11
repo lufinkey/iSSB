@@ -1,9 +1,8 @@
 
-# User files
-SmashBros.xcodeproj/xcuserdata/
-SmashBros.xcodeproj/project.xcworkspace/xcuserdata/
-SmashBros.xcodeproj/luis.mode1v3
-SmashBros.xcodeproj/luis.pbxuser
+# Xcode files
+xcuserdata/
+*.mode1v3
+*.pbxuser
 
 # iSSB generated files
 com.brokenphysics.iSSB.prefs
@@ -58,5 +57,3 @@ Debug/
 Release/
 build/
 
-#Xcode folders
-xcuserdata
