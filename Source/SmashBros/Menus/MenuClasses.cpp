@@ -1436,7 +1436,8 @@ namespace SmashBros
 		
 		venmo = new VenmoButton(200,380, "Donate with Venmo");
 		venmo->setScale(2.0f);
-		venmo->setLabelSize(14);
+		venmo->setLabelSize(12);
+		venmo->setTextOffsetX(8);
 	}
 	
 	void OtherOptions::LoadContent()
