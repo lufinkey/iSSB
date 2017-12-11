@@ -1614,6 +1614,7 @@
 					../../External/SDL/SDL_p2p/include,
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lufinkey.iSSB;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1637,6 +1638,7 @@
 					../../External/SDL/SDL_p2p/include,
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lufinkey.iSSB;
 				PRODUCT_NAME = "$(TARGET_NAME)";
