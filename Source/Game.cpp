@@ -56,7 +56,9 @@ namespace SmashBros
 		
 		Global::init();
 		
-		showRealFPS(true);
+		#ifdef DEBUG
+			showRealFPS(true);
+		#endif
 		if(Preferences::highFPS())
 		{
 			setFPS(60);
