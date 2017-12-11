@@ -2154,7 +2154,7 @@ namespace GameEngine
 		}
 		
 		String lowercase(str);
-		delete str;
+		delete[] str;
 		return lowercase;
 	}
 
@@ -2174,7 +2174,7 @@ namespace GameEngine
 		}
 		
 		String lowercase(str);
-		delete str;
+		delete[] str;
 		return lowercase;
 	}
 }

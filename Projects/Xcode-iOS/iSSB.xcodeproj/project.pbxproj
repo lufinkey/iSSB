@@ -24,9 +24,8 @@
 		A059ADF71FDCAF750041E164 /* iCadeReaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = A059ACF81FDCAF750041E164 /* iCadeReaderView.m */; };
 		A059ADF81FDCAF750041E164 /* iCadeControllerReceiver.mm in Sources */ = {isa = PBXBuildFile; fileRef = A059ACFB1FDCAF750041E164 /* iCadeControllerReceiver.mm */; };
 		A059ADF91FDCAF750041E164 /* MailViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = A059ACFD1FDCAF750041E164 /* MailViewController.mm */; };
-		A059ADFA1FDCAF750041E164 /* MessageBoxDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = A059ACFF1FDCAF750041E164 /* MessageBoxDelegate.mm */; };
 		A059ADFB1FDCAF750041E164 /* ObjCBridge.mm in Sources */ = {isa = PBXBuildFile; fileRef = A059AD011FDCAF750041E164 /* ObjCBridge.mm */; };
-		A059ADFC1FDCAF750041E164 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = A059AD031FDCAF750041E164 /* ViewController.mm */; };
+		A059ADFC1FDCAF750041E164 /* WebViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = A059AD031FDCAF750041E164 /* WebViewController.mm */; };
 		A059ADFD1FDCAF750041E164 /* WinBridge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A059AD041FDCAF750041E164 /* WinBridge.cpp */; };
 		A059ADFE1FDCAF750041E164 /* GameEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A059AD061FDCAF750041E164 /* GameEngine.cpp */; };
 		A059ADFF1FDCAF750041E164 /* Graphics2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A059AD0A1FDCAF750041E164 /* Graphics2D.cpp */; };
@@ -241,12 +240,10 @@
 		A059ACFB1FDCAF750041E164 /* iCadeControllerReceiver.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = iCadeControllerReceiver.mm; sourceTree = "<group>"; };
 		A059ACFC1FDCAF750041E164 /* MailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MailViewController.h; sourceTree = "<group>"; };
 		A059ACFD1FDCAF750041E164 /* MailViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MailViewController.mm; sourceTree = "<group>"; };
-		A059ACFE1FDCAF750041E164 /* MessageBoxDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageBoxDelegate.h; sourceTree = "<group>"; };
-		A059ACFF1FDCAF750041E164 /* MessageBoxDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MessageBoxDelegate.mm; sourceTree = "<group>"; };
 		A059AD001FDCAF750041E164 /* ObjCBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjCBridge.h; sourceTree = "<group>"; };
 		A059AD011FDCAF750041E164 /* ObjCBridge.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ObjCBridge.mm; sourceTree = "<group>"; };
 		A059AD021FDCAF750041E164 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
-		A059AD031FDCAF750041E164 /* ViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
+		A059AD031FDCAF750041E164 /* WebViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WebViewController.mm; sourceTree = "<group>"; };
 		A059AD041FDCAF750041E164 /* WinBridge.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WinBridge.cpp; sourceTree = "<group>"; };
 		A059AD051FDCAF750041E164 /* forwards.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = forwards.h; sourceTree = "<group>"; };
 		A059AD061FDCAF750041E164 /* GameEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameEngine.cpp; sourceTree = "<group>"; };
@@ -600,6 +597,13 @@
 			isa = PBXGroup;
 			children = (
 				A059ACDE1FDCAF750041E164 /* Actor */,
+				A059ACF31FDCAF750041E164 /* CodeBridge */,
+				A059AD091FDCAF750041E164 /* Graphics */,
+				A059AD0C1FDCAF750041E164 /* Input */,
+				A059AD121FDCAF750041E164 /* Output */,
+				A059AD151FDCAF750041E164 /* ScreenManager */,
+				A059AD1C1FDCAF750041E164 /* Sound */,
+				A059AD211FDCAF750041E164 /* Util */,
 				A059ACEB1FDCAF750041E164 /* Application.cpp */,
 				A059ACEC1FDCAF750041E164 /* Application.h */,
 				A059ACED1FDCAF750041E164 /* ApplicationEventListener.cpp */,
@@ -608,17 +612,10 @@
 				A059ACF01FDCAF750041E164 /* AssetManager.h */,
 				A059ACF11FDCAF750041E164 /* BatchLoader.cpp */,
 				A059ACF21FDCAF750041E164 /* BatchLoader.h */,
-				A059ACF31FDCAF750041E164 /* CodeBridge */,
 				A059AD051FDCAF750041E164 /* forwards.h */,
 				A059AD061FDCAF750041E164 /* GameEngine.cpp */,
 				A059AD071FDCAF750041E164 /* GameEngine.h */,
 				A059AD081FDCAF750041E164 /* GlobalDefs.h */,
-				A059AD091FDCAF750041E164 /* Graphics */,
-				A059AD0C1FDCAF750041E164 /* Input */,
-				A059AD121FDCAF750041E164 /* Output */,
-				A059AD151FDCAF750041E164 /* ScreenManager */,
-				A059AD1C1FDCAF750041E164 /* Sound */,
-				A059AD211FDCAF750041E164 /* Util */,
 				A059AD3A1FDCAF750041E164 /* View.cpp */,
 				A059AD3B1FDCAF750041E164 /* View.h */,
 			);
@@ -647,19 +644,17 @@
 		A059ACF31FDCAF750041E164 /* CodeBridge */ = {
 			isa = PBXGroup;
 			children = (
+				A059ACF61FDCAF750041E164 /* iCade */,
 				A059ACF41FDCAF750041E164 /* CPPBridge.cpp */,
 				A059ACF51FDCAF750041E164 /* CPPBridge.h */,
-				A059ACF61FDCAF750041E164 /* iCade */,
 				A059ACFA1FDCAF750041E164 /* iCadeControllerReceiver.h */,
 				A059ACFB1FDCAF750041E164 /* iCadeControllerReceiver.mm */,
 				A059ACFC1FDCAF750041E164 /* MailViewController.h */,
 				A059ACFD1FDCAF750041E164 /* MailViewController.mm */,
-				A059ACFE1FDCAF750041E164 /* MessageBoxDelegate.h */,
-				A059ACFF1FDCAF750041E164 /* MessageBoxDelegate.mm */,
 				A059AD001FDCAF750041E164 /* ObjCBridge.h */,
 				A059AD011FDCAF750041E164 /* ObjCBridge.mm */,
 				A059AD021FDCAF750041E164 /* WebViewController.h */,
-				A059AD031FDCAF750041E164 /* ViewController.mm */,
+				A059AD031FDCAF750041E164 /* WebViewController.mm */,
 				A059AD041FDCAF750041E164 /* WinBridge.cpp */,
 			);
 			path = CodeBridge;
@@ -1368,7 +1363,7 @@
 				A059AE2F1FDCAF750041E164 /* AttackTemplates.cpp in Sources */,
 				A059AE0D1FDCAF750041E164 /* Image.cpp in Sources */,
 				A059AE361FDCAF750041E164 /* Link.cpp in Sources */,
-				A059ADFC1FDCAF750041E164 /* ViewController.mm in Sources */,
+				A059ADFC1FDCAF750041E164 /* WebViewController.mm in Sources */,
 				A059AE261FDCAF750041E164 /* lib_sb_Global.cpp in Sources */,
 				A059AE671FDCAF760041E164 /* Stage.cpp in Sources */,
 				A059AE571FDCAF760041E164 /* MenuBarSmall.cpp in Sources */,
@@ -1389,7 +1384,6 @@
 				A059AE241FDCAF750041E164 /* lib_sb_inherit_Stage.cpp in Sources */,
 				A059AE311FDCAF750041E164 /* Chargebar.cpp in Sources */,
 				A059AE211FDCAF750041E164 /* lib_ge_Util.cpp in Sources */,
-				A059ADFA1FDCAF750041E164 /* MessageBoxDelegate.mm in Sources */,
 				A059AE251FDCAF750041E164 /* lib_sb_GameElement.cpp in Sources */,
 				A059AE421FDCAF760041E164 /* FinalDestinationBrawl.cpp in Sources */,
 				A059ADEB1FDCAF750041E164 /* Game.cpp in Sources */,

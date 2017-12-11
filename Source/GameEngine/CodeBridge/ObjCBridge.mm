@@ -19,11 +19,11 @@
 		#import <UIKit/UIKit.h>
 		#import "MailViewController.h"
 		#import "WebViewController.h"
-		#import "MessageBoxDelegate.h"
 		
 		//static NSDate*startDate = nil;
 		static iCadeControllerReceiver* iCade_receiver = nil;
 	#endif
+	#include "../Application.h"
 #elif defined(__ANDROID__)
 	#include <iostream>
 	#include <android/log.h>
@@ -48,7 +48,7 @@ void GameEngine_init()
 }
 
 #ifdef __APPLE__
-UIViewController*getSDLViewController(SDL_Window*window)
+UIViewController* getSDLViewController(SDL_Window*window)
 {
 	SDL_SysWMinfo systemWindowInfo;
     SDL_VERSION(&systemWindowInfo.version);
@@ -62,6 +62,27 @@ UIViewController*getSDLViewController(SDL_Window*window)
     return rootViewController;
 }
 #endif
+
+UIViewController* GameEngine_getTopViewController(UIViewController* controller)
+{
+	if(controller == nil)
+	{
+		return nil;
+	}
+	else if(controller.presentedViewController != nil)
+	{
+		return GameEngine_getTopViewController(controller.presentedViewController);
+	}
+	else if(controller.navigationController != nil)
+	{
+		return GameEngine_getTopViewController(controller.navigationController);
+	}
+	else if(controller.parentViewController != nil)
+	{
+		return GameEngine_getTopViewController(controller.parentViewController);
+	}
+	return controller;
+}
 
 #if defined(__ANDROID__)
 void GameEngine_charToUrlEncoding(char *s, char *enc, char *tb)
@@ -270,13 +291,15 @@ void iCade_setButtonUpCallback(iCadeEventCallback callback)
 void SDL_ShowSimpleMessageBoxFixed(const char*title, const char*message)
 {
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
-	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithUTF8String:title]
-													message:[NSString stringWithUTF8String:message]
-												   delegate:nil
-										  cancelButtonTitle:@"OK"
-										  otherButtonTitles:nil];
-	[alert show];
-	while(alert.visible==YES)
+	UIAlertController* alert = [UIAlertController alertControllerWithTitle:[NSString stringWithUTF8String:title]
+																   message:[NSString stringWithUTF8String:message]
+															preferredStyle:UIAlertControllerStyleAlert];
+	SDL_Window* window = GameEngine::Application::getWindow();
+	UIViewController* rootVC = getSDLViewController(window);
+	UIViewController* topVC = GameEngine_getTopViewController(rootVC);
+	[topVC presentViewController:alert animated:YES completion:nil];
+	
+	while(alert.isBeingPresented || alert.isBeingDismissed || alert.presentingViewController != nil)
 	{
 		updateAppEvents();
 		SDL_Delay(30);
@@ -291,24 +314,29 @@ void SDL_ShowSimpleMessageBoxFixed(const char*title, const char*message)
 int SDL_ShowMessageBoxFixed(const char*title, const char*message, const char**options, int numOptions)
 {
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
-	MessageBoxDelegate*messageDelegate = [[MessageBoxDelegate alloc] init];
-	[messageDelegate prepare];
-	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithUTF8String:title]
-													message:[NSString stringWithUTF8String:message]
-												   delegate:messageDelegate
-										  cancelButtonTitle:nil
-										  otherButtonTitles:nil];
+	UIAlertController* alert = [UIAlertController alertControllerWithTitle:[NSString stringWithUTF8String:title]
+																   message:[NSString stringWithUTF8String:message]
+															preferredStyle:UIAlertControllerStyleAlert];
+	
+	__block int result = -1;
 	for(int i=0; i<numOptions; i++)
 	{
-		[alert addButtonWithTitle:[NSString stringWithUTF8String:options[i]]];
+		[alert addAction:[UIAlertAction actionWithTitle:[NSString stringWithUTF8String:options[i]] style:UIAlertActionStyleDefault handler:^(UIAlertAction* action) {
+			result = i;
+		}]];
 	}
-	[alert show];
-	while([messageDelegate isClosed] == NO)
+	
+	SDL_Window* window = GameEngine::Application::getWindow();
+	UIViewController* rootVC = getSDLViewController(window);
+	UIViewController* topVC = GameEngine_getTopViewController(rootVC);
+	[topVC presentViewController:alert animated:YES completion:nil];
+	
+	while(alert.isBeingPresented || alert.isBeingDismissed || alert.presentingViewController != nil)
 	{
 		updateAppEvents();
 		SDL_Delay(30);
 	}
-	int result = [messageDelegate getResult];
+	
 	return result;
 	
 #else

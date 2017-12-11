@@ -4126,10 +4126,10 @@ namespace SmashBros
 			
 			if(moveVal>0)
 			{
-				float recoverAmountVal;
-				float moveAmountVal;
-				float fallMoveVal;
-				float groundMoveVal;
+				float recoverAmountVal = 0;
+				float moveAmountVal = 0;
+				float fallMoveVal = 0;
+				float groundMoveVal = 0;
 				switch(moveVal)
 				{
 					case 1:

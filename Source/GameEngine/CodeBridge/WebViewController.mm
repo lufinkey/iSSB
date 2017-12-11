@@ -150,35 +150,7 @@
 #ifdef DEBUG
 	NSLog(@"[UIWebViewController] Loading %@", [request URL]);
 #endif
-	if (navigationType == UIWebViewNavigationTypeLinkClicked)
-	{
-        
-        NSURL *url = [request URL];
-        NSString *customScheme = @"vilea";
-        
-        if ([[url scheme] isEqualToString:customScheme])
-		{
-            NSString *action = [[[url absoluteString] componentsSeparatedByString:@"/"] lastObject];
-			
-            if ([self respondsToSelector:NSSelectorFromString(action)]){
-                [self performSelector:NSSelectorFromString(action)];
-            }
-            else
-            {
-                // try the selector with arguments
-                NSLog(@"[%@] ERROR: no method '%@' found", NSStringFromClass([self class]), action);
-            }
-            return NO;		
-        }
-        else
-        {
-            return YES;
-        }
-	}
-	else
-	{
-		return YES;
-	}
+	return YES;
     
 }
 

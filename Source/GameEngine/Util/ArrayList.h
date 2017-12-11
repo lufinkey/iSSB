@@ -81,7 +81,7 @@ namespace GameEngine
 		void add(const T&obj)
 		{
 			total++;
-			int oldSize = objects.size();
+			size_t oldSize = objects.size();
 			do
 			{
 				objects.resize(total);
