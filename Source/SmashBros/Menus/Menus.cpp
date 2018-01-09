@@ -217,6 +217,8 @@ namespace SmashBros
 		BatchLoader::addImage("Images/Menus/Buttons/Generic/toggle_on.png");
 		BatchLoader::addImage("Images/Menus/Buttons/Generic/toggle_off.png");
 		BatchLoader::addImage("Images/Menus/Buttons/Generic/options_bar.png");
+		BatchLoader::addImage("Images/Menus/Buttons/Generic/menu_button.png");
+		BatchLoader::addImage("Images/Menus/Buttons/Generic/menu_button_selected.png");
 		BatchLoader::addImage("Images/Menus/Buttons/Generic/options_bar_small.png");
 		BatchLoader::addImage("Images/Menus/Buttons/Generic/options_bar_small_selected.png");
 		BatchLoader::addImage("Images/Menus/Buttons/Generic/arrow.png");
