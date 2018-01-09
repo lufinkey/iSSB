@@ -293,6 +293,14 @@ namespace SmashBros
 			virtual void onRelease();
 		};
 		
+		class PayPalButton : public MenuBarSmallButton
+		{
+		public:
+			using MenuBarSmallButton::MenuBarSmallButton;
+			
+			virtual void onRelease();
+		};
+		
 		class VenmoButton : public MenuBarSmallButton
 		{
 		public:
@@ -305,6 +313,7 @@ namespace SmashBros
 		TwitterButton* twitter;
 		ContactDeveloperButton* contactDev;
 		PatreonButton* patreon;
+		PayPalButton* paypal;
 		VenmoButton* venmo;
 		
 	public:

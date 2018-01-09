@@ -1375,6 +1375,11 @@ namespace SmashBros
 		openURL("https://www.patreon.com/lufinkey");
 	}
 	
+	void OtherOptions::PayPalButton::onRelease()
+	{
+		openURL("https://paypal.me/lufinkey");
+	}
+	
 	void OtherOptions::VenmoButton::onRelease()
 	{
 		openURL("https://venmo.com/lufinkey");
@@ -1386,6 +1391,7 @@ namespace SmashBros
 		twitter = NULL;
 		contactDev = NULL;
 		patreon = NULL;
+		paypal = NULL;
 		venmo = NULL;
 	}
 	
@@ -1406,6 +1412,10 @@ namespace SmashBros
 		if(patreon!=NULL)
 		{
 			delete patreon;
+		}
+		if(paypal!=NULL)
+		{
+			delete paypal;
 		}
 		if(venmo!=NULL)
 		{
@@ -1434,7 +1444,12 @@ namespace SmashBros
 		patreon->setLabelSize(14);
 		patreon->setTextOffsetX(-26);
 		
-		venmo = new VenmoButton(200,380, "Donate with Venmo");
+		paypal = new PayPalButton(200,380, "Donate with PayPal");
+		paypal->setScale(2.0f);
+		paypal->setLabelSize(12);
+		paypal->setTextOffsetX(8);
+		
+		venmo = new VenmoButton(200,440, "Donate with Venmo");
 		venmo->setScale(2.0f);
 		venmo->setLabelSize(12);
 		venmo->setTextOffsetX(8);
@@ -1452,6 +1467,7 @@ namespace SmashBros
 		twitter->Update(gameTime);
 		contactDev->Update(gameTime);
 		patreon->Update(gameTime);
+		paypal->Update(gameTime);
 		venmo->Update(gameTime);
 	}
 	
@@ -1462,6 +1478,7 @@ namespace SmashBros
 		twitter->Draw(g, gameTime);
 		contactDev->Draw(g, gameTime);
 		patreon->Draw(g, gameTime);
+		paypal->Draw(g, gameTime);
 		venmo->Draw(g, gameTime);
 	}
 	
