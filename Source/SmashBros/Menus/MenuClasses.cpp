@@ -1377,7 +1377,7 @@ namespace SmashBros
 	
 	void OtherOptions::PayPalButton::onRelease()
 	{
-		openURL("https://paypal.me/lufinkey");
+		openURL("https://paypal.me/lufinkey/5");
 	}
 	
 	void OtherOptions::VenmoButton::onRelease()
