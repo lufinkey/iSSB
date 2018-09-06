@@ -1,6 +1,7 @@
 
 # Xcode files
 xcuserdata/
+xcshareddata/
 *.mode1v3
 *.pbxuser
 
