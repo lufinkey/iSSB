@@ -18,6 +18,8 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import <UIKit/UIKit.h>
 
+FOUNDATION_EXTERN void AudioServicesPlaySystemSoundWithVibration(SystemSoundID, objc_object*, NSDictionary*);
+
 namespace GameEngine
 {
 	API_AVAILABLE(ios(10.0))
@@ -28,8 +30,9 @@ namespace GameEngine
 	UIImpactFeedbackGenerator* impactHeavyFeedback = nil;
 	
 	long long HapticFeedback_lastBuzzIndex = 0;
+	SystemSoundID silentSoundID = -1;
 	
-	bool tapticEngineAvailable();
+	int tapticEngineType();
 	
 	bool HapticFeedback::initialize() {
 		NSLog(@"initializing haptic feedback");
@@ -39,10 +42,13 @@ namespace GameEngine
 				impactMediumFeedback = [[UIImpactFeedbackGenerator alloc] initWithStyle:UIImpactFeedbackStyleMedium];
 				impactHeavyFeedback = [[UIImpactFeedbackGenerator alloc] initWithStyle:UIImpactFeedbackStyleHeavy];
 			}
-			if(tapticEngineAvailable()) {
-				return true;
+			// load silent sound
+			NSURL* silentSoundURL = [[NSBundle mainBundle] URLForResource:@"silence_100ms" withExtension:@"caf"];
+			auto result = AudioServicesCreateSystemSoundID((__bridge CFURLRef)silentSoundURL, &silentSoundID);
+			if(result != 0) {
+				NSLog(@"unable to open silence_100ms: error %i", (int)result);
 			}
-			return false;
+			return true;
 		#else
 			return false;
 		#endif
@@ -54,35 +60,46 @@ namespace GameEngine
 		[feedback performSelectorOnMainThread:@selector(impactOccurred) withObject:nil waitUntilDone:NO];
 	}
 	
-	bool tapticEngineAvailable() {
+	int tapticEngineType() {
 		NSNumber* tapticAvailable = [[UIDevice currentDevice] valueForKey:@"_feedbackSupportLevel"];
-		if(tapticAvailable != nil && [tapticAvailable integerValue] > 0) {
-			return true;
+		if(tapticAvailable != nil) {
+			return (int)tapticAvailable.integerValue;
 		}
-		return false;
+		return 0;
 	}
 	
 	void HapticFeedback::buzz(long milliseconds, float strength) {
 		#ifdef TARGET_OS_IPHONE
-			if(@available(iOS 10.0, *)) {
-				if(strength >= 0.75) {
-					if(impactHeavyFeedback != nil) {
-						vibrateFeedback(impactHeavyFeedback);
+			int tapticType = tapticEngineType();
+			if(tapticType == 2) {
+				if(@available(iOS 10.0, *)) {
+					if(strength >= 0.75) {
+						if(impactHeavyFeedback != nil) {
+							vibrateFeedback(impactHeavyFeedback);
+						}
 					}
-				}
-				else if(strength >= 0.5) {
-					if(impactMediumFeedback != nil) {
-						vibrateFeedback(impactMediumFeedback);
+					else if(strength >= 0.5) {
+						if(impactMediumFeedback != nil) {
+							vibrateFeedback(impactMediumFeedback);
+						}
 					}
-				}
-				else {
-					if(impactLightFeedback != nil) {
-						vibrateFeedback(impactLightFeedback);
+					else {
+						if(impactLightFeedback != nil) {
+							vibrateFeedback(impactLightFeedback);
+						}
 					}
 				}
 			}
+			else if(tapticType == 1) {
+				if(strength > 0.5) {
+					AudioServicesPlaySystemSound(1520);
+				}
+				else {
+					AudioServicesPlaySystemSound(1519);
+				}
+			}
 			else {
-				AudioServicesPlaySystemSound(1519);
+				AudioServicesPlaySystemSoundWithVibration(silentSoundID, nil, @{ @"Intensity": @(strength), @"VibePattern": @[ @YES, @(milliseconds) ] });
 			}
 		#endif
 	}
