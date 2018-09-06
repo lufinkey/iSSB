@@ -4,7 +4,7 @@
 #include "../Game.h"
 #include "AttackTemplates.h"
 #include "P2PDataManager.h"
-#include <SDL.h>
+
 
 namespace SmashBros
 {
@@ -1996,9 +1996,6 @@ namespace SmashBros
 	{
 		touchControls = new ControlHUD();
 		controls = new int*[Global::possPlayers+1];
-		if(SDL_NumHaptics() > 0) {
-			haptic = SDL_HapticOpen(0);
-		}
 		
 		for(int i=0; i<=Global::possPlayers; i++)
 		{
@@ -2267,14 +2264,8 @@ namespace SmashBros
 		touchControls->Draw(g, gameTime);
 	}
 	
-	void Controls::buzz(Uint32 milliseconds, float amount) {
-		if(haptic != nullptr) {
-			SDL_HapticRumblePlay(haptic, amount, milliseconds);
-		}
-	}
-	
 	void Controls::shortBuzz() {
-		Controls::buzz(20, 0.4);
+		HapticFeedback::buzz(100, 0.4);
 	}
 	
 	void Controls::buttonUp(byte pNum, byte type)

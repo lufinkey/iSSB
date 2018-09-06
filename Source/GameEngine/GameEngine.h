@@ -32,6 +32,7 @@
 #include "Util/BufferedImage.h"
 #include "Util/Color.h"
 #include "Util/Font.h"
+#include "Util/HapticFeedback.h"
 #include "Util/Image.h"
 #include "Util/P2PManager.h"
 #include "Util/PixelIterator.h"

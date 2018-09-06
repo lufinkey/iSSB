@@ -178,6 +178,6 @@ namespace GameEngine
 		static void setBackgroundColor(Color color);
 		
 		static void setWindowTitle(const String& title);
-		static void setFullScreen(bool toggle);
+		static void setFullScreen(bool toggle);	
 	};
 }

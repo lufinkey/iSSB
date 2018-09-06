@@ -12,6 +12,7 @@
 #include "Input/Mouse.h"
 #include "Sound/Sound.h"
 #include "Sound/Music.h"
+#include "Util/HapticFeedback.h"
 #include "CodeBridge/ObjCBridge.h"
 
 #if defined(__APPLE__)
@@ -155,6 +156,8 @@ namespace GameEngine
 	void Application::onSuspend() {}
 	void Application::onResume() {}
 	
+#define GameEngine_SDL_Subsystems SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER | SDL_INIT_JOYSTICK | SDL_INIT_EVENTS | SDL_INIT_HAPTIC
+	
 	bool Application::Run(unsigned char orient, bool statusbar)
 	{
 		if(!gameRunning)
@@ -163,9 +166,9 @@ namespace GameEngine
 			
 			std::srand((unsigned int)std::time(NULL));
 			
-			if(!SDL_WasInit(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER | SDL_INIT_JOYSTICK | SDL_INIT_EVENTS))
+			if(!SDL_WasInit(GameEngine_SDL_Subsystems))
 			{
-				if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER | SDL_INIT_JOYSTICK | SDL_INIT_EVENTS)!=0)
+				if(SDL_Init(GameEngine_SDL_Subsystems)!=0)
 				//if(SDL_Init(SDL_INIT_EVERYTHING) < 0)
 				{
 					Console::WriteLine((String)"failed to initialize SDL with error: " + SDL_GetError());
@@ -201,6 +204,8 @@ namespace GameEngine
 			Music::init();
 			
 			GameEngine_init();
+			
+			HapticFeedback::initialize();
 			
 			{
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR) || defined (__ANDROID__)
