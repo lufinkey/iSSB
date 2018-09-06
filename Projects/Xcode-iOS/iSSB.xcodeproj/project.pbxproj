@@ -157,6 +157,7 @@
 		A059AF191FDCBD9C0041E164 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A059AF181FDCBD970041E164 /* MessageUI.framework */; };
 		A059AF1B1FDCBF8C0041E164 /* chaiscript_stdlib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A059AEA51FDCB2910041E164 /* chaiscript_stdlib.cpp */; };
 		A059AF1D1FDCC8C80041E164 /* BrokenPhysics.png in Resources */ = {isa = PBXBuildFile; fileRef = A059AF1C1FDCC8C70041E164 /* BrokenPhysics.png */; };
+		A0FD494E2141D78000708142 /* silence_100ms.caf in Resources */ = {isa = PBXBuildFile; fileRef = A0FD49442141D77F00708142 /* silence_100ms.caf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -515,6 +516,7 @@
 		A059AEE51FDCB4B90041E164 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		A059AF181FDCBD970041E164 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		A059AF1C1FDCC8C70041E164 /* BrokenPhysics.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BrokenPhysics.png; sourceTree = "<group>"; };
+		A0FD49442141D77F00708142 /* silence_100ms.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = silence_100ms.caf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -575,6 +577,7 @@
 				A059ACCF1FDCAE740041E164 /* LaunchScreen.storyboard */,
 				A059AF1C1FDCC8C70041E164 /* BrokenPhysics.png */,
 				A059ACD21FDCAE740041E164 /* Info.plist */,
+				A0FD49442141D77F00708142 /* silence_100ms.caf */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -1328,6 +1331,7 @@
 				A059AF1D1FDCC8C80041E164 /* BrokenPhysics.png in Resources */,
 				A059AE721FDCB1820041E164 /* Music in Resources */,
 				A059AE701FDCB1760041E164 /* Images in Resources */,
+				A0FD494E2141D78000708142 /* silence_100ms.caf in Resources */,
 				A059ACD11FDCAE740041E164 /* LaunchScreen.storyboard in Resources */,
 				A059ACCE1FDCAE740041E164 /* Assets.xcassets in Resources */,
 				A059AEA91FDCB2910041E164 /* chaiscript_prelude.chai in Resources */,
