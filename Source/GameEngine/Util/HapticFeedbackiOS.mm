@@ -90,16 +90,8 @@ namespace GameEngine
 					}
 				}
 			}
-			else if(tapticType == 1) {
-				if(strength > 0.5) {
-					AudioServicesPlaySystemSound(1520);
-				}
-				else {
-					AudioServicesPlaySystemSound(1519);
-				}
-			}
 			else {
-				AudioServicesPlaySystemSoundWithVibration(silentSoundID, nil, @{ @"Intensity": @(strength), @"VibePattern": @[ @YES, @(milliseconds) ] });
+				AudioServicesPlaySystemSoundWithVibration(kSystemSoundID_Vibrate, nil, @{ @"Intensity": @(strength), @"VibePattern": @[ @YES, @(milliseconds) ] });
 			}
 		#endif
 	}

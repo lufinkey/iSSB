@@ -157,7 +157,8 @@
 		A059AF191FDCBD9C0041E164 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A059AF181FDCBD970041E164 /* MessageUI.framework */; };
 		A059AF1B1FDCBF8C0041E164 /* chaiscript_stdlib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A059AEA51FDCB2910041E164 /* chaiscript_stdlib.cpp */; };
 		A059AF1D1FDCC8C80041E164 /* BrokenPhysics.png in Resources */ = {isa = PBXBuildFile; fileRef = A059AF1C1FDCC8C70041E164 /* BrokenPhysics.png */; };
-		A0FD494E2141D78000708142 /* silence_100ms.caf in Resources */ = {isa = PBXBuildFile; fileRef = A0FD49442141D77F00708142 /* silence_100ms.caf */; };
+		A08E887F2141EDC100D91091 /* HapticFeedbackiOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = A08E88732141EDC000D91091 /* HapticFeedbackiOS.mm */; };
+		A08E88802141EDC100D91091 /* HapticFeedback.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A08E887E2141EDC100D91091 /* HapticFeedback.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -516,7 +517,9 @@
 		A059AEE51FDCB4B90041E164 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		A059AF181FDCBD970041E164 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		A059AF1C1FDCC8C70041E164 /* BrokenPhysics.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BrokenPhysics.png; sourceTree = "<group>"; };
-		A0FD49442141D77F00708142 /* silence_100ms.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = silence_100ms.caf; sourceTree = "<group>"; };
+		A08E88732141EDC000D91091 /* HapticFeedbackiOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HapticFeedbackiOS.mm; sourceTree = "<group>"; };
+		A08E887D2141EDC000D91091 /* HapticFeedback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HapticFeedback.h; sourceTree = "<group>"; };
+		A08E887E2141EDC100D91091 /* HapticFeedback.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HapticFeedback.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -577,7 +580,6 @@
 				A059ACCF1FDCAE740041E164 /* LaunchScreen.storyboard */,
 				A059AF1C1FDCC8C70041E164 /* BrokenPhysics.png */,
 				A059ACD21FDCAE740041E164 /* Info.plist */,
-				A0FD49442141D77F00708142 /* silence_100ms.caf */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -741,6 +743,9 @@
 				A059AD2A1FDCAF750041E164 /* FileTools.h */,
 				A059AD2B1FDCAF750041E164 /* Font.cpp */,
 				A059AD2C1FDCAF750041E164 /* Font.h */,
+				A08E887E2141EDC100D91091 /* HapticFeedback.cpp */,
+				A08E887D2141EDC000D91091 /* HapticFeedback.h */,
+				A08E88732141EDC000D91091 /* HapticFeedbackiOS.mm */,
 				A059AD2D1FDCAF750041E164 /* Image.cpp */,
 				A059AD2E1FDCAF750041E164 /* Image.h */,
 				A059AD2F1FDCAF750041E164 /* P2PManager.cpp */,
@@ -1331,7 +1336,6 @@
 				A059AF1D1FDCC8C80041E164 /* BrokenPhysics.png in Resources */,
 				A059AE721FDCB1820041E164 /* Music in Resources */,
 				A059AE701FDCB1760041E164 /* Images in Resources */,
-				A0FD494E2141D78000708142 /* silence_100ms.caf in Resources */,
 				A059ACD11FDCAE740041E164 /* LaunchScreen.storyboard in Resources */,
 				A059ACCE1FDCAE740041E164 /* Assets.xcassets in Resources */,
 				A059AEA91FDCB2910041E164 /* chaiscript_prelude.chai in Resources */,
@@ -1398,6 +1402,7 @@
 				A059AE321FDCAF750041E164 /* CollisionManager.cpp in Sources */,
 				A059ADF21FDCAF750041E164 /* Application.cpp in Sources */,
 				A059AE651FDCAF760041E164 /* ProjectileManager.cpp in Sources */,
+				A08E887F2141EDC100D91091 /* HapticFeedbackiOS.mm in Sources */,
 				A059AE411FDCAF760041E164 /* BattlefieldBrawl.cpp in Sources */,
 				A059AE631FDCAF760041E164 /* Preferences.cpp in Sources */,
 				A059AE231FDCAF750041E164 /* lib_sb_inherit_Player.cpp in Sources */,
@@ -1462,6 +1467,7 @@
 				A059AE4D1FDCAF760041E164 /* HUD.cpp in Sources */,
 				A059AE5B1FDCAF760041E164 /* ToggleButton.cpp in Sources */,
 				A059AE1D1FDCAF750041E164 /* lib_ge_Graphics.cpp in Sources */,
+				A08E88802141EDC100D91091 /* HapticFeedback.cpp in Sources */,
 				A059ADEF1FDCAF750041E164 /* PrimitiveActor.cpp in Sources */,
 				A059AE081FDCAF750041E164 /* Bitset.cpp in Sources */,
 				A059AE611FDCAF760041E164 /* P2PDataManager.cpp in Sources */,
