@@ -4,6 +4,7 @@
 #include "../Game.h"
 #include "AttackTemplates.h"
 #include "P2PDataManager.h"
+#include <SDL.h>
 
 namespace SmashBros
 {
@@ -17,6 +18,7 @@ namespace SmashBros
 	const float Controls::ControlHUD::farDist = 12100;
 	const float Controls::ControlHUD::centerDist = 625;
 	const long Controls::ControlHUD::runDelay = 100;
+	SDL_Haptic* haptic = nullptr;
 	
 	typedef struct
 	{
@@ -1994,6 +1996,9 @@ namespace SmashBros
 	{
 		touchControls = new ControlHUD();
 		controls = new int*[Global::possPlayers+1];
+		if(SDL_NumHaptics() > 0) {
+			haptic = SDL_HapticOpen(0);
+		}
 		
 		for(int i=0; i<=Global::possPlayers; i++)
 		{
@@ -2262,12 +2267,23 @@ namespace SmashBros
 		touchControls->Draw(g, gameTime);
 	}
 	
+	void Controls::buzz(Uint32 milliseconds, float amount) {
+		if(haptic != nullptr) {
+			SDL_HapticRumblePlay(haptic, amount, milliseconds);
+		}
+	}
+	
+	void Controls::shortBuzz() {
+		Controls::buzz(20, 0.4);
+	}
+	
 	void Controls::buttonUp(byte pNum, byte type)
 	{
 		Player*playr=Global::getPlayerActor(pNum);
 		switch(type)
 		{
 			case DOWN:
+			shortBuzz();
 			playr->smashTime=Global::worldTime+100;
 			playr->buttondir=BUTTONDIR_UP;
 			playr->checkAttacks();
@@ -2332,6 +2348,7 @@ namespace SmashBros
 		switch(type)
 		{
 			case DOWN:
+			shortBuzz();
 			playr->buttondir=BUTTONDIR_DOWN;
 			playr->checkAttacks();
 			playr->smashTime=Global::worldTime+100;
@@ -2383,6 +2400,7 @@ namespace SmashBros
 		switch(type)
 		{
 			case DOWN:
+			shortBuzz();
 			playr->buttondir=BUTTONDIR_LEFT;
 			playr->smashTime=Global::worldTime+100;
 			if((Global::worldTime<=playr->runTime && playr->isOnGround())||(playr->moveRight==2))
@@ -2477,6 +2495,7 @@ namespace SmashBros
 		switch(type)
 		{
 			case DOWN:
+			shortBuzz();
 			playr->buttondir=BUTTONDIR_RIGHT;
 			playr->smashTime=Global::worldTime+100;
 			if((Global::worldTime<=playr->runTime && playr->isOnGround())||(playr->moveLeft==2))
@@ -2571,6 +2590,7 @@ namespace SmashBros
 		switch(type)
 		{
 			case DOWN:
+			shortBuzz();
 			playr->checkAttacks();
 			playr->hanging=false;
 			playr->upKey=true;
@@ -2589,10 +2609,12 @@ namespace SmashBros
 	
 	void Controls::buttonA(byte pNum, byte type)
 	{
+		
 		Player*playr = Global::getPlayerActor(pNum);
 		switch(type)
 		{
 			case DOWN:
+			shortBuzz();
 			playr->checkAttacks();
 			if(playr->canDo && !playr->chargingAttack && !playr->hanging)
 			{
@@ -2751,6 +2773,7 @@ namespace SmashBros
 		switch(type)
 		{
 			case DOWN:
+			shortBuzz();
 			playr->checkAttacks();
 			playr->smashTime=0;
 			if(playr->canDo)
@@ -2851,6 +2874,7 @@ namespace SmashBros
 		switch(type)
 		{
 			case DOWN:
+			shortBuzz();
 			playr->checkAttacks();
 			if(playr->canDo)
 			{
