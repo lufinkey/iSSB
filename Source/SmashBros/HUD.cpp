@@ -231,7 +231,10 @@ namespace SmashBros
 			{
 				Global::finishGame();
 				
-				P2PDataManager::sendScore(NULL, true);
+				if(P2PDataManager::isEnabled())
+				{
+					P2PDataManager::sendScore(NULL, true);
+				}
 			}
 			currentTime->Update(gameTime);
 		}
