@@ -184,6 +184,9 @@ namespace SmashBros
 		MenuBarSmall*dpadLabel;
 		ToggleButtons*toggles;
 		
+		MenuBarSmall* hapticFeedbackLabel;
+		ToggleButton* hapticFeedbackToggle;
+		
 		static const float farDist;
 		static const float centerDist;
 		

@@ -121,7 +121,8 @@ namespace SmashBros
 		static void Update(long gameTime);
 		static void Draw(Graphics2D&g, long gameTime);
 		
-		static void shortBuzz();
+		static void buzzForButton();
+		static void buzzForJoystick();
 
 		static void buttonUp(byte pNum, byte type);
 		static void buttonDown(byte pNum, byte type);

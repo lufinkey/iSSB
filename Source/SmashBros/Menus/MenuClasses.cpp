@@ -800,6 +800,11 @@ namespace SmashBros
 		toggles = new ToggleButtons(390,140, 790,140);
 		toggles->setScale(1.6f);
 		
+		hapticFeedbackLabel = new MenuBarSmall(200,220,"Vibrate");
+		hapticFeedbackLabel->setScale(2);
+		hapticFeedbackToggle = new ToggleButton(390,220,true);
+		hapticFeedbackToggle->setScale(1.6f);
+		
 		button_a = new Actor(820, 450);
         button_a->addAnimation(new Animation("normal", 1, "Images/Game/Controls/button_a.png"));
         button_a->changeAnimation("normal", FORWARD);
@@ -896,7 +901,7 @@ namespace SmashBros
 
 	void ControlOptions::Initialize()
 	{
-		//
+		hapticFeedbackToggle->setToggle(Preferences::hasHapticFeedback());
 	}
 	
 	void ControlOptions::LoadContent()
@@ -936,6 +941,9 @@ namespace SmashBros
 			joystickEnabled = false;
 		}
 		
+		hapticFeedbackLabel->Update(gameTime);
+		hapticFeedbackToggle->Update(gameTime);
+		
 		joystickArea->Update(gameTime);
 		joystick->Update(gameTime);
 		button_a->Update(gameTime);
@@ -950,6 +958,7 @@ namespace SmashBros
 		{
 			if(button_a->isClicked() && !button_a->wasClicked())
 			{
+				Controls::buzzForButton();
 				button_a->setColor(Color::BLUE);
 			}
 			else if(!button_a->isClicked() && button_a->wasClicked())
@@ -958,6 +967,7 @@ namespace SmashBros
 			}
 			else if(button_b->isClicked() && !button_b->wasClicked())
 			{
+				Controls::buzzForButton();
 				button_b->setColor(Color::GREEN);
 			}
 			else if(!button_b->isClicked() && button_b->wasClicked())
@@ -966,6 +976,7 @@ namespace SmashBros
 			}
 			else if(button_x->isClicked() && !button_x->wasClicked())
 			{
+				Controls::buzzForButton();
 				button_x->setColor(Color::YELLOW);
 			}
 			else if(!button_x->isClicked() && button_x->wasClicked())
@@ -996,6 +1007,7 @@ namespace SmashBros
 					{
 						if(joystickDir!=dir)
 						{
+							Controls::buzzForJoystick();
 							joystickDir = dir;
 							joystickDown = true;
 							joystickFar = false;
@@ -1039,6 +1051,9 @@ namespace SmashBros
 					{
 						if(!(joystickDir==dir && joystickFar))
 						{
+							if(joystickDir != dir) {
+								Controls::buzzForJoystick();
+							}
 							joystickDir = dir;
 							joystickDown = true;
 							joystickFar = true;
@@ -1094,6 +1109,7 @@ namespace SmashBros
 			{
 				if(arrow_up->isClicked() && !arrow_up->wasClicked())
 				{
+					Controls::buzzForJoystick();
 					arrow_up->setColor(Color::YELLOW);
 				}
 				else if(!arrow_up->isClicked() && arrow_up->wasClicked())
@@ -1102,6 +1118,7 @@ namespace SmashBros
 				}
 				if(arrow_down->isClicked() && !arrow_down->wasClicked())
 				{
+					Controls::buzzForJoystick();
 					arrow_down->setColor(Color::YELLOW);
 				}
 				else if(!arrow_down->isClicked() && arrow_down->wasClicked())
@@ -1110,6 +1127,7 @@ namespace SmashBros
 				}
 				if(arrow_left->isClicked() && !arrow_left->wasClicked())
 				{
+					Controls::buzzForJoystick();
 					arrow_left->setColor(Color::YELLOW);
 				}
 				else if(!arrow_left->isClicked() && arrow_left->wasClicked())
@@ -1118,6 +1136,7 @@ namespace SmashBros
 				}
 				if(arrow_right->isClicked() && !arrow_right->wasClicked())
 				{
+					Controls::buzzForJoystick();
 					arrow_right->setColor(Color::YELLOW);
 				}
 				else if(!arrow_right->isClicked() && arrow_right->wasClicked())
@@ -1126,7 +1145,9 @@ namespace SmashBros
 				}
 			}
 		}
+		
 		Controls::setJoystickActive(joystickEnabled);
+		Preferences::setHapticFeedback(hapticFeedbackToggle->getToggle());
 	}
 
 	void ControlOptions::Draw(Graphics2D&g, long gameTime)
@@ -1135,6 +1156,8 @@ namespace SmashBros
 		joystickLabel->Draw(g, gameTime);
 		dpadLabel->Draw(g, gameTime);
 		toggles->Draw(g, gameTime);
+		hapticFeedbackLabel->Draw(g, gameTime);
+		hapticFeedbackToggle->Draw(g, gameTime);
 		
 		button_a->Draw(g, gameTime);
 		button_b->Draw(g, gameTime);

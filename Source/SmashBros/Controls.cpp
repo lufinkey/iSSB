@@ -4,6 +4,7 @@
 #include "../Game.h"
 #include "AttackTemplates.h"
 #include "P2PDataManager.h"
+#include "Preferences.h"
 
 
 namespace SmashBros
@@ -1145,6 +1146,9 @@ namespace SmashBros
 	
 	void Controls::ControlHUD::js_up(byte pNum)
 	{
+		if(joystickDir[pNum] != PrimitiveActor::DIR_UP) {
+			Controls::buzzForJoystick();
+		}
 		if(pNum == Controls::touchPlayer)
 		{
 			joystick->changeAnimation("up", NO_CHANGE);
@@ -1186,6 +1190,9 @@ namespace SmashBros
 	
 	void Controls::ControlHUD::js_up2(byte pNum)
 	{
+		if(joystickDir[pNum] != PrimitiveActor::DIR_UP) {
+			Controls::buzzForJoystick();
+		}
 		if(pNum == Controls::touchPlayer)
 		{
 			joystick->changeAnimation("up2", NO_CHANGE);
@@ -1245,6 +1252,9 @@ namespace SmashBros
 	
 	void Controls::ControlHUD::js_upleft(byte pNum)
 	{
+		if(joystickDir[pNum] != PrimitiveActor::DIR_UPLEFT) {
+			Controls::buzzForJoystick();
+		}
 		if(pNum == Controls::touchPlayer)
 		{
 			joystick->changeAnimation("up_left", NO_CHANGE);
@@ -1297,6 +1307,9 @@ namespace SmashBros
 	
 	void Controls::ControlHUD::js_upleft2(byte pNum)
 	{
+		if(joystickDir[pNum] != PrimitiveActor::DIR_UPLEFT) {
+			Controls::buzzForJoystick();
+		}
 		if(pNum == Controls::touchPlayer)
 		{
 			joystick->changeAnimation("up_left2", NO_CHANGE);
@@ -1359,6 +1372,9 @@ namespace SmashBros
 	
 	void Controls::ControlHUD::js_upright(byte pNum)
 	{
+		if(joystickDir[pNum] != PrimitiveActor::DIR_UPRIGHT) {
+			Controls::buzzForJoystick();
+		}
 		if(pNum == Controls::touchPlayer)
 		{
 			joystick->changeAnimation("up_right", NO_CHANGE);
@@ -1411,6 +1427,9 @@ namespace SmashBros
 	
 	void Controls::ControlHUD::js_upright2(byte pNum)
 	{
+		if(joystickDir[pNum] != PrimitiveActor::DIR_UPRIGHT) {
+			Controls::buzzForJoystick();
+		}
 		if(pNum == Controls::touchPlayer)
 		{
 			joystick->changeAnimation("up_right2", NO_CHANGE);
@@ -1473,6 +1492,9 @@ namespace SmashBros
 	
 	void Controls::ControlHUD::js_left(byte pNum)
 	{
+		if(joystickDir[pNum] != PrimitiveActor::DIR_LEFT) {
+			Controls::buzzForJoystick();
+		}
 		if(pNum == Controls::touchPlayer)
 		{
 			joystick->changeAnimation("left", NO_CHANGE);
@@ -1531,6 +1553,9 @@ namespace SmashBros
 	
 	void Controls::ControlHUD::js_left2(byte pNum)
 	{
+		if(joystickDir[pNum] != PrimitiveActor::DIR_LEFT) {
+			Controls::buzzForJoystick();
+		}
 		if(pNum == Controls::touchPlayer)
 		{
 			joystick->changeAnimation("left2", NO_CHANGE);
@@ -1593,6 +1618,9 @@ namespace SmashBros
 	
 	void Controls::ControlHUD::js_right(byte pNum)
 	{
+		if(joystickDir[pNum] != PrimitiveActor::DIR_RIGHT) {
+			Controls::buzzForJoystick();
+		}
 		if(pNum == Controls::touchPlayer)
 		{
 			joystick->changeAnimation("right", NO_CHANGE);
@@ -1651,6 +1679,9 @@ namespace SmashBros
 	
 	void Controls::ControlHUD::js_right2(byte pNum)
 	{
+		if(joystickDir[pNum] != PrimitiveActor::DIR_RIGHT) {
+			Controls::buzzForJoystick();
+		}
 		if(pNum == Controls::touchPlayer)
 		{
 			joystick->changeAnimation("right2", NO_CHANGE);
@@ -1714,6 +1745,9 @@ namespace SmashBros
 	
 	void Controls::ControlHUD::js_down(byte pNum)
 	{
+		if(joystickDir[pNum] != PrimitiveActor::DIR_DOWN) {
+			Controls::buzzForJoystick();
+		}
 		if(pNum == Controls::touchPlayer)
 		{
 			joystick->changeAnimation("down", NO_CHANGE);
@@ -1746,6 +1780,9 @@ namespace SmashBros
 	
 	void Controls::ControlHUD::js_down2(byte pNum)
 	{
+		if(joystickDir[pNum] != PrimitiveActor::DIR_DOWN) {
+			Controls::buzzForJoystick();
+		}
 		if(pNum == Controls::touchPlayer)
 		{
 			joystick->changeAnimation("down2", NO_CHANGE);
@@ -1775,6 +1812,9 @@ namespace SmashBros
 	
 	void Controls::ControlHUD::js_downleft(byte pNum)
 	{
+		if(joystickDir[pNum] != PrimitiveActor::DIR_DOWNLEFT) {
+			Controls::buzzForJoystick();
+		}
 		if(pNum == Controls::touchPlayer)
 		{
 			joystick->changeAnimation("down_left", NO_CHANGE);
@@ -1808,6 +1848,9 @@ namespace SmashBros
 	
 	void Controls::ControlHUD::js_downleft2(byte pNum)
 	{
+		if(joystickDir[pNum] != PrimitiveActor::DIR_DOWNLEFT) {
+			Controls::buzzForJoystick();
+		}
 		if(pNum == Controls::touchPlayer)
 		{
 			joystick->changeAnimation("down_left2", NO_CHANGE);
@@ -1854,6 +1897,9 @@ namespace SmashBros
 	
 	void Controls::ControlHUD::js_downright(byte pNum)
 	{
+		if(joystickDir[pNum] != PrimitiveActor::DIR_DOWNRIGHT) {
+			Controls::buzzForJoystick();
+		}
 		if(pNum == Controls::touchPlayer)
 		{
 			joystick->changeAnimation("down_right", NO_CHANGE);
@@ -1887,6 +1933,9 @@ namespace SmashBros
 	
 	void Controls::ControlHUD::js_downright2(byte pNum)
 	{
+		if(joystickDir[pNum] != PrimitiveActor::DIR_DOWNRIGHT) {
+			Controls::buzzForJoystick();
+		}
 		if(pNum == Controls::touchPlayer)
 		{
 			joystick->changeAnimation("down_right2", NO_CHANGE);
@@ -2264,8 +2313,16 @@ namespace SmashBros
 		touchControls->Draw(g, gameTime);
 	}
 	
-	void Controls::shortBuzz() {
-		HapticFeedback::buzz(100, 0.4);
+	void Controls::buzzForButton() {
+		if(Preferences::hasHapticFeedback()) {
+			HapticFeedback::buzz(10, 0.4);
+		}
+	}
+	
+	void Controls::buzzForJoystick() {
+		if(Preferences::hasHapticFeedback()) {
+			HapticFeedback::buzz(10, 0.4);
+		}
 	}
 	
 	void Controls::buttonUp(byte pNum, byte type)
@@ -2274,7 +2331,7 @@ namespace SmashBros
 		switch(type)
 		{
 			case DOWN:
-			shortBuzz();
+			buzzForJoystick();
 			playr->smashTime=Global::worldTime+100;
 			playr->buttondir=BUTTONDIR_UP;
 			playr->checkAttacks();
@@ -2339,7 +2396,7 @@ namespace SmashBros
 		switch(type)
 		{
 			case DOWN:
-			shortBuzz();
+			buzzForJoystick();
 			playr->buttondir=BUTTONDIR_DOWN;
 			playr->checkAttacks();
 			playr->smashTime=Global::worldTime+100;
@@ -2391,7 +2448,7 @@ namespace SmashBros
 		switch(type)
 		{
 			case DOWN:
-			shortBuzz();
+			buzzForJoystick();
 			playr->buttondir=BUTTONDIR_LEFT;
 			playr->smashTime=Global::worldTime+100;
 			if((Global::worldTime<=playr->runTime && playr->isOnGround())||(playr->moveRight==2))
@@ -2486,7 +2543,7 @@ namespace SmashBros
 		switch(type)
 		{
 			case DOWN:
-			shortBuzz();
+			buzzForJoystick();
 			playr->buttondir=BUTTONDIR_RIGHT;
 			playr->smashTime=Global::worldTime+100;
 			if((Global::worldTime<=playr->runTime && playr->isOnGround())||(playr->moveLeft==2))
@@ -2581,7 +2638,7 @@ namespace SmashBros
 		switch(type)
 		{
 			case DOWN:
-			shortBuzz();
+			buzzForButton();
 			playr->checkAttacks();
 			playr->hanging=false;
 			playr->upKey=true;
@@ -2605,7 +2662,7 @@ namespace SmashBros
 		switch(type)
 		{
 			case DOWN:
-			shortBuzz();
+			buzzForButton();
 			playr->checkAttacks();
 			if(playr->canDo && !playr->chargingAttack && !playr->hanging)
 			{
@@ -2764,7 +2821,7 @@ namespace SmashBros
 		switch(type)
 		{
 			case DOWN:
-			shortBuzz();
+			buzzForButton();
 			playr->checkAttacks();
 			playr->smashTime=0;
 			if(playr->canDo)
@@ -2865,7 +2922,7 @@ namespace SmashBros
 		switch(type)
 		{
 			case DOWN:
-			shortBuzz();
+			buzzForButton();
 			playr->checkAttacks();
 			if(playr->canDo)
 			{

@@ -13,6 +13,7 @@ namespace SmashBros
 		static bool ingameMusic;
 
 		static bool highfps;
+		static bool hapticFeedback;
 		
 		static PrefManager prefMgr;
 
@@ -33,6 +34,8 @@ namespace SmashBros
 		static void toggleMenuSoundFX(bool toggle);
 		static void toggleInGameMusic(bool toggle);
 		static void setHighFPS(bool toggle);
+		static void setHapticFeedback(bool hapticEnabled);
+		static bool hasHapticFeedback();
 		static bool menuMusicOn();
 		static bool menuSoundFXOn();
 		static bool ingameMusicOn();

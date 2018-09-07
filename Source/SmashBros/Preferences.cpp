@@ -10,6 +10,7 @@ namespace SmashBros
 	bool Preferences::ingameMusic = true;
 	
 	bool Preferences::highfps = true;
+	bool Preferences::hapticFeedback = true;
 	
 	const String Preferences::version = "2.21-3";
 	
@@ -29,6 +30,7 @@ namespace SmashBros
 		prefMgr.addValue("menuSoundFx",menuSoundFx);
 		prefMgr.addValue("ingameMusic",ingameMusic);
 		prefMgr.addValue("highfps",highfps);
+		prefMgr.addValue("hapticFeedback", hapticFeedback);
 		
 		prefMgr.addValue("controls_joystick",    Controls::joystickEnabled);
 		
@@ -85,6 +87,7 @@ namespace SmashBros
 		menuSoundFx = prefMgr.getBooleanValue("menuSoundFx");
 		ingameMusic = prefMgr.getBooleanValue("ingameMusic");
 		highfps = prefMgr.getBooleanValue("highfps");
+		hapticFeedback = prefMgr.getBooleanValue("hapticFeedback");
 		
 		Controls::joystickEnabled = prefMgr.getBooleanValue("controls_joystick");
 		
@@ -148,6 +151,7 @@ namespace SmashBros
 		prefMgr.setValue("menuSoundFx",menuSoundFx);
 		prefMgr.setValue("ingameMusic",ingameMusic);
 		prefMgr.setValue("highfps",highfps);
+		prefMgr.setValue("hapticFeedback", hapticFeedback);
 		
 		prefMgr.setValue("controls_joystick",    Controls::joystickEnabled);
 		
@@ -225,6 +229,14 @@ namespace SmashBros
 			Game::setFPS(30);
 			Game::setUpdatesPerFrame(2);
 		}
+	}
+	
+	void Preferences::setHapticFeedback(bool hapticEnabled) {
+		hapticFeedback = hapticEnabled;
+	}
+	
+	bool Preferences::hasHapticFeedback() {
+		return hapticFeedback;
 	}
 	
 	bool Preferences::menuMusicOn()
