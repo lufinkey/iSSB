@@ -2977,11 +2977,11 @@ namespace SmashBros
 		ControllerButtonStates[BUTTON_LEFT] = (state&iCadeJoystickLeft)!=0;
 		ControllerButtonStates[BUTTON_RIGHT] = (state&iCadeJoystickRight)!=0;
 		
-		//ControllerButtonStates[BUTTON_SELECT] = (state&iCadeButtonA)!=0; // Select
-		//ControllerButtonStates[BUTTON_SHEILD] = (state&iCadeButtonB)!=0; // Left Shoulder
-		ControllerButtonStates[BUTTON_PAUSE] = (state&iCadeButtonC)!=0;
-		ControllerButtonStates[BUTTON_GRAB] = (state&iCadeButtonD)!=0;
-		if((state&iCadeButtonE) || (state&iCadeButtonH))
+		//ControllerButtonStates[BUTTON_SELECT] = (state&iCadeButtonB)!=0; // Select
+		//ControllerButtonStates[BUTTON_SHEILD] = (state&iCadeButtonG)!=0; // Left Shoulder
+		ControllerButtonStates[BUTTON_PAUSE] = (state&iCadeButtonD)!=0;
+		ControllerButtonStates[BUTTON_GRAB] = (state&iCadeButtonE)!=0;
+		if((state&iCadeButtonA) || (state&iCadeButtonF))
 		{
 			ControllerButtonStates[BUTTON_JUMP] = true;
 		}
@@ -2989,8 +2989,8 @@ namespace SmashBros
 		{
 			ControllerButtonStates[BUTTON_JUMP] = false;
 		}
-		ControllerButtonStates[BUTTON_STANDARD] = (state&iCadeButtonF)!=0;
-		ControllerButtonStates[BUTTON_SPECIAL] = (state&iCadeButtonG)!=0;
+		ControllerButtonStates[BUTTON_STANDARD] = (state&iCadeButtonH)!=0;
+		ControllerButtonStates[BUTTON_SPECIAL] = (state&iCadeButtonC)!=0;
 	}
 	
 	void Controls::iCadeButtonDownHandler(iCadeState button)
