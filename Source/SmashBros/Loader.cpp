@@ -5,8 +5,10 @@
 #include "Game/Characters/Sonic.h"
 #include "Game/Characters/Ichigo.h"
 #include "Game/Characters/Fox.h"
+#include "Game/Characters/Cuphead.h"
 #include "Game/Characters/Pikachu.h"
 #include "Game/Characters/Link.h"
+#include "Game/Characters/Kirby.h"
 
 #include "Game/Stages/FractalStage.h"
 #include "Game/Stages/HillsideBattleground.h"
@@ -39,10 +41,16 @@ namespace SmashBros
 			
 			case Global::CHAR_PIKACHU:
 			return "pikachu.png";
-			
+
 			case Global::CHAR_LINK:
 			return "link.png";
+
+			case Global::CHAR_KIRBY:
+			return "kirby.png";
 			
+			case Global::CHAR_CUPHEAD:
+			return "cuphead.png";
+
 			default:
 			if(charNo <= Global::totalCharacters)
 			{
@@ -86,6 +94,12 @@ namespace SmashBros
 			
 			case Global::CHAR_LINK:
 			return "Link";
+
+			case Global::CHAR_KIRBY:
+			return "Kirby";
+			
+			case Global::CHAR_CUPHEAD:
+			return "Cuphead";
 		}
 	}
 	
@@ -129,10 +143,21 @@ namespace SmashBros
 			p = new Pikachu(x1,y1,playerNo,team);
 			p->charNo = Global::CHAR_PIKACHU;
 			break;
-			
+
 			case Global::CHAR_LINK:
 			p = new Link(x1,y1,playerNo,team);
 			p->charNo = Global::CHAR_LINK;
+			break;
+
+			case Global::CHAR_KIRBY:
+			p = new Kirby(x1,y1,playerNo,team);
+			p->charNo = Global::CHAR_KIRBY;
+			break;
+			
+			case Global::CHAR_CUPHEAD:
+			p = new Fox(x1,y1,playerNo,team);
+			p->charNo = Global::CHAR_CUPHEAD;
+			break;
 		}
 		return p;
 	}
@@ -182,10 +207,21 @@ namespace SmashBros
 			winhold_fps = 6;
 			winhold_rows = 10;
 			break;
-			
+
 			case Global::CHAR_LINK:
 			win_fps = 8;
 			win_rows = 4;
+			break;
+
+			case Global::CHAR_KIRBY:
+			win_fps = 16;
+			win_cols = 6;
+			win_rows = 5;
+			break;
+						
+			case Global::CHAR_CUPHEAD:
+			win_fps = 8;
+			win_rows = 6;
 			break;
 		}
 		
@@ -217,7 +253,7 @@ namespace SmashBros
 #ifndef SMASHBROS_SCRIPT_DISABLE
 	ArrayList<ScriptModule::ScriptEntityInfo*> StageLoader::scriptEntities = ArrayList<ScriptModule::ScriptEntityInfo*>();
 	ArrayList<int> StageLoader::disabledScriptEntities = ArrayList<int>();
-	
+
 	void StageLoader::loadScriptEntities(const String& path)
 	{
 		ArrayList<String> folders = FileTools::getFoldersInDirectory(path);
@@ -250,7 +286,7 @@ namespace SmashBros
 				}
 			}
 		}
-		
+
 		for(int i=0; i<scriptEntities.size(); i++)
 		{
 			for(int j=1; j<(scriptEntities.size()-i); j++)
@@ -275,7 +311,7 @@ namespace SmashBros
 			}
 		}
 	}
-	
+
 	void StageLoader::unloadScriptEntities()
 	{
 		for(int i=0; i<scriptEntities.size(); i++)
@@ -287,12 +323,12 @@ namespace SmashBros
 		}
 		scriptEntities.clear();
 	}
-	
+
 	void StageLoader::setDisabledScriptEntities(const ArrayList<int>& disabled)
 	{
 		disabledScriptEntities = disabled;
 	}
-	
+
 	ArrayList<ScriptModule::ScriptEntityInfo*> StageLoader::getScriptEntities()
 	{
 		ArrayList<ScriptModule::ScriptEntityInfo*> entities;
@@ -307,17 +343,17 @@ namespace SmashBros
 					j = disabledScriptEntities.size();
 				}
 			}
-			
+
 			if(canAdd)
 			{
 				entities.add(scriptEntities.get(i));
 			}
 		}
-		
+
 		return entities;
 	}
 #endif //SMASHBROS_SCRIPT_DISABLE
-	
+
 	String StageLoader::getMenuFilename(int stageNo)
 	{
 		switch(stageNo)
@@ -363,7 +399,7 @@ namespace SmashBros
 			
 			case Global::STAGE_FINALDESTINATION:
 			return new FinalDestinationBrawl(x1,y1);
-			
+
 			default:
 #ifndef SMASHBROS_SCRIPT_DISABLE
 			if(stageNum > Global::totalStages)
