@@ -7,8 +7,7 @@
 #include "Game/Characters/Fox.h"
 #include "Game/Characters/Pikachu.h"
 #include "Game/Characters/Link.h"
-#include "Game/Characters/Cuphead.h"
-#include "Game/Characters/Rayman.h"
+#include "Game/Characters/Cuphead.h
 
 #include "Game/Stages/FractalStage.h"
 #include "Game/Stages/HillsideBattleground.h"
@@ -47,9 +46,6 @@ namespace SmashBros
 			
 			case Global::CHAR_CUPHEAD:
 			return "cuphead.png";
-			
-			case Global::CHAR_RAYMAN:
-			return "rayman.png";
 			
 			default:
 			if(charNo <= Global::totalCharacters)
@@ -97,9 +93,6 @@ namespace SmashBros
 			
 			case Global::CHAR_CUPHEAD:
 			return "Cuphead";
-			
-			case Global::CHAR_RAYMAN:
-			return "Rayman";
 		}
 	}
 	
@@ -151,11 +144,6 @@ namespace SmashBros
 			case Global::CHAR_CUPHEAD:
 			p = new Fox(x1,y1,playerNo,team);
 			p->charNo = Global::CHAR_CUPHEAD;
-			break;
-			
-			case Global::CHAR_RAYMAN:
-			p = new Ichigo(x1,y1,playerNo,team);
-			p->charNo = Global::CHAR_RAYMAN;
 			break;
 		}
 		return p;
@@ -215,13 +203,6 @@ namespace SmashBros
 			case Global::CHAR_CUPHEAD:
 			win_fps = 8;
 			win_rows = 6;
-			break;
-			
-			case Global::CHAR_RAYMAN:
-			win_fps = 6;
-			win_rows = 5;
-			lose_fps = 8;
-			lose_rows = 4;
 			break;
 		}
 		
