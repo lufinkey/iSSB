@@ -333,6 +333,7 @@
         <IncludePath Value="../../External/SDL/SDL_gfx"/>
         <IncludePath Value="../../External/SDL/SDL_p2p/include"/>
         <Preprocessor Value="SMASHBROS_SCRIPT_DISABLE"/>
+        <Preprocessor Value="SMASHBROS_P2P_DISABLE"/>
       </Compiler>
       <Linker Options="" Required="yes">
         <LibraryPath Value="../../External/SDL/SDL_p2p/projects/codelite/Debug"/>
@@ -395,6 +396,7 @@
         <IncludePath Value="../../External/SDL/SDL_p2p/include"/>
         <Preprocessor Value="NDEBUG"/>
         <Preprocessor Value="SMASHBROS_SCRIPT_DISABLE"/>
+        <Preprocessor Value="SMASHBROS_P2P_DISABLE"/>
       </Compiler>
       <Linker Options="" Required="yes">
         <LibraryPath Value="../../External/SDL/SDL_p2p/projects/codelite/Release"/>
