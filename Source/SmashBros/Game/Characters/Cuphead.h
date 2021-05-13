@@ -66,8 +66,8 @@ namespace SmashBros
 		Landmaster*landmaster;
 
 	public:
-		Fox(float x1, float y1, byte playerNo, byte team);
-		virtual ~Fox();
+		Cuphead(float x1, float y1, byte playerNo, byte team);
+		virtual ~Cuphead();
 
 		virtual void Update(long gameTime);
 		virtual void setToDefaultValues();
