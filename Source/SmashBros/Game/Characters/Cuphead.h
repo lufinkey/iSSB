@@ -5,7 +5,7 @@
 
 namespace SmashBros
 {
-	class Fox : public Player
+	class Cuphead : public Player
 	{
 	private:
 		class Ray : public Projectile
