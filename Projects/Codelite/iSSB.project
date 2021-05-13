@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeLite_Project Name="iSSB" Version="10.0.0" InternalType="Console">
+  <Plugins>
+    <Plugin Name="qmake">
+      <![CDATA[00020001N0005Debug0000000000000001N0007Release000000000000]]>
+    </Plugin>
+  </Plugins>
+  <Description/>
+  <Dependencies/>
+  <VirtualDirectory Name="Source">
+    <VirtualDirectory Name="ScriptModule">
+      <VirtualDirectory Name="modules">
+        <VirtualDirectory Name="SmashBros">
+          <VirtualDirectory Name="inherit">
+            <File Name="../../Source/ScriptModule/modules/SmashBros/inherit/lib_sb_inherit_Stage.h"/>
+            <File Name="../../Source/ScriptModule/modules/SmashBros/inherit/lib_sb_inherit_Stage.cpp"/>
+            <File Name="../../Source/ScriptModule/modules/SmashBros/inherit/lib_sb_inherit_Player.h"/>
+            <File Name="../../Source/ScriptModule/modules/SmashBros/inherit/lib_sb_inherit_Player.cpp"/>
+            <File Name="../../Source/ScriptModule/modules/SmashBros/inherit/lib_sb_inherit_GameElement.h"/>
+            <File Name="../../Source/ScriptModule/modules/SmashBros/inherit/lib_sb_inherit_GameElement.cpp"/>
+          </VirtualDirectory>
+          <File Name="../../Source/ScriptModule/modules/SmashBros/lib_SmashBros.h"/>
+          <File Name="../../Source/ScriptModule/modules/SmashBros/lib_SmashBros.cpp"/>
+          <File Name="../../Source/ScriptModule/modules/SmashBros/lib_sb_Stage.cpp"/>
+          <File Name="../../Source/ScriptModule/modules/SmashBros/lib_sb_Player.cpp"/>
+          <File Name="../../Source/ScriptModule/modules/SmashBros/lib_sb_Global.cpp"/>
+          <File Name="../../Source/ScriptModule/modules/SmashBros/lib_sb_GameElement.cpp"/>
+        </VirtualDirectory>
+        <VirtualDirectory Name="GameEngine">
+          <VirtualDirectory Name="inherit">
+            <File Name="../../Source/ScriptModule/modules/GameEngine/inherit/lib_ge_inherit_WireframeActor.h"/>
+            <File Name="../../Source/ScriptModule/modules/GameEngine/inherit/lib_ge_inherit_WireframeActor.cpp"/>
+            <File Name="../../Source/ScriptModule/modules/GameEngine/inherit/lib_ge_inherit_TextActor.h"/>
+            <File Name="../../Source/ScriptModule/modules/GameEngine/inherit/lib_ge_inherit_TextActor.cpp"/>
+            <File Name="../../Source/ScriptModule/modules/GameEngine/inherit/lib_ge_inherit_Screen.h"/>
+            <File Name="../../Source/ScriptModule/modules/GameEngine/inherit/lib_ge_inherit_Screen.cpp"/>
+            <File Name="../../Source/ScriptModule/modules/GameEngine/inherit/lib_ge_inherit_MenuScreen.h"/>
+            <File Name="../../Source/ScriptModule/modules/GameEngine/inherit/lib_ge_inherit_MenuScreen.cpp"/>
+            <File Name="../../Source/ScriptModule/modules/GameEngine/inherit/lib_ge_inherit_Actor.h"/>
+            <File Name="../../Source/ScriptModule/modules/GameEngine/inherit/lib_ge_inherit_Actor.cpp"/>
+          </VirtualDirectory>
+          <File Name="../../Source/ScriptModule/modules/GameEngine/lib_ge_Vector2.h"/>
+          <File Name="../../Source/ScriptModule/modules/GameEngine/lib_ge_Util.cpp"/>
+          <File Name="../../Source/ScriptModule/modules/GameEngine/lib_ge_Thread.h"/>
+          <File Name="../../Source/ScriptModule/modules/GameEngine/lib_ge_ScreenManager.cpp"/>
+          <File Name="../../Source/ScriptModule/modules/GameEngine/lib_ge_Math.cpp"/>
+          <File Name="../../Source/ScriptModule/modules/GameEngine/lib_ge_IO.cpp"/>
+          <File Name="../../Source/ScriptModule/modules/GameEngine/lib_ge_Graphics.cpp"/>
+          <File Name="../../Source/ScriptModule/modules/GameEngine/lib_ge_Global.cpp"/>
+          <File Name="../../Source/ScriptModule/modules/GameEngine/lib_ge_ArrayList.h"/>
+          <File Name="../../Source/ScriptModule/modules/GameEngine/lib_ge_Actor.cpp"/>
+          <File Name="../../Source/ScriptModule/modules/GameEngine/lib_GameEngine.h"/>
+          <File Name="../../Source/ScriptModule/modules/GameEngine/lib_GameEngine.cpp"/>
+        </VirtualDirectory>
+      </VirtualDirectory>
+      <File Name="../../Source/ScriptModule/ScriptOperatorOverloads.h"/>
+      <File Name="../../Source/ScriptModule/ScriptOperatorOverloads.cpp"/>
+      <File Name="../../Source/ScriptModule/ScriptManager.h"/>
+      <File Name="../../Source/ScriptModule/ScriptManager.cpp"/>
+      <File Name="../../Source/ScriptModule/ScriptMacros.h"/>
+      <File Name="../../Source/ScriptModule/ScriptEntity.h"/>
+      <File Name="../../Source/ScriptModule/ScriptEntity.cpp"/>
+    </VirtualDirectory>
+    <VirtualDirectory Name="SmashBros">
+      <VirtualDirectory Name="Game">
+        <VirtualDirectory Name="Stages">
+          <VirtualDirectory Name="StagePieces">
+            <File Name="../../Source/SmashBros/Game/Stages/StagePieces/Platform.h"/>
+            <File Name="../../Source/SmashBros/Game/Stages/StagePieces/Platform.cpp"/>
+            <File Name="../../Source/SmashBros/Game/Stages/StagePieces/OffScreenExplode.h"/>
+            <File Name="../../Source/SmashBros/Game/Stages/StagePieces/OffScreenExplode.cpp"/>
+            <File Name="../../Source/SmashBros/Game/Stages/StagePieces/HangPoint.h"/>
+            <File Name="../../Source/SmashBros/Game/Stages/StagePieces/HangPoint.cpp"/>
+          </VirtualDirectory>
+          <File Name="../../Source/SmashBros/Game/Stages/HyruleTemple.h"/>
+          <File Name="../../Source/SmashBros/Game/Stages/HyruleTemple.cpp"/>
+          <File Name="../../Source/SmashBros/Game/Stages/HillsideBattleground.h"/>
+          <File Name="../../Source/SmashBros/Game/Stages/HillsideBattleground.cpp"/>
+          <File Name="../../Source/SmashBros/Game/Stages/FractalStage.h"/>
+          <File Name="../../Source/SmashBros/Game/Stages/FractalStage.cpp"/>
+          <File Name="../../Source/SmashBros/Game/Stages/FinalDestinationBrawl.h"/>
+          <File Name="../../Source/SmashBros/Game/Stages/FinalDestinationBrawl.cpp"/>
+          <File Name="../../Source/SmashBros/Game/Stages/BattlefieldBrawl.h"/>
+          <File Name="../../Source/SmashBros/Game/Stages/BattlefieldBrawl.cpp"/>
+        </VirtualDirectory>
+        <VirtualDirectory Name="Items">
+          <File Name="../../Source/SmashBros/Game/Items/SuperMushroom.h"/>
+          <File Name="../../Source/SmashBros/Game/Items/SuperMushroom.cpp"/>
+          <File Name="../../Source/SmashBros/Game/Items/SmashBall.h"/>
+          <File Name="../../Source/SmashBros/Game/Items/SmashBall.cpp"/>
+          <File Name="../../Source/SmashBros/Game/Items/RayGun.h"/>
+          <File Name="../../Source/SmashBros/Game/Items/RayGun.cpp"/>
+          <File Name="../../Source/SmashBros/Game/Items/PoisonMushroom.h"/>
+          <File Name="../../Source/SmashBros/Game/Items/PoisonMushroom.cpp"/>
+          <File Name="../../Source/SmashBros/Game/Items/HeartContainer.h"/>
+          <File Name="../../Source/SmashBros/Game/Items/HeartContainer.cpp"/>
+          <File Name="../../Source/SmashBros/Game/Items/BeamSword.h"/>
+          <File Name="../../Source/SmashBros/Game/Items/BeamSword.cpp"/>
+        </VirtualDirectory>
+        <VirtualDirectory Name="Characters">
+          <File Name="../../Source/SmashBros/Game/Characters/Sonic.h"/>
+          <File Name="../../Source/SmashBros/Game/Characters/Sonic.cpp"/>
+          <File Name="../../Source/SmashBros/Game/Characters/Pikachu.h"/>
+          <File Name="../../Source/SmashBros/Game/Characters/Pikachu.cpp"/>
+          <File Name="../../Source/SmashBros/Game/Characters/Mario.h"/>
+          <File Name="../../Source/SmashBros/Game/Characters/Mario.cpp"/>
+          <File Name="../../Source/SmashBros/Game/Characters/Link.h"/>
+          <File Name="../../Source/SmashBros/Game/Characters/Link.cpp"/>
+          <File Name="../../Source/SmashBros/Game/Characters/Ichigo.h"/>
+          <File Name="../../Source/SmashBros/Game/Characters/Ichigo.cpp"/>
+          <File Name="../../Source/SmashBros/Game/Characters/Fox.h"/>
+          <File Name="../../Source/SmashBros/Game/Characters/Fox.cpp"/>
+        </VirtualDirectory>
+        <File Name="../../Source/SmashBros/Game/WinnerScreen.h"/>
+        <File Name="../../Source/SmashBros/Game/WinnerScreen.cpp"/>
+        <File Name="../../Source/SmashBros/Game/GameScreen.h"/>
+        <File Name="../../Source/SmashBros/Game/GameScreen.cpp"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="Menus">
+        <VirtualDirectory Name="MenuPieces">
+          <File Name="../../Source/SmashBros/Menus/MenuPieces/TogglePane.h"/>
+          <File Name="../../Source/SmashBros/Menus/MenuPieces/TogglePane.cpp"/>
+          <File Name="../../Source/SmashBros/Menus/MenuPieces/ToggleButtons.h"/>
+          <File Name="../../Source/SmashBros/Menus/MenuPieces/ToggleButtons.cpp"/>
+          <File Name="../../Source/SmashBros/Menus/MenuPieces/ToggleButton.h"/>
+          <File Name="../../Source/SmashBros/Menus/MenuPieces/ToggleButton.cpp"/>
+          <File Name="../../Source/SmashBros/Menus/MenuPieces/MenuBarValue.h"/>
+          <File Name="../../Source/SmashBros/Menus/MenuPieces/MenuBarValue.cpp"/>
+          <File Name="../../Source/SmashBros/Menus/MenuPieces/MenuBarToggle.h"/>
+          <File Name="../../Source/SmashBros/Menus/MenuPieces/MenuBarToggle.cpp"/>
+          <File Name="../../Source/SmashBros/Menus/MenuPieces/MenuBarSmallButton.h"/>
+          <File Name="../../Source/SmashBros/Menus/MenuPieces/MenuBarSmallButton.cpp"/>
+          <File Name="../../Source/SmashBros/Menus/MenuPieces/MenuBarSmall.h"/>
+          <File Name="../../Source/SmashBros/Menus/MenuPieces/MenuBarSmall.cpp"/>
+          <File Name="../../Source/SmashBros/Menus/MenuPieces/MenuBar.h"/>
+          <File Name="../../Source/SmashBros/Menus/MenuPieces/MenuBar.cpp"/>
+          <File Name="../../Source/SmashBros/Menus/MenuPieces/Arrows.h"/>
+          <File Name="../../Source/SmashBros/Menus/MenuPieces/Arrows.cpp"/>
+          <File Name="../../Source/SmashBros/Menus/MenuPieces/ActorGrid.h"/>
+          <File Name="../../Source/SmashBros/Menus/MenuPieces/ActorGrid.cpp"/>
+        </VirtualDirectory>
+        <File Name="../../Source/SmashBros/Menus/StageSelectScreen.h"/>
+        <File Name="../../Source/SmashBros/Menus/StageSelectScreen.cpp"/>
+        <File Name="../../Source/SmashBros/Menus/Menus.h"/>
+        <File Name="../../Source/SmashBros/Menus/Menus.cpp"/>
+        <File Name="../../Source/SmashBros/Menus/MenuClasses.h"/>
+        <File Name="../../Source/SmashBros/Menus/MenuClasses.cpp"/>
+        <File Name="../../Source/SmashBros/Menus/CharSelectScreen.h"/>
+        <File Name="../../Source/SmashBros/Menus/CharSelectScreen.cpp"/>
+      </VirtualDirectory>
+      <File Name="../../Source/SmashBros/Stage.h"/>
+      <File Name="../../Source/SmashBros/Stage.cpp"/>
+      <File Name="../../Source/SmashBros/SoundManager.h"/>
+      <File Name="../../Source/SmashBros/SoundManager.cpp"/>
+      <File Name="../../Source/SmashBros/SmashForwards.h"/>
+      <File Name="../../Source/SmashBros/ProjectileManager.h"/>
+      <File Name="../../Source/SmashBros/ProjectileManager.cpp"/>
+      <File Name="../../Source/SmashBros/Projectile.h"/>
+      <File Name="../../Source/SmashBros/Projectile.cpp"/>
+      <File Name="../../Source/SmashBros/Preferences.h"/>
+      <File Name="../../Source/SmashBros/Preferences.cpp"/>
+      <File Name="../../Source/SmashBros/Player.h"/>
+      <File Name="../../Source/SmashBros/Player.cpp"/>
+      <File Name="../../Source/SmashBros/P2PDataManager.h"/>
+      <File Name="../../Source/SmashBros/P2PDataManager.cpp"/>
+      <File Name="../../Source/SmashBros/MusicManager.h"/>
+      <File Name="../../Source/SmashBros/MusicManager.cpp"/>
+      <File Name="../../Source/SmashBros/Magnifier.h"/>
+      <File Name="../../Source/SmashBros/Magnifier.cpp"/>
+      <File Name="../../Source/SmashBros/Loader.h"/>
+      <File Name="../../Source/SmashBros/Loader.cpp"/>
+      <File Name="../../Source/SmashBros/ItemManager.h"/>
+      <File Name="../../Source/SmashBros/ItemManager.cpp"/>
+      <File Name="../../Source/SmashBros/Item.h"/>
+      <File Name="../../Source/SmashBros/Item.cpp"/>
+      <File Name="../../Source/SmashBros/HUD.h"/>
+      <File Name="../../Source/SmashBros/HUD.cpp"/>
+      <File Name="../../Source/SmashBros/HitBox.h"/>
+      <File Name="../../Source/SmashBros/HitBox.cpp"/>
+      <File Name="../../Source/SmashBros/Global.h"/>
+      <File Name="../../Source/SmashBros/Global.cpp"/>
+      <File Name="../../Source/SmashBros/GameElement.h"/>
+      <File Name="../../Source/SmashBros/GameElement.cpp"/>
+      <File Name="../../Source/SmashBros/Controls.h"/>
+      <File Name="../../Source/SmashBros/Controls.cpp"/>
+      <File Name="../../Source/SmashBros/CollisionManager.h"/>
+      <File Name="../../Source/SmashBros/CollisionManager.cpp"/>
+      <File Name="../../Source/SmashBros/Chargebar.h"/>
+      <File Name="../../Source/SmashBros/Chargebar.cpp"/>
+      <File Name="../../Source/SmashBros/Camera.h"/>
+      <File Name="../../Source/SmashBros/Camera.cpp"/>
+      <File Name="../../Source/SmashBros/AttackTemplates.h"/>
+      <File Name="../../Source/SmashBros/AttackTemplates.cpp"/>
+      <File Name="../../Source/SmashBros/AttackRandomizer.h"/>
+      <File Name="../../Source/SmashBros/AttackRandomizer.cpp"/>
+      <File Name="../../Source/SmashBros/AttackManager.h"/>
+      <File Name="../../Source/SmashBros/AttackManager.cpp"/>
+    </VirtualDirectory>
+    <VirtualDirectory Name="GameEngine">
+      <VirtualDirectory Name="Util">
+        <File Name="../../Source/GameEngine/Util/Vector2.h"/>
+        <File Name="../../Source/GameEngine/Util/Thread.h"/>
+        <File Name="../../Source/GameEngine/Util/Thread.cpp"/>
+        <File Name="../../Source/GameEngine/Util/String.h"/>
+        <File Name="../../Source/GameEngine/Util/String.cpp"/>
+        <File Name="../../Source/GameEngine/Util/PrefManager.h"/>
+        <File Name="../../Source/GameEngine/Util/PrefManager.cpp"/>
+        <File Name="../../Source/GameEngine/Util/PixelIterator.h"/>
+        <File Name="../../Source/GameEngine/Util/PixelIterator.cpp"/>
+        <File Name="../../Source/GameEngine/Util/P2PManager.h"/>
+        <File Name="../../Source/GameEngine/Util/P2PManager.cpp"/>
+        <File Name="../../Source/GameEngine/Util/Image.h"/>
+        <File Name="../../Source/GameEngine/Util/Image.cpp"/>
+        <File Name="../../Source/GameEngine/Util/HapticFeedbackiOS.mm"/>
+        <File Name="../../Source/GameEngine/Util/HapticFeedback.h"/>
+        <File Name="../../Source/GameEngine/Util/HapticFeedback.cpp"/>
+        <File Name="../../Source/GameEngine/Util/Font.h"/>
+        <File Name="../../Source/GameEngine/Util/Font.cpp"/>
+        <File Name="../../Source/GameEngine/Util/FileTools.h"/>
+        <File Name="../../Source/GameEngine/Util/FileTools.cpp"/>
+        <File Name="../../Source/GameEngine/Util/Color.h"/>
+        <File Name="../../Source/GameEngine/Util/Color.cpp"/>
+        <File Name="../../Source/GameEngine/Util/BufferedImage.h"/>
+        <File Name="../../Source/GameEngine/Util/BufferedImage.cpp"/>
+        <File Name="../../Source/GameEngine/Util/Bitset.h"/>
+        <File Name="../../Source/GameEngine/Util/Bitset.cpp"/>
+        <File Name="../../Source/GameEngine/Util/ArrayList.h"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="Sound">
+        <File Name="../../Source/GameEngine/Sound/Sound.h"/>
+        <File Name="../../Source/GameEngine/Sound/Sound.cpp"/>
+        <File Name="../../Source/GameEngine/Sound/Music.h"/>
+        <File Name="../../Source/GameEngine/Sound/Music.cpp"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="ScreenManager">
+        <File Name="../../Source/GameEngine/ScreenManager/ScreenManager.h"/>
+        <File Name="../../Source/GameEngine/ScreenManager/ScreenManager.cpp"/>
+        <File Name="../../Source/GameEngine/ScreenManager/Screen.h"/>
+        <File Name="../../Source/GameEngine/ScreenManager/Screen.cpp"/>
+        <File Name="../../Source/GameEngine/ScreenManager/MenuScreen.h"/>
+        <File Name="../../Source/GameEngine/ScreenManager/MenuScreen.cpp"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="Output">
+        <File Name="../../Source/GameEngine/Output/Console.h"/>
+        <File Name="../../Source/GameEngine/Output/Console.cpp"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="Input">
+        <File Name="../../Source/GameEngine/Input/TouchPoint.h"/>
+        <File Name="../../Source/GameEngine/Input/Mouse.h"/>
+        <File Name="../../Source/GameEngine/Input/Mouse.cpp"/>
+        <File Name="../../Source/GameEngine/Input/Keys.h"/>
+        <File Name="../../Source/GameEngine/Input/Keys.cpp"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="Graphics">
+        <File Name="../../Source/GameEngine/Graphics/Graphics2D.h"/>
+        <File Name="../../Source/GameEngine/Graphics/Graphics2D.cpp"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="CodeBridge">
+        <VirtualDirectory Name="iCade">
+          <File Name="../../Source/GameEngine/CodeBridge/iCade/iCadeState.h"/>
+          <File Name="../../Source/GameEngine/CodeBridge/iCade/iCadeReaderView.m" ExcludeProjConfig="Debug;"/>
+          <File Name="../../Source/GameEngine/CodeBridge/iCade/iCadeReaderView.h"/>
+        </VirtualDirectory>
+        <File Name="../../Source/GameEngine/CodeBridge/WinBridge.cpp"/>
+        <File Name="../../Source/GameEngine/CodeBridge/WebViewController.mm" ExcludeProjConfig="Debug;"/>
+        <File Name="../../Source/GameEngine/CodeBridge/WebViewController.h"/>
+        <File Name="../../Source/GameEngine/CodeBridge/ObjCBridge.mm" ExcludeProjConfig=""/>
+        <File Name="../../Source/GameEngine/CodeBridge/ObjCBridge.h"/>
+        <File Name="../../Source/GameEngine/CodeBridge/MailViewController.mm" ExcludeProjConfig="Debug;"/>
+        <File Name="../../Source/GameEngine/CodeBridge/MailViewController.h"/>
+        <File Name="../../Source/GameEngine/CodeBridge/iCadeControllerReceiver.mm" ExcludeProjConfig="Debug;"/>
+        <File Name="../../Source/GameEngine/CodeBridge/iCadeControllerReceiver.h"/>
+        <File Name="../../Source/GameEngine/CodeBridge/CPPBridge.h"/>
+        <File Name="../../Source/GameEngine/CodeBridge/CPPBridge.cpp"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="Actor">
+        <File Name="../../Source/GameEngine/Actor/WireframeActor.h"/>
+        <File Name="../../Source/GameEngine/Actor/WireframeActor.cpp"/>
+        <File Name="../../Source/GameEngine/Actor/TextActor.h"/>
+        <File Name="../../Source/GameEngine/Actor/TextActor.cpp"/>
+        <File Name="../../Source/GameEngine/Actor/PrimitiveActor.h"/>
+        <File Name="../../Source/GameEngine/Actor/PrimitiveActor.cpp"/>
+        <File Name="../../Source/GameEngine/Actor/AnimationManager.h"/>
+        <File Name="../../Source/GameEngine/Actor/AnimationManager.cpp"/>
+        <File Name="../../Source/GameEngine/Actor/Animation.h"/>
+        <File Name="../../Source/GameEngine/Actor/Animation.cpp"/>
+        <File Name="../../Source/GameEngine/Actor/Actor.h"/>
+        <File Name="../../Source/GameEngine/Actor/Actor.cpp"/>
+      </VirtualDirectory>
+      <File Name="../../Source/GameEngine/View.h"/>
+      <File Name="../../Source/GameEngine/View.cpp"/>
+      <File Name="../../Source/GameEngine/GlobalDefs.h"/>
+      <File Name="../../Source/GameEngine/GameEngine.h"/>
+      <File Name="../../Source/GameEngine/GameEngine.cpp"/>
+      <File Name="../../Source/GameEngine/forwards.h"/>
+      <File Name="../../Source/GameEngine/BatchLoader.h"/>
+      <File Name="../../Source/GameEngine/BatchLoader.cpp"/>
+      <File Name="../../Source/GameEngine/AssetManager.h"/>
+      <File Name="../../Source/GameEngine/AssetManager.cpp"/>
+      <File Name="../../Source/GameEngine/ApplicationEventListener.h"/>
+      <File Name="../../Source/GameEngine/ApplicationEventListener.cpp"/>
+      <File Name="../../Source/GameEngine/Application.h"/>
+      <File Name="../../Source/GameEngine/Application.cpp"/>
+    </VirtualDirectory>
+    <File Name="../../Source/Program.cpp"/>
+    <File Name="../../Source/Game.h"/>
+    <File Name="../../Source/Game.cpp"/>
+  </VirtualDirectory>
+  <Dependencies Name="Debug">
+    <Project Name="SDL_p2p"/>
+  </Dependencies>
+  <Dependencies Name="Release">
+    <Project Name="SDL_p2p"/>
+  </Dependencies>
+  <Settings Type="Executable">
+    <GlobalSettings>
+      <Compiler Options="" C_Options="" Assembler="">
+        <IncludePath Value="."/>
+      </Compiler>
+      <Linker Options="">
+        <LibraryPath Value="."/>
+      </Linker>
+      <ResourceCompiler Options=""/>
+    </GlobalSettings>
+    <Configuration Name="Debug" CompilerType="clang" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-g;-O0;-std=c++17;" C_Options="-g;-O0;" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+        <IncludePath Value="../../src"/>
+        <IncludePath Value="../../External/ChaiScript/include"/>
+        <IncludePath Value="../../External/SDL/SDL/include"/>
+        <IncludePath Value="../../External/SDL/SDL_image"/>
+        <IncludePath Value="../../External/SDL/SDL_mixer"/>
+        <IncludePath Value="../../External/SDL/SDL_ttf"/>
+        <IncludePath Value="../../External/SDL/SDL_gfx"/>
+        <IncludePath Value="../../External/SDL/SDL_p2p/include"/>
+        <Preprocessor Value="SMASHBROS_SCRIPT_DISABLE"/>
+      </Compiler>
+      <Linker Options="" Required="yes">
+        <LibraryPath Value="../../External/SDL/SDL_p2p/projects/codelite/Debug"/>
+        <Library Value="SDL2"/>
+        <Library Value="SDL2_image"/>
+        <Library Value="SDL2_mixer"/>
+        <Library Value="SDL2_ttf"/>
+        <Library Value="SDL_p2p"/>
+        <Library Value="pthread"/>
+      </Linker>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Debug" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <BuildSystem Name="Default"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[]]>
+      </Environment>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="" IsExtended="no">
+        <DebuggerSearchPaths/>
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild>
+        <Command Enabled="yes">rm -rf Debug/Images Debug/Sounds Debug/Music Debug/Fonts</Command>
+        <Command Enabled="yes">ln -s ../../../Images Debug/Images</Command>
+        <Command Enabled="yes">ln -s ../../../Sounds Debug/Sounds</Command>
+        <Command Enabled="yes">ln -s ../../../Music Debug/Music</Command>
+        <Command Enabled="yes">ln -s ../../../Fonts Debug/Fonts</Command>
+      </PostBuild>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+      <Completion EnableCpp11="no" EnableCpp14="no">
+        <ClangCmpFlagsC/>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
+    </Configuration>
+    <Configuration Name="Release" CompilerType="clang" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-O2;-std=c++17;" C_Options="-O2;" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+        <IncludePath Value="../../src"/>
+        <IncludePath Value="../../External/ChaiScript/include"/>
+        <IncludePath Value="../../External/SDL/SDL/include"/>
+        <IncludePath Value="../../External/SDL/SDL_image"/>
+        <IncludePath Value="../../External/SDL/SDL_mixer"/>
+        <IncludePath Value="../../External/SDL/SDL_ttf"/>
+        <IncludePath Value="../../External/SDL/SDL_gfx"/>
+        <IncludePath Value="../../External/SDL/SDL_p2p/include"/>
+        <Preprocessor Value="NDEBUG"/>
+        <Preprocessor Value="SMASHBROS_SCRIPT_DISABLE"/>
+      </Compiler>
+      <Linker Options="" Required="yes">
+        <LibraryPath Value="../../External/SDL/SDL_p2p/projects/codelite/Release"/>
+        <Library Value="SDL2"/>
+        <Library Value="SDL2_image"/>
+        <Library Value="SDL2_mixer"/>
+        <Library Value="SDL2_ttf"/>
+        <Library Value="SDL_p2p"/>
+        <Library Value="pthread"/>
+      </Linker>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Release" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <BuildSystem Name="Default"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[]]>
+      </Environment>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="" IsExtended="no">
+        <DebuggerSearchPaths/>
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild>
+        <Command Enabled="yes">rm -rf Release/Images Release/Sounds Release/Music Release/Fonts</Command>
+        <Command Enabled="yes">cp -r ../../Images Release/Images</Command>
+        <Command Enabled="yes">cp -r ../../Sounds Release/Sounds</Command>
+        <Command Enabled="yes">cp -r ../../Music Release/Music</Command>
+        <Command Enabled="yes">cp -r ../../Fonts Release/Fonts</Command>
+      </PostBuild>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+      <Completion EnableCpp11="no" EnableCpp14="no">
+        <ClangCmpFlagsC/>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
+    </Configuration>
+  </Settings>
+</CodeLite_Project>

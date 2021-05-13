@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeLite_Workspace Name="iSSB" Database="" Version="10.0.0">
+  <Project Name="iSSB" Path="iSSB.project" Active="Yes"/>
+  <Project Name="SDL_p2p" Path="../../External/SDL/SDL_p2p/projects/codelite/SDL_p2p.project" Active="No"/>
+  <BuildMatrix>
+    <WorkspaceConfiguration Name="Debug" Selected="yes">
+      <Environment/>
+      <Project Name="iSSB" ConfigName="Debug"/>
+      <Project Name="SDL_p2p" ConfigName="Debug"/>
+    </WorkspaceConfiguration>
+    <WorkspaceConfiguration Name="Release" Selected="yes">
+      <Environment/>
+      <Project Name="iSSB" ConfigName="Release"/>
+      <Project Name="SDL_p2p" ConfigName="Release"/>
+    </WorkspaceConfiguration>
+  </BuildMatrix>
+</CodeLite_Workspace>

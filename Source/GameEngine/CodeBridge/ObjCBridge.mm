@@ -5,6 +5,7 @@
 #include "SDL.h"
 #include "SDL_syswm.h"
 #include "CPPBridge.h"
+#include <string.h>
 #include <math.h>
 #if defined(_WIN32)
 	#include <windows.h>
@@ -61,7 +62,6 @@ UIViewController* getSDLViewController(SDL_Window*window)
     UIViewController * rootViewController = appWindow.rootViewController;
     return rootViewController;
 }
-#endif
 
 UIViewController* GameEngine_getTopViewController(UIViewController* controller)
 {
@@ -83,6 +83,7 @@ UIViewController* GameEngine_getTopViewController(UIViewController* controller)
 	}
 	return controller;
 }
+#endif
 
 #if defined(__ANDROID__)
 void GameEngine_charToUrlEncoding(char *s, char *enc, char *tb)

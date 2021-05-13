@@ -270,7 +270,7 @@ namespace ScriptModule
 	} \
 	else \
 	{ \
-		expression base_##functionName (this, ##__VA_ARGS__ ); \
+		expression base_##functionName (this, __VA_ARGS__ ); \
 	}
 
 

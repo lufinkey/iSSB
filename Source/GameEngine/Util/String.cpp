@@ -7,8 +7,9 @@
 #include <vector>
 #include <iomanip>
 #include <stdlib.h>
-#include "stdio.h"
+#include <stdio.h>
 #include <cmath>
+#include <string.h>
 
 namespace GameEngine
 {

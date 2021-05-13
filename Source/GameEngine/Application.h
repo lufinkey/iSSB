@@ -87,8 +87,6 @@ namespace GameEngine
 		
 		void updateEvents();
 		
-		static bool colcompare(Color c1, Color c2);
-		
 		static void keyPressed(int keycode);
 		static void keyReleased(int keycode);
 		static void mousePressed(int eventcode);

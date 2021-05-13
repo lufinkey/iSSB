@@ -838,8 +838,8 @@ namespace GameEngine
 			{
 				P2P_Event event;
 				event.type = P2P_PICKERDIDCANCEL;
-				event.peer.peerID = "";
-				event.peer.peerDisplayName = "";
+				event.peer.peerID = NULL;
+				event.peer.peerDisplayName = NULL;
 				event.data.data = NULL;
 				event.data.size = 0;
 				P2PManager_EventHandler(&event);

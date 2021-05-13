@@ -6,6 +6,7 @@
 #include "../View.h"
 #include "../Output/Console.h"
 #include "../Input/Mouse.h"
+#include <math.h>
 
 #if defined(__APPLE__)
 	#include "TargetConditionals.h"

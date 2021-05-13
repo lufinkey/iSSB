@@ -24,7 +24,7 @@ namespace ScriptModule
 
 		ScriptEntityInfo& operator=(const ScriptEntityInfo&);
 
-		bool loadFromFile(const String&path, String& error = String(""));
+		bool loadFromFile(const String&path, String& error);
 
 		void setPath(const String& filePath);
 		void setCreator(const String& creator);
@@ -71,7 +71,7 @@ namespace ScriptModule
 
 		ScriptData& operator=(const ScriptData&);
 
-		bool loadFromFile(const String& filePath, String&error = String(""));
+		bool loadFromFile(const String& filePath, String& error);
 
 		ScriptEntityInfo::ScriptInfo* getScriptInfo() const;
 		ScriptEntityInfo* getScriptEntityInfo() const;

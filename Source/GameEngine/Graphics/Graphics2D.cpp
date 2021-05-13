@@ -4,6 +4,7 @@
 #include "../Output/Console.h"
 #include "../Application.h"
 #include "../View.h"
+#include <math.h>
 
 namespace GameEngine
 {

@@ -58,3 +58,10 @@ Debug/
 Release/
 build/
 
+#CodeLite
+/projects/Codelite/.*
+/projects/Codelite/Debug
+/projects/Codelite/Release
+/projects/Codelite/Makefile
+/projects/Codelite/*.txt
+/projects/Codelite/*.mk

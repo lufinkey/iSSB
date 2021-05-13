@@ -42,7 +42,7 @@ namespace ScriptModule
 		static void addScriptInfoMembers(chaiscript::ChaiScript& script, ScriptData* scriptData, const ScriptEntityInfo::ScriptInfo& scriptInfo);
 
 		static boolean loadScript(const String& scriptPath, const ScriptEntityInfo& entityInfo);
-		static boolean loadScriptEntity(const ScriptEntityInfo& entityInfo, String& error=String(""));
+		static boolean loadScriptEntity(const ScriptEntityInfo& entityInfo, String& error);
 
 		static ScriptData* getScriptData(const String&path);
 

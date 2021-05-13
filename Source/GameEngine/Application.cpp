@@ -1039,15 +1039,6 @@ namespace GameEngine
 		showfps = toggle;
 	}
 	
-	bool Application::colcompare(Color c1, Color c2)
-	{
-		if(c1.r==c2.r && c1.g==c2.g && c1.b==c2.b && c1.a==c1.a)
-		{
-			return true;
-		}
-		return false;
-	}
-	
 	long Application::getGameTime()
 	{
 		return worldTime;

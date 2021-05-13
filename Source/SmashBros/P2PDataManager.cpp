@@ -9,6 +9,7 @@
 #include "Player.h"
 #include "Menus/Menus.h"
 #include "Preferences.h"
+#include <string.h>
 
 namespace SmashBros
 {
