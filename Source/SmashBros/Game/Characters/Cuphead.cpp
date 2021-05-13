@@ -2,10 +2,22 @@
 #include "Cuphead.h"
 #include "../../AttackTemplates.h"
 #include "../../Global.h"
+#include "../../P2PDataManager.h"
 #include "../../Item.h"
+#include <cmath>
 
 namespace SmashBros
 {
+	void Cuphead::addProjectileInfo(byte type, int projID, float x, float y)
+	{
+		ProjectileInfo info;
+		info.type = type;
+		info.projID = projID;
+		info.x = x;
+		info.y = y;
+		createdProjectiles.add(info);
+	}
+	
 	Cuphead::Cuphead(float x1, float y1, byte playerNo, byte team) : Player(x1, y1, playerNo, team)
 	{
 		finalSmashing = false;
@@ -23,23 +35,23 @@ namespace SmashBros
 		fallWalk = 2.8f;
 		fallRun = 3;
 		
-		weight = 0.17;
+		weight = 0.14;
 		
 		name = "Cuphead";
 		
-		setHitbox(-10, -14, 20, 35);
+		setHitbox(-9, -13, 19, 34);
 		setHitboxColor(Color::GREEN);
 		//showHitboxWireframe(true);
-		//setWireframeColor(Color::RED);
+		//setWireframeColor(Color.red);
 		//showWireframe(true);
 		
 		setHangPoint(9, 8);
 		
 		oldScale = getScale();
 		
-		Console::WriteLine("finished creating player " + playerNo);
+		Console::WriteLine((String)"finished creating player " + playerNo);
 	}
-
+	
 	Cuphead::~Cuphead()
 	{
 		if(landmaster!=null)
@@ -47,7 +59,96 @@ namespace SmashBros
 			landmaster = null;
 		}
 	}
-
+	
+	void Cuphead::addP2PData(DataVoid&data)
+	{
+		int total = createdProjectiles.size();
+		
+		if(total>0)
+		{
+			P2PDataManager::setReliable();
+			
+			bool avail = true;
+			data.add(&avail, sizeof(avail));
+			
+			int total = createdProjectiles.size();
+			data.add(&total, sizeof(total));
+			
+			for(int i=0; i<createdProjectiles.size(); i++)
+			{
+				ProjectileInfo proj = createdProjectiles.get(i);
+				
+				data.add(&proj.type, sizeof(proj.type));
+				data.add(&proj.projID, sizeof(proj.projID));
+				data.add(&proj.x, sizeof(proj.x));
+				data.add(&proj.y, sizeof(proj.y));
+			}
+			createdProjectiles.clear();
+		}
+		else
+		{
+			bool avail = false;
+			data.add(&avail, sizeof(avail));
+		}
+	}
+	
+	void Cuphead::setP2PData(byte*&data)
+	{
+		bool avail = DataVoid::toBool(data);
+		data += sizeof(bool);
+		
+		if(avail)
+		{
+			int total = DataVoid::toInt(data);
+			data += sizeof(int);
+			
+			for(int i=0; i<total; i++)
+			{
+				byte type = data[0];
+				data += sizeof(byte);
+				
+				int projID = DataVoid::toInt(data);
+				data += sizeof(int);
+				
+				float x1 = DataVoid::toFloat(data);
+				data += sizeof(float);
+				float y1 = DataVoid::toFloat(data);
+				data += sizeof(float);
+				
+				switch(type)
+				{
+					case 1:
+					{
+						Projectile::setNextID(projID);
+						createProjectile(new Ray(getPlayerNo(), x1, y1));
+					}
+					break;
+					
+					case 2:
+					{
+						Projectile::setNextID(projID);
+						createProjectile(new LandmasterShot(getPlayerNo(), x1, y1));
+					}
+					break;
+					
+					case 3:
+					{
+						Projectile::setNextID(projID);
+						landmaster = new Landmaster(getPlayerNo(), x1, y1);
+						createProjectile(landmaster);
+					}
+					break;
+					
+					case 4:
+					{
+						Projectile::setNextID(projID);
+						createProjectile(new LandmasterHoverBlast(getPlayerNo(), x1, y1));
+					}
+				}
+			}
+		}
+	}
+	
 	void Cuphead::setToDefaultValues()
 	{
 		queueStandardCombo = false;
@@ -60,7 +161,7 @@ namespace SmashBros
 		loadFile("Images/Game/Characters/Cuphead/ray.png");
 		loadFile("Images/Game/Characters/Cuphead/landmaster_idle.png");
 		loadFile("Images/Game/Characters/Cuphead/landmaster_move.png");
-		loadFile("Images/Game/Characters/Cuphead/landmaster_hover_blast.png");
+		loadFile("Images/Game/Characters/Cuphead/landmaster_hover.png");
 		loadFile("Images/Game/Characters/Cuphead/landmaster_shoot.png");
 		loadFile("Images/Game/Characters/Cuphead/landmaster_boost.png");
 		loadFile("Images/Game/Characters/Cuphead/landmaster_shot.png");
@@ -121,17 +222,17 @@ namespace SmashBros
 	
 	void Cuphead::LoadAttackTypes()
 	{
-		addAIAttackType(ATTACK_A,		  ATTACKTYPE_MELEE, 4);
-		addAIAttackType(ATTACK_SIDEA,	  ATTACKTYPE_MELEE, 3);
-		addAIAttackType(ATTACK_UPA,	      ATTACKTYPE_MELEE, 1);
-		addAIAttackType(ATTACK_UPA,	      ATTACKTYPE_UPMELEE, 2);
-		addAIAttackType(ATTACK_DOWNA,	  ATTACKTYPE_MELEE, 2);
-		addAIAttackType(ATTACK_DOWNA,	  ATTACKTYPE_DOWNMELEE, 2);
-		addAIAttackType(ATTACK_B,		  ATTACKTYPE_PROJECTILE, 2);
-		addAIAttackType(ATTACK_SIDEB,	  ATTACKTYPE_SIDEMOVE, 3);
-		addAIAttackType(ATTACK_UPB,	      ATTACKTYPE_UPMOVE, 1);
-		addAIAttackType(ATTACK_UPB,	      ATTACKTYPE_SIDEMOVE, 1);
-		addAIAttackType(ATTACK_DOWNB,	  ATTACKTYPE_DEFENSIVE, 1);
+		addAIAttackType(ATTACK_A,         ATTACKTYPE_MELEE, 4);
+		addAIAttackType(ATTACK_SIDEA,     ATTACKTYPE_MELEE, 3);
+		addAIAttackType(ATTACK_UPA,       ATTACKTYPE_MELEE, 1);
+		addAIAttackType(ATTACK_UPA,       ATTACKTYPE_UPMELEE, 2);
+		addAIAttackType(ATTACK_DOWNA,     ATTACKTYPE_MELEE, 2);
+		addAIAttackType(ATTACK_DOWNA,     ATTACKTYPE_DOWNMELEE, 2);
+		addAIAttackType(ATTACK_B,         ATTACKTYPE_PROJECTILE, 2);
+		addAIAttackType(ATTACK_SIDEB,     ATTACKTYPE_SIDEMOVE, 3);
+		addAIAttackType(ATTACK_UPB,       ATTACKTYPE_UPMOVE, 1);
+		addAIAttackType(ATTACK_UPB,       ATTACKTYPE_SIDEMOVE, 1);
+		addAIAttackType(ATTACK_DOWNB,     ATTACKTYPE_DEFENSIVE, 1);
 		addAIAttackType(ATTACK_SIDESMASH, ATTACKTYPE_STRONGMELEE, 2, true);
 		addAIAttackType(ATTACK_SIDESMASH, ATTACKTYPE_SIDEMOVE, 2, true);
 		addAIAttackType(ATTACK_UPSMASH,   ATTACKTYPE_STRONGMELEE, 1, true);
@@ -175,22 +276,22 @@ namespace SmashBros
 		else if(n.equals("special_prep_side_left") || n.equals("special_prep_side_right"))
 		{
 			landing=false;
-			yvelocity=0;
-			if(finalSmashing)
-			{
-				animFinish();
-			}
-			else
-			{
-				AttackTemplates::dashSideB(this, 12, 4.24, 16);
-			}
+	        yvelocity=0;
+	        if(finalSmashing)
+	        {
+	        	animFinish();
+	        }
+	        else
+	        {
+	        	AttackTemplates::dashSideB(this, 12, 4.24, 16);
+	        }
 		}
 		else if(n.equals("special_attack_side_left") || n.equals("special_attack_side_right"))
 		{
 			animFinish();
-			xVel=0;
-			landing=true;
-			yvelocity=0;
+	        xVel=0;
+	        landing=true;
+	        yvelocity=0;
 			changeTwoSidedAnimation("special_finish_side", FORWARD);
 		}
 		else if(n.equals("special_charge_up_left") || n.equals("special_charge_up_right"))
@@ -321,28 +422,30 @@ namespace SmashBros
 		
 		if(attacksHolder==19)
 		{
-			setAlpha(getAlpha()+0.05f);
-			if(getAlpha()>=1)
-			{
-				animFinish();
-				attacksHolder=-1;
-				attacksPriority=7;
-				setAlpha(0);
-				setVisible(false);
-				setScale(0);
-				finalSmashing=true;
-				finalsmashFinishing=false;
-				finalsmashTime = Global::getWorldTime() + 18000;
-				float y1 = y - 200;
+		    setAlpha(getAlpha()+0.05f);
+		    if(getAlpha()>=1)
+		    {
+		    	animFinish();
+	            attacksHolder=-1;
+	            attacksPriority=7;
+	            setAlpha(0);
+	            setVisible(false);
+	            setScale(0);
+	            finalSmashing=true;
+	            finalsmashFinishing=false;
+	            finalsmashTime = Global::getWorldTime() + 18000;
+	            float y1 = y - 200;
 				if(y1<((float)Global::currentStage->getItemBoundaries().y))
 				{
 					y1=(float)Global::currentStage->getItemBoundaries().y;
 				}
-				landmaster = new Landmaster(getPlayerNo(),x,y1);
-				createProjectile(landmaster);
+	            landmaster = new Landmaster(getPlayerNo(),x,y1);
+	            createProjectile(landmaster);
 				
-				animFinish();
-			}
+				addProjectileInfo(3, landmaster->getID(), x, y1);
+	            
+		        animFinish();
+		    }
 		}
 		else if(finalSmashing)
 		{
@@ -357,7 +460,7 @@ namespace SmashBros
 				xVel = 0;
 				attacksHolder = -1;
 				attacksPriority = 7;
-				doubleJump = 1;
+				doubleJump = maxDoubleJumps;
 				bUp = false;
 				landmaster->setAlpha(landmaster->getAlpha()+0.05f);
 				if(landmaster->getAlpha()>=1)
@@ -395,7 +498,7 @@ namespace SmashBros
 				xVel = 0;
 				attacksHolder = -1;
 				attacksPriority = 7;
-				doubleJump = 1;
+				doubleJump = maxDoubleJumps;
 				bUp = false;
 				
 				if(isJumping() && prevJumping)
@@ -433,14 +536,14 @@ namespace SmashBros
 					collide->y -= 3;
 					causeHurt(collide, getOppPlayerDir(), 100);
 					break;
-				
+					
 					case 1:
 					//A2
 					causeDamage(collide, 2);
 					collide->y -= 3;
 					causeHurt(collide, getOppPlayerDir(), 100);
 					break;
-				
+					
 					case 2:
 					//A3
 					causeDamage(collide, 2);
@@ -448,11 +551,11 @@ namespace SmashBros
 					collide->x += 0.5f * getPlayerDirMult();
 					causeHurt(collide, getOppPlayerDir(), 100);
 					break;
-				
+					
 					case 3:
 					//A Dash
 					break;
-				
+					
 					case 16:
 					//Smash Side
 					causeDamage(collide, smashPower);
@@ -552,7 +655,7 @@ namespace SmashBros
 			}
 		}
 	}
-
+	
 	boolean Cuphead::onDeflectPlayerDamage(Player*collide, int damage)
 	{
 		if(attacksHolder==15)
@@ -562,7 +665,7 @@ namespace SmashBros
 		}
 		return false;
 	}
-
+	
 	void Cuphead::onDeflectPlayerLaunch(Player*collide, int xDir, float xAmount, float xMult, int yDir, float yAmount, float yMult)
 	{
 		byte dir = getDir(this, collide);
@@ -572,14 +675,22 @@ namespace SmashBros
 			case DIR_RIGHT:
 			causeHurtLaunch(collide, -xDir,xAmount,xMult, yDir,yAmount,yMult);
 			break;
-
+			
 			case DIR_UP:
 			case DIR_DOWN:
 			causeHurtLaunch(collide, -xDir,xAmount,xMult, -yDir,yAmount,yMult);
 			break;
 		}
+		if(collide->x < x)
+		{
+			causeHurt(collide, RIGHT, 300);
+		}
+		else
+		{
+			causeHurt(collide, LEFT, 300);
+		}
 	}
-
+	
 	boolean Cuphead::onDeflectProjectileCollision(Projectile*collide, byte dir)
 	{
 		if(attacksHolder==15)
@@ -590,7 +701,7 @@ namespace SmashBros
 		}
 		return false;
 	}
-
+	
 	boolean Cuphead::onDeflectItemCollision(Item*collide, byte dir)
 	{
 		if(attacksHolder==15)
@@ -614,24 +725,24 @@ namespace SmashBros
 		addAttackInfo(DIR_LEFT, 7, LEFT, 7, 400, -1,3.2f,4, -1,1,4);
 		addAttackInfo(DIR_RIGHT,7,RIGHT, 7, 400,  1,3.2f,4, -1,1,4);
 		
-		if(!checkItemUse())
-		{
-			if(isOnGround())
-			{
-				if(getComboNo()!=2)
+	    if(!checkItemUse())
+	    {
+	        if(isOnGround())
+	        {
+	            if(getComboNo()!=2)
 				{
 					x += getPlayerDirMult()*5;
 				}
-				AttackTemplates::combo3A(this, 500, 0,1.98, 1,2.21, 2,2.64, true);
-			}
-			else
-			{
-				if(!bUp)
-				{
-					AttackTemplates::normalAirA(this, 7,1.789);
-				}
-			}
-		}
+	            AttackTemplates::combo3A(this, 500, 0,1.98, 1,2.21, 2,2.64, true);
+	        }
+	        else
+	        {
+	            if(!bUp)
+	            {
+	                AttackTemplates::normalAirA(this, 7,1.789);
+	            }
+	        }
+	    }
 	}
 	
 	void Cuphead::attackSideA()
@@ -643,23 +754,30 @@ namespace SmashBros
 		addAttackInfo(DIR_UP, 8, LEFT, 8, 400, -1,4,3.2f, -1,1,2);
 		addAttackInfo(DIR_UP, 8,RIGHT, 8, 400,  1,4,3.2f, -1,1,2);
 		
-		if(!checkItemUseSide())
-		{
-			if(isOnGround())
-			{
-				x += getPlayerDirMult()*5;
-				AttackTemplates::normalSideA(this, 4,2.411);
-			}
-			else
-			{
-				if(!bUp)
-				{
-					AttackTemplates::normalAirSideA(this, 8,2.234);
-					xvelocity += getPlayerDirMult()*1;
-					yvelocity-=1.5;
-				}
-			}
-		}
+	    //if(((playr->moveLeft==2) || (playr->moveRight==2)) && (playr->onGround==1))
+	    //{
+	        //normalDashA(playr, 3,2.3, 3.5);
+	    //}
+	    //else
+	    //{
+	    	if(!checkItemUseSide())
+	        {
+	            if(isOnGround())
+	            {
+	                x += 5 * getPlayerDirMult();
+	                AttackTemplates::normalSideA(this, 4,2.411);
+	            }
+	            else
+	            {
+	                if(!bUp)
+	                {
+	                    AttackTemplates::normalAirSideA(this, 8,2.234);
+	                    xvelocity += 1 * getPlayerDirMult();
+	                    yvelocity-=1.5;
+	                }
+	            }
+	        }
+	    //}
 	}
 	
 	void Cuphead::attackUpA()
@@ -708,7 +826,7 @@ namespace SmashBros
 		{
 			if(isOnGround())
 			{
-				x += getPlayerDirMult()*3;
+				x += 3 * getPlayerDirMult();
 				AttackTemplates::normalDownA(this, 6,1.399);
 			}
 			else
@@ -724,22 +842,24 @@ namespace SmashBros
 	void Cuphead::attackB()
 	{
 		if(!bUp)
-		{
-			if(canFinalSmash())
-			{
-				attackFinalSmash();
-			}
-			else
-			{
-				changeTwoSidedAnimation("special_attack", FORWARD);
-				float x1 = getPlayerDirMult()*25;
-				if(!finalSmashing)
-				{
-					AttackTemplates::singleProjectile(this, 11, 0, new Ray(getPlayerNo(),x + x1, y));
-			
-				}
-			}
-		}
+	    {
+	        if(canFinalSmash())
+	        {
+	            attackFinalSmash();
+	        }
+	        else
+	        {
+	            float x1 = 25 * getPlayerDirMult();
+				changeTwoSidedAnimation("special_attack",FORWARD);
+	            if(!finalSmashing)
+	            {
+					Ray*ray = new Ray(getPlayerNo(),x + x1, y);
+	            	AttackTemplates::singleProjectile(this, 11, 0, ray);
+					
+					addProjectileInfo(1, ray->getID(), x + x1, y);
+	            }
+	        }
+	    }
 	}
 	
 	void Cuphead::attackSideB()
@@ -753,106 +873,105 @@ namespace SmashBros
 		addAttackInfo(DIR_DOWN, 12, LEFT, 7, 500, -1,0.5f,1.2f, -1,4,1.6f);
 		addAttackInfo(DIR_DOWN, 12,RIGHT, 7, 500,  1,0.5f,1.2f, -1,4,1.6f);
 		
-		if(!bUp)
-		{
-			bUp=true;
-			landing=true;
-			changeTwoSidedAnimation("special_prep_side", FORWARD);
-		}
+        if(!bUp)
+        {
+            bUp=true;
+            landing=true;
+            changeTwoSidedAnimation("special_prep_side", FORWARD);
+        }
 	}
 	
 	void Cuphead::attackUpB()
 	{
 		if(!bUp)
-		{
-			bUp=true;
-			attacksPriority=4.1;
-			attacksHolder=13;
-			xvelocity = 0;
-			yvelocity = 0;
-			changeTwoSidedAnimation("special_charge_up", FORWARD);
-			
-			lastBUpChargeDir = 0;
+        {
+            bUp=true;
+            attacksPriority=4.1;
+            attacksHolder=13;
+            xvelocity = 0;
+            yvelocity = 0;
+            changeTwoSidedAnimation("special_charge_up", FORWARD);
+            lastBUpChargeDir = 0;
 			lastDir = 0;
-		}
+        }
 	}
 	
 	void Cuphead::attackDownB()
 	{
-		if(!bUp)
-		{
-			AttackTemplates::normalDownB(this, 15,6);
-		}
+	    if(!bUp)
+	    {
+	        AttackTemplates::normalDownB(this, 15,6);
+	    }
 	}
 	
 	void Cuphead::attackSideSmash(byte type)
 	{
 		if(!bUp && !checkItemUseSideSmash(type))
-		{
-			if(isOnGround())
-			{
-				AttackTemplates::normalSmash(this,16,3.557,type,1,3000,15,42);
-				if(type==STEP_GO)
-				{
-					yvelocity=-2*((float)smashPower/18);
-					xvelocity = getPlayerDirMult()*(3*((float)smashPower/18));
-				}
-			}
-			else
-			{
-				attackSideA();
-			}
-		}
+	    {
+	        if(isOnGround())
+	        {
+	            AttackTemplates::normalSmash(this,16,3.557,type,1,3000,15,42);
+	            if(type==STEP_GO)
+	            {
+	                yvelocity = -2*(((float)smashPower)/18);
+	                xvelocity = (3*(((float)smashPower)/18)) * getPlayerDirMult();
+	            }
+	        }
+	        else
+	        {
+	            attackSideA();
+	        }
+	    }
 	}
 	
 	void Cuphead::attackUpSmash(byte type)
 	{
 		if(!bUp && !checkItemUseUpSmash(type))
-		{
-			if(isOnGround())
-			{
-				AttackTemplates::normalSmash(this,17,3.224,type,2,3000,17,31);
-			}
-			else
-			{
-				attackUpA();
-			}
-		}
+	    {
+	        if(isOnGround())
+	        {
+	            AttackTemplates::normalSmash(this,17,3.224,type,2,3000,17,31);
+	        }
+	        else
+	        {
+	            attackUpA();
+	        }
+	    }
 	}
 	
 	void Cuphead::attackDownSmash(byte type)
 	{
 		if(!bUp && !checkItemUseDownSmash(type))
-		{
-			if(isOnGround())
-			{
-				AttackTemplates::normalSmash(this,18,3.043,type,3,2000,14,30);
-			}
-			else
-			{
-				attackDownA();
-			}
-		}
+	    {
+	        if(isOnGround())
+	        {
+	            AttackTemplates::normalSmash(this,18,3.043,type,3,2000,14,30);
+	        }
+	        else
+	        {
+	            attackDownA();
+	        }
+	    }
 	}
 	
 	void Cuphead::attackFinalSmash()
 	{
-		if(!bUp)
-		{
-			landing=true;
-			destroyCharge();
-			AttackTemplates::finalSmash(this, 19);
-			setAlpha(0);
-			discardItem();
+	    if(!bUp)
+	    {
+            landing=true;
+            destroyCharge();
+            AttackTemplates::finalSmash(this, 19);
+            setAlpha(0);
+            discardItem();
 			changeTwoSidedAnimation("crouch", FORWARD);
-		}
+	    }
 	}
 	
 	Cuphead::Ray::Ray(byte playerNo, float x1, float y1) : Projectile(playerNo, x1, y1)
 	{
 		addAnimation(new Animation("normal",1,"Images/Game/Characters/Cuphead/ray.png"));
 		changeAnimation("normal",FORWARD);
-
+		
 		setDeflectable(true);
 		
 		switch(itemdir)
@@ -871,7 +990,7 @@ namespace SmashBros
 	{
 		//
 	}
-
+	
 	void Cuphead::Ray::deflect(byte dir)
 	{
 		switch(dir)
@@ -882,7 +1001,7 @@ namespace SmashBros
 			itemdir = LEFT;
 			xvelocity = -7.5f;
 			break;
-
+			
 			case DIR_RIGHT:
 			case DIR_UPRIGHT:
 			case DIR_DOWNRIGHT:
@@ -942,26 +1061,26 @@ namespace SmashBros
 			causeDamage(collide,17);
 			if(collide->x<x)
 			{
-				causeHurtLaunch(collide, -1,6,6, -1,3,6);
-				causeHurt(collide, RIGHT, 400);
+			    causeHurtLaunch(collide, -1,6,6, -1,3,6);
+			    causeHurt(collide, RIGHT, 400);
 			}
 			else if(x<collide->x)
 			{
-				causeHurtLaunch(collide, 1,6,6, -1,3,6);
-				causeHurt(collide, LEFT, 400);
+			    causeHurtLaunch(collide, 1,6,6, -1,3,6);
+			    causeHurt(collide, LEFT, 400);
 			}
 			else
 			{
-				causeHurtLaunch(collide, 1,0,0, -1,6,6);
-				causeHurt(collide, collide->getPlayerDir(), 400);
+			    causeHurtLaunch(collide, 1,0,0, -1,6,6);
+			    causeHurt(collide, collide->getPlayerDir(), 400);
 			}
 		}
 	}
-
+	
 	Cuphead::LandmasterHoverBlast::LandmasterHoverBlast(byte playerNo, float x1, float y1) : Projectile(playerNo, x1, y1)
 	{
 		Animation*anim;
-
+		
 		anim = new Animation("hover_left",10,3,1);
 		anim->addFrame("Images/Game/Characters/Cuphead/landmaster_hover_blast.png");
 		addAnimation(anim);
@@ -969,36 +1088,36 @@ namespace SmashBros
 		anim->addFrame("Images/Game/Characters/Cuphead/landmaster_hover_blast.png");
 		anim->mirror(true);
 		addAnimation(anim);
-
+		
 		Player* owner = Global::getPlayerActor(getPlayerNo());
 		switch(owner->getPlayerDir())
 		{
 			case Player::LEFT:
 			changeAnimation("hover_left", FORWARD);
 			break;
-
+			
 			case Player::RIGHT:
 			changeAnimation("hover_right", FORWARD);
 			break;
 		}
 	}
-
+	
 	Cuphead::LandmasterHoverBlast::~LandmasterHoverBlast()
 	{
 		//
 	}
-
+	
 	void Cuphead::LandmasterHoverBlast::Update(long gameTime)
 	{
 		Projectile::Update(gameTime);
-
+		
 		Player* owner = Global::getPlayerActor(getPlayerNo());
 		switch(owner->getPlayerDir())
 		{
 			case Player::LEFT:
 			changeAnimation("hover_left", NO_CHANGE);
 			break;
-
+			
 			case Player::RIGHT:
 			changeAnimation("hover_right", NO_CHANGE);
 			break;
@@ -1006,7 +1125,7 @@ namespace SmashBros
 		x = owner->x;
 		y = owner->y + (30*getScale());
 	}
-
+	
 	void Cuphead::LandmasterHoverBlast::onAnimationFinish(const String&name)
 	{
 		destroy();
@@ -1030,6 +1149,14 @@ namespace SmashBros
 		anim->mirror(true);
 		addAnimation(anim);
 		
+		anim = new Animation("hover_left",10,3,1);
+		anim->addFrame("Images/Game/Characters/Cuphead/landmaster_hover.png");
+		addAnimation(anim);
+		anim = new Animation("hover_right",10,3,1);
+		anim->addFrame("Images/Game/Characters/Cuphead/landmaster_hover.png");
+		anim->mirror(true);
+		addAnimation(anim);
+		
 		anim = new Animation("shoot_left",10,4,1);
 		anim->addFrame("Images/Game/Characters/Cuphead/landmaster_shoot.png");
 		addAnimation(anim);
@@ -1050,40 +1177,55 @@ namespace SmashBros
 		
 		setSolid(true);
 		setOwnerSolid(false);
-			
+		
 		weight = 0.1f;
-			
+		
 		attack = -1;
-			
+		
 		idle();
 	}
-
+	
 	Cuphead::Landmaster::~Landmaster()
 	{
-		//
+		Cuphead*Cuphead = (Cuphead*)Global::getPlayerActor(getPlayerNo());
+		if(Cuphead!=NULL)
+		{
+			Cuphead->landmaster = NULL;
+		}
 	}
-	
+		
 	void Cuphead::Landmaster::onAnimationFinish(const String&n)
 	{
 		if(n.equals("shoot_left") || n.equals("shoot_right"))
 		{
 			Player*owner = Global::getPlayerActor(getPlayerNo());
+			Cuphead*Cuphead = (Cuphead*)owner;
 			switch(attack)
 			{
 				case 0:
-				owner->setPlayerDir(LEFT);
-				createProjectile(new LandmasterShot(getPlayerNo(),x - (120*getScale()), y - (24*getScale())));
+				{
+					owner->setPlayerDir(LEFT);
+					LandmasterShot*shot = new LandmasterShot(getPlayerNo(),x - (120*getScale()), y - (24*getScale()));
+					createProjectile(shot);
+					
+					Cuphead->addProjectileInfo(2, shot->getID(), x - (120*getScale()), y - (24*getScale()));
+				}
 				break;
 					
 				case 1:
-				owner->setPlayerDir(RIGHT);
-				createProjectile(new LandmasterShot(getPlayerNo(),x + (120*getScale()), y - (24*getScale())));
+				{
+					owner->setPlayerDir(RIGHT);
+					LandmasterShot*shot = new LandmasterShot(getPlayerNo(),x + (120*getScale()), y - (24*getScale()));
+					createProjectile(shot);
+					
+					Cuphead->addProjectileInfo(2, shot->getID(), x + (120*getScale()), y - (24*getScale()));
+				}
 				break;
 			}
 			idle();
 		}
 	}
-	
+		
 	void Cuphead::Landmaster::Update(long gameTime)
 	{
 		Projectile::Update(gameTime);
@@ -1095,6 +1237,7 @@ namespace SmashBros
 		{
 			if(owner->isJumping())
 			{
+				Cuphead*Cuphead = (Cuphead*)owner;
 				switch(owner->getPlayerDir())
 				{
 					case LEFT:
@@ -1102,13 +1245,14 @@ namespace SmashBros
 					break;
 						
 					case RIGHT:
-					changeAnimation("idle_right",NO_CHANGE);
+					changeAnimation("hover_right",NO_CHANGE);
 					break;
 				}
-				yvelocity -= 5;
+				yvelocity -=5;
 				LandmasterHoverBlast* hoverBlast = new LandmasterHoverBlast(getPlayerNo(), x, y+(30*getScale()));
 				hoverBlast->setScale(getScale());
 				createProjectile(hoverBlast);
+				Cuphead->addProjectileInfo(4, hoverBlast->getID(), x, y+(30*getScale()));
 			}
 			if(owner->getMoveLeft()>0)
 			{
@@ -1129,7 +1273,7 @@ namespace SmashBros
 					case LEFT:
 					changeAnimation("idle_left",NO_CHANGE);
 					break;
-							
+						
 					case RIGHT:
 					changeAnimation("idle_right",NO_CHANGE);
 					break;
@@ -1155,13 +1299,13 @@ namespace SmashBros
 		owner->bUp=false;
 		switch(owner->playerdir)
 		{
-			case 1:
-			changeAnimation("idle_left", FORWARD);
-			break;
+		    case 1:
+		    changeAnimation("idle_left", FORWARD);
+		    break;
 		 
-			case 2:
-			changeAnimation("idle_right", FORWARD);
-			break;
+		    case 2:
+		    changeAnimation("idle_right", FORWARD);
+		    break;
 		}
 	}
 		
