@@ -8,7 +8,6 @@
 #include "Game/Characters/Cuphead.h"
 #include "Game/Characters/Pikachu.h"
 #include "Game/Characters/Link.h"
-#include "Game/Characters/Kirby.h"
 
 #include "Game/Stages/FractalStage.h"
 #include "Game/Stages/HillsideBattleground.h"
@@ -45,9 +44,6 @@ namespace SmashBros
 			case Global::CHAR_LINK:
 			return "link.png";
 
-			case Global::CHAR_KIRBY:
-			return "kirby.png";
-			
 			case Global::CHAR_CUPHEAD:
 			return "cuphead.png";
 
