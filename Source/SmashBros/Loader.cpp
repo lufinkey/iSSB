@@ -90,9 +90,6 @@ namespace SmashBros
 			
 			case Global::CHAR_LINK:
 			return "Link";
-
-			case Global::CHAR_KIRBY:
-			return "Kirby";
 			
 			case Global::CHAR_CUPHEAD:
 			return "Cuphead";
@@ -207,12 +204,6 @@ namespace SmashBros
 			case Global::CHAR_LINK:
 			win_fps = 8;
 			win_rows = 4;
-			break;
-
-			case Global::CHAR_KIRBY:
-			win_fps = 16;
-			win_cols = 6;
-			win_rows = 5;
 			break;
 						
 			case Global::CHAR_CUPHEAD:
