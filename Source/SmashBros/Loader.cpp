@@ -7,6 +7,7 @@
 #include "Game/Characters/Fox.h"
 #include "Game/Characters/Pikachu.h"
 #include "Game/Characters/Link.h"
+#include "Game/Characters/Cuphead.h"
 
 #include "Game/Stages/FractalStage.h"
 #include "Game/Stages/HillsideBattleground.h"
@@ -43,6 +44,8 @@ namespace SmashBros
 			case Global::CHAR_LINK:
 			return "link.png";
 			
+			case Global::CHAR_CUPHEAD:
+			return "cuphead.png";
 			default:
 			if(charNo <= Global::totalCharacters)
 			{
@@ -86,6 +89,9 @@ namespace SmashBros
 			
 			case Global::CHAR_LINK:
 			return "Link";
+			
+			case Global::CHAR_CUPHEAD:
+			return "Cuphead";
 		}
 	}
 	
@@ -133,6 +139,11 @@ namespace SmashBros
 			case Global::CHAR_LINK:
 			p = new Link(x1,y1,playerNo,team);
 			p->charNo = Global::CHAR_LINK;
+			
+			case Global::CHAR_CUPHEAD:
+			p = new Fox(x1,y1,playerNo,team);
+			p->charNo = Global::CHAR_CUPHEAD;
+			break;
 		}
 		return p;
 	}
@@ -186,6 +197,11 @@ namespace SmashBros
 			case Global::CHAR_LINK:
 			win_fps = 8;
 			win_rows = 4;
+			break;
+			
+			case Global::CHAR_CUPHEAD:
+			win_fps = 8;
+			win_rows = 6;
 			break;
 		}
 		
