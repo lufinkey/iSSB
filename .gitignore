@@ -59,9 +59,9 @@ Release/
 build/
 
 #CodeLite
-/projects/Codelite/.*
-/projects/Codelite/Debug
-/projects/Codelite/Release
-/projects/Codelite/Makefile
-/projects/Codelite/*.txt
-/projects/Codelite/*.mk
+/Projects/Codelite/.*
+/Projects/Codelite/Debug
+/Projects/Codelite/Release
+/Projects/Codelite/Makefile
+/Projects/Codelite/*.txt
+/Projects/Codelite/*.mk
