@@ -6,6 +6,7 @@
 #include "GameEngine/CodeBridge/CPPBridge.h"
 #endif
 
+#ifndef __APPLE__
 int main(int argc, char *argv[])
 {
 /*#ifdef _WIN32
@@ -18,3 +19,4 @@ int main(int argc, char *argv[])
 	exit(0);
 	return 0;
 }
+#endif

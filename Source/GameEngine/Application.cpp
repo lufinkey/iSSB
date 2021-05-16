@@ -437,22 +437,7 @@ namespace GameEngine
 						loadThread->start();
 					}*/
 					
-					if(showLoad)
-					{
-						SDL_SetRenderDrawColor(renderer, 0,0,0,255);
-						SDL_RenderClear(renderer);
-						graphics->drawImage(loadImage,0,0,(float)View::getScalingWidth(),(float)View::getScalingHeight(),0,0,loadImage->getWidth(),loadImage->getHeight());
-						graphics->setColor(loadbarColor);
-						graphics->fillRect(loadbarDim[0], loadbarDim[1], (float)((float)(loadCurrent/loadTotal)*loadbarDim[2]), loadbarDim[3]);
-						SDL_RenderPresent(renderer);
-					}
-					else
-					{
-						SDL_SetRenderDrawColor(renderer, bgColor.r,bgColor.g,bgColor.b,bgColor.a);
-						SDL_RenderClear(renderer);
-						SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-						SDL_RenderPresent(renderer);
-					}
+					redrawLoadScreen();
 					
 					/*if(!loadThread->isAlive())
 					{
@@ -491,6 +476,23 @@ namespace GameEngine
 			return true;
 		}
 		return false;
+	}
+
+	void Application::redrawLoadScreen() {
+		if(showLoad) {
+			SDL_SetRenderDrawColor(renderer, 0,0,0,255);
+			SDL_RenderClear(renderer);
+			graphics->drawImage(loadImage,0,0,(float)View::getScalingWidth(),(float)View::getScalingHeight(),0,0,loadImage->getWidth(),loadImage->getHeight());
+			graphics->setColor(loadbarColor);
+			graphics->fillRect(loadbarDim[0], loadbarDim[1], (float)((float)(loadCurrent/loadTotal)*loadbarDim[2]), loadbarDim[3]);
+			SDL_RenderPresent(renderer);
+		}
+		else {
+			SDL_SetRenderDrawColor(renderer, bgColor.r,bgColor.g,bgColor.b,bgColor.a);
+			SDL_RenderClear(renderer);
+			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+			SDL_RenderPresent(renderer);
+		}
 	}
 		
 	void Application::updateEvents()
@@ -1128,9 +1130,9 @@ namespace GameEngine
 			BufferedImage*img = AssetManager::getImage(loadScreen);
 			graphics->drawImage(img,0,0,(float)View::getScalingWidth(),(float)View::getScalingHeight(),0,0,img->getWidth(),img->getHeight());
 		}*/
-		graphics->setColor(loadbarColor);
-		graphics->fillRect(loadbarDim[0], loadbarDim[1], (float)((float)(loadCurrent/loadTotal)*loadbarDim[2]), loadbarDim[3]);
-		SDL_RenderPresent(renderer);
+		if(showLoad) {
+			redrawLoadScreen();
+		}
 	}
 	
 	void Application::showBackground(bool toggle)
