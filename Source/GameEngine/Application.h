@@ -103,6 +103,8 @@ namespace GameEngine
 		void updateMouse(bool*mouse1, bool*mouse2);
 		static void updateTouchPoints(ArrayList<TouchPoint>&points1, ArrayList<TouchPoint>&points2);
 		
+		static void redrawLoadScreen();
+		
 	public:
 		static const unsigned char ORIENTATION_PORTRAIT = 0;
 		static const unsigned char ORIENTATION_LANDSCAPE = 1;
