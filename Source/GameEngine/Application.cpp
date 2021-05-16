@@ -384,6 +384,7 @@ namespace GameEngine
 						if(!paused)
 						{
 							updateKeys(prevKeyState,currentKeyState);
+							updateMouse(prevMouseState, currentMouseState);
 							updateTouchPoints(prevTouchPoints, currentTouchPoints);
 						}
 						View::Draw(*graphics);
