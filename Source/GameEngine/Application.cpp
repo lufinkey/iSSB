@@ -327,6 +327,8 @@ namespace GameEngine
 					updateEvents();
 					if(!closing)
 					{
+						currentMouseX = mouseX;
+						currentMouseY = mouseY;
 						updateKeys(currentKeyState, KeyState);
 						updateMouse(currentMouseState, mouseState);
 						updateTouchPoints(currentTouchPoints, touchPoints);
