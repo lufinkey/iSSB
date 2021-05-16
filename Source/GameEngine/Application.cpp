@@ -208,7 +208,7 @@ namespace GameEngine
 			HapticFeedback::initialize();
 			
 			{
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR) || defined (__ANDROID__)
+#if defined(__APPLE__) && (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1) || defined (__ANDROID__)
 				SDL_Rect displayRect;
 
 				SDL_GetDisplayBounds(0, &displayRect);
@@ -253,7 +253,7 @@ namespace GameEngine
 				}
 #endif
 
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR) || defined (__ANDROID__)
+#if defined(__APPLE__) && (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1) || defined (__ANDROID__)
 				int windowX = 0;
 				int windowY = 0;
 #else
@@ -812,7 +812,7 @@ namespace GameEngine
 
 	bool Application::hasMultitouch()
 	{
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR) || defined(__ANDROID__)
+#if defined(__APPLE__) && (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1) || defined(__ANDROID__)
 		return true;
 #else
 		return false;
@@ -1162,15 +1162,15 @@ namespace GameEngine
 
 	void Application::setFullScreen(bool toggle)
 	{
-		if(fullscreen)
-		{
-			fullscreen = false;
-			SDL_SetWindowFullscreen(window, 0);
-		}
-		else
+		if(toggle)
 		{
 			fullscreen = true;
 			SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+		}
+		else
+		{
+			fullscreen = false;
+			SDL_SetWindowFullscreen(window, 0);
 		}
 	}
 }

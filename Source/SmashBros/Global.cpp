@@ -125,8 +125,11 @@ namespace SmashBros
 	
 	String Global::getAddonsFolder()
 	{
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR) || defined(ANDROID)
+#if defined(__APPLE__) && (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1 || TARGET_OS_MAC == 1)
 		return (String)getenv("HOME") + "/Library/iSSB/addons";
+#elif defined(__ANDROID__)
+		// TODO change for android
+		return (String)"addons";
 #else
 		return (String)"addons";
 #endif

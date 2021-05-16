@@ -15,7 +15,7 @@
 
 namespace GameEngine
 {
-#if !defined(TARGET_OS_IPHONE) && !defined(TARGET_IPHONE_SIMULATOR)
+#if (!defined(TARGET_OS_IPHONE) || TARGET_OS_IPHONE != 1) && (!defined(TARGET_IPHONE_SIMULATOR) || TARGET_IPHONE_SIMULATOR != 1)
 
 	SDL_Haptic* sdlHaptic = nullptr;
 	bool sdlRumbleInitialized = false;

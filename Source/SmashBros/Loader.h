@@ -43,7 +43,10 @@ namespace SmashBros
 		
 	public:
 #ifndef SMASHBROS_SCRIPT_DISABLE
-	#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR) || defined(ANDROID)
+	#if defined(__APPLE__) && (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1 || TARGET_OS_MAC == 1)
+		static void loadScriptEntities(const String&path = (String)getenv("HOME")+"/Library/iSSB/addons/stages");
+	#elif defined(__ANDROID__)
+		// TODO change for android
 		static void loadScriptEntities(const String&path = (String)getenv("HOME")+"/Library/iSSB/addons/stages");
 	#else
 		static void loadScriptEntities(const String&path = "addons/stages");

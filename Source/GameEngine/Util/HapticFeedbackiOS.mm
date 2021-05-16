@@ -13,7 +13,7 @@
 #import "TargetConditionals.h"
 #endif
 
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+#if defined(__APPLE__) && (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1)
 
 #import <AudioToolbox/AudioToolbox.h>
 #import <UIKit/UIKit.h>

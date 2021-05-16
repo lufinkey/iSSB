@@ -18,12 +18,12 @@ namespace GameEngine
 	{
 		String plat = String(platform).toLowerCase();
 		
-#if defined(TARGET_OS_IPHONE)
+#if defined(TARGET_OS_IPHONE) && TARGET_OS_IPHONE == 1
 		if(plat.equals("iphoneos") || plat.equals("iphone") || plat.equals("ios"))
 		{
 			return true;
 		}
-#elif defined(TARGET_IPHONE_SIMULATOR)
+#elif defined(TARGET_IPHONE_SIMULATOR) && TARGET_IPHONE_SIMULATOR == 1
 		if(plat.equals("iphonesimulator") || plat.equals("iphone") || plat.equals("ios"))
 		{
 			return true;
@@ -43,7 +43,7 @@ namespace GameEngine
 		{
 			return true;
 		}
-#elif defined(TARGET_OS_MAC)
+#elif defined(TARGET_OS_MAC) && TARGET_OS_MAC == 1
 		if(plat.equals("mac") || plat.equals("macos") || plat.equals("macosx"))
 		{
 			return true;

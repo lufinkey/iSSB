@@ -13,10 +13,11 @@
 #else
 	#include <sys/time.h>
 #endif
+#include <iostream>
 
 #if defined(__APPLE__)
 	#include "TargetConditionals.h"
-	#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+	#if (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1)
 		#import <UIKit/UIKit.h>
 		#import "MailViewController.h"
 		#import "WebViewController.h"
@@ -26,12 +27,10 @@
 	#endif
 	#include "../Application.h"
 #elif defined(__ANDROID__)
-	#include <iostream>
 	#include <android/log.h>
 	#include "../Util/String.h"
 	#include "../Application.h"
 #else
-	#include <iostream>
 	#include "../Util/String.h"
 	#include "../Application.h"
 #endif
@@ -48,7 +47,7 @@ void GameEngine_init()
 	}*/
 }
 
-#ifdef __APPLE__
+#if defined(__APPLE__) && (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1)
 UIViewController* getSDLViewController(SDL_Window*window)
 {
 	SDL_SysWMinfo systemWindowInfo;
@@ -129,7 +128,7 @@ GameEngine::String GameEngine_urlencode(char*str)
 
 void openURL(const char*url, SDL_Window*window)
 {
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+#if defined(__APPLE__) && (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1)
 	if(window==NULL)
 	{
 		[[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithUTF8String:url]]];
@@ -159,7 +158,7 @@ void openURL(const char*url, SDL_Window*window)
 
 void writeEmail(SDL_Window*window, const char*recipient, const char*subject, const char*body)
 {
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+#if defined(__APPLE__) && (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1)
 	MailViewController *mailer = [[MailViewController alloc] init];
 	//SDL_HideWindow(window);
 	UIViewController*viewCtrl = getSDLViewController(window);
@@ -188,7 +187,7 @@ void writeEmail(SDL_Window*window, const char*recipient, const char*subject, con
 
 void getDeviceModel(char*deviceString)
 {
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+#if defined(__APPLE__) && (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1)
 	if(deviceString!=NULL)
 	{
 		UIDevice*device = [UIDevice currentDevice];
@@ -206,7 +205,7 @@ void getDeviceModel(char*deviceString)
 
 void getDeviceName(char*nameString)
 {
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+#if defined(__APPLE__) && (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1)
 	if(nameString!=NULL)
 	{
 		UIDevice*device = [UIDevice currentDevice];
@@ -225,7 +224,7 @@ void getDeviceName(char*nameString)
 
 void iCade_enable(bool toggle, SDL_Window*window)
 {
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+#if defined(__APPLE__) && (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1)
 	if(toggle && iCade_receiver==nil)
 	{
 		iCade_receiver = [[iCadeControllerReceiver alloc] initWithFrame:CGRectMake(0,0,0,0)];
@@ -245,7 +244,7 @@ void iCade_enable(bool toggle, SDL_Window*window)
 
 bool iCade_enabled()
 {
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+#if defined(__APPLE__) && (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1)
 	if(iCade_receiver!=nil)
 	{
 		return true;
@@ -257,7 +256,7 @@ bool iCade_enabled()
 void iCade_setStateChangedCallback(iCadeEventCallback callback)
 {
 	iCade_stateChangedCallback = callback;
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+#if defined(__APPLE__) && (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1)
 	if(iCade_receiver!=nil)
 	{
 		iCade_receiver.stateChangedCallback = callback;
@@ -268,7 +267,7 @@ void iCade_setStateChangedCallback(iCadeEventCallback callback)
 void iCade_setButtonDownCallback(iCadeEventCallback callback)
 {
 	iCade_buttonDownCallback = callback;
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+#if defined(__APPLE__) && (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1)
 	if(iCade_receiver!=nil)
 	{
 		iCade_receiver.buttonDownCallback = callback;
@@ -279,7 +278,7 @@ void iCade_setButtonDownCallback(iCadeEventCallback callback)
 void iCade_setButtonUpCallback(iCadeEventCallback callback)
 {
 	iCade_buttonUpCallback = callback;
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+#if defined(__APPLE__) && (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1)
 	if(iCade_receiver!=nil)
 	{
 		iCade_receiver.buttonUpCallback = callback;
@@ -291,7 +290,7 @@ void iCade_setButtonUpCallback(iCadeEventCallback callback)
 
 void SDL_ShowSimpleMessageBoxFixed(const char*title, const char*message)
 {
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+#if defined(__APPLE__) && (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1)
 	UIAlertController* alert = [UIAlertController alertControllerWithTitle:[NSString stringWithUTF8String:title]
 																   message:[NSString stringWithUTF8String:message]
 															preferredStyle:UIAlertControllerStyleAlert];
@@ -319,7 +318,7 @@ void SDL_ShowSimpleMessageBoxFixed(const char*title, const char*message)
 
 int SDL_ShowMessageBoxFixed(const char*title, const char*message, const char**options, int numOptions)
 {
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+#if defined(__APPLE__) && (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1)
 	UIAlertController* alert = [UIAlertController alertControllerWithTitle:[NSString stringWithUTF8String:title]
 																   message:[NSString stringWithUTF8String:message]
 															preferredStyle:UIAlertControllerStyleAlert];
@@ -363,7 +362,7 @@ int SDL_ShowMessageBoxFixed(const char*title, const char*message, const char**op
 
 void GameEngine_Log(char*text)
 {
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+#if defined(__APPLE__) && (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1)
 	NSLog(@"%@", [NSString stringWithUTF8String:text]);
 	
 #elif defined(__ANDROID__)
