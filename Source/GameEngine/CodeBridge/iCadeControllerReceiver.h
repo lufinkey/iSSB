@@ -1,20 +1,20 @@
 
+#pragma once
+
 #if defined(__APPLE__)
 #include "TargetConditionals.h"
 #endif
 
-#if (defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)) && defined(__OBJC__)
+#if defined(__APPLE__) && (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1) && defined(__OBJC__)
 #import <Foundation/Foundation.h>
 #import "iCade/iCadeReaderView.h"
 #endif
 
 #include "iCade/iCadeState.h"
 
-#pragma once
-
 typedef void (*iCadeEventCallback)(iCadeState);
 
-#if (defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)) && defined(__OBJC__)
+#if defined(__APPLE__) && (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1) && defined(__OBJC__)
 @interface iCadeControllerReceiver : iCadeReaderView <iCadeEventDelegate>
 {
 	iCadeEventCallback stateChangedCallback;

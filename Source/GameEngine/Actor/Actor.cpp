@@ -727,58 +727,59 @@ namespace GameEngine
 
 	bool Actor::mouseOver()
 	{
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR) || defined(__ANDROID__)
-		if(mouseover)
-		{
-			if(Application::checkTouchActive(currentTouchId))
+		if(Application::hasMultitouch()) {
+			if(mouseover)
 			{
-				float mousex = 0;
-				float mousey = 0;
-				if(relative)
+				if(Application::checkTouchActive(currentTouchId))
 				{
-					mousex = (float)Application::getTouchX(currentTouchId) + View::x;
-					mousey = (float)Application::getTouchY(currentTouchId) + View::y;
-				}
-				else
-				{
-					mousex = (float)Application::getTouchX(currentTouchId);
-					mousey = (float)Application::getTouchY(currentTouchId);
-				}
+					float mousex = 0;
+					float mousey = 0;
+					if(relative)
+					{
+						mousex = (float)Application::getTouchX(currentTouchId) + View::x;
+						mousey = (float)Application::getTouchY(currentTouchId) + View::y;
+					}
+					else
+					{
+						mousex = (float)Application::getTouchX(currentTouchId);
+						mousey = (float)Application::getTouchY(currentTouchId);
+					}
 
-				if(checkHover(mousex, mousey))
+					if(checkHover(mousex, mousey))
+					{
+						return true;
+					}
+				}
+			}
+
+			ArrayList<TouchPoint> points = Application::getTouchPoints();
+			for(int i=0; i<points.size(); i++)
+			{
+				TouchPoint&point = points.get(i);
+				if(checkHover(point.x, point.y))
 				{
+					touchId = point.ID;
 					return true;
 				}
 			}
+			return false;
 		}
-
-		ArrayList<TouchPoint> points = Application::getTouchPoints();
-		for(int i=0; i<points.size(); i++)
-		{
-			TouchPoint&point = points.get(i);
-			if(checkHover(point.x, point.y))
+		else {
+			float mousex = 0;
+			float mousey = 0;
+			if(relative)
 			{
-				touchId = point.ID;
-				return true;
+				mousex = (float)Application::getMouseX() + View::x;
+				mousey = (float)Application::getMouseY() + View::y;
 			}
-		}
-		return false;
-#else
-		float mousex = 0;
-		float mousey = 0;
-		if(relative)
-		{
-			mousex = (float)Application::getMouseX() + View::x;
-			mousey = (float)Application::getMouseY() + View::y;
-		}
-		else
-		{
-			mousex = (float)Application::getMouseX();
-			mousey = (float)Application::getMouseY();
-		}
+			else
+			{
+				mousex = (float)Application::getMouseX();
+				mousey = (float)Application::getMouseY();
+			}
 
-		return checkHover(mousex, mousey);
-#endif
+			return checkHover(mousex, mousey);
+		}
 	}
 	
 	void Actor::onMouseEnter() //When mouse enters Actor

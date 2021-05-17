@@ -1,6 +1,8 @@
 
 #import "iCadeControllerReceiver.h"
 
+#if defined(__APPLE__) && (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1) && defined(__OBJC__)
+
 @implementation iCadeControllerReceiver
 
 @synthesize stateChangedCallback;
@@ -45,3 +47,5 @@
 }
 
 @end
+
+#endif

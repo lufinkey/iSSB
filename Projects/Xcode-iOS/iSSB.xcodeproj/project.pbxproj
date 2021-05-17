@@ -149,12 +149,12 @@
 		A059AEE21FDCB48F0041E164 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A059AEE11FDCB4880041E164 /* AVFoundation.framework */; };
 		A059AEE41FDCB49D0041E164 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A059AEE31FDCB4990041E164 /* AudioToolbox.framework */; };
 		A059AEE61FDCB4BB0041E164 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A059AEE51FDCB4B90041E164 /* CoreMotion.framework */; };
-		A059AEF31FDCB5550041E164 /* libSDL_p2p.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A059AECF1FDCB35C0041E164 /* libSDL_p2p.a */; };
 		A059AF191FDCBD9C0041E164 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A059AF181FDCBD970041E164 /* MessageUI.framework */; };
 		A059AF1B1FDCBF8C0041E164 /* chaiscript_stdlib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A059AEA51FDCB2910041E164 /* chaiscript_stdlib.cpp */; };
 		A059AF1D1FDCC8C80041E164 /* BrokenPhysics.png in Resources */ = {isa = PBXBuildFile; fileRef = A059AF1C1FDCC8C70041E164 /* BrokenPhysics.png */; };
 		A08E887F2141EDC100D91091 /* HapticFeedbackiOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = A08E88732141EDC000D91091 /* HapticFeedbackiOS.mm */; };
 		A08E88802141EDC100D91091 /* HapticFeedback.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A08E887E2141EDC100D91091 /* HapticFeedback.cpp */; };
+		A51977522651DCCD0015D996 /* libSDL_p2p.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A059AECF1FDCB35C0041E164 /* libSDL_p2p.a */; };
 		A588B8482651BAAC001F7DD3 /* libSDL2_ttf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A588B8402651BA9C001F7DD3 /* libSDL2_ttf.a */; };
 		A588B8632651BAFA001F7DD3 /* CoreHaptics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A588B8622651BAFA001F7DD3 /* CoreHaptics.framework */; };
 		A596F83426519F1800F182F0 /* Program.mm in Sources */ = {isa = PBXBuildFile; fileRef = A596F83326519F1800F182F0 /* Program.mm */; };
@@ -176,6 +176,13 @@
 			containerPortal = A059AECA1FDCB35C0041E164 /* SDL_p2p.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = A0435C361A13C600004EF945;
+			remoteInfo = libSDL_p2p;
+		};
+		A519773F2651DCC40015D996 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A059AECA1FDCB35C0041E164 /* SDL_p2p.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A51975662651D3A80015D996;
 			remoteInfo = libSDL_p2p;
 		};
 		A588B83F2651BA9C001F7DD3 /* PBXContainerItemProxy */ = {
@@ -629,11 +636,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A059AEF31FDCB5550041E164 /* libSDL_p2p.a in Frameworks */,
 				A059AF191FDCBD9C0041E164 /* MessageUI.framework in Frameworks */,
 				A059AEDA1FDCB4640041E164 /* GameController.framework in Frameworks */,
 				A059AEE01FDCB4760041E164 /* UIKit.framework in Frameworks */,
 				A059AEE21FDCB48F0041E164 /* AVFoundation.framework in Frameworks */,
+				A51977522651DCCD0015D996 /* libSDL_p2p.a in Frameworks */,
 				A059AEDB1FDCB4670041E164 /* Foundation.framework in Frameworks */,
 				A059AEDF1FDCB4720041E164 /* QuartzCore.framework in Frameworks */,
 				A059AED91FDCB4600041E164 /* CoreGraphics.framework in Frameworks */,
@@ -1265,6 +1272,7 @@
 			isa = PBXGroup;
 			children = (
 				A059AECF1FDCB35C0041E164 /* libSDL_p2p.a */,
+				A51977402651DCC40015D996 /* libSDL_p2p.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1415,6 +1423,13 @@
 			fileType = archive.ar;
 			path = libSDL_p2p.a;
 			remoteRef = A059AECE1FDCB35C0041E164 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A51977402651DCC40015D996 /* libSDL_p2p.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSDL_p2p.a;
+			remoteRef = A519773F2651DCC40015D996 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		A588B8402651BA9C001F7DD3 /* libSDL2_ttf.a */ = {

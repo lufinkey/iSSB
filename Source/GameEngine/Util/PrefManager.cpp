@@ -14,7 +14,7 @@ namespace GameEngine
 {
 	PrefManager::PrefManager()
 	{
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR) || defined (__ANDROID__)
+#if defined(__APPLE__) && (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1 || TARGET_OS_MAC == 1)
 		char*path = getenv("HOME");
 		if(path==NULL)
 		{
@@ -24,8 +24,10 @@ namespace GameEngine
 		{
 			prefPath = path;
 			prefPath += "/Library/Preferences/";
-			//TODO change prefpath for android
 		}
+#elif defined (__ANDROID__)
+		// TODO change for android
+		prefPath = "";
 #else
 		prefPath = "";
 #endif

@@ -1,5 +1,8 @@
 
 #import <Foundation/Foundation.h>
+#ifdef __APPLE__
+#include "TargetConditionals.h"
+#if (TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR)
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
 
@@ -13,3 +16,7 @@
 - (void)openMailInViewController:(UIViewController*)viewCtrl person:(NSString*)person subject:(NSString*)subject body:(NSString*)body;
 - (BOOL)isOpened;
 @end
+
+#endif
+#endif
+

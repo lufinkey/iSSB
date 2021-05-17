@@ -1,5 +1,8 @@
 
 #import "MailViewController.h"
+#ifdef __APPLE__
+#include "TargetConditionals.h"
+#if (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1)
 
 @implementation MailViewController
 
@@ -75,3 +78,6 @@
 }
 
 @end
+
+#endif
+#endif
