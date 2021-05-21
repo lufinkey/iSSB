@@ -110,6 +110,8 @@
           <File Name="../../Source/SmashBros/Game/Characters/Ichigo.cpp"/>
           <File Name="../../Source/SmashBros/Game/Characters/Fox.h"/>
           <File Name="../../Source/SmashBros/Game/Characters/Fox.cpp"/>
+          <File Name="../../Source/SmashBros/Game/Characters/Cuphead.h"/>
+          <File Name="../../Source/SmashBros/Game/Characters/Cuphead.cpp"/>
         </VirtualDirectory>
         <File Name="../../Source/SmashBros/Game/WinnerScreen.h"/>
         <File Name="../../Source/SmashBros/Game/WinnerScreen.cpp"/>
