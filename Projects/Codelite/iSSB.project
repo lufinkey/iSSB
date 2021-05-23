@@ -360,10 +360,10 @@
       <PreBuild/>
       <PostBuild>
         <Command Enabled="yes">rm -rf Debug/Images Debug/Sounds Debug/Music Debug/Fonts</Command>
-        <Command Enabled="yes">ln -s ../../../Images Debug/Images</Command>
-        <Command Enabled="yes">ln -s ../../../Sounds Debug/Sounds</Command>
-        <Command Enabled="yes">ln -s ../../../Music Debug/Music</Command>
-        <Command Enabled="yes">ln -s ../../../Fonts Debug/Fonts</Command>
+        <Command Enabled="yes">ln -s ../../../Assets/Images Debug/Images</Command>
+        <Command Enabled="yes">ln -s ../../../Assets/Sounds Debug/Sounds</Command>
+        <Command Enabled="yes">ln -s ../../../Assets/Music Debug/Music</Command>
+        <Command Enabled="yes">ln -s ../../../Assets/Fonts Debug/Fonts</Command>
       </PostBuild>
       <CustomBuild Enabled="no">
         <RebuildCommand/>
@@ -423,10 +423,10 @@
       <PreBuild/>
       <PostBuild>
         <Command Enabled="yes">rm -rf Release/Images Release/Sounds Release/Music Release/Fonts</Command>
-        <Command Enabled="yes">cp -r ../../Images Release/Images</Command>
-        <Command Enabled="yes">cp -r ../../Sounds Release/Sounds</Command>
-        <Command Enabled="yes">cp -r ../../Music Release/Music</Command>
-        <Command Enabled="yes">cp -r ../../Fonts Release/Fonts</Command>
+        <Command Enabled="yes">cp -r ../../Assets/Images Release/Images</Command>
+        <Command Enabled="yes">cp -r ../../Assets/Sounds Release/Sounds</Command>
+        <Command Enabled="yes">cp -r ../../Assets/Music Release/Music</Command>
+        <Command Enabled="yes">cp -r ../../Assets/Fonts Release/Fonts</Command>
       </PostBuild>
       <CustomBuild Enabled="no">
         <RebuildCommand/>

@@ -31,6 +31,10 @@
 		A51976472651D8700015D996 /* webp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A51976312651D7C60015D996 /* webp.framework */; };
 		A51976482651D8700015D996 /* webp.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A51976312651D7C60015D996 /* webp.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A51976EC2651DB600015D996 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A51976EB2651DB600015D996 /* Carbon.framework */; };
+		A59574BB2659CB8700E32A92 /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = A59574B72659CB8700E32A92 /* Fonts */; };
+		A59574BC2659CB8700E32A92 /* Music in Resources */ = {isa = PBXBuildFile; fileRef = A59574B82659CB8700E32A92 /* Music */; };
+		A59574BD2659CB8700E32A92 /* Sounds in Resources */ = {isa = PBXBuildFile; fileRef = A59574B92659CB8700E32A92 /* Sounds */; };
+		A59574BE2659CB8700E32A92 /* Images in Resources */ = {isa = PBXBuildFile; fileRef = A59574BA2659CB8700E32A92 /* Images */; };
 		A596F81C26519C8100F182F0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A596F81B26519C8100F182F0 /* Assets.xcassets */; };
 		A596F81F26519C8100F182F0 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = A596F81D26519C8100F182F0 /* MainMenu.xib */; };
 		A596F9572651A25B00F182F0 /* Stage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A596F8462651A25A00F182F0 /* Stage.cpp */; };
@@ -156,10 +160,6 @@
 		A596F9D32651A25B00F182F0 /* Animation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A596F94F2651A25B00F182F0 /* Animation.cpp */; };
 		A596F9D42651A25B00F182F0 /* WireframeActor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A596F9512651A25B00F182F0 /* WireframeActor.cpp */; };
 		A596F9D52651A25B00F182F0 /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A596F9562651A25B00F182F0 /* Game.cpp */; };
-		A596F9E12651A46F00F182F0 /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = A596F9DE2651A46E00F182F0 /* Fonts */; };
-		A596F9E22651A46F00F182F0 /* Images in Resources */ = {isa = PBXBuildFile; fileRef = A596F9DF2651A46F00F182F0 /* Images */; };
-		A596F9E32651A46F00F182F0 /* Music in Resources */ = {isa = PBXBuildFile; fileRef = A596F9E02651A46F00F182F0 /* Music */; };
-		A596F9E62651A49000F182F0 /* Sounds in Resources */ = {isa = PBXBuildFile; fileRef = A596F9E52651A49000F182F0 /* Sounds */; };
 		A596FA7F2651AF3A00F182F0 /* chaiscript_stdlib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A596FA542651AF3A00F182F0 /* chaiscript_stdlib.cpp */; };
 		A596FA822651AF3A00F182F0 /* stl_extra.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A596FA572651AF3A00F182F0 /* stl_extra.cpp */; };
 		A596FA832651AF3A00F182F0 /* chaiscript_prelude.chai in Resources */ = {isa = PBXBuildFile; fileRef = A596FA792651AF3A00F182F0 /* chaiscript_prelude.chai */; };
@@ -256,6 +256,34 @@
 			proxyType = 2;
 			remoteGlobalIDString = A75FDB6E23E3A2C900529352;
 			remoteInfo = "hidapi-tvOS";
+		};
+		A59574812659C83800E32A92 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A596FA1F2651A9FF00F182F0 /* SDL_ttf.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A75FDAF323E3582C00529352;
+			remoteInfo = "Framework-iOS";
+		};
+		A59574832659C83800E32A92 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A596FA1F2651A9FF00F182F0 /* SDL_ttf.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A75FDB0A23E36B4300529352;
+			remoteInfo = "Framework-tvOS";
+		};
+		A59574852659C83800E32A92 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A596FA1F2651A9FF00F182F0 /* SDL_ttf.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A75FDB2E23E3825200529352;
+			remoteInfo = "Static Library-iOS";
+		};
+		A59574872659C83800E32A92 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A596FA1F2651A9FF00F182F0 /* SDL_ttf.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A75FDB3923E3827100529352;
+			remoteInfo = "Static Library-tvOS";
 		};
 		A596F9F42651A98400F182F0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -379,6 +407,11 @@
 		A588BA722651C42C001F7DD3 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
 		A588BA752651C436001F7DD3 /* iCadeControllerReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCadeControllerReceiver.h; sourceTree = "<group>"; };
 		A588BA762651C436001F7DD3 /* iCadeControllerReceiver.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = iCadeControllerReceiver.mm; sourceTree = "<group>"; };
+		A59574892659C84700E32A92 /* SDL_ext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDL_ext.h; sourceTree = "<group>"; };
+		A59574B72659CB8700E32A92 /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Fonts; sourceTree = "<group>"; };
+		A59574B82659CB8700E32A92 /* Music */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Music; sourceTree = "<group>"; };
+		A59574B92659CB8700E32A92 /* Sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Sounds; sourceTree = "<group>"; };
+		A59574BA2659CB8700E32A92 /* Images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Images; sourceTree = "<group>"; };
 		A596F81526519C8000F182F0 /* iSSB.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iSSB.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A596F81B26519C8100F182F0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A596F81E26519C8100F182F0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
@@ -592,7 +625,6 @@
 		A596F9252651A25B00F182F0 /* CPPBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPPBridge.h; sourceTree = "<group>"; };
 		A596F9262651A25B00F182F0 /* ObjCBridge.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ObjCBridge.mm; sourceTree = "<group>"; };
 		A596F92E2651A25B00F182F0 /* CPPBridge.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPPBridge.cpp; sourceTree = "<group>"; };
-		A596F92F2651A25B00F182F0 /* ObjCBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjCBridge.h; sourceTree = "<group>"; };
 		A596F9322651A25B00F182F0 /* WinBridge.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WinBridge.cpp; sourceTree = "<group>"; };
 		A596F9342651A25B00F182F0 /* AssetManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AssetManager.cpp; sourceTree = "<group>"; };
 		A596F9362651A25B00F182F0 /* ScreenManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScreenManager.cpp; sourceTree = "<group>"; };
@@ -625,10 +657,6 @@
 		A596F9542651A25B00F182F0 /* BatchLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BatchLoader.h; sourceTree = "<group>"; };
 		A596F9552651A25B00F182F0 /* forwards.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = forwards.h; sourceTree = "<group>"; };
 		A596F9562651A25B00F182F0 /* Game.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Game.cpp; sourceTree = "<group>"; };
-		A596F9DE2651A46E00F182F0 /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Fonts; sourceTree = "<group>"; };
-		A596F9DF2651A46F00F182F0 /* Images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Images; sourceTree = "<group>"; };
-		A596F9E02651A46F00F182F0 /* Music */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Music; sourceTree = "<group>"; };
-		A596F9E52651A49000F182F0 /* Sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Sounds; sourceTree = "<group>"; };
 		A596F9ED2651A98400F182F0 /* SDL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDL.xcodeproj; path = SDL/Xcode/SDL/SDL.xcodeproj; sourceTree = "<group>"; };
 		A596FA012651A9EA00F182F0 /* SDL_image.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDL_image.xcodeproj; path = SDL_image/Xcode/SDL_image.xcodeproj; sourceTree = "<group>"; };
 		A596FA1F2651A9FF00F182F0 /* SDL_ttf.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDL_ttf.xcodeproj; path = SDL_ttf/Xcode/SDL_ttf.xcodeproj; sourceTree = "<group>"; };
@@ -721,6 +749,17 @@
 				A588BA6D2651C418001F7DD3 /* iCadeState.h */,
 			);
 			path = iCade;
+			sourceTree = "<group>";
+		};
+		A59574B62659CB6C00E32A92 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				A59574B72659CB8700E32A92 /* Fonts */,
+				A59574BA2659CB8700E32A92 /* Images */,
+				A59574B82659CB8700E32A92 /* Music */,
+				A59574B92659CB8700E32A92 /* Sounds */,
+			);
+			path = Assets;
 			sourceTree = "<group>";
 		};
 		A596F80C26519C8000F182F0 = {
@@ -1126,14 +1165,14 @@
 				A588BA6A2651C418001F7DD3 /* iCade */,
 				A596F9252651A25B00F182F0 /* CPPBridge.h */,
 				A596F92E2651A25B00F182F0 /* CPPBridge.cpp */,
-				A596F92F2651A25B00F182F0 /* ObjCBridge.h */,
+				A588BA752651C436001F7DD3 /* iCadeControllerReceiver.h */,
+				A588BA762651C436001F7DD3 /* iCadeControllerReceiver.mm */,
 				A596F9262651A25B00F182F0 /* ObjCBridge.mm */,
 				A596F9322651A25B00F182F0 /* WinBridge.cpp */,
 				A588BA712651C42C001F7DD3 /* MailViewController.h */,
 				A588BA702651C42C001F7DD3 /* MailViewController.mm */,
 				A588BA722651C42C001F7DD3 /* WebViewController.h */,
-				A588BA752651C436001F7DD3 /* iCadeControllerReceiver.h */,
-				A588BA762651C436001F7DD3 /* iCadeControllerReceiver.mm */,
+				A59574892659C84700E32A92 /* SDL_ext.h */,
 			);
 			path = CodeBridge;
 			sourceTree = "<group>";
@@ -1193,12 +1232,9 @@
 		A596F9DD2651A43F00F182F0 /* iSSB */ = {
 			isa = PBXGroup;
 			children = (
+				A59574B62659CB6C00E32A92 /* Assets */,
 				A596F9EA2651A91800F182F0 /* External */,
 				A596F8442651A25A00F182F0 /* Source */,
-				A596F9DE2651A46E00F182F0 /* Fonts */,
-				A596F9DF2651A46F00F182F0 /* Images */,
-				A596F9E02651A46F00F182F0 /* Music */,
-				A596F9E52651A49000F182F0 /* Sounds */,
 			);
 			name = iSSB;
 			path = ../..;
@@ -1270,7 +1306,11 @@
 			isa = PBXGroup;
 			children = (
 				A596FA262651A9FF00F182F0 /* SDL2_ttf.framework */,
+				A59574822659C83800E32A92 /* SDL2_ttf.framework */,
+				A59574842659C83800E32A92 /* SDL2_ttf.framework */,
 				A596FA282651A9FF00F182F0 /* libSDL2_ttf.a */,
+				A59574862659C83800E32A92 /* libSDL2_ttf.a */,
+				A59574882659C83800E32A92 /* libSDL2_ttf.a */,
 				A596FA2A2651A9FF00F182F0 /* Create DMG */,
 			);
 			name = Products;
@@ -1555,6 +1595,34 @@
 			remoteRef = A588B92A2651C0F9001F7DD3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		A59574822659C83800E32A92 /* SDL2_ttf.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SDL2_ttf.framework;
+			remoteRef = A59574812659C83800E32A92 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A59574842659C83800E32A92 /* SDL2_ttf.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SDL2_ttf.framework;
+			remoteRef = A59574832659C83800E32A92 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A59574862659C83800E32A92 /* libSDL2_ttf.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSDL2_ttf.a;
+			remoteRef = A59574852659C83800E32A92 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A59574882659C83800E32A92 /* libSDL2_ttf.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSDL2_ttf.a;
+			remoteRef = A59574872659C83800E32A92 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		A596F9F52651A98400F182F0 /* SDL2.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -1639,13 +1707,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A596F9E62651A49000F182F0 /* Sounds in Resources */,
-				A596F9E22651A46F00F182F0 /* Images in Resources */,
-				A596F9E32651A46F00F182F0 /* Music in Resources */,
-				A596F9E12651A46F00F182F0 /* Fonts in Resources */,
+				A59574BD2659CB8700E32A92 /* Sounds in Resources */,
 				A596FA832651AF3A00F182F0 /* chaiscript_prelude.chai in Resources */,
+				A59574BE2659CB8700E32A92 /* Images in Resources */,
+				A59574BC2659CB8700E32A92 /* Music in Resources */,
 				A596F81C26519C8100F182F0 /* Assets.xcassets in Resources */,
 				A596F81F26519C8100F182F0 /* MainMenu.xib in Resources */,
+				A59574BB2659CB8700E32A92 /* Fonts in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

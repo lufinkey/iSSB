@@ -1,53 +1,37 @@
 
 #define _CRT_SECURE_NO_WARNINGS
 
-#include "ObjCBridge.h"
+#include "CPPBridge.h"
 #include "SDL.h"
 #include "SDL_syswm.h"
-#include "CPPBridge.h"
 #include <string.h>
 #include <math.h>
-#if defined(_WIN32)
-	#include <windows.h>
-	#include <stdint.h>
-#else
-	#include <sys/time.h>
-#endif
 #include <iostream>
 
-#if defined(__APPLE__)
-	#include "TargetConditionals.h"
-	#if (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1)
-		#import <UIKit/UIKit.h>
-		#import "MailViewController.h"
-		#import "WebViewController.h"
-		
-		//static NSDate*startDate = nil;
-		static iCadeControllerReceiver* iCade_receiver = nil;
-	#endif
-	#include "../Application.h"
-#elif defined(__ANDROID__)
-	#include <android/log.h>
-	#include "../Util/String.h"
-	#include "../Application.h"
-#else
-	#include "../Util/String.h"
-	#include "../Application.h"
+#ifdef __APPLE__
+
+#include "TargetConditionals.h"
+#if (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1)
+	#import <UIKit/UIKit.h>
+	#import "MailViewController.h"
+	#import "WebViewController.h"
+
+	//static NSDate*startDate = nil;
+	static iCadeControllerReceiver* iCade_receiver = nil;
 #endif
+#include "../Application.h"
 
 static iCadeEventCallback iCade_stateChangedCallback = NULL;
 static iCadeEventCallback iCade_buttonDownCallback = NULL;
 static iCadeEventCallback iCade_buttonUpCallback = NULL;
 
-void GameEngine_init()
+void GameEngine_Log(const char* text)
 {
-	/*if(startDate==nil)
-	{
-		startDate = [[NSDate alloc] initWithTimeInterval:0 sinceDate:[NSDate date]];
-	}*/
+	NSLog(@"%@", [NSString stringWithUTF8String:text]);
 }
 
-#if defined(__APPLE__) && (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1)
+
+#if (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1)
 UIViewController* getSDLViewController(SDL_Window*window)
 {
 	SDL_SysWMinfo systemWindowInfo;
@@ -82,53 +66,10 @@ UIViewController* GameEngine_getTopViewController(UIViewController* controller)
 	}
 	return controller;
 }
-#endif
 
-#if defined(__ANDROID__)
-void GameEngine_charToUrlEncoding(char *s, char *enc, char *tb)
-{
-	for (; *s; s++)
-	{
-		if (tb[*s])
-		{
-			sprintf(enc, "%c", tb[*s]);
-		}
-		else
-		{
-			sprintf(enc, "%%%02X", *s);
-		}
-		while (*++enc);
-	}
-}
-
-GameEngine::String GameEngine_urlencode(char*str)
-{
-	int length = strlen(str)+1;
-	char* enc = new char[length * 3];
-	
-	char rfc3986[256] = {0};
-	char html5[256] = {0};
-	
-	int i;
-	for (i = 0; i < 256; i++)
-	{
-		rfc3986[i] = isalnum(i)||i == '~'||i == '-'||i == '.'||i == '_'
-		? i : 0;
-		html5[i] = isalnum(i)||i == '*'||i == '-'||i == '.'||i == '_'
-		? i : (i == ' ') ? '+' : 0;
-	}
-	
-	GameEngine_charToUrlEncoding(str, enc, rfc3986);
-	GameEngine::String result = enc;
-	delete enc;
-	
-	return result;
-}
-#endif
 
 void openURL(const char*url, SDL_Window*window)
 {
-#if defined(__APPLE__) && (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1)
 	if(window==NULL)
 	{
 		[[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithUTF8String:url]]];
@@ -149,16 +90,11 @@ void openURL(const char*url, SDL_Window*window)
 			SDL_Delay(30);
 		}
 	}
-	
-#elif defined(__ANDROID__)
-	GameEngine::String command = (GameEngine::String)"./adb shell am start -a android.intent.action.VIEW -d " + url;
-	system(command);
-#endif
 }
+
 
 void writeEmail(SDL_Window*window, const char*recipient, const char*subject, const char*body)
 {
-#if defined(__APPLE__) && (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1)
 	MailViewController *mailer = [[MailViewController alloc] init];
 	//SDL_HideWindow(window);
 	UIViewController*viewCtrl = getSDLViewController(window);
@@ -174,57 +110,24 @@ void writeEmail(SDL_Window*window, const char*recipient, const char*subject, con
 		updateAppEvents();
 		SDL_Delay(30);
 	}
-	
-#elif defined(__ANDROID__)
-	GameEngine::String subj = subject;
-	GameEngine::String bod = body;
-	
-	GameEngine::String url = (GameEngine::String)"mailto:" + recipient + "?subject=" + GameEngine_urlencode(subj) + "&body=" + GameEngine_urlencode(bod);
-	GameEngine::String command = (GameEngine::String)"./adb shell am start -a android.intent.action.VIEW -d " + url;
-	system(command);
-#endif
 }
 
-void getDeviceModel(char*deviceString)
+std::string getDeviceModel()
 {
-#if defined(__APPLE__) && (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1)
-	if(deviceString!=NULL)
-	{
-		UIDevice*device = [UIDevice currentDevice];
-		strcpy(deviceString, [[device model] UTF8String]);
-	}
-	
-#else
-	//TODO add getDeviceModel for android
-	if(deviceString!=NULL)
-	{
-		strcpy(deviceString, "Unknown");
-	}
-#endif
+	UIDevice* device = [UIDevice currentDevice];
+	return [[device model] UTF8String];
 }
 
-void getDeviceName(char*nameString)
+std::string getDeviceName()
 {
-#if defined(__APPLE__) && (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1)
-	if(nameString!=NULL)
-	{
-		UIDevice*device = [UIDevice currentDevice];
-		strcpy(nameString, [[device name] UTF8String]);
-	}
-	
-#else
-	if(nameString!=NULL)
-	{
-		strcpy(nameString, "Unknown");
-	}
-#endif
+	UIDevice*device = [UIDevice currentDevice];
+	return [[device name] UTF8String];
 }
 
 
 
 void iCade_enable(bool toggle, SDL_Window*window)
 {
-#if defined(__APPLE__) && (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1)
 	if(toggle && iCade_receiver==nil)
 	{
 		iCade_receiver = [[iCadeControllerReceiver alloc] initWithFrame:CGRectMake(0,0,0,0)];
@@ -239,58 +142,46 @@ void iCade_enable(bool toggle, SDL_Window*window)
 		[iCade_receiver removeFromSuperview];
 		iCade_receiver = nil;
 	}
-#endif
 }
 
 bool iCade_enabled()
 {
-#if defined(__APPLE__) && (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1)
-	if(iCade_receiver!=nil)
+	if(iCade_receiver != nil)
 	{
 		return true;
 	}
-#endif
 	return false;
 }
 
 void iCade_setStateChangedCallback(iCadeEventCallback callback)
 {
 	iCade_stateChangedCallback = callback;
-#if defined(__APPLE__) && (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1)
 	if(iCade_receiver!=nil)
 	{
 		iCade_receiver.stateChangedCallback = callback;
 	}
-#endif
 }
 
 void iCade_setButtonDownCallback(iCadeEventCallback callback)
 {
 	iCade_buttonDownCallback = callback;
-#if defined(__APPLE__) && (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1)
 	if(iCade_receiver!=nil)
 	{
 		iCade_receiver.buttonDownCallback = callback;
 	}
-#endif
 }
 
 void iCade_setButtonUpCallback(iCadeEventCallback callback)
 {
 	iCade_buttonUpCallback = callback;
-#if defined(__APPLE__) && (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1)
 	if(iCade_receiver!=nil)
 	{
 		iCade_receiver.buttonUpCallback = callback;
 	}
-#endif
 }
-
-
 
 void SDL_ShowSimpleMessageBoxFixed(const char*title, const char*message)
 {
-#if defined(__APPLE__) && (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1)
 	UIAlertController* alert = [UIAlertController alertControllerWithTitle:[NSString stringWithUTF8String:title]
 																   message:[NSString stringWithUTF8String:message]
 															preferredStyle:UIAlertControllerStyleAlert];
@@ -309,16 +200,10 @@ void SDL_ShowSimpleMessageBoxFixed(const char*title, const char*message)
 		updateAppEvents();
 		SDL_Delay(30);
 	}
-	
-#else
-	SDL_Window* window = GameEngine::Application::getWindow();
-	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, title, message, window);
-#endif
 }
 
 int SDL_ShowMessageBoxFixed(const char*title, const char*message, const char**options, int numOptions)
 {
-#if defined(__APPLE__) && (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1)
 	UIAlertController* alert = [UIAlertController alertControllerWithTitle:[NSString stringWithUTF8String:title]
 																   message:[NSString stringWithUTF8String:message]
 															preferredStyle:UIAlertControllerStyleAlert];
@@ -343,67 +228,7 @@ int SDL_ShowMessageBoxFixed(const char*title, const char*message, const char**op
 	}
 	
 	return result;
-	
-#else
-	SDL_Window* window = GameEngine::Application::getWindow();
-	SDL_MessageBoxButtonData*buttons = new SDL_MessageBoxButtonData[numOptions];
-	for(int i=0; i<numOptions; i++)
-	{
-		SDL_MessageBoxButtonData button = {0, i, (char*)options[i]};
-		buttons[i] = button;
-	}
-	SDL_MessageBoxData messageBoxData = {SDL_MESSAGEBOX_INFORMATION, window, (const char*)title, (const char*)message, numOptions, buttons, NULL};
-	int buttonid = 0;
-	SDL_ShowMessageBox(&messageBoxData, &buttonid);
-	delete[] buttons;
-	return buttonid;
-#endif
 }
-
-void GameEngine_Log(char*text)
-{
-#if defined(__APPLE__) && (TARGET_OS_IPHONE == 1 || TARGET_IPHONE_SIMULATOR == 1)
-	NSLog(@"%@", [NSString stringWithUTF8String:text]);
-	
-#elif defined(__ANDROID__)
-	__android_log_print(ANDROID_LOG_INFO, "SDL", "%s", text);
-#else
-	std::cout << text;
-#endif
-}
-
-#if defined(_WIN32)
-	typedef struct timeval
-	{
-		long tv_sec;
-		long tv_usec;
-	} timeval;
-
-	int gettimeofday(struct timeval * tp, struct timezone * tzp)
-	{
-		// Note: some broken versions only have 8 trailing zero's, the correct epoch has 9 trailing zero's
-		static const uint64_t EPOCH = ((uint64_t) 116444736000000000ULL);
-
-		SYSTEMTIME  system_time;
-		FILETIME    file_time;
-		uint64_t    time;
-
-		GetSystemTime( &system_time );
-		SystemTimeToFileTime( &system_time, &file_time );
-		time =  ((uint64_t)file_time.dwLowDateTime )      ;
-		time += ((uint64_t)file_time.dwHighDateTime) << 32;
-
-		tp->tv_sec  = (long) ((time - EPOCH) / 10000000L);
-		tp->tv_usec = (long) (system_time.wMilliseconds * 1000);
-		return 0;
-	}
 #endif
 
-long getUptimeMillis(void)
-{
-	struct timeval tv;
-	gettimeofday(&tv,NULL);
-	//return (long)((long)((long)tv.tv_sec*1000) + (long)((long)tv.tv_usec/1000));
-	long elapsed = (long)(tv.tv_sec)*1000 + (long)tv.tv_usec/1000;
-	return elapsed;
-}
+#endif

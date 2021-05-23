@@ -133,10 +133,6 @@
 		A059AE651FDCAF760041E164 /* ProjectileManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A059ADE41FDCAF750041E164 /* ProjectileManager.cpp */; };
 		A059AE661FDCAF760041E164 /* SoundManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A059ADE71FDCAF750041E164 /* SoundManager.cpp */; };
 		A059AE671FDCAF760041E164 /* Stage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A059ADE91FDCAF750041E164 /* Stage.cpp */; };
-		A059AE6E1FDCB1550041E164 /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = A059AE6D1FDCB1550041E164 /* Fonts */; };
-		A059AE701FDCB1760041E164 /* Images in Resources */ = {isa = PBXBuildFile; fileRef = A059AE6F1FDCB1740041E164 /* Images */; };
-		A059AE721FDCB1820041E164 /* Music in Resources */ = {isa = PBXBuildFile; fileRef = A059AE711FDCB1820041E164 /* Music */; };
-		A059AE741FDCB18C0041E164 /* Sounds in Resources */ = {isa = PBXBuildFile; fileRef = A059AE731FDCB18B0041E164 /* Sounds */; };
 		A059AEA91FDCB2910041E164 /* chaiscript_prelude.chai in Resources */ = {isa = PBXBuildFile; fileRef = A059AEA01FDCB2910041E164 /* chaiscript_prelude.chai */; };
 		A059AED91FDCB4600041E164 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A059AED11FDCB4500041E164 /* CoreGraphics.framework */; };
 		A059AEDA1FDCB4640041E164 /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A059AED41FDCB4500041E164 /* GameController.framework */; };
@@ -155,8 +151,12 @@
 		A08E887F2141EDC100D91091 /* HapticFeedbackiOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = A08E88732141EDC000D91091 /* HapticFeedbackiOS.mm */; };
 		A08E88802141EDC100D91091 /* HapticFeedback.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A08E887E2141EDC100D91091 /* HapticFeedback.cpp */; };
 		A51977522651DCCD0015D996 /* libSDL_p2p.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A059AECF1FDCB35C0041E164 /* libSDL_p2p.a */; };
-		A588B8482651BAAC001F7DD3 /* libSDL2_ttf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A588B8402651BA9C001F7DD3 /* libSDL2_ttf.a */; };
+		A56E51DA2659AB660091258A /* libSDL2_ttf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A56E51D02659AB540091258A /* libSDL2_ttf.a */; };
 		A588B8632651BAFA001F7DD3 /* CoreHaptics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A588B8622651BAFA001F7DD3 /* CoreHaptics.framework */; };
+		A59574F12659CBEA00E32A92 /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = A59574ED2659CBEA00E32A92 /* Fonts */; };
+		A59574F22659CBEA00E32A92 /* Sounds in Resources */ = {isa = PBXBuildFile; fileRef = A59574EE2659CBEA00E32A92 /* Sounds */; };
+		A59574F32659CBEA00E32A92 /* Images in Resources */ = {isa = PBXBuildFile; fileRef = A59574EF2659CBEA00E32A92 /* Images */; };
+		A59574F42659CBEA00E32A92 /* Music in Resources */ = {isa = PBXBuildFile; fileRef = A59574F02659CBEA00E32A92 /* Music */; };
 		A596F83426519F1800F182F0 /* Program.mm in Sources */ = {isa = PBXBuildFile; fileRef = A596F83326519F1800F182F0 /* Program.mm */; };
 		A596FBAE2651B74B00F182F0 /* libSDL2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A596FB5A2651B6C000F182F0 /* libSDL2.a */; };
 		A596FBAF2651B7A700F182F0 /* libSDL2_image.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A059AEBD1FDCB33B0041E164 /* libSDL2_image.a */; };
@@ -185,19 +185,54 @@
 			remoteGlobalIDString = A51975662651D3A80015D996;
 			remoteInfo = libSDL_p2p;
 		};
-		A588B83F2651BA9C001F7DD3 /* PBXContainerItemProxy */ = {
+		A56E51C72659AB540091258A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = A588B8382651BA9C001F7DD3 /* SDL_ttf.xcodeproj */;
+			containerPortal = A56E51BD2659AB540091258A /* SDL_ttf.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BE48FD6707AFA17000BB41DA;
+			remoteInfo = Framework;
+		};
+		A56E51C92659AB540091258A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A56E51BD2659AB540091258A /* SDL_ttf.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A75FDAF323E3582C00529352;
+			remoteInfo = "Framework-iOS";
+		};
+		A56E51CB2659AB540091258A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A56E51BD2659AB540091258A /* SDL_ttf.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A75FDB0A23E36B4300529352;
+			remoteInfo = "Framework-tvOS";
+		};
+		A56E51CD2659AB540091258A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A56E51BD2659AB540091258A /* SDL_ttf.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = BE48FD6E07AFA17000BB41DA;
-			remoteInfo = "libSDL_ttf-iOS";
+			remoteInfo = "Static Library";
 		};
-		A588B8412651BA9C001F7DD3 /* PBXContainerItemProxy */ = {
+		A56E51CF2659AB540091258A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = A588B8382651BA9C001F7DD3 /* SDL_ttf.xcodeproj */;
+			containerPortal = A56E51BD2659AB540091258A /* SDL_ttf.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = AA53152E1FE1016F0025C9BE;
-			remoteInfo = "libSDL_ttf-tvOS";
+			remoteGlobalIDString = A75FDB2E23E3825200529352;
+			remoteInfo = "Static Library-iOS";
+		};
+		A56E51D12659AB540091258A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A56E51BD2659AB540091258A /* SDL_ttf.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A75FDB3923E3827100529352;
+			remoteInfo = "Static Library-tvOS";
+		};
+		A56E51D32659AB540091258A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A56E51BD2659AB540091258A /* SDL_ttf.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BE48FD7207AFA17000BB41DA;
+			remoteInfo = "Create DMG";
 		};
 		A596FB382651B6BD00F182F0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -349,7 +384,6 @@
 		A059ACFB1FDCAF750041E164 /* iCadeControllerReceiver.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = iCadeControllerReceiver.mm; sourceTree = "<group>"; };
 		A059ACFC1FDCAF750041E164 /* MailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MailViewController.h; sourceTree = "<group>"; };
 		A059ACFD1FDCAF750041E164 /* MailViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MailViewController.mm; sourceTree = "<group>"; };
-		A059AD001FDCAF750041E164 /* ObjCBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjCBridge.h; sourceTree = "<group>"; };
 		A059AD011FDCAF750041E164 /* ObjCBridge.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ObjCBridge.mm; sourceTree = "<group>"; };
 		A059AD021FDCAF750041E164 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
 		A059AD031FDCAF750041E164 /* WebViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WebViewController.mm; sourceTree = "<group>"; };
@@ -564,10 +598,6 @@
 		A059ADE81FDCAF750041E164 /* SoundManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundManager.h; sourceTree = "<group>"; };
 		A059ADE91FDCAF750041E164 /* Stage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Stage.cpp; sourceTree = "<group>"; };
 		A059ADEA1FDCAF750041E164 /* Stage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Stage.h; sourceTree = "<group>"; };
-		A059AE6D1FDCB1550041E164 /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Fonts; path = ../../Fonts; sourceTree = "<group>"; };
-		A059AE6F1FDCB1740041E164 /* Images */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Images; path = ../../Images; sourceTree = "<group>"; };
-		A059AE711FDCB1820041E164 /* Music */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Music; path = ../../Music; sourceTree = "<group>"; };
-		A059AE731FDCB18B0041E164 /* Sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Sounds; path = ../../Sounds; sourceTree = "<group>"; };
 		A059AE7F1FDCB2910041E164 /* chaiscript.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = chaiscript.hpp; sourceTree = "<group>"; };
 		A059AE801FDCB2910041E164 /* chaiscript_defines.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = chaiscript_defines.hpp; sourceTree = "<group>"; };
 		A059AE811FDCB2910041E164 /* chaiscript_stdlib.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = chaiscript_stdlib.hpp; sourceTree = "<group>"; };
@@ -624,8 +654,13 @@
 		A08E88732141EDC000D91091 /* HapticFeedbackiOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HapticFeedbackiOS.mm; sourceTree = "<group>"; };
 		A08E887D2141EDC000D91091 /* HapticFeedback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HapticFeedback.h; sourceTree = "<group>"; };
 		A08E887E2141EDC100D91091 /* HapticFeedback.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HapticFeedback.cpp; sourceTree = "<group>"; };
-		A588B8382651BA9C001F7DD3 /* SDL_ttf.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDL_ttf.xcodeproj; path = "SDL_ttf/Xcode-iOS/SDL_ttf.xcodeproj"; sourceTree = "<group>"; };
+		A56E51BD2659AB540091258A /* SDL_ttf.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDL_ttf.xcodeproj; path = SDL_ttf/Xcode/SDL_ttf.xcodeproj; sourceTree = "<group>"; };
 		A588B8622651BAFA001F7DD3 /* CoreHaptics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreHaptics.framework; path = System/Library/Frameworks/CoreHaptics.framework; sourceTree = SDKROOT; };
+		A59573E82659C6CC00E32A92 /* SDL_ext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDL_ext.h; sourceTree = "<group>"; };
+		A59574ED2659CBEA00E32A92 /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Fonts; sourceTree = "<group>"; };
+		A59574EE2659CBEA00E32A92 /* Sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Sounds; sourceTree = "<group>"; };
+		A59574EF2659CBEA00E32A92 /* Images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Images; sourceTree = "<group>"; };
+		A59574F02659CBEA00E32A92 /* Music */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Music; sourceTree = "<group>"; };
 		A596F83326519F1800F182F0 /* Program.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Program.mm; sourceTree = "<group>"; };
 		A596FB412651B6C000F182F0 /* SDL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDL.xcodeproj; path = SDL/Xcode/SDL/SDL.xcodeproj; sourceTree = "<group>"; };
 		A596FC582651B89C00F182F0 /* SDL_mixer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDL_mixer.xcodeproj; path = "SDL_mixer/Xcode-iOS/SDL_mixer.xcodeproj"; sourceTree = "<group>"; };
@@ -641,13 +676,13 @@
 				A059AEE01FDCB4760041E164 /* UIKit.framework in Frameworks */,
 				A059AEE21FDCB48F0041E164 /* AVFoundation.framework in Frameworks */,
 				A51977522651DCCD0015D996 /* libSDL_p2p.a in Frameworks */,
+				A56E51DA2659AB660091258A /* libSDL2_ttf.a in Frameworks */,
 				A059AEDB1FDCB4670041E164 /* Foundation.framework in Frameworks */,
 				A059AEDF1FDCB4720041E164 /* QuartzCore.framework in Frameworks */,
 				A059AED91FDCB4600041E164 /* CoreGraphics.framework in Frameworks */,
 				A059AEDE1FDCB46F0041E164 /* MobileCoreServices.framework in Frameworks */,
 				A059AEE41FDCB49D0041E164 /* AudioToolbox.framework in Frameworks */,
 				A588B8632651BAFA001F7DD3 /* CoreHaptics.framework in Frameworks */,
-				A588B8482651BAAC001F7DD3 /* libSDL2_ttf.a in Frameworks */,
 				A596FBAE2651B74B00F182F0 /* libSDL2.a in Frameworks */,
 				A596FBAF2651B7A700F182F0 /* libSDL2_image.a in Frameworks */,
 				A059AEDC1FDCB46A0041E164 /* GameKit.framework in Frameworks */,
@@ -663,13 +698,8 @@
 		A059ACB81FDCAE740041E164 = {
 			isa = PBXGroup;
 			children = (
-				A059ACDA1FDCAF750041E164 /* Source */,
-				A059AE6D1FDCB1550041E164 /* Fonts */,
-				A059AE6F1FDCB1740041E164 /* Images */,
-				A059AE711FDCB1820041E164 /* Music */,
-				A059AE731FDCB18B0041E164 /* Sounds */,
+				A59574EB2659CBB900E32A92 /* iSSB */,
 				A059ACC31FDCAE740041E164 /* Resources */,
-				A059AE751FDCB19F0041E164 /* External */,
 				A059ACC21FDCAE740041E164 /* Products */,
 				A059AED01FDCB4500041E164 /* Frameworks */,
 			);
@@ -705,8 +735,7 @@
 				A059AD3C1FDCAF750041E164 /* Program.cpp */,
 				A596F83326519F1800F182F0 /* Program.mm */,
 			);
-			name = Source;
-			path = ../../Source;
+			path = Source;
 			sourceTree = "<group>";
 		};
 		A059ACDD1FDCAF750041E164 /* GameEngine */ = {
@@ -767,11 +796,11 @@
 				A059ACFB1FDCAF750041E164 /* iCadeControllerReceiver.mm */,
 				A059ACFC1FDCAF750041E164 /* MailViewController.h */,
 				A059ACFD1FDCAF750041E164 /* MailViewController.mm */,
-				A059AD001FDCAF750041E164 /* ObjCBridge.h */,
 				A059AD011FDCAF750041E164 /* ObjCBridge.mm */,
 				A059AD021FDCAF750041E164 /* WebViewController.h */,
 				A059AD031FDCAF750041E164 /* WebViewController.mm */,
 				A059AD041FDCAF750041E164 /* WinBridge.cpp */,
+				A59573E82659C6CC00E32A92 /* SDL_ext.h */,
 			);
 			path = CodeBridge;
 			sourceTree = "<group>";
@@ -1150,8 +1179,7 @@
 				A059AE7C1FDCB2910041E164 /* ChaiScript */,
 				A059AE761FDCB1DD0041E164 /* SDL */,
 			);
-			name = External;
-			path = ../../External;
+			path = External;
 			sourceTree = "<group>";
 		};
 		A059AE761FDCB1DD0041E164 /* SDL */ = {
@@ -1160,7 +1188,7 @@
 				A596FB412651B6C000F182F0 /* SDL.xcodeproj */,
 				A059AEB81FDCB33B0041E164 /* SDL_image.xcodeproj */,
 				A596FC582651B89C00F182F0 /* SDL_mixer.xcodeproj */,
-				A588B8382651BA9C001F7DD3 /* SDL_ttf.xcodeproj */,
+				A56E51BD2659AB540091258A /* SDL_ttf.xcodeproj */,
 				A059AECA1FDCB35C0041E164 /* SDL_p2p.xcodeproj */,
 			);
 			path = SDL;
@@ -1297,13 +1325,40 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		A588B8392651BA9C001F7DD3 /* Products */ = {
+		A56E51BE2659AB540091258A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A588B8402651BA9C001F7DD3 /* libSDL2_ttf.a */,
-				A588B8422651BA9C001F7DD3 /* libSDL2_ttf.a */,
+				A56E51C82659AB540091258A /* SDL2_ttf.framework */,
+				A56E51CA2659AB540091258A /* SDL2_ttf.framework */,
+				A56E51CC2659AB540091258A /* SDL2_ttf.framework */,
+				A56E51CE2659AB540091258A /* libSDL2_ttf.a */,
+				A56E51D02659AB540091258A /* libSDL2_ttf.a */,
+				A56E51D22659AB540091258A /* libSDL2_ttf.a */,
+				A56E51D42659AB540091258A /* Create DMG */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		A59574E32659CB9A00E32A92 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				A59574ED2659CBEA00E32A92 /* Fonts */,
+				A59574EF2659CBEA00E32A92 /* Images */,
+				A59574F02659CBEA00E32A92 /* Music */,
+				A59574EE2659CBEA00E32A92 /* Sounds */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
+		A59574EB2659CBB900E32A92 /* iSSB */ = {
+			isa = PBXGroup;
+			children = (
+				A59574E32659CB9A00E32A92 /* Assets */,
+				A059ACDA1FDCAF750041E164 /* Source */,
+				A059AE751FDCB19F0041E164 /* External */,
+			);
+			name = iSSB;
+			path = ../..;
 			sourceTree = "<group>";
 		};
 		A596FB422651B6C000F182F0 /* Products */ = {
@@ -1399,8 +1454,8 @@
 					ProjectRef = A059AECA1FDCB35C0041E164 /* SDL_p2p.xcodeproj */;
 				},
 				{
-					ProductGroup = A588B8392651BA9C001F7DD3 /* Products */;
-					ProjectRef = A588B8382651BA9C001F7DD3 /* SDL_ttf.xcodeproj */;
+					ProductGroup = A56E51BE2659AB540091258A /* Products */;
+					ProjectRef = A56E51BD2659AB540091258A /* SDL_ttf.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -1432,18 +1487,53 @@
 			remoteRef = A519773F2651DCC40015D996 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		A588B8402651BA9C001F7DD3 /* libSDL2_ttf.a */ = {
+		A56E51C82659AB540091258A /* SDL2_ttf.framework */ = {
 			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libSDL2_ttf.a;
-			remoteRef = A588B83F2651BA9C001F7DD3 /* PBXContainerItemProxy */;
+			fileType = wrapper.framework;
+			path = SDL2_ttf.framework;
+			remoteRef = A56E51C72659AB540091258A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		A588B8422651BA9C001F7DD3 /* libSDL2_ttf.a */ = {
+		A56E51CA2659AB540091258A /* SDL2_ttf.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SDL2_ttf.framework;
+			remoteRef = A56E51C92659AB540091258A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A56E51CC2659AB540091258A /* SDL2_ttf.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SDL2_ttf.framework;
+			remoteRef = A56E51CB2659AB540091258A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A56E51CE2659AB540091258A /* libSDL2_ttf.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libSDL2_ttf.a;
-			remoteRef = A588B8412651BA9C001F7DD3 /* PBXContainerItemProxy */;
+			remoteRef = A56E51CD2659AB540091258A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A56E51D02659AB540091258A /* libSDL2_ttf.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSDL2_ttf.a;
+			remoteRef = A56E51CF2659AB540091258A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A56E51D22659AB540091258A /* libSDL2_ttf.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSDL2_ttf.a;
+			remoteRef = A56E51D12659AB540091258A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A56E51D42659AB540091258A /* Create DMG */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = "Create DMG";
+			remoteRef = A56E51D32659AB540091258A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		A596FB392651B6BD00F182F0 /* libSDL2_image.a */ = {
@@ -1565,14 +1655,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A59574F22659CBEA00E32A92 /* Sounds in Resources */,
+				A59574F12659CBEA00E32A92 /* Fonts in Resources */,
+				A59574F32659CBEA00E32A92 /* Images in Resources */,
 				A059AF1D1FDCC8C80041E164 /* BrokenPhysics.png in Resources */,
-				A059AE721FDCB1820041E164 /* Music in Resources */,
-				A059AE701FDCB1760041E164 /* Images in Resources */,
 				A059ACD11FDCAE740041E164 /* LaunchScreen.storyboard in Resources */,
 				A059ACCE1FDCAE740041E164 /* Assets.xcassets in Resources */,
+				A59574F42659CBEA00E32A92 /* Music in Resources */,
 				A059AEA91FDCB2910041E164 /* chaiscript_prelude.chai in Resources */,
-				A059AE6E1FDCB1550041E164 /* Fonts in Resources */,
-				A059AE741FDCB18C0041E164 /* Sounds in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1846,7 +1936,7 @@
 					../../External/ChaiScript/include,
 					../../External/SDL/SDL/include,
 					../../External/SDL/SDL_image,
-					../../External/SDL/SDL_mixer,
+					../../External/SDL/SDL_mixer/include,
 					../../External/SDL/SDL_ttf,
 					../../External/SDL/SDL_p2p/include,
 				);
@@ -1870,7 +1960,7 @@
 					../../External/ChaiScript/include,
 					../../External/SDL/SDL/include,
 					../../External/SDL/SDL_image,
-					../../External/SDL/SDL_mixer,
+					../../External/SDL/SDL_mixer/include,
 					../../External/SDL/SDL_ttf,
 					../../External/SDL/SDL_p2p/include,
 				);

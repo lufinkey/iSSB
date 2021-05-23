@@ -47,7 +47,11 @@ namespace GameEngine
 	
 	void HapticFeedback::buzz(long milliseconds, float strength) {
 		if(sdlHaptic != nullptr) {
-			SDL_HapticRumblePlay(sdlHaptic, (float)strength, (Uint32)milliseconds);
+			Console::WriteLine("calling SDL_HapticRumblePlay");
+			int result = SDL_HapticRumblePlay(sdlHaptic, (float)strength, (Uint32)milliseconds);
+			if(result != 0) {
+				Console::WriteLine((String)"Error playing haptic feedback: "+SDL_GetError());
+			}
 		}
 	}
 	

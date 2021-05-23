@@ -16,7 +16,7 @@
 #include "Input/Keys.h"
 #include "Input/TouchPoint.h"
 
-#include "CodeBridge/ObjCBridge.h"
+#include "CodeBridge/CPPBridge.h"
 
 #include "Output/Console.h"
 

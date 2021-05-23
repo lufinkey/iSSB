@@ -36,7 +36,7 @@ namespace GameEngine
 		return true;
 	}
 	
-	bool AssetManager::loadImage(const String&imgName)
+	bool AssetManager::loadImage(const String& imgName)
 	{
 		if(!alreadyStoredImage(imgName))
 		{

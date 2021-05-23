@@ -29,10 +29,10 @@ namespace GameEngine
 		DataVoid copy(unsigned int byteIndex, unsigned int size);
 		void setData(void*data, unsigned int size);
 		
-		void add(void*data, unsigned int size);
-		void add(unsigned int byteIndex, void*data, unsigned int size);
+		void add(const void*data, unsigned int size);
+		void add(unsigned int byteIndex, const void* data, unsigned int size);
 		void remove(unsigned int byteIndex, unsigned int size);
-		void set(unsigned int byteIndex, void*data, unsigned int size);
+		void set(unsigned int byteIndex, const void* data, unsigned int size);
 		void*get(unsigned int byteIndex);
 		
 		void add(const DataVoid&data);

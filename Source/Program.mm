@@ -1,10 +1,11 @@
 
+#ifdef __APPLE__
 #import <Foundation/Foundation.h>
+
 #include "Game.h"
 #include <iostream>
 #include <SDL_main.h>
 
-#ifdef __APPLE__
 int main(int argc, char *argv[]) {
 	@autoreleasepool {
 		//

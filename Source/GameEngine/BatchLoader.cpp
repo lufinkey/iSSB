@@ -2,6 +2,7 @@
 #include "BatchLoader.h"
 #include "Application.h"
 #include "AssetManager.h"
+#include "Output/Console.h"
 
 namespace GameEngine
 {

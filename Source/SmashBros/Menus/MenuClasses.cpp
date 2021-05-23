@@ -2091,11 +2091,8 @@ namespace SmashBros
 	
 	void BluetoothMenu::Initialize()
 	{
-		char buffer[40];
-		getDeviceName(buffer);
-		selfCard = new PeerCard(buffer,"");
-		getDeviceModel(buffer);
-		selfCard->setDevice(buffer);
+		selfCard = new PeerCard(getDeviceName(),"");
+		selfCard->setDevice(getDeviceModel());
 		
 		peerCard = new PeerCard("", "");
 		

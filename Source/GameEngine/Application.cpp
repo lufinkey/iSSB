@@ -13,7 +13,8 @@
 #include "Sound/Sound.h"
 #include "Sound/Music.h"
 #include "Util/HapticFeedback.h"
-#include "CodeBridge/ObjCBridge.h"
+#include "CodeBridge/SDL_ext.h"
+#include "CodeBridge/CPPBridge.h"
 
 #if defined(__APPLE__)
 	#include "TargetConditionals.h"
@@ -202,9 +203,7 @@ namespace GameEngine
 			
 			Sound::init();
 			Music::init();
-			
-			GameEngine_init();
-			
+
 			HapticFeedback::initialize();
 			
 			{
@@ -319,6 +318,15 @@ namespace GameEngine
 				{
 					realFPS = (1000/timeDif);
 				}
+				/*if(minimizing) {
+					lastFrameTime = getUptimeMillis();
+					Console::WriteLine("Window is minimized, waiting");
+					SDL_Delay(1000);
+					if(!loaded) {
+						redrawLoadScreen();
+					}
+					continue;
+				}*/
 				firstFrame = getUptimeMillis();
 				
 				if(loaded)
@@ -431,6 +439,9 @@ namespace GameEngine
 				{
 					updateEvents();
 					View::Update(*graphics);
+					/*if(minimizing) {
+						continue;
+					}*/
 					/*if(loadThread==NULL)
 					{
 						loadThread = new LoadThread(this);
@@ -445,6 +456,7 @@ namespace GameEngine
 						delete loadThread;
 						loadThread = NULL;
 					}*/
+					Console::WriteLine("LoadContent");
 					LoadContent();
 					loaded = true;
 					lastFrameTime = getUptimeMillis();
@@ -504,6 +516,11 @@ namespace GameEngine
 			{
 				case SDL_WINDOWEVENT_CLOSE:
 				case SDL_QUIT:
+				if(event.type == SDL_QUIT) {
+					Console::WriteLine("Received Event SDL_QUIT");
+				} else {
+					Console::WriteLine("Received Event SDL_WINDOWEVENT_CLOSE");
+				}
 				this->UnloadContent();
 				graphics->renderer = NULL;
 				SDL_DestroyRenderer(renderer);
@@ -514,10 +531,14 @@ namespace GameEngine
 				break;
 				
 				case SDL_APP_WILLENTERBACKGROUND:
+				minimizing = true;
+				Console::WriteLine("Received Event SDL_APP_WILLENTERBACKGROUND");
 				Mix_PauseMusic();
 				break;
 				
 				case SDL_APP_DIDENTERFOREGROUND:
+				minimizing = false;
+				Console::WriteLine("Received Event SDL_APP_DIDENTERFOREGROUND");
 				Mix_ResumeMusic();
 				break;
 
@@ -1117,8 +1138,7 @@ namespace GameEngine
 	void Application::incrementLoad(float incr)
 	{
 		game->updateEvents();
-		if(closing)
-		{
+		if(closing) {
 			return;
 		}
 

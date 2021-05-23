@@ -224,12 +224,11 @@ namespace SmashBros
 		int length = version.length() + 1;
 		data.add(&length, sizeof(length));
 		data.add((char*)version, (unsigned int)length);
-		
-		char buffer[40];
-		getDeviceModel(buffer);
-		length = strlen(buffer) + 1;
+
+		auto deviceModel = getDeviceModel();
+		length = deviceModel.length() + 1;
 		data.add(&length, sizeof(length));
-		data.add(buffer, (unsigned int)length);
+		data.add((const void*)deviceModel.c_str(), (unsigned int)length);
 		
 		for(int i=0; i<Global::totalItems; i++)
 		{

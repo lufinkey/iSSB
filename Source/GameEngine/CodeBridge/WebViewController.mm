@@ -1,4 +1,5 @@
 
+#ifdef __APPLE__
 #import "WebViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
@@ -173,3 +174,4 @@
 }
 
 @end
+#endif

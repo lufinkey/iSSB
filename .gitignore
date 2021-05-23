@@ -58,10 +58,19 @@ Debug/
 Release/
 build/
 
-#CodeLite
+# CodeLite
 /Projects/Codelite/.*
 /Projects/Codelite/Debug
 /Projects/Codelite/Release
 /Projects/Codelite/Makefile
 /Projects/Codelite/*.txt
 /Projects/Codelite/*.mk
+
+# Android Studio
+.idea
+.gradle
+local.properties
+*.iml
+buck-out/
+\.buckd/
+*.keystore

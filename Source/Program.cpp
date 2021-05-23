@@ -1,6 +1,7 @@
 
 #include "Game.h"
 #include <iostream>
+#include <SDL_main.h>
 
 #ifdef _WIN32
 #include "GameEngine/CodeBridge/CPPBridge.h"
