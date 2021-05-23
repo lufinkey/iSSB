@@ -1,6 +1,6 @@
 
-#import <Foundation/Foundation.h>
 #ifdef __APPLE__
+#import <Foundation/Foundation.h>
 #include "TargetConditionals.h"
 #if (TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR)
 #import <UIKit/UIKit.h>

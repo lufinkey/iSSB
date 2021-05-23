@@ -308,6 +308,7 @@ namespace SmashBros
 
 	void Menus::loadMenus()
 	{
+		AssetManager::loadFont("Fonts/arial.ttf");
 		description = new TextActor(235,578,"", AssetManager::getFont("Fonts/arial.ttf", Font::BOLD,20),Color::BLACK);
 		description->setAlignment(TextActor::ALIGN_BOTTOMLEFT);
 		

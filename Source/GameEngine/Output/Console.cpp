@@ -4,7 +4,7 @@
 #include "Console.h"
 #include <iostream>
 #include "SDL_rwops.h"
-#include "../CodeBridge/ObjCBridge.h"
+#include "../CodeBridge/CPPBridge.h"
 
 namespace GameEngine
 {
@@ -14,7 +14,7 @@ namespace GameEngine
 	void Console::Write(const String&text)
 	{
 		//std::cout << text;
-		GameEngine_Log(text);
+		GameEngine_Log((const char*)text);
 		if(tofile)
 		{
 			SDL_RWops*file = SDL_RWFromFile(outputFile, "a+");
@@ -24,10 +24,10 @@ namespace GameEngine
 		}
 	}
 	
-	void Console::WriteLine(const String&text)
+	void Console::WriteLine(const String& text)
 	{
 		//std::cout << text << std::endl;
-		GameEngine_Log(text + '\n');
+		GameEngine_Log((const char*)(text + '\n'));
 		if(tofile)
 		{
 			SDL_RWops*file = SDL_RWFromFile(outputFile, "a+");

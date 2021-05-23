@@ -126,12 +126,12 @@ namespace GameEngine
 		}
 	}
 	
-	void DataVoid::add(void*data, unsigned int size)
+	void DataVoid::add(const void* data, unsigned int size)
 	{
 		if(dataBytes == NULL)
 		{
 			dataBytes = (Byte*)malloc(size);
-			Byte*copyBytes = (Byte*)data;
+			const Byte* copyBytes = (const Byte*)data;
 			for(unsigned int i=0; i<size; i++)
 			{
 				dataBytes[i] = copyBytes[i];
@@ -142,7 +142,7 @@ namespace GameEngine
 		{
 			unsigned int total2 = total + size;
 			dataBytes = (Byte*)realloc(dataBytes, total2);
-			Byte*copyBytes = (Byte*)data;
+			const Byte* copyBytes = (const Byte*)data;
 			unsigned int counter = 0;
 			for(unsigned int i=total; i<total2; i++)
 			{
@@ -153,14 +153,14 @@ namespace GameEngine
 		}
 	}
 	
-	void DataVoid::add(unsigned int ByteIndex, void*data, unsigned int size)
+	void DataVoid::add(unsigned int ByteIndex, const void*data, unsigned int size)
 	{
 		if(dataBytes == NULL)
 		{
 			if(ByteIndex == 0)
 			{
 				dataBytes = (Byte*)malloc(size);
-				Byte*copyBytes = (Byte*)data;
+				const Byte* copyBytes = (const Byte*)data;
 				for(unsigned int i=0; i<size; i++)
 				{
 					dataBytes[i] = copyBytes[i];
@@ -170,14 +170,14 @@ namespace GameEngine
 			else
 			{
 				//error
-				throw ((char*)((String)"ByteIndex " + ByteIndex + " out of bounds. DataVoid length is 0"));
+				throw std::runtime_error((std::string)"ByteIndex " + std::to_string(ByteIndex) + " out of bounds. DataVoid length is 0");
 			}
 		}
 		else if(ByteIndex <= total)
 		{
 			unsigned int total2 = total+size;
 			dataBytes = (Byte*)realloc(dataBytes, total2);
-			Byte*copyBytes = (Byte*)data;
+			const Byte* copyBytes = (const Byte*)data;
 			unsigned int counter = ByteIndex;
 			for(unsigned int i=(total2-1); i>ByteIndex; i--)
 			{
@@ -194,7 +194,7 @@ namespace GameEngine
 		else
 		{
 			//error
-			throw ((char*)((String)"ByteIndex " + ByteIndex + " out of bounds. DataVoid length is " + total));
+			throw std::runtime_error((std::string)"ByteIndex " + std::to_string(ByteIndex) + " out of bounds. DataVoid length is " + std::to_string(total));
 		}
 	}
 	
@@ -239,7 +239,7 @@ namespace GameEngine
 			else
 			{
 				//error
-				throw ((char*)((String)"ByteIndex " + ByteIndex + " out of bounds. DataVoid length is 0"));
+				throw std::runtime_error((std::string)"ByteIndex " + std::to_string(ByteIndex) + " out of bounds. DataVoid length is 0");
 			}
 		}
 		else if(ByteIndex <= total)
@@ -262,7 +262,7 @@ namespace GameEngine
 		else
 		{
 			//error
-			throw ((char*)((String)"ByteIndex " + ByteIndex + " out of bounds. DataVoid length is " + total));
+			throw std::runtime_error((std::string)"ByteIndex " + std::to_string(ByteIndex) + " out of bounds. DataVoid length is " + std::to_string(total));
 		}
 	}
 	
@@ -295,7 +295,7 @@ namespace GameEngine
 			else
 			{
 				//error
-				throw ((char*)((String)"ByteIndex " + ByteIndex + " out of bounds. DataVoid length is 0"));
+				throw std::runtime_error((std::string)"ByteIndex " + std::to_string(ByteIndex) + " out of bounds. DataVoid length is 0");
 			}
 		}
 		else if(ByteIndex <= total)
@@ -312,7 +312,7 @@ namespace GameEngine
 		else
 		{
 			//error
-			throw ((char*)((String)"ByteIndex " + ByteIndex + " out of bounds. DataVoid length is " + total));
+			throw std::runtime_error((std::string)"ByteIndex " + std::to_string(ByteIndex) + " out of bounds. DataVoid length is " + std::to_string(total));
 		}
 	}
 	
@@ -320,7 +320,7 @@ namespace GameEngine
 	{
 		if(dataBytes==NULL)
 		{
-			throw ((char*)((String)"ByteIndex " + ByteIndex + " and size " + size + " out of bounds. DataVoid length is 0"));
+			throw std::runtime_error((std::string)"ByteIndex " + std::to_string(ByteIndex) + " and size " + std::to_string(size) + " out of bounds. DataVoid length is 0");
 		}
 		else if(ByteIndex<total && (ByteIndex+size)<=total)
 		{
@@ -337,7 +337,7 @@ namespace GameEngine
 		}
 		else
 		{
-			throw ((char*)((String)"ByteIndex " + ByteIndex + " and size " + size + " out of bounds. DataVoid length is " + total));
+			throw std::runtime_error((std::string)"ByteIndex " +std::to_string(ByteIndex) + " and size " + std::to_string(size) + " out of bounds. DataVoid length is " + std::to_string(total));
 		}
 	}
 	
@@ -345,7 +345,7 @@ namespace GameEngine
 	{
 		if(dataBytes == NULL)
 		{
-			throw ((char*)((String)"ByteIndex " + ByteIndex + " out of bounds. DataVoid length is 0"));
+			throw std::runtime_error((std::string)"ByteIndex " + std::to_string(ByteIndex) + " out of bounds. DataVoid length is 0");
 		}
 		else if(ByteIndex<total)
 		{
@@ -362,19 +362,19 @@ namespace GameEngine
 		}
 		else
 		{
-			throw ((char*)((String)"ByteIndex " + ByteIndex + " out of bounds. DataVoid length is " + total));
+			throw std::runtime_error((std::string)"ByteIndex " + std::to_string(ByteIndex) + " out of bounds. DataVoid length is " + std::to_string(total));
 		}
 	}
 	
-	void DataVoid::set(unsigned int ByteIndex, void*data, unsigned int size)
+	void DataVoid::set(unsigned int ByteIndex, const void* data, unsigned int size)
 	{
 		if(dataBytes == NULL)
 		{
-			throw ((char*)((String)"ByteIndex " + ByteIndex + " and size " + size + " out of bounds. DataVoid length is 0"));
+			throw std::runtime_error((std::string)"ByteIndex " + std::to_string(ByteIndex) + " and size " + std::to_string(size) + " out of bounds. DataVoid length is 0");
 		}
 		else if(ByteIndex<total && (ByteIndex+size)<=total)
 		{
-			Byte*copyBytes = (Byte*)data;
+			const Byte* copyBytes = (const Byte*)data;
 			unsigned int counter = ByteIndex;
 			for(unsigned int i=0; i<size; i++)
 			{
@@ -383,7 +383,7 @@ namespace GameEngine
 		}
 		else
 		{
-			throw ((char*)((String)"ByteIndex " + ByteIndex + " and size " + size + " out of bounds. DataVoid length is " + total));
+			throw std::runtime_error((std::string)"ByteIndex " + std::to_string(ByteIndex) + " and size " + std::to_string(size) + " out of bounds. DataVoid length is " + std::to_string(total));
 		}
 	}
 	
@@ -391,7 +391,7 @@ namespace GameEngine
 	{
 		if(dataBytes == NULL)
 		{
-			throw ((char*)((String)"ByteIndex " + ByteIndex + " and data size " + data.total + " out of bounds. DataVoid length is 0"));
+			throw std::runtime_error((std::string)"ByteIndex " + std::to_string(ByteIndex) + " and data size " + std::to_string(data.total) + " out of bounds. DataVoid length is 0");
 		}
 		else if(ByteIndex<total && (ByteIndex+data.total)<=total)
 		{
@@ -404,7 +404,7 @@ namespace GameEngine
 		}
 		else
 		{
-			throw ((char*)((String)"ByteIndex " + ByteIndex + " and data size " + data.total + " out of bounds. DataVoid length is " + total));
+			throw std::runtime_error((std::string)"ByteIndex " + std::to_string(ByteIndex) + " and data size " + std::to_string(data.total) + " out of bounds. DataVoid length is " + std::to_string(total));
 		}
 	}
 	
@@ -412,7 +412,7 @@ namespace GameEngine
 	{
 		if(dataBytes == NULL)
 		{
-			throw ((char*)((String)"ByteIndex " + ByteIndex + " out of bounds. DataVoid length is 0"));
+			throw std::runtime_error((std::string)"ByteIndex " + std::to_string(ByteIndex) + " out of bounds. DataVoid length is 0");
 		}
 		else if(ByteIndex<total)
 		{
@@ -420,7 +420,7 @@ namespace GameEngine
 		}
 		else
 		{
-			throw ((char*)((String)"ByteIndex " + ByteIndex + " out of bounds. DataVoid length is " + total));
+			throw std::runtime_error((std::string)"ByteIndex " + std::to_string(ByteIndex) + " out of bounds. DataVoid length is " + std::to_string(total));
 		}
 	}
 	
@@ -452,7 +452,7 @@ namespace GameEngine
 	{
 		if(dataBytes == NULL)
 		{
-			throw ((char*)((String)"ByteIndex " + ByteIndex + " and size " + size + " out of bounds. DataVoid length is 0"));
+			throw std::runtime_error((std::string)"ByteIndex " + std::to_string(ByteIndex) + " and size " + std::to_string(size) + " out of bounds. DataVoid length is 0");
 		}
 		else if(ByteIndex<total && (ByteIndex+size)<=total)
 		{
@@ -460,7 +460,7 @@ namespace GameEngine
 		}
 		else
 		{
-			throw ((char*)((String)"ByteIndex " + ByteIndex + " and size " + size + " out of bounds. DataVoid length is " + total));
+			throw std::runtime_error((std::string)"ByteIndex " + std::to_string(ByteIndex) + " and size " + std::to_string(size) + " out of bounds. DataVoid length is " + std::to_string(total));
 		}
 		return DataVoid();
 	}

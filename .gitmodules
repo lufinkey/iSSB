@@ -12,7 +12,7 @@
 	ignore = dirty
 [submodule "External/SDL/SDL_ttf"]
 	path = External/SDL/SDL_ttf
-	url = https://github.com/libsdl-org/SDL_ttf
+	url = https://github.com/lufinkey/SDL_ttf
 	ignore = dirty
 [submodule "External/SDL/SDL_gfx"]
 	path = External/SDL/SDL_gfx
