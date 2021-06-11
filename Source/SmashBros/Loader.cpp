@@ -141,7 +141,7 @@ namespace SmashBros
 			p->charNo = Global::CHAR_LINK;
 			
 			case Global::CHAR_CUPHEAD:
-			p = new Fox(x1,y1,playerNo,team);
+			p = new Cuphead(x1,y1,playerNo,team);
 			p->charNo = Global::CHAR_CUPHEAD;
 			break;
 		}
