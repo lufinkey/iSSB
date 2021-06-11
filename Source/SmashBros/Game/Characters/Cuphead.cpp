@@ -1187,19 +1187,19 @@ namespace SmashBros
 	
 	Cuphead::Landmaster::~Landmaster()
 	{
-		Cuphead*Cuphead = (Cuphead*)Global::getPlayerActor(getPlayerNo());
-		if(Cuphead!=NULL)
+		Cuphead* cuphead = (Cuphead*)Global::getPlayerActor(getPlayerNo());
+		if(cuphead!=NULL)
 		{
-			Cuphead->landmaster = NULL;
+			cuphead->landmaster = NULL;
 		}
 	}
-		
+
 	void Cuphead::Landmaster::onAnimationFinish(const String&n)
 	{
 		if(n.equals("shoot_left") || n.equals("shoot_right"))
 		{
 			Player*owner = Global::getPlayerActor(getPlayerNo());
-			Cuphead*Cuphead = (Cuphead*)owner;
+			Cuphead* cuphead = (Cuphead*)owner;
 			switch(attack)
 			{
 				case 0:
@@ -1208,7 +1208,7 @@ namespace SmashBros
 					LandmasterShot*shot = new LandmasterShot(getPlayerNo(),x - (120*getScale()), y - (24*getScale()));
 					createProjectile(shot);
 					
-					Cuphead->addProjectileInfo(2, shot->getID(), x - (120*getScale()), y - (24*getScale()));
+					cuphead->addProjectileInfo(2, shot->getID(), x - (120*getScale()), y - (24*getScale()));
 				}
 				break;
 					
@@ -1218,14 +1218,14 @@ namespace SmashBros
 					LandmasterShot*shot = new LandmasterShot(getPlayerNo(),x + (120*getScale()), y - (24*getScale()));
 					createProjectile(shot);
 					
-					Cuphead->addProjectileInfo(2, shot->getID(), x + (120*getScale()), y - (24*getScale()));
+					cuphead->addProjectileInfo(2, shot->getID(), x + (120*getScale()), y - (24*getScale()));
 				}
 				break;
 			}
 			idle();
 		}
 	}
-		
+
 	void Cuphead::Landmaster::Update(long gameTime)
 	{
 		Projectile::Update(gameTime);
@@ -1237,7 +1237,7 @@ namespace SmashBros
 		{
 			if(owner->isJumping())
 			{
-				Cuphead*Cuphead = (Cuphead*)owner;
+				Cuphead* cuphead = (Cuphead*)owner;
 				switch(owner->getPlayerDir())
 				{
 					case LEFT:
@@ -1252,7 +1252,7 @@ namespace SmashBros
 				LandmasterHoverBlast* hoverBlast = new LandmasterHoverBlast(getPlayerNo(), x, y+(30*getScale()));
 				hoverBlast->setScale(getScale());
 				createProjectile(hoverBlast);
-				Cuphead->addProjectileInfo(4, hoverBlast->getID(), x, y+(30*getScale()));
+				cuphead->addProjectileInfo(4, hoverBlast->getID(), x, y+(30*getScale()));
 			}
 			if(owner->getMoveLeft()>0)
 			{
@@ -1281,12 +1281,12 @@ namespace SmashBros
 			}
 		}
 	}
-		
+
 	int Cuphead::Landmaster::getAttackNo()
 	{
 		return attack;
 	}
-	
+
 	void Cuphead::Landmaster::idle()
 	{
 		attack=-1;
