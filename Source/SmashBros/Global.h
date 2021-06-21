@@ -82,7 +82,7 @@ namespace SmashBros
 		static const byte TEAM_GREEN = 3;
 		static const byte TEAM_YELLOW = 4;
 		
-		static const int totalCharacters = 6;
+		static const int totalCharacters = 7;
 		static const int totalItems = 6;
 		static const int totalStages = 4;
 		
@@ -93,6 +93,7 @@ namespace SmashBros
 		static const int CHAR_FOX = 4;
 		static const int CHAR_PIKACHU = 5;
 		static const int CHAR_LINK = 6;
+		static const int CHAR_CUPHEAD = 7;
 		
 		//STAGE CONSTANTS
 		static const int STAGE_FRACTALSTAGE = 0;
