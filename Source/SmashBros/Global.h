@@ -84,7 +84,7 @@ namespace SmashBros
 		
 		static const int totalCharacters = 6;
 		static const int totalItems = 6;
-		static const int totalStages = 4;
+		static const int totalStages = 5;
 		
 		//CHARACTER CONSTANTS
 		static const int CHAR_MARIO = 1;
@@ -100,6 +100,7 @@ namespace SmashBros
 		static const int STAGE_BATTLEFIELDBRAWL = 2;
 		static const int STAGE_FINALDESTINATION = 3;
 		static const int STAGE_HYRULETEMPLE = 4;
+		static const int STAGE_CORNERIA = 5;
 		
 		//ITEM CONSTANTS
 		static const int ITEM_CUSTOM = 0;
