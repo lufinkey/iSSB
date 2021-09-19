@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		A51973062651CC080015D996 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A51973052651CC080015D996 /* CoreGraphics.framework */; };
 		A51973082651CC2C0015D996 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A51973072651CC2C0015D996 /* AudioToolbox.framework */; };
-		A519731E2651CCB10015D996 /* FreeType.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A51973092651CC630015D996 /* FreeType.framework */; };
-		A519731F2651CCB10015D996 /* FreeType.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A51973092651CC630015D996 /* FreeType.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A51973442651CD800015D996 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A51973432651CD800015D996 /* CoreAudio.framework */; };
 		A51973462651CDAD0015D996 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A51973452651CDAD0015D996 /* ImageIO.framework */; };
 		A51973482651CDC50015D996 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A51973472651CDC50015D996 /* CoreVideo.framework */; };
@@ -22,7 +20,6 @@
 		A519759C2651D4450015D996 /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A519759B2651D4450015D996 /* GameController.framework */; };
 		A51976062651D6940015D996 /* libSDL2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A596F9F72651A98400F182F0 /* libSDL2.a */; };
 		A51976072651D6940015D996 /* libSDL2_image.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A596FA0A2651A9EA00F182F0 /* libSDL2_image.a */; };
-		A51976082651D6940015D996 /* libSDL2_mixer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A51973CE2651CF930015D996 /* libSDL2_mixer.a */; };
 		A51976092651D6940015D996 /* libSDL_p2p.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A51975872651D3EF0015D996 /* libSDL_p2p.a */; };
 		A519760A2651D6940015D996 /* libSDL2_ttf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A596FA282651A9FF00F182F0 /* libSDL2_ttf.a */; };
 		A519761D2651D7570015D996 /* hidapi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A588B9272651C0F9001F7DD3 /* hidapi.framework */; };
@@ -163,6 +160,7 @@
 		A596FA7F2651AF3A00F182F0 /* chaiscript_stdlib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A596FA542651AF3A00F182F0 /* chaiscript_stdlib.cpp */; };
 		A596FA822651AF3A00F182F0 /* stl_extra.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A596FA572651AF3A00F182F0 /* stl_extra.cpp */; };
 		A596FA832651AF3A00F182F0 /* chaiscript_prelude.chai in Resources */ = {isa = PBXBuildFile; fileRef = A596FA792651AF3A00F182F0 /* chaiscript_prelude.chai */; };
+		A5BA4AC226F794C100139269 /* libSDL2_mixer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A51973CE2651CF930015D996 /* libSDL2_mixer.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -362,6 +360,20 @@
 			remoteGlobalIDString = A0435C361A13C600004EF945;
 			remoteInfo = libSDL_p2p;
 		};
+		A5BA4AAF26F794AB00139269 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A596F9ED2651A98400F182F0 /* SDL.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F3CB94BA26B5E0A400B9C980;
+			remoteInfo = "SDLmain-iOS";
+		};
+		A5BA4AB126F794AB00139269 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A596F9ED2651A98400F182F0 /* SDL.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F3CB963826B5E0A600B9C980;
+			remoteInfo = "SDLmain-tvOS";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -371,7 +383,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				A519731F2651CCB10015D996 /* FreeType.framework in Embed Frameworks */,
 				A51976482651D8700015D996 /* webp.framework in Embed Frameworks */,
 				A519761E2651D7570015D996 /* hidapi.framework in Embed Frameworks */,
 			);
@@ -383,7 +394,6 @@
 /* Begin PBXFileReference section */
 		A51973052651CC080015D996 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		A51973072651CC2C0015D996 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
-		A51973092651CC630015D996 /* FreeType.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FreeType.framework; path = SDL_ttf/Xcode/Frameworks/FreeType.framework; sourceTree = "<group>"; };
 		A51973432651CD800015D996 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		A51973452651CDAD0015D996 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		A51973472651CDC50015D996 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
@@ -706,6 +716,7 @@
 			files = (
 				A519734A2651CDF90015D996 /* ForceFeedback.framework in Frameworks */,
 				A51973462651CDAD0015D996 /* ImageIO.framework in Frameworks */,
+				A5BA4AC226F794C100139269 /* libSDL2_mixer.a in Frameworks */,
 				A51976342651D8040015D996 /* Metal.framework in Frameworks */,
 				A51976072651D6940015D996 /* libSDL2_image.a in Frameworks */,
 				A51973442651CD800015D996 /* CoreAudio.framework in Frameworks */,
@@ -715,14 +726,12 @@
 				A519753A2651D2970015D996 /* Foundation.framework in Frameworks */,
 				A51976472651D8700015D996 /* webp.framework in Frameworks */,
 				A51976092651D6940015D996 /* libSDL_p2p.a in Frameworks */,
-				A519731E2651CCB10015D996 /* FreeType.framework in Frameworks */,
 				A519759C2651D4450015D996 /* GameController.framework in Frameworks */,
 				A51976062651D6940015D996 /* libSDL2.a in Frameworks */,
 				A519760A2651D6940015D996 /* libSDL2_ttf.a in Frameworks */,
 				A51973082651CC2C0015D996 /* AudioToolbox.framework in Frameworks */,
 				A51973482651CDC50015D996 /* CoreVideo.framework in Frameworks */,
 				A51973732651CE840015D996 /* IOKit.framework in Frameworks */,
-				A51976082651D6940015D996 /* libSDL2_mixer.a in Frameworks */,
 				A519753C2651D2A70015D996 /* AppKit.framework in Frameworks */,
 				A51975382651D28A0015D996 /* CoreHaptics.framework in Frameworks */,
 			);
@@ -1266,7 +1275,6 @@
 				A51973C52651CF930015D996 /* SDL_mixer.xcodeproj */,
 				A596FA1F2651A9FF00F182F0 /* SDL_ttf.xcodeproj */,
 				A596FA342651AEC300F182F0 /* SDL_p2p.xcodeproj */,
-				A51973092651CC630015D996 /* FreeType.framework */,
 				A51976312651D7C60015D996 /* webp.framework */,
 			);
 			path = SDL;
@@ -1275,6 +1283,8 @@
 		A596F9EE2651A98400F182F0 /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				A5BA4AB026F794AB00139269 /* libSDLmain.a */,
+				A5BA4AB226F794AB00139269 /* libSDLmain.a */,
 				A596F9F52651A98400F182F0 /* SDL2.framework */,
 				A588B91B2651C0F9001F7DD3 /* SDL2.framework */,
 				A588B91D2651C0F9001F7DD3 /* SDL2.framework */,
@@ -1700,6 +1710,20 @@
 			remoteRef = A596FA382651AEC300F182F0 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		A5BA4AB026F794AB00139269 /* libSDLmain.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSDLmain.a;
+			remoteRef = A5BA4AAF26F794AB00139269 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A5BA4AB226F794AB00139269 /* libSDLmain.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSDLmain.a;
+			remoteRef = A5BA4AB126F794AB00139269 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -1921,7 +1945,7 @@
 					../../External/ChaiScript/include,
 					../../External/SDL/SDL/include,
 					../../External/SDL/SDL_image,
-					../../External/SDL/SDL_mixer,
+					../../External/SDL/SDL_mixer/include,
 					../../External/SDL/SDL_ttf,
 					../../External/SDL/SDL_p2p/include,
 				);
@@ -1982,7 +2006,7 @@
 					../../External/ChaiScript/include,
 					../../External/SDL/SDL/include,
 					../../External/SDL/SDL_image,
-					../../External/SDL/SDL_mixer,
+					../../External/SDL/SDL_mixer/include,
 					../../External/SDL/SDL_ttf,
 					../../External/SDL/SDL_p2p/include,
 				);
@@ -2004,10 +2028,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = RL98QGQJCL;
 				ENABLE_HARDENED_RUNTIME = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SRCROOT)/../../External/SDL/SDL_ttf/Xcode/Frameworks",
-					"$(SRCROOT)/../../External/SDL/SDL_image/Xcode/Frameworks",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../../External/SDL/SDL_image/Xcode/Frameworks";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					SMASHBROS_SCRIPT_DISABLE,
@@ -2037,10 +2058,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = RL98QGQJCL;
 				ENABLE_HARDENED_RUNTIME = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SRCROOT)/../../External/SDL/SDL_ttf/Xcode/Frameworks",
-					"$(SRCROOT)/../../External/SDL/SDL_image/Xcode/Frameworks",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../../External/SDL/SDL_image/Xcode/Frameworks";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					SMASHBROS_SCRIPT_DISABLE,
 					SMASHBROS_P2P_DISABLE,
