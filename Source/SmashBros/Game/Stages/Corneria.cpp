@@ -21,7 +21,7 @@ namespace SmashBros
 		rightBorder = 400;
 		bottomBorder = 320;
 		
-		setItemBoundaries(-200, -150, 190, 80);
+		setItemBoundaries(-260, -180, 250, 110);
 		
 		loadGameElements();
 		loadPlatforms();
@@ -45,22 +45,6 @@ namespace SmashBros
 	
 	void Corneria::loadGameElements()
 	{
-		GameElement*bg;
-		
-		bg = new GameElement(0,80);
-		Animation*anim = new Animation("normal", 1,1,1);
-		anim->addFrame("Images/Game/Stages/Corneria/bg2.png");
-		bg->addAnimation(anim);
-		bg->changeAnimation("normal", FORWARD);
-		bg->setScale(1.05f);
-		addElement(bg);
-		
-		bg = new GameElement(0,20);
-		anim = new Animation("normal", 1,1,1);
-		anim->addFrame("Images/Game/Stages/Corneria/mainstage.png");
-		bg->addAnimation(anim);
-		bg->changeAnimation("normal", FORWARD);
-		addElement(bg);
 	}
 	
 	void Corneria::loadPlatforms()
@@ -87,12 +71,6 @@ namespace SmashBros
 	
 	void Corneria::loadGround()
 	{
-		GameElement*ground;
-		
-		ground = new GameElement(0,70);
-		ground->addAnimation(new Animation("normal",1,"Images/Game/Stages/Corneria/ground.png"));
-		ground->changeAnimation("normal", FORWARD);
-		addGround(ground);
 	}
 	
 	void Corneria::Draw(Graphics2D&g, long gameTime)
