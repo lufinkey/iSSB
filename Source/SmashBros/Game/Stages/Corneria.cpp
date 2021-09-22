@@ -11,17 +11,17 @@ namespace SmashBros
 		setSpawnPoint(3,    0,-138);
 		setSpawnPoint(4,    0, -10);
 		
-		bottomViewBorder = 255;
-		topViewBorder = -255;
-		leftViewBorder = -320;
-		rightViewBorder = 320;
+		bottomViewBorder = 295;
+		topViewBorder = -295;
+		leftViewBorder = -350;
+		rightViewBorder = 350;
 		
-		leftBorder = -400;
-		topBorder = -380;
-		rightBorder = 400;
-		bottomBorder = 320;
+		leftBorder = -450;
+		topBorder = -430;
+		rightBorder = 450;
+		bottomBorder = 370;
 		
-		setItemBoundaries(-260, -180, 250, 110);
+		setItemBoundaries(-295, -350, 350, 295);
 		
 		loadGameElements();
 		loadPlatforms();
