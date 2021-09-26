@@ -77,7 +77,7 @@ namespace SmashBros
 		addHangPoint(hp);
 		
 		// tail of the plane
-		hp = new HangPoint(HangPoint::RIGHT,282,8);
+		hp = new HangPoint(HangPoint::RIGHT,286,18);
 		//hp->setVisible(true);
 		//hp->setFilled(true);
 		//hp->setColor(Color::GREEN);
