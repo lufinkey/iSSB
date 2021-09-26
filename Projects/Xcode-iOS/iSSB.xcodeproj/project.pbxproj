@@ -161,6 +161,7 @@
 		A596FBAE2651B74B00F182F0 /* libSDL2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A596FB5A2651B6C000F182F0 /* libSDL2.a */; };
 		A596FBAF2651B7A700F182F0 /* libSDL2_image.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A059AEBD1FDCB33B0041E164 /* libSDL2_image.a */; };
 		A596FC632651B8A900F182F0 /* libSDL2_mixer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A596FC602651B89C00F182F0 /* libSDL2_mixer.a */; };
+		A5BA4B3B26F79E0C00139269 /* Corneria.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A5BA4B1B26F79E0C00139269 /* Corneria.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -664,6 +665,8 @@
 		A596F83326519F1800F182F0 /* Program.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Program.mm; sourceTree = "<group>"; };
 		A596FB412651B6C000F182F0 /* SDL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDL.xcodeproj; path = SDL/Xcode/SDL/SDL.xcodeproj; sourceTree = "<group>"; };
 		A596FC582651B89C00F182F0 /* SDL_mixer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDL_mixer.xcodeproj; path = "SDL_mixer/Xcode-iOS/SDL_mixer.xcodeproj"; sourceTree = "<group>"; };
+		A5BA4B1B26F79E0C00139269 /* Corneria.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Corneria.cpp; sourceTree = "<group>"; };
+		A5BA4B3A26F79E0C00139269 /* Corneria.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Corneria.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1105,6 +1108,8 @@
 				A059ADA31FDCAF750041E164 /* StagePieces */,
 				A059AD991FDCAF750041E164 /* BattlefieldBrawl.cpp */,
 				A059AD9A1FDCAF750041E164 /* BattlefieldBrawl.h */,
+				A5BA4B1B26F79E0C00139269 /* Corneria.cpp */,
+				A5BA4B3A26F79E0C00139269 /* Corneria.h */,
 				A059AD9B1FDCAF750041E164 /* FinalDestinationBrawl.cpp */,
 				A059AD9C1FDCAF750041E164 /* FinalDestinationBrawl.h */,
 				A059AD9D1FDCAF750041E164 /* FractalStage.cpp */,
@@ -1780,6 +1785,7 @@
 				A059AE2A1FDCAF750041E164 /* ScriptEntity.cpp in Sources */,
 				A059AE1A1FDCAF750041E164 /* lib_GameEngine.cpp in Sources */,
 				A059AE491FDCAF760041E164 /* WinnerScreen.cpp in Sources */,
+				A5BA4B3B26F79E0C00139269 /* Corneria.cpp in Sources */,
 				A059AE1B1FDCAF750041E164 /* lib_ge_Actor.cpp in Sources */,
 				A059AE561FDCAF760041E164 /* MenuBar.cpp in Sources */,
 				A059AE221FDCAF750041E164 /* lib_sb_inherit_GameElement.cpp in Sources */,
