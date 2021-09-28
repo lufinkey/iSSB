@@ -12,16 +12,17 @@ namespace SmashBros
 		setSpawnPoint(4,    0, -10);
 		
 		bottomViewBorder = 295;
-		topViewBorder = -295;
-		leftViewBorder = -350;
-		rightViewBorder = 350;
+		topViewBorder = -340;
+		leftViewBorder = -372;
+		rightViewBorder = 372;
 		
-		leftBorder = -450;
+		leftBorder = -500;
 		topBorder = -430;
-		rightBorder = 450;
+		rightBorder = 500;
 		bottomBorder = 370;
 		
-		setItemBoundaries(-295, -350, 350, 295);
+		setItemBoundaries(-300, -300, 295, -50);
+		showItemBoundaries(true);
 		
 		loadGameElements();
 		loadPlatforms();
@@ -49,8 +50,7 @@ namespace SmashBros
 	
 	void Corneria::loadPlatforms()
 	{
-		Platform*plat;
-		
+		Platform* plat;
 		plat = new Platform(Platform::TYPE_NORMAL, 0,20);
 		plat->addAnimation(new Animation("normal",1,"Images/Game/Stages/Corneria/plat.png"));
 		plat->changeAnimation("normal", FORWARD);
@@ -62,10 +62,25 @@ namespace SmashBros
 	{
 		HangPoint*hp;
 		
-		hp = new HangPoint(HangPoint::LEFT,-217,88);
+		// nose of the plane
+		hp = new HangPoint(HangPoint::LEFT,-332,-8);
+		//hp->setVisible(true);
+		//hp->setFilled(true);
+		//hp->setColor(Color::GREEN);
 		addHangPoint(hp);
 		
-		hp = new HangPoint(HangPoint::RIGHT,197,99);
+		// guns of the plane
+		hp = new HangPoint(HangPoint::LEFT,-210,75);
+		//hp->setVisible(true);
+		//hp->setFilled(true);
+		//hp->setColor(Color::GREEN);
+		addHangPoint(hp);
+		
+		// tail of the plane
+		hp = new HangPoint(HangPoint::RIGHT,286,18);
+		//hp->setVisible(true);
+		//hp->setFilled(true);
+		//hp->setColor(Color::GREEN);
 		addHangPoint(hp);
 	}
 	
