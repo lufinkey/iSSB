@@ -63,12 +63,6 @@ namespace SmashBros
 	
 	void WorldTournament::loadGround()
 	{
-		GameElement*ground;
-		
-		ground = new GameElement(0,70);
-		ground->addAnimation(new Animation("normal",1,"Images/Game/Stages/WorldTournament/ground.png"));
-		ground->changeAnimation("normal", FORWARD);
-		addGround(ground);
 	}
 	
 	void WorldTournament::Draw(Graphics2D&g, long gameTime)
