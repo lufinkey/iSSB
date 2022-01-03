@@ -72,31 +72,6 @@ namespace SmashBros
 			virtual void onAnimationFinish(const String&n);
 		};
 
-		class Bomb : public Item
-		{
-		private:
-			byte bombdir;
-			boolean exploded;
-			boolean active;
-			boolean grounded;
-
-		public:
-			Bomb(float x1, float y1);
-			virtual ~Bomb();
-
-			virtual void onAnimationFinish(const String&name);
-			virtual void Update(long gameTime);
-
-			virtual boolean use(byte attackDir);
-			virtual boolean canPickUp();
-			virtual boolean allowsGrabDelay();
-			virtual void onPickUp(Player*collide);
-			virtual void onDiscard(Player*discarder);
-			virtual void onPlayerHit(Player*collide, byte dir);
-			virtual void onPlatformCollide(Platform*collide, byte dir);
-
-			void explode();
-		};
 
 		static const float finalsmashOffsetX;
 		static const float finalsmashOffsetY;
@@ -121,9 +96,7 @@ namespace SmashBros
 		virtual void Load();
 		virtual void LoadAttackTypes();
 		virtual void setToDefaultValues();
-		virtual boolean checkIfAble();
 		virtual void onAnimationFinish(const String&n);
-		virtual void onGroundCollide();
 
 		virtual void jump();
 		virtual void whilePlayerColliding(Player*collide, byte dir);
