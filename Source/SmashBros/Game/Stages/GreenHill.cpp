@@ -31,7 +31,7 @@ namespace SmashBros
 		//this.setWireframeColor(Color.blue);
 		//this.showWireframes(true);
 		
-		MusicManager::loadSong("Battlefield v2");
+		MusicManager::loadSong("Green Hill Zone");
 	}
 
 	GreenHill::~GreenHill()
