@@ -105,8 +105,8 @@ mkdir $(OutDir)Music
 mkdir $(OutDir)Sounds
 xcopy /y /s "..\..\Assets\Images" $(OutDir)Images
 xcopy /y /s "..\..\Assets\Fonts" $(OutDir)Fonts
-xcopy /y /s "..\..\Assets\Music" $(OutDir)
-xcopy /y /s "..\..\Assets\Sounds" $(OutDir)</Command>
+xcopy /y /s "..\..\Assets\Music" $(OutDir)Music
+xcopy /y /s "..\..\Assets\Sounds" $(OutDir)Sounds</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -136,8 +136,8 @@ mkdir $(OutDir)Music
 mkdir $(OutDir)Sounds
 xcopy /y /s "..\..\Assets\Images" $(OutDir)Images
 xcopy /y /s "..\..\Assets\Fonts" $(OutDir)Fonts
-xcopy /y /s "..\..\Assets\Music" $(OutDir)
-xcopy /y /s "..\..\Assets\Sounds" $(OutDir)</Command>
+xcopy /y /s "..\..\Assets\Music" $(OutDir)Music
+xcopy /y /s "..\..\Assets\Sounds" $(OutDir)Sounds</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -163,8 +163,8 @@ mkdir $(OutDir)Music
 mkdir $(OutDir)Sounds
 xcopy /y /s "..\..\Assets\Images" $(OutDir)Images
 xcopy /y /s "..\..\Assets\Fonts" $(OutDir)Fonts
-xcopy /y /s "..\..\Assets\Music" $(OutDir)
-xcopy /y /s "..\..\Assets\Sounds" $(OutDir)</Command>
+xcopy /y /s "..\..\Assets\Music" $(OutDir)Music
+xcopy /y /s "..\..\Assets\Sounds" $(OutDir)Sounds</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -194,8 +194,8 @@ mkdir $(OutDir)Music
 mkdir $(OutDir)Sounds
 xcopy /y /s "..\..\Assets\Images" $(OutDir)Images
 xcopy /y /s "..\..\Assets\Fonts" $(OutDir)Fonts
-xcopy /y /s "..\..\Assets\Music" $(OutDir)
-xcopy /y /s "..\..\Assets\Sounds" $(OutDir)</Command>
+xcopy /y /s "..\..\Assets\Music" $(OutDir)Music
+xcopy /y /s "..\..\Assets\Sounds" $(OutDir)Sounds</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
