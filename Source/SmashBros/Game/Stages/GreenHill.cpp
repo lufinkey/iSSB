@@ -24,7 +24,7 @@ namespace SmashBros
 		loadPlatforms();
 		loadHangPoints();
 		
-		setBackground("Images/Game/Stages/GreenHill/bg.jpg");
+		setBackground("Images/Game/Stages/GreenHill/bg.png");
 		setBackgroundScale(1.45);
 		setBackgroundType(BG_FIXED);
 		
