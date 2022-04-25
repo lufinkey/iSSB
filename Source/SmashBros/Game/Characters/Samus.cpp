@@ -273,6 +273,7 @@ namespace SmashBros {
 			}
 		}
 
+		updateGravity();
 		updateFrame();
 
 		updateMovement();
@@ -862,8 +863,7 @@ namespace SmashBros {
 		}
 	}
 
-	Samus::FinalSmashFire::FinalSmashFire(byte playerNo, float x1, float y1) : Projectile(playerNo,
-																						  x1, y1) {
+	Samus::FinalSmashFire::FinalSmashFire(byte playerNo, float x1, float y1) : Projectile(playerNo, x1, y1) {
 		Animation *anim;
 
 		anim = new Animation("left", 12, 5, 2);
