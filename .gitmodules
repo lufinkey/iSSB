@@ -20,3 +20,6 @@
 [submodule "External/SDL/SDL_mixer"]
 	path = External/SDL/SDL_mixer
 	url = https://github.com/libsdl-org/SDL_mixer
+[submodule "External/PlistCpp"]
+	path = External/PlistCpp
+	url = https://github.com/animetrics/PlistCpp.git
