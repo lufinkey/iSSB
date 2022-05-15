@@ -14,7 +14,6 @@
 #include "Game/Stages/FinalDestinationBrawl.h"
 #include "Game/Stages/HyruleTemple.h"
 #include "Game/Stages/Corneria.h"
-#include "Game/Stages/GreenHill.h"
 
 #ifndef SMASHBROS_SCRIPT_DISABLE
 #include "../ScriptModule/ScriptManager.h"
@@ -342,9 +341,6 @@ namespace SmashBros
 
 			case Global::STAGE_CORNERIA:
 			return "corneria.png";
-				
-			case Global::STAGE_GREENHILL:
-			return "greenhill.png";
 		}
 	}
 	
@@ -374,9 +370,6 @@ namespace SmashBros
 
 			case Global::STAGE_CORNERIA:
 			return new Corneria(x1,y1);
-				
-			case Global::STAGE_GREENHILL:
-			return new GreenHill(x1,y1);
 			
 			default:
 #ifndef SMASHBROS_SCRIPT_DISABLE
