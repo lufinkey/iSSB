@@ -146,7 +146,7 @@ namespace SmashBros {
 		addTwoSidedAnimation("run", "run.png", 15, 2, 1);
 		addTwoSidedAnimation("jump", "jump.png", 8, 6, 1);
 		addTwoSidedAnimation("jump2", "jump2.png", 14, 6, 1);
-		addTwoSidedAnimation("land", "land.png", 8, 3, 1);
+		addTwoSidedAnimation("land", "land.png", 8, 1, 1);
 		addTwoSidedAnimation("fall", "fall.png", 30, 1, 1);
 		addTwoSidedAnimation("hang", "hang.png", 1, 1, 1);
 		addTwoSidedAnimation("crouch", "crouch.png", 1, 1, 1);
@@ -183,7 +183,7 @@ namespace SmashBros {
 		addTwoSidedAnimation("special_attack_up", "special_attack_up.png", 12, 1, 1);
 		addTwoSidedAnimation("special_drop_down", "special_drop_down.png", 1, 1, 1);
 		addTwoSidedAnimation("special_attack_down", "special_attack_down.png", 4, 4, 1);
-		addTwoSidedAnimation("smash_charge", "smash_charge.png", 8, 4, 1);
+		addTwoSidedAnimation("smash_charge", "smash_charge.png", 8, 1, 1);
 		addTwoSidedAnimation("smash_attack", "smash_attack.png", 12, 6, 1);
 		addTwoSidedAnimation("smash_attack_up", "smash_attack_up.png", 12, 4, 1);
 		addTwoSidedAnimation("smash_attack_down", "smash_attack_down.png", 12, 6, 1);
@@ -445,8 +445,30 @@ namespace SmashBros {
 		//
 	}
 
-	void Samus::doChargingAttack(byte button) {
-
+	void Samus::doChargingAttack(byte button) 	
+	{
+		if(charging==1)
+		{
+			destroyCharge();
+			Blast*blast = new Blast(getPlayerNo(), x, y);
+			blast->setScale((float)smashPower/100);
+			oldSmashPower = smashPower;
+			createProjectile(blast);
+			
+			addProjectileInfo(1, blast->getID(), x, y);
+			
+			charging = 0;
+			switch(playerdir)
+			{
+				case LEFT:
+				changeAnimation("special_attack_left",FORWARD);
+				break;
+				
+				case RIGHT:
+				changeAnimation("special_attack_right",FORWARD);
+				break;
+			}
+		}
 	}
 
 	void Samus::attackA() {
@@ -531,85 +553,120 @@ namespace SmashBros {
 		}
 	}
 
-	void Samus::attackB() {
-		if (!bUp) {
-			if ((canFinalSmash()) && (isOnGround())) {
-				attackFinalSmash();
-			}
-		}
+	void Samus::attackB()
+	{
+	    if(!bUp)
+	    {
+	        if((canFinalSmash()) && (isOnGround()))
+	        {
+	            attackFinalSmash();
+	        }
+	        else
+	        {
+	        	AttackTemplates::chargeB(this, 30, 100, 3000);
+	        	attacksHolder=10;
+	        	attacksPriority=0;
+	        	charging = 1;
+	        	changeTwoSidedAnimation("smash_charge",FORWARD);
+	        }
+	    }
 	}
-
-	void Samus::attackSideB() {
-		if (!bUp) {
+	
+	void Samus::attackSideB()
+	{
+		if(!bUp)
+	    {
 			AttackTemplates::dashSideB(this, 11, 1, 9);
-		}
+	    }
 	}
-
-	void Samus::attackUpB() {
-		if (!bUp) {
-			AttackTemplates::rehitUpB2(this, 12, 4, 2, 0);
-			SpinningBlade *blade = new SpinningBlade(getPlayerNo(), x,
-													 y - ((float) 4 * getScale()));
-			createProjectile(blade);
-
-			addProjectileInfo(2, blade->getID(), x, y - ((float) 4 * getScale()));
-
-			yvelocity = 0;
-			xvelocity = 0;
-		}
+	
+	void Samus::attackUpB()
+	{
+	    if(!bUp)
+	    {
+	        AttackTemplates::rehitUpB2(this, 12, 4, 2, 0);
+			SpinningBlade*blade = new SpinningBlade(getPlayerNo(),x, y-((float)4*getScale()));
+	        createProjectile(blade);
+			
+			addProjectileInfo(2, blade->getID(), x, y-((float)4*getScale()));
+			
+	        yvelocity=0;
+	        xvelocity=0;
+	    }
 	}
-
-	void Samus::attackDownB() {
-		if (!bUp) {
+	
+	void Samus::attackDownB()
+	{
+		if(!bUp)
+	    {
 			AttackTemplates::prepareDownB(this, 13, 0);
-		}
+	    }
 	}
-
-	void Samus::attackSideSmash(byte type) {
-		if (!bUp && !checkItemUseSideSmash(type)) {
-			if (isOnGround()) {
-				AttackTemplates::normalSmash(this, 15, 3.49, type, 1, 1800, 11, 20);
-			} else {
-				attackSideA();
-			}
-		}
+	
+	void Samus::attackSideSmash(byte type)
+	{
+	    if(!bUp && !checkItemUseSideSmash(type))
+	    {
+	        if(isOnGround())
+	        {
+	            AttackTemplates::normalSmash(this,15,3.49,type,1,1800,11,20);
+	        }
+	        else
+	        {
+	            attackSideA();
+	        }
+	    }
 	}
-
-	void Samus::attackUpSmash(byte type) {
-		if (!bUp && !checkItemUseUpSmash(type)) {
-			if (isOnGround()) {
-				AttackTemplates::normalSmash(this, 16, 3.65, type, 2, 1700, 11, 20);
-			} else {
-				attackUpA();
-			}
-		}
+	
+	void Samus::attackUpSmash(byte type)
+	{
+	    if(!bUp && !checkItemUseUpSmash(type))
+	    {
+	        if(isOnGround())
+	        {
+	            AttackTemplates::normalSmash(this,16,3.65,type,2,1700,11,20);
+	        }
+	        else
+	        {
+	            attackUpA();
+	        }
+	    }
 	}
-
-	void Samus::attackDownSmash(byte type) {
-		if (!bUp && !checkItemUseDownSmash(type)) {
-			if (isOnGround()) {
-				AttackTemplates::normalSmash(this, 17, 3.48, type, 3, 1600, 11, 20);
-			} else {
-				attackDownA();
-			}
-		}
+	
+	void Samus::attackDownSmash(byte type)
+	{
+	    if(!bUp && !checkItemUseDownSmash(type))
+	    {
+	        if(isOnGround())
+	        {
+	            AttackTemplates::normalSmash(this,17,3.48,type,3,1600,11,20);
+	        }
+	        else
+	        {
+	            attackDownA();
+	        }
+	    }
 	}
 
 	void Samus::attackFinalSmash() {
-		addAttackInfo(DIR_LEFT, 18, LEFT, 10, 900, -1, 5, 8, -1, 5, 8);
-		addAttackInfo(DIR_RIGHT, 18, RIGHT, 10, 900, 1, 5, 8, -1, 5, 8);
-
-		if (isOnGround()) {
-			yVel = 0;
-			chargeSmash = 0;
-			smashPower = 0;
-			AttackTemplates::finalSmash(this, 18);
-			destroyCharge();
-			changeTwoSidedAnimation("finalsmash_change", FORWARD);
-			attacksPriority = 7;
-		} else {
-			attackB();
-		}
+	{
+        addAttackInfo(DIR_LEFT, 17, LEFT, 30, 900, -1,7,4.5f, -1,6,5);
+        addAttackInfo(DIR_RIGHT,17,RIGHT, 30, 900,  1,7,4.5f, -1,6,5);
+        addAttackInfo(DIR_UP,   17, LEFT, 30, 900, 0,0,0, -1,5,6);
+        addAttackInfo(DIR_UP,   17,RIGHT, 30, 900, 0,0,0, -1,5,6);
+        addAttackInfo(DIR_DOWN, 17, LEFT, 30, 900, 0,0,0,  1,5,6);
+        addAttackInfo(DIR_DOWN, 17,RIGHT, 30, 900, 0,0,0,  1,5,6);
+        
+	    if(isOnGround())
+	    {
+	    	AttackTemplates::finalSmash(this, 17);
+			changeTwoSidedAnimation("finalsmash_begin", FORWARD);
+	    }
+	    else
+	    {
+	        attackB();
+	    }
+	}
 	}
 
 	Samus::Blast::Blast(byte playerNo, float x1, float y1) : Projectile(playerNo, x1, y1) {
@@ -665,7 +722,8 @@ namespace SmashBros {
 
 	void Samus::Blast::Update(long gameTime) {
 		Projectile::Update(gameTime);
-		if (std::abs(startX - x) > 240) {
+		if(std::abs(startX - x)>240)
+		{
 			destroy();
 		}
 	}
@@ -691,34 +749,35 @@ namespace SmashBros {
 		}
 	}
 
-	Samus::SpinningBlade::SpinningBlade(byte playerNo, float x1, float y1) : Projectile(playerNo,
-																						x1, y1) {
-		Animation *anim;
-
-		anim = new Animation("left", 12, 8, 1);
+	Samus::SpinningBlade::SpinningBlade(byte playerNo, float x1, float y1) : Projectile(playerNo,x1,y1)
+	{
+		Animation*anim;
+			
+		anim = new Animation("left",12,8,1);
 		anim->addFrame("Images/Game/Characters/Samus/blade.png");
 		addAnimation(anim);
-
-		anim = new Animation("right", 12, 8, 1);
+			
+		anim = new Animation("right",12,8,1);
 		anim->addFrame("Images/Game/Characters/Samus/blade.png");
 		anim->mirror(true);
 		addAnimation(anim);
-
-		switch (itemdir) {
+			
+		switch(itemdir)
+		{
 			case LEFT:
-				changeAnimation("left", FORWARD);
-				break;
-
+			changeAnimation("left",FORWARD);
+			break;
+				
 			case RIGHT:
-				changeAnimation("right", FORWARD);
-				break;
+			changeAnimation("right",FORWARD);
+			break;
 		}
-
+		
 		setScale(Global::getPlayerActor(playerNo)->getScale());
-
+		
 		setLayer(LAYER_MIDDLELOWER);
-
-		hits = 0;
+		
+		hits=0;
 	}
 
 	Samus::SpinningBlade::~SpinningBlade() {
@@ -732,9 +791,8 @@ namespace SmashBros {
 		y = owner->y - ((float) 4 * owner->getScale());
 
 		String ownerAnim = owner->getAnimName();
-		if (owner->isHurt() || owner->isHanging() || (!ownerAnim.equals("special_attack_up_left") &&
-													  !ownerAnim.equals(
-															  "special_attack_up_right"))) {
+		if (owner->isHurt() || owner->isHanging() || (!ownerAnim.equals("special_attack_up_left") && !ownerAnim.equals("special_attack_up_right")))
+		{
 			destroy();
 		}
 
