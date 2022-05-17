@@ -22,7 +22,7 @@ namespace SmashBros
 		bottomBorder = 370;
 		
 		setItemBoundaries(-300, -300, 295, -50);
-		showItemBoundaries(true);
+		//showItemBoundaries(true);
 		
 		loadGameElements();
 		loadPlatforms();

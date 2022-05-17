@@ -1,9 +1,12 @@
 
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "CPPBridge.h"
 #include "../Application.h"
 #include "SDL_ext.h"
 #include <string>
 #include <cstdlib>
+#include <iostream>
 
 #ifdef _WIN32
 	#include <windows.h>
@@ -37,12 +40,6 @@ void showMessage(const char*title, const char*message)
 }
 
 #if defined(_WIN32)
-	typedef struct timeval
-	{
-		long tv_sec;
-		long tv_usec;
-	} timeval;
-
 	int gettimeofday(struct timeval * tp, struct timezone * tzp)
 	{
 		// Note: some broken versions only have 8 trailing zero's, the correct epoch has 9 trailing zero's

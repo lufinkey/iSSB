@@ -1,0 +1,944 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source\GameEngine">
+      <UniqueIdentifier>{8b4a8b6b-9b0d-485b-bfe9-2395e27508b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\GameEngine\Actor">
+      <UniqueIdentifier>{8755406c-279c-48ba-a5e2-f04fa8bf6f1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\GameEngine\CodeBridge">
+      <UniqueIdentifier>{ac9a6da2-8044-48d4-bbc9-9d1d0bf1915e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\GameEngine\Graphics">
+      <UniqueIdentifier>{84b7a8a3-0bf1-4d23-be56-468cfb416b1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\GameEngine\Input">
+      <UniqueIdentifier>{45f08c33-b3de-4ba2-a7e0-d960d51b0b73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\GameEngine\Output">
+      <UniqueIdentifier>{8cdaeeb1-f1bd-401f-b25d-14d974928835}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\ScriptModule">
+      <UniqueIdentifier>{40d593d2-1347-4dfa-abf1-b9113bb075f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\SmashBros">
+      <UniqueIdentifier>{cfeeceb8-d543-452a-9d92-c81108fced4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\GameEngine\ScreenManager">
+      <UniqueIdentifier>{a318a0a3-660e-4801-b292-f4b241136fb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\GameEngine\Sound">
+      <UniqueIdentifier>{54f6f245-4b3c-46bd-950f-dbcb1fa3a864}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\GameEngine\Util">
+      <UniqueIdentifier>{4191eb65-0319-4a59-a5d6-832c75ed04f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\ScriptModule\modules">
+      <UniqueIdentifier>{ebcc7515-5df6-4171-bf65-b19af4fb96ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\ScriptModule\modules\GameEngine">
+      <UniqueIdentifier>{995d2e1a-1ad5-4209-8621-f5afbcd970a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\ScriptModule\modules\SmashBros">
+      <UniqueIdentifier>{b172c1e0-ae48-49ff-ab5e-0bc32e453a74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\ScriptModule\modules\GameEngine\inherit">
+      <UniqueIdentifier>{a0ad8f17-1b81-4be6-b371-2867d557ee30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\ScriptModule\modules\SmashBros\inherit">
+      <UniqueIdentifier>{68489aae-dfa3-43df-ad6c-ac7cc3066f9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\SmashBros\Game">
+      <UniqueIdentifier>{f08d10b7-12e1-47ff-ae90-f4a46f54bf53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\SmashBros\Menus">
+      <UniqueIdentifier>{64d8c8ed-7635-4dcc-86e5-4481c3ab2c19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\SmashBros\Game\Characters">
+      <UniqueIdentifier>{a35ccbd1-0bd4-4d1e-9c47-acef04ad4032}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\SmashBros\Game\Items">
+      <UniqueIdentifier>{07baa175-b6d4-4123-a538-337faf2c6ace}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\SmashBros\Game\Stages">
+      <UniqueIdentifier>{86eae762-63a4-4aaf-b16c-b4b803a00f4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\SmashBros\Game\Stages\StagePieces">
+      <UniqueIdentifier>{30a6c63e-bfa3-407f-b590-201972981ee4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\SmashBros\Menus\MenuPieces">
+      <UniqueIdentifier>{71c10688-afa8-4814-a11c-27abf5d4f912}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External">
+      <UniqueIdentifier>{f71efef2-1ab8-4e9d-bfb1-106fbc83555a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External\PlistCpp">
+      <UniqueIdentifier>{127f29b3-65dc-4487-a362-8a5d83354d46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External\PlistCpp\src">
+      <UniqueIdentifier>{76fd9852-731d-4f83-9eda-f7c19d84dabf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External\ChaiScript">
+      <UniqueIdentifier>{eebe2d33-4566-43cf-8219-fc232006d2ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External\SDL">
+      <UniqueIdentifier>{6fab49b1-31bc-4fbc-bc69-2436ac9aa72f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External\SDL\SDL_image">
+      <UniqueIdentifier>{ceaf66b9-2531-49d9-a5b2-396362d41773}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External\SDL\SDL_image\VisualC">
+      <UniqueIdentifier>{bfe4e19d-d6e8-4965-81ef-c86708001d71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External\SDL\SDL_image\VisualC\external">
+      <UniqueIdentifier>{46004194-2ef0-4516-9015-18e9e6ff2c20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External\SDL\SDL_image\VisualC\external\lib">
+      <UniqueIdentifier>{8e02b2ef-afb2-4f8a-ae3c-b4e0ab3764dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External\SDL\SDL_image\VisualC\external\lib\x86">
+      <UniqueIdentifier>{bf30f317-bf55-4835-9db6-e822a3130b1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External\SDL\SDL_image\VisualC\external\lib\x64">
+      <UniqueIdentifier>{91fa6fa2-9230-42e4-b936-cec33e4ce47f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External\SDL\SDL_gfx">
+      <UniqueIdentifier>{77d36977-014d-40b0-bf47-75a922bd8c06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External\SDL\SDL_p2p">
+      <UniqueIdentifier>{0adfd660-cfcd-476c-9020-ec773344efc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External\SDL\SDL_p2p\include">
+      <UniqueIdentifier>{16827ffd-d922-44bd-b13a-703bbfc4ad3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External\SDL\SDL_p2p\src">
+      <UniqueIdentifier>{6e103523-2cb4-4cc4-8373-d8b3f2a086fe}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Source\GameEngine\Actor\Actor.cpp">
+      <Filter>Source\GameEngine\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GameEngine\Actor\Animation.cpp">
+      <Filter>Source\GameEngine\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GameEngine\Actor\AnimationManager.cpp">
+      <Filter>Source\GameEngine\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GameEngine\Actor\PrimitiveActor.cpp">
+      <Filter>Source\GameEngine\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GameEngine\Actor\TextActor.cpp">
+      <Filter>Source\GameEngine\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GameEngine\Actor\WireframeActor.cpp">
+      <Filter>Source\GameEngine\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GameEngine\CodeBridge\CPPBridge.cpp">
+      <Filter>Source\GameEngine\CodeBridge</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GameEngine\CodeBridge\WinBridge.cpp">
+      <Filter>Source\GameEngine\CodeBridge</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GameEngine\Graphics\Graphics2D.cpp">
+      <Filter>Source\GameEngine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GameEngine\Input\Keys.cpp">
+      <Filter>Source\GameEngine\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GameEngine\Input\Mouse.cpp">
+      <Filter>Source\GameEngine\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GameEngine\Output\Console.cpp">
+      <Filter>Source\GameEngine\Output</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GameEngine\ScreenManager\MenuScreen.cpp">
+      <Filter>Source\GameEngine\ScreenManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GameEngine\ScreenManager\Screen.cpp">
+      <Filter>Source\GameEngine\ScreenManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GameEngine\ScreenManager\ScreenManager.cpp">
+      <Filter>Source\GameEngine\ScreenManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GameEngine\Sound\Music.cpp">
+      <Filter>Source\GameEngine\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GameEngine\Sound\Sound.cpp">
+      <Filter>Source\GameEngine\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GameEngine\Util\Bitset.cpp">
+      <Filter>Source\GameEngine\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GameEngine\Util\BufferedImage.cpp">
+      <Filter>Source\GameEngine\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GameEngine\Util\Color.cpp">
+      <Filter>Source\GameEngine\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GameEngine\Util\FileTools.cpp">
+      <Filter>Source\GameEngine\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GameEngine\Util\Font.cpp">
+      <Filter>Source\GameEngine\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GameEngine\Util\HapticFeedback.cpp">
+      <Filter>Source\GameEngine\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GameEngine\Util\Image.cpp">
+      <Filter>Source\GameEngine\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GameEngine\Util\P2PManager.cpp">
+      <Filter>Source\GameEngine\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GameEngine\Util\PixelIterator.cpp">
+      <Filter>Source\GameEngine\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GameEngine\Util\PrefManager.cpp">
+      <Filter>Source\GameEngine\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GameEngine\Util\String.cpp">
+      <Filter>Source\GameEngine\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GameEngine\Util\Thread.cpp">
+      <Filter>Source\GameEngine\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GameEngine\Application.cpp">
+      <Filter>Source\GameEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GameEngine\ApplicationEventListener.cpp">
+      <Filter>Source\GameEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GameEngine\AssetManager.cpp">
+      <Filter>Source\GameEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GameEngine\BatchLoader.cpp">
+      <Filter>Source\GameEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GameEngine\GameEngine.cpp">
+      <Filter>Source\GameEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GameEngine\View.cpp">
+      <Filter>Source\GameEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ScriptModule\ScriptEntity.cpp">
+      <Filter>Source\ScriptModule</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ScriptModule\ScriptManager.cpp">
+      <Filter>Source\ScriptModule</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ScriptModule\ScriptOperatorOverloads.cpp">
+      <Filter>Source\ScriptModule</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ScriptModule\modules\GameEngine\inherit\lib_ge_inherit_Actor.cpp">
+      <Filter>Source\ScriptModule\modules\GameEngine\inherit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ScriptModule\modules\GameEngine\inherit\lib_ge_inherit_MenuScreen.cpp">
+      <Filter>Source\ScriptModule\modules\GameEngine\inherit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ScriptModule\modules\GameEngine\inherit\lib_ge_inherit_Screen.cpp">
+      <Filter>Source\ScriptModule\modules\GameEngine\inherit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ScriptModule\modules\GameEngine\inherit\lib_ge_inherit_TextActor.cpp">
+      <Filter>Source\ScriptModule\modules\GameEngine\inherit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ScriptModule\modules\GameEngine\inherit\lib_ge_inherit_WireframeActor.cpp">
+      <Filter>Source\ScriptModule\modules\GameEngine\inherit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ScriptModule\modules\GameEngine\lib_GameEngine.cpp">
+      <Filter>Source\ScriptModule\modules\GameEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ScriptModule\modules\GameEngine\lib_ge_Actor.cpp">
+      <Filter>Source\ScriptModule\modules\GameEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ScriptModule\modules\GameEngine\lib_ge_Global.cpp">
+      <Filter>Source\ScriptModule\modules\GameEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ScriptModule\modules\GameEngine\lib_ge_Graphics.cpp">
+      <Filter>Source\ScriptModule\modules\GameEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ScriptModule\modules\GameEngine\lib_ge_IO.cpp">
+      <Filter>Source\ScriptModule\modules\GameEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ScriptModule\modules\GameEngine\lib_ge_Math.cpp">
+      <Filter>Source\ScriptModule\modules\GameEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ScriptModule\modules\GameEngine\lib_ge_ScreenManager.cpp">
+      <Filter>Source\ScriptModule\modules\GameEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ScriptModule\modules\GameEngine\lib_ge_Util.cpp">
+      <Filter>Source\ScriptModule\modules\GameEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ScriptModule\modules\SmashBros\inherit\lib_sb_inherit_GameElement.cpp">
+      <Filter>Source\ScriptModule\modules\SmashBros\inherit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ScriptModule\modules\SmashBros\inherit\lib_sb_inherit_Player.cpp">
+      <Filter>Source\ScriptModule\modules\SmashBros\inherit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ScriptModule\modules\SmashBros\inherit\lib_sb_inherit_Stage.cpp">
+      <Filter>Source\ScriptModule\modules\SmashBros\inherit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ScriptModule\modules\SmashBros\lib_sb_GameElement.cpp">
+      <Filter>Source\ScriptModule\modules\SmashBros</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ScriptModule\modules\SmashBros\lib_sb_Global.cpp">
+      <Filter>Source\ScriptModule\modules\SmashBros</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ScriptModule\modules\SmashBros\lib_sb_Player.cpp">
+      <Filter>Source\ScriptModule\modules\SmashBros</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ScriptModule\modules\SmashBros\lib_sb_Stage.cpp">
+      <Filter>Source\ScriptModule\modules\SmashBros</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ScriptModule\modules\SmashBros\lib_SmashBros.cpp">
+      <Filter>Source\ScriptModule\modules\SmashBros</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Game\Stages\StagePieces\HangPoint.cpp">
+      <Filter>Source\SmashBros\Game\Stages\StagePieces</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Game\Stages\StagePieces\OffScreenExplode.cpp">
+      <Filter>Source\SmashBros\Game\Stages\StagePieces</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Game\Stages\StagePieces\Platform.cpp">
+      <Filter>Source\SmashBros\Game\Stages\StagePieces</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Game\Stages\BattlefieldBrawl.cpp">
+      <Filter>Source\SmashBros\Game\Stages</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Game\Stages\Corneria.cpp">
+      <Filter>Source\SmashBros\Game\Stages</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Game\Stages\FinalDestinationBrawl.cpp">
+      <Filter>Source\SmashBros\Game\Stages</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Game\Stages\FractalStage.cpp">
+      <Filter>Source\SmashBros\Game\Stages</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Game\Stages\HillsideBattleground.cpp">
+      <Filter>Source\SmashBros\Game\Stages</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Game\Stages\HyruleTemple.cpp">
+      <Filter>Source\SmashBros\Game\Stages</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Game\Characters\Fox.cpp">
+      <Filter>Source\SmashBros\Game\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Game\Characters\Ichigo.cpp">
+      <Filter>Source\SmashBros\Game\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Game\Characters\Link.cpp">
+      <Filter>Source\SmashBros\Game\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Game\Characters\Mario.cpp">
+      <Filter>Source\SmashBros\Game\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Game\Characters\Pikachu.cpp">
+      <Filter>Source\SmashBros\Game\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Game\Characters\Sonic.cpp">
+      <Filter>Source\SmashBros\Game\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Game\Items\BeamSword.cpp">
+      <Filter>Source\SmashBros\Game\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Game\Items\HeartContainer.cpp">
+      <Filter>Source\SmashBros\Game\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Game\Items\PoisonMushroom.cpp">
+      <Filter>Source\SmashBros\Game\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Game\Items\RayGun.cpp">
+      <Filter>Source\SmashBros\Game\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Game\Items\SmashBall.cpp">
+      <Filter>Source\SmashBros\Game\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Game\Items\SuperMushroom.cpp">
+      <Filter>Source\SmashBros\Game\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Game\GameScreen.cpp">
+      <Filter>Source\SmashBros\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Game\WinnerScreen.cpp">
+      <Filter>Source\SmashBros\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Menus\MenuPieces\ActorGrid.cpp">
+      <Filter>Source\SmashBros\Menus\MenuPieces</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Menus\MenuPieces\Arrows.cpp">
+      <Filter>Source\SmashBros\Menus\MenuPieces</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Menus\MenuPieces\MenuBar.cpp">
+      <Filter>Source\SmashBros\Menus\MenuPieces</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Menus\MenuPieces\MenuBarSmall.cpp">
+      <Filter>Source\SmashBros\Menus\MenuPieces</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Menus\MenuPieces\MenuBarSmallButton.cpp">
+      <Filter>Source\SmashBros\Menus\MenuPieces</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Menus\MenuPieces\MenuBarToggle.cpp">
+      <Filter>Source\SmashBros\Menus\MenuPieces</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Menus\MenuPieces\MenuBarValue.cpp">
+      <Filter>Source\SmashBros\Menus\MenuPieces</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Menus\MenuPieces\ToggleButton.cpp">
+      <Filter>Source\SmashBros\Menus\MenuPieces</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Menus\MenuPieces\ToggleButtons.cpp">
+      <Filter>Source\SmashBros\Menus\MenuPieces</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Menus\MenuPieces\TogglePane.cpp">
+      <Filter>Source\SmashBros\Menus\MenuPieces</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Menus\CharSelectScreen.cpp">
+      <Filter>Source\SmashBros\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Menus\MenuClasses.cpp">
+      <Filter>Source\SmashBros\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Menus\Menus.cpp">
+      <Filter>Source\SmashBros\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Menus\StageSelectScreen.cpp">
+      <Filter>Source\SmashBros\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\AttackManager.cpp">
+      <Filter>Source\SmashBros</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\AttackRandomizer.cpp">
+      <Filter>Source\SmashBros</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\AttackTemplates.cpp">
+      <Filter>Source\SmashBros</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Camera.cpp">
+      <Filter>Source\SmashBros</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Chargebar.cpp">
+      <Filter>Source\SmashBros</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\CollisionManager.cpp">
+      <Filter>Source\SmashBros</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Controls.cpp">
+      <Filter>Source\SmashBros</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\GameElement.cpp">
+      <Filter>Source\SmashBros</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Global.cpp">
+      <Filter>Source\SmashBros</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\HitBox.cpp">
+      <Filter>Source\SmashBros</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\HUD.cpp">
+      <Filter>Source\SmashBros</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Item.cpp">
+      <Filter>Source\SmashBros</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\ItemManager.cpp">
+      <Filter>Source\SmashBros</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Loader.cpp">
+      <Filter>Source\SmashBros</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Magnifier.cpp">
+      <Filter>Source\SmashBros</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\MusicManager.cpp">
+      <Filter>Source\SmashBros</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\P2PDataManager.cpp">
+      <Filter>Source\SmashBros</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Player.cpp">
+      <Filter>Source\SmashBros</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Preferences.cpp">
+      <Filter>Source\SmashBros</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Projectile.cpp">
+      <Filter>Source\SmashBros</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\ProjectileManager.cpp">
+      <Filter>Source\SmashBros</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\SoundManager.cpp">
+      <Filter>Source\SmashBros</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Stage.cpp">
+      <Filter>Source\SmashBros</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Program.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Game.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\External\PlistCpp\src\Plist.cpp">
+      <Filter>External\PlistCpp\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\External\PlistCpp\src\PlistDate.cpp">
+      <Filter>External\PlistCpp\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\External\PlistCpp\src\pugixml.cpp">
+      <Filter>External\PlistCpp\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\External\SDL\SDL_gfx\SDL2_gfxPrimitives.c">
+      <Filter>External\SDL\SDL_gfx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\External\SDL\SDL_gfx\SDL2_imageFilter.c">
+      <Filter>External\SDL\SDL_gfx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\External\SDL\SDL_gfx\SDL2_rotozoom.c">
+      <Filter>External\SDL\SDL_gfx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\External\SDL\SDL_gfx\SDL2_framerate.c">
+      <Filter>External\SDL\SDL_gfx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\External\SDL\SDL_p2p\src\SDL_p2p.cpp">
+      <Filter>External\SDL\SDL_p2p\src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Source\GameEngine\Actor\Actor.h">
+      <Filter>Source\GameEngine\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameEngine\Actor\Animation.h">
+      <Filter>Source\GameEngine\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameEngine\Actor\AnimationManager.h">
+      <Filter>Source\GameEngine\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameEngine\Actor\PrimitiveActor.h">
+      <Filter>Source\GameEngine\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameEngine\Actor\TextActor.h">
+      <Filter>Source\GameEngine\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameEngine\Actor\WireframeActor.h">
+      <Filter>Source\GameEngine\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameEngine\CodeBridge\CPPBridge.h">
+      <Filter>Source\GameEngine\CodeBridge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameEngine\CodeBridge\SDL_ext.h">
+      <Filter>Source\GameEngine\CodeBridge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameEngine\Graphics\Graphics2D.h">
+      <Filter>Source\GameEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameEngine\Input\TouchPoint.h">
+      <Filter>Source\GameEngine\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameEngine\Input\Keys.h">
+      <Filter>Source\GameEngine\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameEngine\Input\Mouse.h">
+      <Filter>Source\GameEngine\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameEngine\Output\Console.h">
+      <Filter>Source\GameEngine\Output</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameEngine\ScreenManager\MenuScreen.h">
+      <Filter>Source\GameEngine\ScreenManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameEngine\ScreenManager\Screen.h">
+      <Filter>Source\GameEngine\ScreenManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameEngine\ScreenManager\ScreenManager.h">
+      <Filter>Source\GameEngine\ScreenManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameEngine\Sound\Music.h">
+      <Filter>Source\GameEngine\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameEngine\Sound\Sound.h">
+      <Filter>Source\GameEngine\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameEngine\Util\ArrayList.h">
+      <Filter>Source\GameEngine\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameEngine\Util\Bitset.h">
+      <Filter>Source\GameEngine\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameEngine\Util\BufferedImage.h">
+      <Filter>Source\GameEngine\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameEngine\Util\Color.h">
+      <Filter>Source\GameEngine\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameEngine\Util\FileTools.h">
+      <Filter>Source\GameEngine\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameEngine\Util\Font.h">
+      <Filter>Source\GameEngine\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameEngine\Util\HapticFeedback.h">
+      <Filter>Source\GameEngine\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameEngine\Util\Image.h">
+      <Filter>Source\GameEngine\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameEngine\Util\P2PManager.h">
+      <Filter>Source\GameEngine\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameEngine\Util\PixelIterator.h">
+      <Filter>Source\GameEngine\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameEngine\Util\PrefManager.h">
+      <Filter>Source\GameEngine\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameEngine\Util\String.h">
+      <Filter>Source\GameEngine\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameEngine\Util\Thread.h">
+      <Filter>Source\GameEngine\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameEngine\Util\Vector2.h">
+      <Filter>Source\GameEngine\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameEngine\View.h">
+      <Filter>Source\GameEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameEngine\Application.h">
+      <Filter>Source\GameEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameEngine\ApplicationEventListener.h">
+      <Filter>Source\GameEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameEngine\AssetManager.h">
+      <Filter>Source\GameEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameEngine\BatchLoader.h">
+      <Filter>Source\GameEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameEngine\forwards.h">
+      <Filter>Source\GameEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameEngine\GameEngine.h">
+      <Filter>Source\GameEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameEngine\GlobalDefs.h">
+      <Filter>Source\GameEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ScriptModule\ScriptEntity.h">
+      <Filter>Source\ScriptModule</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ScriptModule\ScriptMacros.h">
+      <Filter>Source\ScriptModule</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ScriptModule\ScriptManager.h">
+      <Filter>Source\ScriptModule</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ScriptModule\ScriptOperatorOverloads.h">
+      <Filter>Source\ScriptModule</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ScriptModule\modules\GameEngine\inherit\lib_ge_inherit_Actor.h">
+      <Filter>Source\ScriptModule\modules\GameEngine\inherit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ScriptModule\modules\GameEngine\inherit\lib_ge_inherit_MenuScreen.h">
+      <Filter>Source\ScriptModule\modules\GameEngine\inherit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ScriptModule\modules\GameEngine\inherit\lib_ge_inherit_Screen.h">
+      <Filter>Source\ScriptModule\modules\GameEngine\inherit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ScriptModule\modules\GameEngine\inherit\lib_ge_inherit_TextActor.h">
+      <Filter>Source\ScriptModule\modules\GameEngine\inherit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ScriptModule\modules\GameEngine\inherit\lib_ge_inherit_WireframeActor.h">
+      <Filter>Source\ScriptModule\modules\GameEngine\inherit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ScriptModule\modules\GameEngine\lib_ge_Vector2.h">
+      <Filter>Source\ScriptModule\modules\GameEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ScriptModule\modules\GameEngine\lib_GameEngine.h">
+      <Filter>Source\ScriptModule\modules\GameEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ScriptModule\modules\GameEngine\lib_ge_ArrayList.h">
+      <Filter>Source\ScriptModule\modules\GameEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ScriptModule\modules\GameEngine\lib_ge_Thread.h">
+      <Filter>Source\ScriptModule\modules\GameEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ScriptModule\modules\SmashBros\inherit\lib_sb_inherit_Stage.h">
+      <Filter>Source\ScriptModule\modules\SmashBros\inherit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ScriptModule\modules\SmashBros\inherit\lib_sb_inherit_GameElement.h">
+      <Filter>Source\ScriptModule\modules\SmashBros\inherit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ScriptModule\modules\SmashBros\inherit\lib_sb_inherit_Player.h">
+      <Filter>Source\ScriptModule\modules\SmashBros\inherit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ScriptModule\modules\SmashBros\lib_SmashBros.h">
+      <Filter>Source\ScriptModule\modules\SmashBros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Game\Stages\StagePieces\Platform.h">
+      <Filter>Source\SmashBros\Game\Stages\StagePieces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Game\Stages\StagePieces\HangPoint.h">
+      <Filter>Source\SmashBros\Game\Stages\StagePieces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Game\Stages\StagePieces\OffScreenExplode.h">
+      <Filter>Source\SmashBros\Game\Stages\StagePieces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Game\Stages\HyruleTemple.h">
+      <Filter>Source\SmashBros\Game\Stages</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Game\Stages\BattlefieldBrawl.h">
+      <Filter>Source\SmashBros\Game\Stages</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Game\Stages\Corneria.h">
+      <Filter>Source\SmashBros\Game\Stages</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Game\Stages\FinalDestinationBrawl.h">
+      <Filter>Source\SmashBros\Game\Stages</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Game\Stages\FractalStage.h">
+      <Filter>Source\SmashBros\Game\Stages</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Game\Stages\HillsideBattleground.h">
+      <Filter>Source\SmashBros\Game\Stages</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Game\Characters\Fox.h">
+      <Filter>Source\SmashBros\Game\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Game\Characters\Ichigo.h">
+      <Filter>Source\SmashBros\Game\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Game\Characters\Link.h">
+      <Filter>Source\SmashBros\Game\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Game\Characters\Mario.h">
+      <Filter>Source\SmashBros\Game\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Game\Characters\Pikachu.h">
+      <Filter>Source\SmashBros\Game\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Game\Characters\Sonic.h">
+      <Filter>Source\SmashBros\Game\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Game\Items\SuperMushroom.h">
+      <Filter>Source\SmashBros\Game\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Game\Items\BeamSword.h">
+      <Filter>Source\SmashBros\Game\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Game\Items\HeartContainer.h">
+      <Filter>Source\SmashBros\Game\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Game\Items\PoisonMushroom.h">
+      <Filter>Source\SmashBros\Game\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Game\Items\RayGun.h">
+      <Filter>Source\SmashBros\Game\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Game\Items\SmashBall.h">
+      <Filter>Source\SmashBros\Game\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Game\WinnerScreen.h">
+      <Filter>Source\SmashBros\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Game\GameScreen.h">
+      <Filter>Source\SmashBros\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Menus\MenuPieces\ActorGrid.h">
+      <Filter>Source\SmashBros\Menus\MenuPieces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Menus\MenuPieces\Arrows.h">
+      <Filter>Source\SmashBros\Menus\MenuPieces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Menus\MenuPieces\MenuBar.h">
+      <Filter>Source\SmashBros\Menus\MenuPieces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Menus\MenuPieces\MenuBarSmall.h">
+      <Filter>Source\SmashBros\Menus\MenuPieces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Menus\MenuPieces\MenuBarSmallButton.h">
+      <Filter>Source\SmashBros\Menus\MenuPieces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Menus\MenuPieces\MenuBarToggle.h">
+      <Filter>Source\SmashBros\Menus\MenuPieces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Menus\MenuPieces\MenuBarValue.h">
+      <Filter>Source\SmashBros\Menus\MenuPieces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Menus\MenuPieces\ToggleButton.h">
+      <Filter>Source\SmashBros\Menus\MenuPieces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Menus\MenuPieces\ToggleButtons.h">
+      <Filter>Source\SmashBros\Menus\MenuPieces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Menus\MenuPieces\TogglePane.h">
+      <Filter>Source\SmashBros\Menus\MenuPieces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Menus\StageSelectScreen.h">
+      <Filter>Source\SmashBros\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Menus\CharSelectScreen.h">
+      <Filter>Source\SmashBros\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Menus\MenuClasses.h">
+      <Filter>Source\SmashBros\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Menus\Menus.h">
+      <Filter>Source\SmashBros\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\AttackManager.h">
+      <Filter>Source\SmashBros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\AttackRandomizer.h">
+      <Filter>Source\SmashBros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\AttackTemplates.h">
+      <Filter>Source\SmashBros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Camera.h">
+      <Filter>Source\SmashBros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Chargebar.h">
+      <Filter>Source\SmashBros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\CollisionManager.h">
+      <Filter>Source\SmashBros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Controls.h">
+      <Filter>Source\SmashBros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\GameElement.h">
+      <Filter>Source\SmashBros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Global.h">
+      <Filter>Source\SmashBros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\HitBox.h">
+      <Filter>Source\SmashBros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\HUD.h">
+      <Filter>Source\SmashBros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Item.h">
+      <Filter>Source\SmashBros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\ItemManager.h">
+      <Filter>Source\SmashBros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Loader.h">
+      <Filter>Source\SmashBros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Magnifier.h">
+      <Filter>Source\SmashBros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\MusicManager.h">
+      <Filter>Source\SmashBros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\P2PDataManager.h">
+      <Filter>Source\SmashBros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Player.h">
+      <Filter>Source\SmashBros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Preferences.h">
+      <Filter>Source\SmashBros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Projectile.h">
+      <Filter>Source\SmashBros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\ProjectileManager.h">
+      <Filter>Source\SmashBros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\SmashForwards.h">
+      <Filter>Source\SmashBros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\SoundManager.h">
+      <Filter>Source\SmashBros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Stage.h">
+      <Filter>Source\SmashBros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Game.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\External\PlistCpp\src\base64.hpp">
+      <Filter>External\PlistCpp\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\External\PlistCpp\src\Plist.hpp">
+      <Filter>External\PlistCpp\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\External\PlistCpp\src\PlistDate.hpp">
+      <Filter>External\PlistCpp\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\External\PlistCpp\src\pugiconfig.hpp">
+      <Filter>External\PlistCpp\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\External\PlistCpp\src\pugixml.hpp">
+      <Filter>External\PlistCpp\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\External\SDL\SDL_gfx\SDL2_gfxPrimitives.h">
+      <Filter>External\SDL\SDL_gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\External\SDL\SDL_gfx\SDL2_gfxPrimitives_font.h">
+      <Filter>External\SDL\SDL_gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\External\SDL\SDL_gfx\SDL2_imageFilter.h">
+      <Filter>External\SDL\SDL_gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\External\SDL\SDL_gfx\SDL2_rotozoom.h">
+      <Filter>External\SDL\SDL_gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\External\SDL\SDL_gfx\SDL2_framerate.h">
+      <Filter>External\SDL\SDL_gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\External\SDL\SDL_p2p\include\SDL_p2p.h">
+      <Filter>External\SDL\SDL_p2p\include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Source\GameEngine\Util\HapticFeedbackiOS.mm">
+      <Filter>Source\GameEngine\Util</Filter>
+    </None>
+    <None Include="..\..\External\SDL\SDL_image\VisualC\external\lib\x86\libjpeg-9.dll">
+      <Filter>External\SDL\SDL_image\VisualC\external\lib\x86</Filter>
+    </None>
+    <None Include="..\..\External\SDL\SDL_image\VisualC\external\lib\x86\libpng16-16.dll">
+      <Filter>External\SDL\SDL_image\VisualC\external\lib\x86</Filter>
+    </None>
+    <None Include="..\..\External\SDL\SDL_image\VisualC\external\lib\x86\libtiff-5.dll">
+      <Filter>External\SDL\SDL_image\VisualC\external\lib\x86</Filter>
+    </None>
+    <None Include="..\..\External\SDL\SDL_image\VisualC\external\lib\x86\libwebp-7.dll">
+      <Filter>External\SDL\SDL_image\VisualC\external\lib\x86</Filter>
+    </None>
+    <None Include="..\..\External\SDL\SDL_image\VisualC\external\lib\x86\zlib1.dll">
+      <Filter>External\SDL\SDL_image\VisualC\external\lib\x86</Filter>
+    </None>
+    <None Include="..\..\External\SDL\SDL_image\VisualC\external\lib\x64\libjpeg-9.dll">
+      <Filter>External\SDL\SDL_image\VisualC\external\lib\x64</Filter>
+    </None>
+    <None Include="..\..\External\SDL\SDL_image\VisualC\external\lib\x64\libpng16-16.dll">
+      <Filter>External\SDL\SDL_image\VisualC\external\lib\x64</Filter>
+    </None>
+    <None Include="..\..\External\SDL\SDL_image\VisualC\external\lib\x64\libtiff-5.dll">
+      <Filter>External\SDL\SDL_image\VisualC\external\lib\x64</Filter>
+    </None>
+    <None Include="..\..\External\SDL\SDL_image\VisualC\external\lib\x64\libwebp-7.dll">
+      <Filter>External\SDL\SDL_image\VisualC\external\lib\x64</Filter>
+    </None>
+    <None Include="..\..\External\SDL\SDL_image\VisualC\external\lib\x64\zlib1.dll">
+      <Filter>External\SDL\SDL_image\VisualC\external\lib\x64</Filter>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+</Project>
