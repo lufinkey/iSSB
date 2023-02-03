@@ -20,6 +20,8 @@ namespace SmashBros {
 		
 		charging = 0;
 
+		chargeAttack = 0;
+		rollSpeed = 3;
 		walkSpeed = 2.9f;
 		runSpeed = 4.8f;
 		fallWalk = 2;
@@ -127,6 +129,13 @@ namespace SmashBros {
 						Projectile::setNextID(projID);
 						createProjectile(new FinalSmashFire(getPlayerNo(), x1, y1));
 					}
+
+					case 5:
+					{
+						Projectile::setNextID(projID);
+						createProjectile(new Ray(getPlayerNo(), x1, y1));
+					}
+					break;
 						break;
 				}
 			}
@@ -179,11 +188,13 @@ namespace SmashBros {
 		addTwoSidedAnimation("air_attack_up", "air_attack_up.png", 10, 6, 1);
 		addTwoSidedAnimation("air_attack_down", "air_attack_down.png", 10, 6, 1);
 		addTwoSidedAnimation("special_attack", "special_attack.png", 10, 5, 1);
-		addTwoSidedAnimation("special_attack_side", "special_attack_side.png", 18, 6, 1);
-		addTwoSidedAnimation("special_attack_up", "special_attack_up.png", 12, 1, 1);
+		addTwoSidedAnimation("special_attack_side", "special_attack_side.png", 10, 3, 1);
+		addTwoSidedAnimation("special_finish_up", "special_finish_up.png", 18, 5, 1);
 		addTwoSidedAnimation("special_drop_down", "special_drop_down.png", 1, 1, 1);
 		addTwoSidedAnimation("special_attack_down", "special_attack_down.png", 4, 4, 1);
-		addTwoSidedAnimation("smash_charge", "smash_charge.png", 8, 1, 1);
+		addTwoSidedAnimation("roll", "roll.png", 12, 4, 1); 
+		addTwoSidedAnimation("special_charge_down", "special_charge_down.png", 16, 4, 1);
+		addTwoSidedAnimation("smash_charge", "smash_charge.png", 8, 6, 1);
 		addTwoSidedAnimation("smash_attack", "smash_attack.png", 12, 6, 1);
 		addTwoSidedAnimation("smash_attack_up", "smash_attack_up.png", 12, 4, 1);
 		addTwoSidedAnimation("smash_attack_down", "smash_attack_down.png", 12, 6, 1);
@@ -192,6 +203,15 @@ namespace SmashBros {
 		addTwoSidedAnimation("finalsmash_end", "finalsmash_end.png", 10, 3, 1);
 	}
 
+	Animation* anim = new Animation("special_attack_up_left", 24, 5, 1, upSpecialSeq);
+	anim->addFrame(folderPath + "special_attack_up.png");
+	addAnimation(anim);
+
+	anim = new Animation("special_attack_up_right", 24, 5, 1, upSpecialSeq);
+	anim->addFrame(folderPath + "special_attack_up.png");
+	anim->mirror(true);
+	addAnimation(anim);
+
 	void Samus::LoadAttackTypes() {
 		addAIAttackType(ATTACK_A, ATTACKTYPE_MELEE, 5);
 		addAIAttackType(ATTACK_SIDEA, ATTACKTYPE_MELEE, 4);
@@ -199,11 +219,10 @@ namespace SmashBros {
 		addAIAttackType(ATTACK_DOWNA, ATTACKTYPE_MELEE, 1);
 		addAIAttackType(ATTACK_DOWNA, ATTACKTYPE_DOWNMELEE, 3);
 		addAIAttackType(ATTACK_B, ATTACKTYPE_PROJECTILE, 1, true);
-		addAIAttackType(ATTACK_SIDEB, ATTACKTYPE_SIDEMOVE, 1);
-		addAIAttackType(ATTACK_UPB, ATTACKTYPE_UPMOVE, 2);
-		addAIAttackType(ATTACK_UPB, ATTACKTYPE_UPMELEE, 1);
-		addAIAttackType(ATTACK_DOWNB, ATTACKTYPE_DOWNMELEE, 1);
-		addAIAttackType(ATTACK_DOWNB, ATTACKTYPE_DOWNMOVE, 2);
+		addAIAttackType(ATTACK_SIDEB, ATTACKTYPE_PROJECTILE, 2);
+		addAIAttackType(ATTACK_UPB, ATTACKTYPE_STRONGMELEE, 1);
+		addAIAttackType(ATTACK_UPB, ATTACKTYPE_UPMOVE, 1);
+		addAIAttackType(ATTACK_DOWNB, ATTACKTYPE_DOWNMOVE, 1, true);
 		addAIAttackType(ATTACK_SIDESMASH, ATTACKTYPE_STRONGMELEE, 2);
 		addAIAttackType(ATTACK_UPSMASH, ATTACKTYPE_STRONGMELEE, 1);
 		addAIAttackType(ATTACK_DOWNSMASH, ATTACKTYPE_STRONGMELEE, 1);
@@ -216,6 +235,11 @@ namespace SmashBros {
 	}
 
 	void Samus::onAnimationFinish(const String &n) {
+		if (n.equals("roll_left") || n.equals("roll_right")
+			|| n.equals("special_charge_down_left") || n.equals("special_charge_down_right"))
+		{
+			//
+		}
 		if (n.equals("special_drop_down_left") || n.equals("special_drop_down_right")) {
 			//
 		} else if (n.equals("standard_attack_left") || n.equals("standard_attack_right")) {
@@ -225,18 +249,6 @@ namespace SmashBros {
 			xVel = 0;
 			animFinish();
 			attackSideA();
-		} else if (n.equals("special_prep_down_left") || n.equals("special_prep_down_right")) {
-			{
-				if (attacksPriority != 7) {
-					smashPower = 0;
-					if (isOnGround()) {
-						AttackTemplates::chargeB(this, 4, 10, 1400);
-						changeTwoSidedAnimation("special_charge_down", FORWARD);
-					} else {
-						AttackTemplates::bounceDownB(this, 13, 3.76, 10);
-					}
-				}
-			}
 		} else if (n.equals("finalsmash_hold_left") || n.equals("finalsmash_hold_right")
 				   || n.equals("special_charge_down_left") || n.equals("special_charge_down_right")
 				   || n.equals("special_attack_down_left") ||
@@ -248,7 +260,7 @@ namespace SmashBros {
 		} else if (n.equals("finalsmash_begin_left") || n.equals("finalsmash_begin_right")) {
 			changeTwoSidedAnimation("finalsmash_hold", FORWARD);
 
-			FinalSmashFire *fire = new FinalSmashFire(getPlayerNo(), x + (60 * getPlayerDirMult()),
+			FinalSmashFire *fire = new FinalSmashFire(getPlayerNo(), x + (64 * getPlayerDirMult()),
 													  y - 40);
 			createProjectile(fire);
 
@@ -259,6 +271,7 @@ namespace SmashBros {
 		} else {
 			Player::onAnimationFinish(n);
 		}
+
 	}
 
 	void Samus::Update(long gameTime) {
@@ -270,6 +283,24 @@ namespace SmashBros {
 				x -= 3;
 			} else if (moveRight > 0) {
 				x += 3;
+			}
+			if (xVel > (rollSpeed * getPlayerDirMult()))
+			{
+				turning = true;
+				xVel += 0.5f * getPlayerDirMult();
+				attacksHolder = 12;
+				moveLeft = 0;
+				moveRight = 0;
+				changeTwoSidedAnimation("roll", NO_CHANGE);
+			}
+			else
+			{
+				turning = false;
+				xVel = rollSpeed * getPlayerDirMult();
+				attacksHolder = 12;
+				moveLeft = 0;
+				moveRight = 0;
+				changeTwoSidedAnimation("roll", NO_CHANGE);
 			}
 		}
 
@@ -327,6 +358,16 @@ namespace SmashBros {
 							collide->x += (std::abs(xVel) + 1) * getPlayerDirMult();
 							break;
 
+						case 12:
+							//Smash Up
+							if (getPlayerDir() == getRelPlayerDir(collide))
+							{
+								causeDamage(collide, smashPower);
+								causeHurtLaunch(collide, (int)getPlayerDirMult(), 0.2f, 2.4f, -1, ((float)smashPower / 5), 3.8f);
+								causeHurt(collide, getOppPlayerDir(), 300);
+							}
+						break;
+
 						case 15:
 							//Smash Side
 							causeDamage(collide, smashPower);
@@ -374,6 +415,13 @@ namespace SmashBros {
 						collide->x -= 5 * getPlayerDirMult();
 						x += 4 * getPlayerDirMult();
 						causeHurt(collide, getOppPlayerDir(), 100);
+						break;
+
+					case 12:
+						//Smash Up
+						causeDamage(collide, smashPower);
+						causeHurtLaunch(collide, (int)getPlayerDirMult(), 1, 2.4f, -1, ((float)smashPower / 5), 4.1f);
+						causeHurt(collide, getOppPlayerDir(), 500);
 						break;
 
 					case 16:
@@ -470,6 +518,16 @@ namespace SmashBros {
 			}
 		}
 	}
+
+	void Samus::doChargingAttack(byte button)
+	{
+		if (chargeAttack == 1)
+		{
+			destroyCharge();
+			rocketSpeed = (float)smashPower;
+			AttackTemplates::rollAttack(this, 14, 2.895, rocketSpeed, 5000);
+			chargeAttack = 0;
+		}
 
 	void Samus::attackA() {
 		addAttackInfo(DIR_LEFT, 2, LEFT, 4, 400, -1, 3, 5, -1, 2, 3);
@@ -576,22 +634,15 @@ namespace SmashBros {
 	{
 		if(!bUp)
 	    {
-			AttackTemplates::dashSideB(this, 11, 1, 9);
-	    }
-	}
-	
-	void Samus::attackUpB()
-	{
-	    if(!bUp)
-	    {
-	        AttackTemplates::rehitUpB2(this, 12, 4, 2, 0);
-			SpinningBlade*blade = new SpinningBlade(getPlayerNo(),x, y-((float)4*getScale()));
-	        createProjectile(blade);
-			
-			addProjectileInfo(2, blade->getID(), x, y-((float)4*getScale()));
-			
-	        yvelocity=0;
-	        xvelocity=0;
+			float x1 = 25 * getPlayerDirMult();
+			changeTwoSidedAnimation("special_attack_side", FORWARD);
+			if (!finalSmashing)
+			{
+				Ray* ray = new Ray(getPlayerNo(), x + x1, y);
+				AttackTemplates::singleProjectile(this, 11, 0, ray);
+
+				addProjectileInfo(1, ray->getID(), x + x1, y);
+			}
 	    }
 	}
 	
@@ -599,7 +650,20 @@ namespace SmashBros {
 	{
 		if(!bUp)
 	    {
-			AttackTemplates::prepareDownB(this, 13, 0);
+			if (attacksPriority != 7)
+			{
+				smashPower = 0;
+				if (isOnGround())
+				{
+					AttackTemplates::chargeB(this, 4, 10, 1400);
+					changeTwoSidedAnimation("special_charge_down", FORWARD);
+					chargeAttack = 1;
+				}
+				else
+				{
+					AttackTemplates::bounceDownB(this, 13, 3.76, 10);
+				}
+			}
 	    }
 	}
 	
@@ -749,7 +813,7 @@ namespace SmashBros {
 		}
 	}
 
-	Samus::SpinningBlade::SpinningBlade(byte playerNo, float x1, float y1) : Projectile(playerNo,x1,y1)
+	Samus::SpinningBlade::SpinningBlade(byte playerNo, float x1, float y1) : Projectile(playerNo, x1, y1);
 	{
 		Animation*anim;
 			
@@ -778,101 +842,6 @@ namespace SmashBros {
 		setLayer(LAYER_MIDDLELOWER);
 		
 		hits=0;
-	}
-
-	Samus::SpinningBlade::~SpinningBlade() {
-		//
-	};
-
-	void Samus::SpinningBlade::Update(long gameTime) {
-		Player *owner = Global::getPlayerActor(getPlayerNo());
-
-		x = owner->x;
-		y = owner->y - ((float) 4 * owner->getScale());
-
-		String ownerAnim = owner->getAnimName();
-		if (owner->isHurt() || owner->isHanging() || (!ownerAnim.equals("special_attack_up_left") && !ownerAnim.equals("special_attack_up_right")))
-		{
-			destroy();
-		}
-
-		Projectile::Update(gameTime);
-	}
-
-	void Samus::SpinningBlade::Draw(Graphics2D &g, long gameTime) {
-		Player *owner = Global::getPlayerActor(getPlayerNo());
-
-		x = owner->x;
-		y = owner->y - ((float) 4 * owner->getScale());
-
-		Projectile::Draw(g, gameTime);
-	}
-
-	void Samus::SpinningBlade::onAnimationFinish(const String &n) {
-		Player *owner = Global::getPlayerActor(getPlayerNo());
-		owner->yvelocity = owner->yVel;
-		owner->yVel = 0;
-		destroy();
-	}
-
-	void Samus::SpinningBlade::onPlayerHit(Player *collide, byte dir) {
-		if (isHittable(collide, dir)) {
-			Player *playr = Global::getPlayerActor(getPlayerNo());
-			switch (playr->getPlayerDir()) {
-				case LEFT:
-					//B Up
-					switch (hits) {
-						case 0:
-						case 1:
-						case 2:
-						case 3:
-						case 4:
-						case 5:
-							causeDamage(collide, 2);
-							collide->y = y - ((height / 2) + (collide->height / 2) + 2);
-							hits += 1;
-							causeHurt(collide, collide->getPlayerDir(), 100);
-							break;
-
-						case 6:
-							causeDamage(collide, 2);
-							playr->yvelocity = -2;
-							hits += 1;
-							collide->yvelocity = 0;
-							causeHurtLaunch(collide, 0, 0, 0, -1, 5, 3);
-							causeHurt(collide, collide->getPlayerDir(), 300);
-							break;
-					}
-					break;
-
-				case RIGHT:
-					//B Up
-					switch (hits) {
-						case 0:
-						case 1:
-						case 2:
-						case 3:
-						case 4:
-						case 5:
-							causeDamage(collide, 2);
-							//collide->y=y-((height/2)+(collide->height/2)+12);
-							collide->y = y - ((height / 2) + (collide->height / 2) + 2);
-							hits += 1;
-							causeHurt(collide, collide->getPlayerDir(), 100);
-							break;
-
-						case 6:
-							causeDamage(collide, 2);
-							playr->yvelocity = -2;
-							hits += 1;
-							collide->yvelocity = 0;
-							causeHurtLaunch(collide, 0, 0, 0, -1, 5, 3);
-							causeHurt(collide, collide->getPlayerDir(), 300);
-							break;
-					}
-					break;
-			}
-		}
 	}
 
 	Samus::GroundStab::GroundStab(byte playerNo, float x1, float y1) : Projectile(playerNo, x1, y1) {

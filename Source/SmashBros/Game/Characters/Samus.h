@@ -79,9 +79,21 @@ namespace SmashBros
 		bool prepping;
 		bool finishing;
 		byte charging;
+		byte chargeAttack;
+		float rollSpeed;
 		bool finalsmash_snatching;
 		int lastFinalsmashFrame;
 		ArrayList<Player*> finalsmashVictims;
+
+		class Ray : public Projectile
+		{
+		public:
+			Ray(byte playerNo, float x1, float y1);
+			virtual ~Ray();
+			
+			virtual void deflect(byte dir);
+			virtual void onPlayerHit(Player*collide, byte dir);
+		};
 
 	public:
 		Samus(float x1, float y1, byte playerNo, byte team);
