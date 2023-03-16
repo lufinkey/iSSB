@@ -201,7 +201,15 @@ namespace SmashBros {
 		addTwoSidedAnimation("finalsmash_begin", "finalsmash_begin.png", 10, 6, 1);
 		addTwoSidedAnimation("finalsmash_hold", "finalsmash_hold.png", 0, 1, 1);
 		addTwoSidedAnimation("finalsmash_end", "finalsmash_end.png", 10, 3, 1);
-	}
+
+		ArrayList<int> upSpecialSeq;
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < 5; j++)
+			{
+				upSpecialSeq.add(j);
+			}
+		}
 
 	Animation* anim = new Animation("special_attack_up_left", 24, 5, 1, upSpecialSeq);
 	anim->addFrame(folderPath + "special_attack_up.png");
@@ -212,7 +220,8 @@ namespace SmashBros {
 	anim->mirror(true);
 	addAnimation(anim);
 
-	void Samus::LoadAttackTypes() {
+	void Samus::LoadAttackTypes() 
+	{
 		addAIAttackType(ATTACK_A, ATTACKTYPE_MELEE, 5);
 		addAIAttackType(ATTACK_SIDEA, ATTACKTYPE_MELEE, 4);
 		addAIAttackType(ATTACK_UPA, ATTACKTYPE_UPMELEE, 2);
