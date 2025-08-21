@@ -197,6 +197,7 @@ namespace SmashBros
 		
 		MusicManager::addSong("Zelda Theme", "Music/Legend of Zelda/Main Theme.ogg");
 		MusicManager::addSong("Zelda Theme Remix", "Music/Legend of Zelda/Main Theme Remix.ogg");
+		MusicManager::addSong("Green Hill Zone", "Music/Sonic the Hedgehog/Green Hill Zone.mp3");
 		
 		MusicManager::loadSong("Main Theme");
 		
