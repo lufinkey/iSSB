@@ -7,6 +7,7 @@
 #include "Game/Characters/Fox.h"
 #include "Game/Characters/Pikachu.h"
 #include "Game/Characters/Link.h"
+#include "Game/Characters/Samus.h"
 
 #include "Game/Stages/FractalStage.h"
 #include "Game/Stages/HillsideBattleground.h"
@@ -43,6 +44,9 @@ namespace SmashBros
 			
 			case Global::CHAR_LINK:
 			return "link.png";
+
+			case Global::CHAR_SAMUS:
+			return "samus.png";
 			
 			default:
 			if(charNo <= Global::totalCharacters)
@@ -87,6 +91,9 @@ namespace SmashBros
 			
 			case Global::CHAR_LINK:
 			return "Link";
+
+			case Global::CHAR_SAMUS:
+			return "Samus";
 		}
 	}
 	
@@ -134,6 +141,10 @@ namespace SmashBros
 			case Global::CHAR_LINK:
 			p = new Link(x1,y1,playerNo,team);
 			p->charNo = Global::CHAR_LINK;
+
+			case Global::CHAR_SAMUS:
+			p = new Samus(x1,y1,playerNo,team);
+			p->charNo = Global::CHAR_SAMUS;
 		}
 		return p;
 	}
@@ -187,6 +198,13 @@ namespace SmashBros
 			case Global::CHAR_LINK:
 			win_fps = 8;
 			win_rows = 4;
+			break;
+
+			case Global::CHAR_SAMUS:
+			win_fps = 6;
+			win_rows = 5;
+			lose_fps = 8;
+			lose_rows = 4;
 			break;
 		}
 		
