@@ -87,6 +87,9 @@ namespace SmashBros
 			
 			case Global::CHAR_LINK:
 			return "Link";
+
+			case Global::CHAR_RANDOM:
+			return "Random";
 		}
 	}
 	
@@ -104,6 +107,9 @@ namespace SmashBros
 	{
 		Player*p = null;
 		Console::WriteLine((String)"creating character " + charNum);
+		if (charNum == Global::CHAR_RANDOM) {
+			charNum = rand() % (Global::totalCharacters - 1) + 1;
+		};
 		switch(charNum)
 		{
 			case Global::CHAR_MARIO:
@@ -134,6 +140,7 @@ namespace SmashBros
 			case Global::CHAR_LINK:
 			p = new Link(x1,y1,playerNo,team);
 			p->charNo = Global::CHAR_LINK;
+			break;
 		}
 		return p;
 	}
