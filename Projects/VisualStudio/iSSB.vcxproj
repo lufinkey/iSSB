@@ -78,6 +78,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;</IncludePath>
+    <ExternalIncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -302,6 +304,7 @@ xcopy /y /s "..\..\Assets\Sounds" $(OutDir)Sounds</Command>
     <ClCompile Include="..\..\Source\SmashBros\Game\Stages\StagePieces\HangPoint.cpp" />
     <ClCompile Include="..\..\Source\SmashBros\Game\Stages\StagePieces\OffScreenExplode.cpp" />
     <ClCompile Include="..\..\Source\SmashBros\Game\Stages\StagePieces\Platform.cpp" />
+    <ClCompile Include="..\..\Source\SmashBros\Game\Stages\WhompFortress.cpp" />
     <ClCompile Include="..\..\Source\SmashBros\Game\WinnerScreen.cpp" />
     <ClCompile Include="..\..\Source\SmashBros\Global.cpp" />
     <ClCompile Include="..\..\Source\SmashBros\HitBox.cpp" />
@@ -433,6 +436,7 @@ xcopy /y /s "..\..\Assets\Sounds" $(OutDir)Sounds</Command>
     <ClInclude Include="..\..\Source\SmashBros\Game\Stages\StagePieces\HangPoint.h" />
     <ClInclude Include="..\..\Source\SmashBros\Game\Stages\StagePieces\OffScreenExplode.h" />
     <ClInclude Include="..\..\Source\SmashBros\Game\Stages\StagePieces\Platform.h" />
+    <ClInclude Include="..\..\Source\SmashBros\Game\Stages\WhompFortress.h" />
     <ClInclude Include="..\..\Source\SmashBros\Game\WinnerScreen.h" />
     <ClInclude Include="..\..\Source\SmashBros\Global.h" />
     <ClInclude Include="..\..\Source\SmashBros\HitBox.h" />

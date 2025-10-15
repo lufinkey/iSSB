@@ -512,6 +512,9 @@
     <ClCompile Include="..\..\External\SDL\SDL_p2p\src\SDL_p2p.cpp">
       <Filter>External\SDL\SDL_p2p\src</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\SmashBros\Game\Stages\WhompFortress.cpp">
+      <Filter>Source\SmashBros\Game\Stages</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\GameEngine\Actor\Actor.h">
@@ -903,6 +906,9 @@
     </ClInclude>
     <ClInclude Include="..\..\External\SDL\SDL_p2p\include\SDL_p2p.h">
       <Filter>External\SDL\SDL_p2p\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmashBros\Game\Stages\WhompFortress.h">
+      <Filter>Source\SmashBros\Game\Stages</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -14,6 +14,7 @@
 #include "Game/Stages/FinalDestinationBrawl.h"
 #include "Game/Stages/HyruleTemple.h"
 #include "Game/Stages/Corneria.h"
+#include "Game/Stages/WhompFortress.h"
 
 #ifndef SMASHBROS_SCRIPT_DISABLE
 #include "../ScriptModule/ScriptManager.h"
@@ -134,6 +135,7 @@ namespace SmashBros
 			case Global::CHAR_LINK:
 			p = new Link(x1,y1,playerNo,team);
 			p->charNo = Global::CHAR_LINK;
+			break;
 		}
 		return p;
 	}
@@ -341,6 +343,9 @@ namespace SmashBros
 
 			case Global::STAGE_CORNERIA:
 			return "corneria.png";
+			
+			case Global::STAGE_WHOMPFORTRESS:
+			return "whompfortress.png";
 		}
 	}
 	
@@ -370,7 +375,9 @@ namespace SmashBros
 
 			case Global::STAGE_CORNERIA:
 			return new Corneria(x1,y1);
-			
+
+			case Global::STAGE_WHOMPFORTRESS:
+			return new WhompFortress(x1,y1);			
 			default:
 #ifndef SMASHBROS_SCRIPT_DISABLE
 			if(stageNum > Global::totalStages)

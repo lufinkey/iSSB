@@ -198,6 +198,8 @@ namespace SmashBros
 		MusicManager::addSong("Zelda Theme", "Music/Legend of Zelda/Main Theme.ogg");
 		MusicManager::addSong("Zelda Theme Remix", "Music/Legend of Zelda/Main Theme Remix.ogg");
 		
+		MusicManager::addSong("Whomp Fortress", "Music/Mario 64/Whomp Fortress.ogg");
+		
 		MusicManager::loadSong("Main Theme");
 		
 		//Loading sounds
